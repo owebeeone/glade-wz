@@ -1,0 +1,83 @@
+// Application declarations describe the user-facing capability bundle.
+// They intentionally do not describe process placement or scale strategy.
+application griplab {
+  // Package-scoped canonical id: pkg:griplab#app:griplab.
+  id "app:griplab"
+
+  // Binds this application to the workspace alias from workspace.glade.
+  workspace repo
+
+  // Facets are named UI/data surfaces. Glial can map Grip taps, agent tools,
+  // or application panels onto these surfaces without changing Glade itself.
+  facet peers
+  facet workspace_status
+  facet tree
+  facet file_viewer
+  facet diff_viewer
+  facet sessions
+  facet terminal
+  facet chat
+  facet settings
+
+  // Names the provider definition alias that can satisfy this application.
+  // This is still declarative; it is not a concrete backend process.
+  provider griplab_backend
+}
+
+# Facets declare share interests and authority requirements.
+facet peers {
+  // `consumes` declares interest in an existing shared surface.
+  consumes stream PeerPresence
+
+  // `requires capability` links this facet to workspace policy.
+  requires capability read_presence
+}
+
+facet workspace_status {
+  consumes stream WorkspaceStatus
+  requires capability read_tree
+}
+
+facet tree {
+  consumes stream WorkspaceTree
+  requires capability read_tree
+}
+
+facet file_viewer {
+  consumes content WorkspaceFile
+  consumes stream FileWindow
+  requires capability read_file
+}
+
+facet diff_viewer {
+  consumes stream FileDiff
+  requires capability read_file
+}
+
+facet sessions {
+  consumes stream CommandSessions
+  consumes log CommandOutput
+  requires capability run_command
+}
+
+facet terminal {
+  // `creates` declares authority to create an instance of a share surface.
+  creates source TerminalSession
+  consumes live_channel TerminalPty
+  consumes stream TerminalLiveOutput
+  consumes log TerminalOutput
+  consumes materialized TerminalScreen
+  requires capability open_terminal
+  requires capability control_terminal
+}
+
+facet chat {
+  consumes log ChatMessages
+  creates exchange PostChatMessage
+  requires capability post_chat
+}
+
+facet settings {
+  creates exchange UpdateSettings
+  requires capability configure_local_client
+}

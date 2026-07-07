@@ -1,0 +1,248 @@
+/*
+  Provider declarations describe who can satisfy declared share surfaces.
+
+  `provider griplab_backend` is a package-local alias. Its id is the stable
+  package-scoped provider definition identity:
+  `pkg:griplab#provider-def:griplab-backend`.
+
+  This file intentionally separates provider capability, runtime service
+  configuration, assignment policy, and share-surface definitions.
+*/
+provider griplab_backend {
+  id "provider-def:griplab-backend"
+
+  // Provider groups are placement and affinity boundaries.
+  group "provider-group:griplab-backend"
+
+  // `serves` declares the share surfaces this provider can authoritatively
+  // produce, host, or answer.
+  serves exchange RunCommand
+  serves exchange OpenTerminal
+  serves source TerminalSession
+  serves live_channel TerminalPty
+  serves stream TerminalLiveOutput
+  serves content WorkspaceFile
+  serves stream WorkspaceTree
+  serves stream WorkspaceStatus
+  serves stream FileWindow
+  serves stream FileDiff
+  serves stream CommandSessions
+  serves log CommandOutput
+  serves log TerminalOutput
+  serves materialized TerminalScreen
+  serves stream PeerPresence
+  serves log ChatMessages
+
+  // These are placement hints, not hard transport mechanics.
+  affinity prefer_same_provider
+  capacity sessions 20 live_channels 8
+}
+
+# A service is the deployable runtime that can instantiate provider capacity.
+service griplab_backend {
+  id "service:griplab-backend"
+  provider griplab_backend
+  runtime local_process {
+    command "python -m griplab_service"
+  }
+  health provider_claim timeout 10s
+  scale min 1 max 4 target_sessions 20
+  rollback previous_good_version
+}
+
+# Assignment policies route share instances to provider groups.
+assignment griplab_sessions {
+  provider_group "provider-group:griplab-backend"
+  strategy sticky_session
+  affinity prefer_same_provider
+  fallback same_group
+  rebalance only_on_failure
+}
+
+# Streams are changing shared views with a current value or event sequence.
+stream PeerPresence {
+  id "stream:peer-presence"
+  legacy method "peer.presence.subscribe"
+  model snapshot_stream
+  payload schema "schemas/PeerPresence.schema.json"
+  retention latest_only
+}
+
+stream WorkspaceStatus {
+  id "stream:workspace-status"
+  legacy method "workspace.status.subscribe"
+  legacy refresh "workspace.status.refresh"
+  model snapshot_stream
+  payload schema "schemas/WorkspaceStatus.schema.json"
+  retention latest_only
+}
+
+stream WorkspaceTree {
+  id "stream:workspace-tree"
+  legacy method "tree.subscribe"
+  legacy refresh "tree.refresh"
+  legacy close "tree.unsubscribe"
+  model snapshot_stream
+  payload schema "schemas/WorkspaceTree.schema.json"
+  retention latest_only
+}
+
+# Content declarations describe durable or externally backed data surfaces.
+content WorkspaceFile {
+  id "model:workspace-file"
+  model mutable_content
+  sync authoritative_patch
+  source external_filesystem
+  window line_range default 0..400
+  stale_reads allowed
+}
+
+stream FileWindow {
+  id "stream:file-window"
+  legacy method "file.subscribe"
+  legacy update "file.window.update"
+  legacy close "file.unsubscribe"
+  source content WorkspaceFile
+  events snapshot, delta, reset, error, closed
+  window line_range
+  retention latest_window
+}
+
+stream FileDiff {
+  id "stream:file-diff"
+  legacy method "diff.subscribe"
+  legacy update "diff.window.update"
+  legacy close "diff.unsubscribe"
+  source stream FileWindow left, right
+  events snapshot, reset, error
+  window line_range
+  retention latest_window
+}
+
+# Exchanges model request/response as shared request and response documents.
+exchange RunCommand {
+  id "exchange:run-command"
+  legacy method "cmd.run"
+  request schema "schemas/RunCommandRequest.schema.json"
+  response schema "schemas/RunCommandResponse.schema.json"
+  creates stream CommandSessions
+  creates log CommandOutput
+  authority provider_claimed
+  retention completed 1d failed 7d
+}
+
+stream CommandSessions {
+  id "stream:command-sessions"
+  legacy method "sessions.subscribe"
+  model snapshot_stream
+  payload schema "schemas/CommandSessions.schema.json"
+  retention latest_plus_history
+}
+
+# Logs are append-oriented share surfaces with replay semantics.
+log CommandOutput {
+  id "log:command-output"
+  legacy method "session.output.subscribe"
+  append_order provider_sequenced
+  payload text
+  retention 7d
+  note "Current implementation publishes full output snapshots; target model is append chunks plus cursor replay."
+}
+
+exchange OpenTerminal {
+  id "exchange:open-terminal"
+  legacy method "term.open"
+  request schema "schemas/OpenTerminalRequest.schema.json"
+  response schema "schemas/OpenTerminalResponse.schema.json"
+  creates source TerminalSession
+  returns handle TerminalHandle
+  authority provider_claimed
+  retention completed 1d failed 7d
+}
+
+# A terminal source binds the open response, live controls, live output, durable
+# replay log, and UI materialization to one stable handle.
+source TerminalSession {
+  id "source:terminal-session"
+  opened_by exchange OpenTerminal
+  handle TerminalHandle {
+    fields provider_id, provider_instance_id, owner_term, session_id,
+      terminal_id, target_ref, pty_channel_id, output_log_id
+  }
+  lifecycle provider_local non_migratable
+  affinity must_same_provider_until_close
+
+  # Live channels are low-latency interactive surfaces. They are not the durable
+  # replay contract.
+  live_channel TerminalPty {
+    id "live:terminal-pty"
+    input bytes TerminalInput legacy method "term.input"
+    input control TerminalResize legacy method "term.resize"
+    input control TerminalClose legacy method "term.close"
+    output stream TerminalLiveOutput
+    authority provider_hosted
+    latency interactive
+    route_key handle TerminalHandle
+  }
+
+  stream TerminalLiveOutput {
+    id "stream:terminal-live-output"
+    payload bytes
+    delivery best_effort
+    replay none
+  }
+
+  log TerminalOutput {
+    id "log:terminal-output"
+    source stream TerminalLiveOutput
+    append_order provider_sequenced
+    cursor provider_seq
+    payload bytes
+    coalesce max_bytes 65536 max_latency 20ms
+    replay from_cursor
+    retention 7d
+  }
+
+  materialized TerminalScreen {
+    id "view:terminal-screen"
+    source log TerminalOutput
+    decode terminal_bytes
+    retention latest_only
+    note "UTF-8 replacement and xterm materialization are UI policies over bytes, not storage policy."
+  }
+}
+
+log ChatMessages {
+  id "log:chat-messages"
+  legacy method "chat.subscribe"
+  append_order provider_sequenced
+  payload schema "schemas/ChatMessage.schema.json"
+  retention 30d
+}
+
+exchange PostChatMessage {
+  id "exchange:post-chat-message"
+  legacy method "chat.post"
+  request schema "schemas/PostChatMessageRequest.schema.json"
+  response schema "schemas/PostChatMessageResponse.schema.json"
+  appends log ChatMessages
+  authority provider_claimed
+  retention completed 1d failed 7d
+}
+
+exchange UpdateSettings {
+  id "exchange:update-settings"
+  legacy method "settings.update"
+  request schema "schemas/UpdateSettingsRequest.schema.json"
+  response schema "schemas/SettingsResponse.schema.json"
+  authority local_only
+  retention completed 1h failed 1d
+}
+
+exchange AdminRestart {
+  id "exchange:admin-restart"
+  legacy method "admin.restart"
+  authority local_only
+  requires capability admin_restart
+  retention completed 1h failed 1d
+}

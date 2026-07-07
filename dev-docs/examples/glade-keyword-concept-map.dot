@@ -1,0 +1,253 @@
+digraph GladeKeywordConceptMap {
+  graph [
+    label=".glade Keyword -> Architecture Concept Map",
+    labelloc="t",
+    fontsize=22,
+    fontname="Helvetica",
+    rankdir=LR,
+    bgcolor="#fbfbf8",
+    pad=0.35,
+    nodesep=0.45,
+    ranksep=0.95,
+    splines=true
+  ];
+
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="Helvetica",
+    fontsize=10,
+    color="#444444",
+    penwidth=1.1,
+    margin="0.09,0.06"
+  ];
+
+  edge [
+    fontname="Helvetica",
+    fontsize=9,
+    color="#555555",
+    arrowsize=0.7
+  ];
+
+  // Colors match the broader concept map:
+  // blue   = Glial composition / product surface
+  // green  = Glade kernel / declaration control plane
+  // yellow = declared app data surfaces and flows
+  // orange = provider / runtime placement
+  // pink   = trust, authority, capability, policy
+  // gray   = adapter / generated binding / compatibility mapping
+
+  subgraph cluster_keywords {
+    label="Keywords and clauses in the terminal .glade example";
+    color="#cfcfcf";
+    style="rounded,filled";
+    fillcolor="#ffffff";
+
+    kw_package [label="package", fillcolor="#ffffff"];
+    kw_version [label="version", fillcolor="#ffffff"];
+    kw_id [label="id", fillcolor="#ffffff"];
+    kw_issuer [label="issuer", fillcolor="#ffffff"];
+    kw_import [label="import", fillcolor="#ffffff"];
+
+    kw_workspace [label="workspace", fillcolor="#ffffff"];
+    kw_capability [label="capability", fillcolor="#ffffff"];
+
+    kw_application [label="application", fillcolor="#ffffff"];
+    kw_facet [label="facet", fillcolor="#ffffff"];
+    kw_provider_ref [label="provider\ninside application", fillcolor="#ffffff"];
+    kw_creates [label="creates", fillcolor="#ffffff"];
+    kw_consumes [label="consumes", fillcolor="#ffffff"];
+    kw_requires_cap [label="requires capability", fillcolor="#ffffff"];
+
+    kw_provider [label="provider\nblock", fillcolor="#ffffff"];
+    kw_group [label="group", fillcolor="#ffffff"];
+    kw_serves [label="serves", fillcolor="#ffffff"];
+    kw_affinity [label="affinity", fillcolor="#ffffff"];
+    kw_capacity [label="capacity", fillcolor="#ffffff"];
+
+    kw_service [label="service", fillcolor="#ffffff"];
+    kw_runtime [label="runtime", fillcolor="#ffffff"];
+    kw_command [label="command", fillcolor="#ffffff"];
+    kw_health [label="health", fillcolor="#ffffff"];
+    kw_rollback [label="rollback", fillcolor="#ffffff"];
+
+    kw_exchange [label="exchange", fillcolor="#ffffff"];
+    kw_legacy [label="legacy method", fillcolor="#ffffff"];
+    kw_request [label="request", fillcolor="#ffffff"];
+    kw_returns [label="returns handle", fillcolor="#ffffff"];
+    kw_authority [label="authority", fillcolor="#ffffff"];
+    kw_retention [label="retention", fillcolor="#ffffff"];
+
+    kw_source [label="source", fillcolor="#ffffff"];
+    kw_opened_by [label="opened_by", fillcolor="#ffffff"];
+    kw_handle [label="handle", fillcolor="#ffffff"];
+    kw_fields [label="fields", fillcolor="#ffffff"];
+    kw_lifecycle [label="lifecycle", fillcolor="#ffffff"];
+
+    kw_live_channel [label="live_channel", fillcolor="#ffffff"];
+    kw_route_key [label="route_key", fillcolor="#ffffff"];
+    kw_input [label="input", fillcolor="#ffffff"];
+    kw_control [label="control", fillcolor="#ffffff"];
+    kw_output_stream [label="output stream", fillcolor="#ffffff"];
+    kw_latency [label="latency", fillcolor="#ffffff"];
+
+    kw_stream [label="stream", fillcolor="#ffffff"];
+    kw_delivery [label="delivery", fillcolor="#ffffff"];
+    kw_replay [label="replay", fillcolor="#ffffff"];
+
+    kw_log [label="log", fillcolor="#ffffff"];
+    kw_source_stream [label="source stream", fillcolor="#ffffff"];
+    kw_payload [label="payload", fillcolor="#ffffff"];
+    kw_append_order [label="append_order", fillcolor="#ffffff"];
+    kw_cursor [label="cursor", fillcolor="#ffffff"];
+    kw_coalesce [label="coalesce", fillcolor="#ffffff"];
+
+    kw_materialized [label="materialized", fillcolor="#ffffff"];
+    kw_source_log [label="source log", fillcolor="#ffffff"];
+    kw_decode [label="decode", fillcolor="#ffffff"];
+  }
+
+  subgraph cluster_concepts {
+    label="Concepts these keywords compile to, reference, or constrain";
+    color="#cfcfcf";
+    style="rounded,filled";
+    fillcolor="#f8f8f8";
+
+    c_package [label="Declaration Package", fillcolor="#dff4dc"];
+    c_declaration_graph [label="Declaration Graph", fillcolor="#dff4dc"];
+    c_id [label="Canonical Id", fillcolor="#dff4dc"];
+    c_definition [label="Definition", fillcolor="#dff4dc"];
+    c_instance [label="Instance", fillcolor="#dff4dc"];
+    c_record [label="Record Envelope", fillcolor="#dff4dc"];
+    c_claim [label="Claim", fillcolor="#dff4dc"];
+    c_lease [label="Lease", fillcolor="#dff4dc"];
+    c_owner_term [label="Ownership Term", fillcolor="#dff4dc"];
+    c_observation [label="Observation", fillcolor="#dff4dc"];
+    c_retention [label="Retention", fillcolor="#dff4dc"];
+
+    c_app [label="Application", fillcolor="#d7ebff"];
+    c_workspace [label="Workspace", fillcolor="#d7ebff"];
+    c_scope [label="Scope", fillcolor="#d7ebff"];
+    c_facet [label="Facet", fillcolor="#d7ebff"];
+    c_session [label="Session", fillcolor="#d7ebff"];
+
+    c_principal [label="Principal", fillcolor="#f5d6e8"];
+    c_capability [label="Capability", fillcolor="#f5d6e8"];
+    c_policy [label="Policy", fillcolor="#f5d6e8"];
+
+    c_provider_def [label="Provider Definition", fillcolor="#ffe2c4"];
+    c_provider_group [label="Provider Group", fillcolor="#ffe2c4"];
+    c_service [label="Service", fillcolor="#ffe2c4"];
+    c_provider_instance [label="Provider Instance", fillcolor="#ffe2c4"];
+    c_work_assignment [label="Work Assignment", fillcolor="#ffe2c4"];
+
+    c_exchange [label="Exchange", fillcolor="#fff2bf"];
+    c_request_intent [label="Request Intent", fillcolor="#fff2bf"];
+    c_source [label="Source", fillcolor="#fff2bf"];
+    c_handle [label="Handle", fillcolor="#fff2bf"];
+    c_live_channel [label="Live Channel", fillcolor="#fff2bf"];
+    c_stream [label="Stream", fillcolor="#fff2bf"];
+    c_log [label="Log", fillcolor="#fff2bf"];
+    c_materialized [label="Materialized View", fillcolor="#fff2bf"];
+    c_value_type [label="Value Type / Schema", fillcolor="#fff2bf"];
+
+    c_adapter [label="Legacy Adapter / Generated Binding", fillcolor="#e8e8e8"];
+    c_route_key [label="Route / Request Key", fillcolor="#e8e8e8"];
+  }
+
+  // Package and metadata keywords.
+  kw_package -> c_package [label="declares"];
+  kw_package -> c_declaration_graph [label="roots local graph"];
+  kw_version -> c_package [label="versions"];
+  kw_id -> c_id [label="declares stable identity"];
+  kw_id -> c_record [label="compiled into"];
+  kw_issuer -> c_principal [label="names publisher"];
+  kw_import -> c_declaration_graph [label="includes"];
+
+  // Glial app/security surface.
+  kw_workspace -> c_workspace [label="declares or references"];
+  kw_workspace -> c_scope [label="security boundary"];
+  kw_capability -> c_capability [label="declares policy atom"];
+  kw_application -> c_app [label="declares"];
+  kw_facet -> c_facet [label="declares or references"];
+  kw_provider_ref -> c_provider_def [label="requires provider"];
+  kw_creates -> c_instance [label="allows instance creation"];
+  kw_creates -> c_source [label="for source resources"];
+  kw_consumes -> c_facet [label="declares interest"];
+  kw_consumes -> c_stream [label="may consume"];
+  kw_consumes -> c_log [label="may consume"];
+  kw_consumes -> c_materialized [label="may consume"];
+  kw_requires_cap -> c_capability [label="requires"];
+  kw_requires_cap -> c_policy [label="validated by"];
+
+  // Provider and runtime keywords.
+  kw_provider -> c_provider_def [label="declares"];
+  kw_group -> c_provider_group [label="places in"];
+  kw_serves -> c_definition [label="claims support for"];
+  kw_serves -> c_provider_def [label="provider contract"];
+  kw_affinity -> c_work_assignment [label="constrains"];
+  kw_affinity -> c_provider_instance [label="stickiness"];
+  kw_capacity -> c_provider_def [label="advertises"];
+  kw_service -> c_service [label="declares deployable runtime"];
+  kw_service -> c_provider_def [label="implements"];
+  kw_runtime -> c_provider_instance [label="spawns as"];
+  kw_command -> c_service [label="start command"];
+  kw_health -> c_claim [label="checks provider claim"];
+  kw_health -> c_lease [label="liveness"];
+  kw_rollback -> c_service [label="deployment policy"];
+
+  // Exchange/source/handle keywords.
+  kw_exchange -> c_exchange [label="declares bounded work"];
+  kw_exchange -> c_definition [label="is a definition"];
+  kw_legacy -> c_adapter [label="maps old protocol"];
+  kw_request -> c_request_intent [label="input shape"];
+  kw_request -> c_value_type [label="schema fields"];
+  kw_returns -> c_handle [label="publishes"];
+  kw_authority -> c_policy [label="authority model"];
+  kw_authority -> c_claim [label="claim behavior"];
+  kw_retention -> c_retention [label="cleanup/history"];
+
+  kw_source -> c_source [label="declares real resource"];
+  kw_source -> c_instance [label="instantiated as"];
+  kw_opened_by -> c_exchange [label="created by"];
+  kw_handle -> c_handle [label="declares"];
+  kw_fields -> c_route_key [label="derive keys"];
+  kw_fields -> c_session [label="may include session_id"];
+  kw_fields -> c_provider_instance [label="may include provider_instance_id"];
+  kw_fields -> c_owner_term [label="may include owner_term"];
+  kw_lifecycle -> c_instance [label="lifetime"];
+  kw_lifecycle -> c_lease [label="leased"];
+  kw_lifecycle -> c_provider_instance [label="provider-local"];
+
+  // Live channel and stream keywords.
+  kw_live_channel -> c_live_channel [label="declares"];
+  kw_route_key -> c_handle [label="uses"];
+  kw_route_key -> c_route_key [label="generates"];
+  kw_input -> c_live_channel [label="writes bytes"];
+  kw_input -> c_value_type [label="payload type"];
+  kw_control -> c_live_channel [label="control event"];
+  kw_control -> c_value_type [label="payload schema"];
+  kw_output_stream -> c_stream [label="emits"];
+  kw_latency -> c_live_channel [label="QoS intent"];
+  kw_stream -> c_stream [label="declares live flow"];
+  kw_delivery -> c_stream [label="delivery guarantee"];
+  kw_replay -> c_stream [label="none for live stream"];
+  kw_replay -> c_log [label="from cursor for log"];
+
+  // Log/materialized view keywords.
+  kw_log -> c_log [label="declares durable flow"];
+  kw_source_stream -> c_stream [label="reads from"];
+  kw_source_stream -> c_log [label="appends to"];
+  kw_payload -> c_value_type [label="declares bytes/schema"];
+  kw_payload -> c_record [label="record payload"];
+  kw_append_order -> c_owner_term [label="ordered under"];
+  kw_append_order -> c_log [label="ordering contract"];
+  kw_cursor -> c_log [label="replay cursor"];
+  kw_cursor -> c_observation [label="observed position"];
+  kw_coalesce -> c_log [label="append policy"];
+  kw_materialized -> c_materialized [label="declares derived view"];
+  kw_source_log -> c_log [label="reads from"];
+  kw_source_log -> c_materialized [label="derives"];
+  kw_decode -> c_materialized [label="presentation policy"];
+  kw_decode -> c_value_type [label="byte decoding"];
+}

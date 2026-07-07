@@ -1,0 +1,223 @@
+digraph GladeKeywordBlockMap {
+  graph [
+    label=".glade Keyword Blocks -> Architecture Concepts",
+    labelloc="t",
+    fontsize=22,
+    fontname="Helvetica",
+    rankdir=LR,
+    bgcolor="#fbfbf8",
+    pad=0.35,
+    nodesep=0.65,
+    ranksep=1.15,
+    splines=ortho
+  ];
+
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="Helvetica",
+    fontsize=11,
+    color="#444444",
+    penwidth=1.2,
+    margin="0.10,0.07"
+  ];
+
+  edge [
+    fontname="Helvetica",
+    fontsize=10,
+    color="#555555",
+    arrowsize=0.75
+  ];
+
+  // Left side: grouped .glade syntax blocks.
+  subgraph cluster_glade_blocks {
+    label=".glade syntax blocks";
+    color="#cfcfcf";
+    style="rounded,filled";
+    fillcolor="#ffffff";
+
+    package_block [
+      label="package block\n\nkeywords:\npackage, version, id,\nissuer, import",
+      fillcolor="#ffffff"
+    ];
+
+    workspace_block [
+      label="workspace block\n\nkeywords:\nworkspace, id,\ncapability",
+      fillcolor="#ffffff"
+    ];
+
+    application_block [
+      label="application block\n\nkeywords:\napplication, workspace,\nfacet, provider",
+      fillcolor="#ffffff"
+    ];
+
+    facet_block [
+      label="facet block\n\nkeywords:\nfacet, creates,\nconsumes, requires capability",
+      fillcolor="#ffffff"
+    ];
+
+    provider_block [
+      label="provider block\n\nkeywords:\nprovider, group, serves,\naffinity, capacity",
+      fillcolor="#ffffff"
+    ];
+
+    service_block [
+      label="service block\n\nkeywords:\nservice, provider,\nruntime, command,\nhealth, rollback",
+      fillcolor="#ffffff"
+    ];
+
+    exchange_block [
+      label="exchange block\n\nkeywords:\nexchange, legacy method,\nrequest, creates,\nreturns handle, authority,\nretention",
+      fillcolor="#ffffff"
+    ];
+
+    source_block [
+      label="source block\n\nkeywords:\nsource, opened_by,\nhandle, fields,\nlifecycle, affinity",
+      fillcolor="#ffffff"
+    ];
+
+    live_block [
+      label="live_channel block\n\nkeywords:\nlive_channel, route_key,\ninput, control,\noutput stream, latency",
+      fillcolor="#ffffff"
+    ];
+
+    stream_block [
+      label="stream block\n\nkeywords:\nstream, payload,\ndelivery, replay",
+      fillcolor="#ffffff"
+    ];
+
+    log_block [
+      label="log block\n\nkeywords:\nlog, source stream,\npayload, append_order,\ncursor, coalesce,\nreplay, retention",
+      fillcolor="#ffffff"
+    ];
+
+    materialized_block [
+      label="materialized block\n\nkeywords:\nmaterialized, source log,\ndecode, retention",
+      fillcolor="#ffffff"
+    ];
+  }
+
+  // Right side: concept families, using the same colors as the concept map.
+  subgraph cluster_concepts {
+    label="architecture concept families";
+    color="#cfcfcf";
+    style="rounded,filled";
+    fillcolor="#f8f8f8";
+
+    declaration_pkg [
+      label="Declaration Package\nDeclaration Graph\nCanonical Id",
+      fillcolor="#dff4dc"
+    ];
+
+    trust_policy [
+      label="Principal\nCapability\nPolicy\nRecord Envelope",
+      fillcolor="#f5d6e8"
+    ];
+
+    glial_surface [
+      label="Application\nWorkspace\nScope\nFacet",
+      fillcolor="#d7ebff"
+    ];
+
+    provider_runtime [
+      label="Provider Definition\nProvider Group\nService\nProvider Instance",
+      fillcolor="#ffe2c4"
+    ];
+
+    work_control [
+      label="Definition\nInstance\nClaim\nLease\nOwnership Term\nRetention",
+      fillcolor="#dff4dc"
+    ];
+
+    exchange_concept [
+      label="Exchange\nRequest Intent\nSource Creation",
+      fillcolor="#fff2bf"
+    ];
+
+    source_handle [
+      label="Source\nHandle\nRoute / Request Key",
+      fillcolor="#fff2bf"
+    ];
+
+    live_surface [
+      label="Live Channel\nInput Bytes\nControl Events",
+      fillcolor="#fff2bf"
+    ];
+
+    stream_surface [
+      label="Stream\nHot Output\nBest-Effort Delivery",
+      fillcolor="#fff2bf"
+    ];
+
+    log_surface [
+      label="Log\nAppend Records\nReplay Cursor\nObservation",
+      fillcolor="#fff2bf"
+    ];
+
+    materialized_surface [
+      label="Materialized View\nDecoded UI State\nProjection",
+      fillcolor="#fff2bf"
+    ];
+
+    legacy_adapter [
+      label="Legacy Adapter\nGenerated Binding\nCompatibility Mapping",
+      fillcolor="#e8e8e8"
+    ];
+  }
+
+  // Package and trust.
+  package_block -> declaration_pkg [label="declares package graph"];
+  package_block -> trust_policy [label="issuer principal"];
+
+  // App/security shape.
+  workspace_block -> glial_surface [label="declares boundary"];
+  workspace_block -> trust_policy [label="declares capabilities"];
+  application_block -> glial_surface [label="declares app surface"];
+  application_block -> provider_runtime [label="references provider"];
+  facet_block -> glial_surface [label="declares UI slice"];
+  facet_block -> trust_policy [label="requires capabilities"];
+  facet_block -> source_handle [label="may create source"];
+  facet_block -> live_surface [label="may consume"];
+  facet_block -> stream_surface [label="may consume"];
+  facet_block -> log_surface [label="may consume"];
+  facet_block -> materialized_surface [label="may consume"];
+
+  // Provider/runtime.
+  provider_block -> provider_runtime [label="declares provider contract"];
+  provider_block -> work_control [label="serves definitions"];
+  provider_block -> source_handle [label="serves source"];
+  provider_block -> live_surface [label="serves"];
+  provider_block -> stream_surface [label="serves"];
+  provider_block -> log_surface [label="serves"];
+  provider_block -> materialized_surface [label="serves"];
+  service_block -> provider_runtime [label="deployable runtime"];
+  service_block -> work_control [label="health/lease semantics"];
+
+  // Terminal creation and binding.
+  exchange_block -> exchange_concept [label="bounded work"];
+  exchange_block -> source_handle [label="creates source + returns handle"];
+  exchange_block -> trust_policy [label="authority/capability"];
+  exchange_block -> work_control [label="retention"];
+  exchange_block -> legacy_adapter [label="legacy method"];
+
+  source_block -> source_handle [label="declares canonical binding"];
+  source_block -> work_control [label="lifecycle + owner term"];
+  source_block -> provider_runtime [label="provider-local state"];
+
+  // Flow views.
+  live_block -> live_surface [label="interactive channel"];
+  live_block -> source_handle [label="routes by handle"];
+  live_block -> legacy_adapter [label="legacy controls"];
+  live_block -> stream_surface [label="emits output"];
+
+  stream_block -> stream_surface [label="declares live flow"];
+  stream_block -> source_handle [label="keyed by handle"];
+
+  log_block -> log_surface [label="declares replay flow"];
+  log_block -> stream_surface [label="derived from stream"];
+  log_block -> work_control [label="ordering + retention"];
+  log_block -> source_handle [label="cursor tied to handle"];
+
+  materialized_block -> materialized_surface [label="declares UI view"];
+  materialized_block -> log_surface [label="derived from log"];
+}

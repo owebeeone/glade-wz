@@ -1,0 +1,42 @@
+// Application is the user-facing terminal capability bundle.
+// It declares the surfaces a UI, Grip adapter, or agent may consume.
+application griplab_terminal {
+  id "app:griplab-terminal"
+
+  // Bind this app to the workspace security boundary.
+  workspace repo
+
+  // The terminal facet is the only user-facing slice in this example.
+  facet terminal
+
+  // Provider alias that can satisfy the declared terminal surfaces.
+  provider griplab_terminal_backend
+}
+
+// Facet is the app/UI-facing surface.
+// Grip taps or generated bindings attach here, not directly to transport.
+facet terminal {
+  // Creating a terminal creates the source resource, not just a session-list row.
+  creates source TerminalSession
+
+  // Live channel is for low-latency input/control of the PTY.
+  consumes live_channel TerminalPty
+
+  // Live output is hot-path terminal bytes without replay guarantee.
+  consumes stream TerminalLiveOutput
+
+  // Output log is the canonical durable replay/history surface.
+  consumes log TerminalOutput
+
+  // TerminalScreen is decoded UI state derived from output bytes.
+  consumes materialized TerminalScreen
+
+  // Open controls resource creation.
+  requires capability open_terminal
+
+  // Control covers input, resize, and close.
+  requires capability control_terminal
+
+  // Read covers live output, replay log, and materialized screen.
+  requires capability read_terminal
+}

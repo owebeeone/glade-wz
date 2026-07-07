@@ -1,0 +1,28 @@
+# Scale declarations are deployment envelopes. They intentionally live outside
+# workspace/application declarations so deployment strategy can vary without
+# changing the application model.
+scale mode1 {
+  // `mode1` is a package-local scale alias. It is referenced by tooling,
+  // provisioning policy, or deployment overlays.
+  supports package griplab
+
+  // GripLab's first architecture-valid target requires peer-to-peer substrate
+  // behavior, even if the first implementation uses a constrained topology.
+  requires p2p
+
+  // App managers are a partitioning tool, not just a large-scale feature.
+  app_managers min 2 partition by workspace, provider_group
+  providers min 1
+
+  notes "Mode 1 is the first architecture-valid target for GripLab."
+}
+
+scale mode2 {
+  supports package griplab
+  requires p2p
+  requires persistent_logs
+
+  // Mode 2 starts to require redundant provider capacity.
+  app_managers min 2 partition by workspace, provider_group
+  providers min 2
+}

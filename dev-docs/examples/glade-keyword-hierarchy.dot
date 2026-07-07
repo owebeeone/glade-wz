@@ -1,0 +1,255 @@
+digraph GladeKeywordHierarchy {
+  graph [
+    label=".glade Keyword Hierarchy",
+    labelloc="t",
+    fontsize=22,
+    fontname="Helvetica",
+    rankdir=TB,
+    bgcolor="#fbfbf8",
+    pad=0.35,
+    nodesep=0.45,
+    ranksep=0.65,
+    splines=ortho
+  ];
+
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="Helvetica",
+    fontsize=11,
+    color="#444444",
+    penwidth=1.1,
+    margin="0.10,0.07"
+  ];
+
+  edge [
+    fontname="Helvetica",
+    fontsize=9,
+    color="#666666",
+    arrowsize=0.65
+  ];
+
+  // Color key:
+  // blue   = namespace / composition
+  // green  = declaration kind
+  // yellow = flow surface
+  // orange = runtime/provider
+  // pink   = policy / authority annotation
+  // gray   = compatibility / generated binding annotation
+
+  package [
+    label="package\n\nnamespace root\nversioned declaration bundle",
+    fillcolor="#d7ebff"
+  ];
+
+  package_meta [
+    label="package metadata\n\nid\nissuer\nversion\nimport",
+    fillcolor="#e6f3ff"
+  ];
+
+  package -> package_meta [label="contains"];
+
+  subgraph cluster_declarations {
+    label="top-level declaration blocks";
+    color="#d6d6d6";
+    style="rounded,filled";
+    fillcolor="#ffffff";
+
+    workspace [
+      label="workspace\n\nsecurity / collaboration boundary",
+      fillcolor="#dff4dc"
+    ];
+
+    application [
+      label="application\n\nuser-facing capability bundle",
+      fillcolor="#dff4dc"
+    ];
+
+    facet [
+      label="facet\n\nUI / agent-facing slice",
+      fillcolor="#dff4dc"
+    ];
+
+    provider [
+      label="provider\n\nwho can serve definitions",
+      fillcolor="#ffe2c4"
+    ];
+
+    service [
+      label="service\n\ndeployable runtime",
+      fillcolor="#ffe2c4"
+    ];
+
+    exchange [
+      label="exchange\n\nbounded work contract",
+      fillcolor="#fff2bf"
+    ];
+
+    source [
+      label="source\n\nreal resource / state producer",
+      fillcolor="#fff2bf"
+    ];
+  }
+
+  package -> workspace;
+  package -> application;
+  package -> facet;
+  package -> provider;
+  package -> service;
+  package -> exchange;
+  package -> source;
+
+  workspace_members [
+    label="workspace members\n\nid\ncapability",
+    fillcolor="#f5d6e8"
+  ];
+
+  application_members [
+    label="application members\n\nid\nworkspace ref\nfacet ref\nprovider ref",
+    fillcolor="#e6f3ff"
+  ];
+
+  facet_members [
+    label="facet members\n\ncreates\nconsumes\nrequires capability",
+    fillcolor="#e6f3ff"
+  ];
+
+  provider_members [
+    label="provider members\n\nid\ngroup\nserves\naffinity\ncapacity",
+    fillcolor="#ffe2c4"
+  ];
+
+  service_members [
+    label="service members\n\nid\nprovider ref\nruntime\nhealth\nrollback",
+    fillcolor="#ffe2c4"
+  ];
+
+  exchange_members [
+    label="exchange members\n\nid\nlegacy method\nrequest\ncreates\nreturns handle\nauthority\nretention",
+    fillcolor="#fff2bf"
+  ];
+
+  source_members [
+    label="source members\n\nid\nopened_by\nhandle\nlifecycle\naffinity\nflow views",
+    fillcolor="#fff2bf"
+  ];
+
+  workspace -> workspace_members;
+  application -> application_members;
+  facet -> facet_members;
+  provider -> provider_members;
+  service -> service_members;
+  exchange -> exchange_members;
+  source -> source_members;
+
+  subgraph cluster_flow_views {
+    label="flow-view blocks nested under source";
+    color="#dec15f";
+    style="rounded,filled";
+    fillcolor="#fffbea";
+
+    live_channel [
+      label="live_channel\n\ninteractive hot path",
+      fillcolor="#fff2bf"
+    ];
+
+    stream [
+      label="stream\n\nlive event/byte flow",
+      fillcolor="#fff2bf"
+    ];
+
+    log [
+      label="log\n\ndurable replay flow",
+      fillcolor="#fff2bf"
+    ];
+
+    materialized [
+      label="materialized\n\nderived UI/read model",
+      fillcolor="#fff2bf"
+    ];
+  }
+
+  source -> live_channel [label="contains"];
+  source -> stream [label="contains"];
+  source -> log [label="contains"];
+  source -> materialized [label="contains"];
+
+  live_members [
+    label="live_channel members\n\nid\nroute_key\ninput\ncontrol\noutput stream\nlatency",
+    fillcolor="#fff8d9"
+  ];
+
+  stream_members [
+    label="stream members\n\nid\npayload\ndelivery\nreplay",
+    fillcolor="#fff8d9"
+  ];
+
+  log_members [
+    label="log members\n\nid\nsource stream\npayload\nappend_order\ncursor\ncoalesce\nreplay\nretention",
+    fillcolor="#fff8d9"
+  ];
+
+  materialized_members [
+    label="materialized members\n\nid\nsource log\ndecode\nretention",
+    fillcolor="#fff8d9"
+  ];
+
+  live_channel -> live_members;
+  stream -> stream_members;
+  log -> log_members;
+  materialized -> materialized_members;
+
+  subgraph cluster_annotations {
+    label="cross-cutting annotations / clauses";
+    color="#dddddd";
+    style="rounded,filled";
+    fillcolor="#ffffff";
+
+    identity [
+      label="identity annotations\n\nid\nhandle fields\nroute_key",
+      fillcolor="#dff4dc"
+    ];
+
+    policy [
+      label="policy annotations\n\ncapability\nrequires capability\nauthority",
+      fillcolor="#f5d6e8"
+    ];
+
+    lifecycle [
+      label="lifecycle annotations\n\nlifecycle\nlease\nretention\nhealth\nrollback",
+      fillcolor="#dff4dc"
+    ];
+
+    placement [
+      label="placement annotations\n\ngroup\naffinity\ncapacity\nruntime",
+      fillcolor="#ffe2c4"
+    ];
+
+    flow_semantics [
+      label="flow semantics\n\npayload\nappend_order\ncursor\ncoalesce\nreplay\ndelivery\nlatency\ndecode",
+      fillcolor="#fff2bf"
+    ];
+
+    compatibility [
+      label="compatibility annotations\n\nlegacy method\ncommand\nprovider ref",
+      fillcolor="#e8e8e8"
+    ];
+  }
+
+  workspace_members -> policy [style=dashed, label="uses"];
+  facet_members -> policy [style=dashed, label="uses"];
+  provider_members -> placement [style=dashed, label="uses"];
+  service_members -> lifecycle [style=dashed, label="uses"];
+  exchange_members -> compatibility [style=dashed, label="may use"];
+  exchange_members -> policy [style=dashed, label="uses"];
+  exchange_members -> lifecycle [style=dashed, label="uses"];
+  source_members -> identity [style=dashed, label="uses"];
+  source_members -> lifecycle [style=dashed, label="uses"];
+  source_members -> placement [style=dashed, label="uses"];
+  live_members -> identity [style=dashed, label="uses"];
+  live_members -> compatibility [style=dashed, label="may use"];
+  live_members -> flow_semantics [style=dashed, label="uses"];
+  stream_members -> flow_semantics [style=dashed, label="uses"];
+  log_members -> flow_semantics [style=dashed, label="uses"];
+  materialized_members -> flow_semantics [style=dashed, label="uses"];
+}

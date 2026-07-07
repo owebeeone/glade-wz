@@ -1,0 +1,15 @@
+// Root package manifest for the terminal-only GripLab declaration slice.
+// This composes the split files into one package-local declaration graph.
+package griplab_terminal version "0.1.0" {
+  // Package id is the signed trust/provisioning identity for this example.
+  id "pkg:griplab-terminal"
+
+  // Issuer is the principal expected to publish or sign this package.
+  issuer "principal:griplab-team"
+
+  // Imports are declaration includes, not runtime module loads.
+  import "./workspace.glade"
+  import "./application.glade"
+  import "./provider.glade"
+  import "./grip-share.glade"
+}

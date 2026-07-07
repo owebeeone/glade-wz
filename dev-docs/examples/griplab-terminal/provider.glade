@@ -1,0 +1,173 @@
+// Provider declares who can serve these terminal surfaces.
+// It is a capability and placement contract, not a concrete websocket endpoint.
+provider griplab_terminal_backend {
+  id "provider-def:griplab-terminal-backend"
+
+  // Provider group is the placement and affinity boundary.
+  group "provider-group:griplab-terminal-backend"
+
+  // OpenTerminal is bounded work that creates the terminal source.
+  serves exchange OpenTerminal
+
+  // TerminalSession is the concrete source resource that binds all views.
+  serves source TerminalSession
+
+  // TerminalPty is the interactive control channel.
+  serves live_channel TerminalPty
+
+  // TerminalLiveOutput is the best-effort hot-path byte stream.
+  serves stream TerminalLiveOutput
+
+  // TerminalOutput is the durable replayable byte log.
+  serves log TerminalOutput
+
+  // TerminalScreen is the UI materialization over the durable log.
+  serves materialized TerminalScreen
+
+  // PTYs are provider-local, so all terminal operations stay on one provider.
+  affinity must_same_provider_until_close
+
+  // Capacity is advisory placement metadata, not the semantic contract.
+  capacity terminals 8
+}
+
+// Service is the deployable runtime that can instantiate provider capacity.
+// This example keeps the current GripLab local-client shape as a legacy bridge.
+service griplab_terminal_backend {
+  id "service:griplab-terminal-backend"
+  provider griplab_terminal_backend
+
+  runtime local_process {
+    command "python -m griplab_service"
+  }
+
+  health provider_claim timeout 10s
+  rollback previous_good_version
+}
+
+// Exchange is bounded work: open a terminal and return a stable handle.
+// It replaces "term.open returns only sessionId" with an explicit source handle.
+exchange OpenTerminal {
+  id "exchange:open-terminal"
+
+  // Legacy mapping lets current service code satisfy this future contract.
+  legacy method "term.open"
+
+  // Request names the parameters needed to create the PTY source.
+  request {
+    target_ref optional string
+    cols int
+    rows int
+    shell optional string
+  }
+
+  // Opening a terminal creates the source resource.
+  creates source TerminalSession
+
+  // The returned handle is the route key for every later operation.
+  returns handle TerminalHandle
+
+  authority provider_claimed
+  requires capability open_terminal
+  retention completed 1d failed 7d
+}
+
+// Source is the real resource: one PTY-backed terminal session.
+// Multiple flow-typed views hang off this same source.
+source TerminalSession {
+  id "source:terminal-session"
+
+  // The source is created by the OpenTerminal exchange.
+  opened_by exchange OpenTerminal
+
+  // Handle binds every later operation to the same terminal.
+  // Generated taps use this for request keys, route keys, and replay keys.
+  handle TerminalHandle {
+    fields provider_id, provider_instance_id, owner_term,
+      workspace_id, session_id, terminal_id, target_ref,
+      pty_channel_id, output_log_id
+  }
+
+  // PTY state lives inside the provider process and is not migratable yet.
+  lifecycle leased provider_local non_migratable
+  affinity must_same_provider_until_close
+
+  // Live channel owns interactive control of the PTY.
+  live_channel TerminalPty {
+    id "live:terminal-pty"
+
+    // The same terminal handle routes input, resize, close, and output.
+    route_key handle TerminalHandle
+
+    // Keystrokes and pasted data are byte input to the PTY.
+    input bytes TerminalInput {
+      legacy method "term.input"
+      requires capability control_terminal
+    }
+
+    // Resize is control data on the same PTY handle.
+    control TerminalResize {
+      legacy method "term.resize"
+      payload { cols int rows int }
+      requires capability control_terminal
+    }
+
+    // Close ends the provider-local PTY source.
+    control TerminalClose {
+      legacy method "term.close"
+      requires capability control_terminal
+    }
+
+    // Live output is separate from durable replay.
+    output stream TerminalLiveOutput
+
+    // Interactive means low latency matters more than replay on this surface.
+    latency interactive
+  }
+
+  // Stream is live-only terminal output.
+  // Dropped events are repaired by replaying the log.
+  stream TerminalLiveOutput {
+    id "stream:terminal-live-output"
+    payload bytes
+    delivery best_effort
+    replay none
+  }
+
+  // Log is the canonical durable output history.
+  // This is what reconnect, replay, and p2p history should use.
+  log TerminalOutput {
+    id "log:terminal-output"
+
+    // The durable log is derived from the live byte stream.
+    source stream TerminalLiveOutput
+
+    // Store raw terminal bytes; do not bake UTF-8 policy into history.
+    payload bytes
+
+    // One provider instance sequences this PTY output while it owns the handle.
+    append_order provider_sequenced
+
+    // Cursor semantics are declared, not inferred from transport delivery.
+    cursor provider_seq
+
+    // Coalesce to avoid append-per-byte or append-per-tiny-write behavior.
+    coalesce max_bytes 65536 max_latency 20ms
+
+    // Reconnect starts from the last observed cursor.
+    replay from_cursor
+
+    retention 7d
+    requires capability read_terminal
+  }
+
+  // Materialized view is what the UI renders.
+  // Text decoding and xterm state belong here, not in the log payload.
+  materialized TerminalScreen {
+    id "view:terminal-screen"
+    source log TerminalOutput
+    decode terminal_bytes
+    retention latest_only
+    requires capability read_terminal
+  }
+}

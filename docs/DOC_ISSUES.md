@@ -1,0 +1,36 @@
+# Glial Documentation Issues Register (Baseline)
+
+## Purpose
+Baseline issue list produced from Step 1 in `/Users/owebeeone/limbo/glial-dev/docs/DOC_PLAN.md`.
+
+## Severity Scale
+- `P0` blocking contradiction or missing contract that prevents implementation.
+- `P1` major gap that risks rework or inconsistent behavior.
+- `P2` clarity/quality gap that should be fixed before GA.
+
+## Open Issues
+
+| ID | Severity | Issue | Evidence | Why It Matters | Proposed Resolution |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+| `DOC-001` | `P0` | Connection Plane payload parsing contradicts auth/RPC enforcement. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-001_System_Overview.md:37` says relay never parses payload beyond routing headers; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-003_Auth_Layer.md:35` requires parsing `OP`/`RPC_REQ` target and scope checks. | Current text is self-contradictory and blocks a clear relay design boundary. | Update `GLIAL-DOC-001` invariant to allow minimal protocol parsing for auth/routing while preserving "no business logic". |
+| `DOC-002` | `P0` | Durability/resume requirements conflict with lossy session option. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-013_Requirements.md:18` and `:34` require no data loss; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-009_State_Plane.md:65` allows loading snapshot only for lossy sessions. | Contradiction makes FR/NFR unverifiable and could create false guarantees. | Define durability tiers (`ephemeral`, `durable`) and scope FR/NFR to tier; update docs 009/011/013 accordingly. |
+| `DOC-003` | `P0` | Protocol registry missing message types used by other specs (`PROVIDE`, `LEASE`, `MOUNT`). | `GLIAL-DOC-005` uses `PROVIDE`/`LEASE` at `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-005_Provider_Selection.md:21` and `:41`; `GLIAL-DOC-014` uses `MOUNT` at `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-014_Use_Cases.md:40`; `GLIAL-DOC-002` message registry lacks these types at `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-002_Sync_Protocol.md:44`. | Core protocol cannot be implemented consistently without a complete registry. | Extend `GLIAL-DOC-002` with all normative frame types, directions, required fields, and lifecycle placement. |
+| `DOC-004` | `P0` | RPC routing contract references provider selection rules that do not define RPC target matching. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-006_Effect_Request.md:84` says route RPC via Doc 5; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-005_Provider_Selection.md:17` only defines grip registration/groups. | RPC cannot be routed deterministically without target selection rules. | Add RPC provider registration model to Doc 5 (`taps`, namespace patterns, priority/affinity/lease semantics). |
+| `DOC-005` | `P1` | Error code taxonomy is inconsistent across docs. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-008_Connection_Plane.md:56` uses `ERR_QuotaExceeded`; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-006_Effect_Request.md:125` uses `E_*`; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-002_Sync_Protocol.md:82` mentions `429` in `ERR` frame terms. | Inconsistent error vocabulary breaks client handling and observability aggregation. | Define a single canonical error namespace and mapping rules (`ERR` frame payload schema + optional HTTP mapping). |
+| `DOC-006` | `P1` | RPC observability/audit requirements are not reflected in observability spec. | `FR-06` at `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-013_Requirements.md:21`; RPC audit requirement at `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-006_Effect_Request.md:147`; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-012_Observability.md:16` has no RPC spans/metrics. | FR-06 cannot be tested or operated without explicit telemetry requirements. | Add RPC spans, counters, histograms, and audit event schema to Doc 12. |
+| `DOC-007` | `P1` | Schema contract does not cover RPC arg/result schemas. | RPC args/results introduced in `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-006_Effect_Request.md:73` and `:89`; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-007_Schema_Contract.md:15` only defines general grip payload typing. | RPC contract cannot be type-safe across Python/TS without schema rules. | Extend Doc 7 with RPC schema definitions, compatibility/versioning rules, and codegen targets. |
+| `DOC-008` | `P1` | Effect/Provider SDK spec does not include RPC API surface. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-010_Effect_Plane.md:16` and `:51` only cover `EFFECT_REQ`/`useGrip` patterns, no `RPC_REQ`/`RPC_RES` API. | FR-05 depends on SDK-level ergonomics; without this, RPC is only conceptual. | Add concrete SDK APIs for invoking/registering RPC taps in `glial-ts` and `glial-py`. |
+| `DOC-009` | `P1` | Use-case flow writes to `view.*` from Provider, conflicting with read-only/derived view semantics. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-014_Use_Cases.md:19` and `:23` use `view.form.analysis`; `/Users/owebeeone/limbo/glial-dev/docs/System Design_Overview- Glial.md:87` marks `view.*` as Engine-owned read-only derived state. | Violates scope ownership and confuses authority model. | Change use-case writes to `data.*` and show `view.*` as derived by State Plane. |
+| `DOC-010` | `P1` | Provider cardinality semantics differ between docs (single provider per grip vs grouped providers). | `/Users/owebeeone/limbo/glial-dev/docs/System Design_Overview- Glial.md:124` says single-provider lock for grip; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-005_Provider_Selection.md:30` defines round-robin across provider group. | Ambiguity affects correctness, failover, and consistency guarantees. | Define canonical rule: grouped providers by default, explicit exclusive lease/stickiness where required. |
+| `DOC-011` | `P2` | Requirements are not yet measurable/test-mapped despite IDs. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-013_Requirements.md:16` to `:21` list FRs but no acceptance tests, owner modules, or traceability links. | Hard to enforce quality gates and objective sign-off. | Add acceptance criteria per FR/NFR and create traceability matrix doc. |
+| `DOC-012` | `P2` | Lifecycle/control-plane verbs in use-cases are under-specified in protocol doc. | `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-014_Use_Cases.md:40` uses `MOUNT`; `/Users/owebeeone/limbo/glial-dev/docs/glial-specs/GLIAL-DOC-002_Sync_Protocol.md:44` does not define payload schema or response flow for it. | Test harnesses and SDKs cannot implement full lifecycle flows. | Add control-plane frame schemas and sequence rules, or reframe use-cases using existing protocol verbs. |
+
+## Proposed Fix Order
+1. `DOC-001`, `DOC-002`, `DOC-003`, `DOC-004` (`P0` contract blockers).
+2. `DOC-005` to `DOC-010` (`P1` major integration gaps).
+3. `DOC-011` and `DOC-012` (`P2` completeness/traceability).
+
+## Exit Criteria For Step 1
+- All open issues are tracked with owner docs.
+- No unresolved `P0` contradictions remain.
+- Human sign-off on baseline issue list.

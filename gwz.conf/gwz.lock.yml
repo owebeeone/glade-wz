@@ -1,0 +1,91 @@
+schema: gwz.lock/v0
+workspace_id: ws_default
+manifest_schema: gwz.workspace/v0
+members:
+  mem_ggg_viz:
+    path: ggg-viz
+    source_id: src_ggg_viz
+    source_kind: git
+    commit: d3f83f2e4cbdf7b5d938173fe2cb666223705c9d
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade:
+    path: glade
+    source_id: src_glade
+    source_kind: git
+    commit: f2bd091ec2b61f0f6ee995c67cd99dae5b951109
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl:
+    path: glade-decl
+    source_id: src_glade_decl
+    source_kind: git
+    commit: 5c5a68733faa3feedb2220817f2daa68f26719d7
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_py:
+    path: glade-decl-py
+    source_id: src_glade_decl_py
+    source_kind: git
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_rs:
+    path: glade-decl-rs
+    source_id: src_glade_decl_rs
+    source_kind: git
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_ts:
+    path: glade-decl-ts
+    source_id: src_glade_decl_ts
+    source_kind: git
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_core:
+    path: grip-core
+    source_id: src_grip_core
+    source_kind: git
+    commit: 1cf6ab3be607aaf1b530b8d07c39d4285c1efb4d
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_react:
+    path: grip-react
+    source_id: src_grip_react
+    source_kind: git
+    commit: c46e14fd8a9318ec59139cbd978750f5ea3ea91e
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut:
+    path: taut
+    source_id: src_taut
+    source_kind: git
+    commit: 70e17b75b5b5bd05b8f769720454b142ffb6184e
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape:
+    path: taut-shape
+    source_id: src_taut_shape
+    source_kind: git
+    commit: 44a53cc4947e765115923f0aa019e1b97c3045b2
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true

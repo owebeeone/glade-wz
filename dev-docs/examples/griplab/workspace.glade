@@ -1,0 +1,23 @@
+/*
+  Workspace declarations describe a collaboration/security boundary, not a
+  deployment target.
+
+  The alias `repo` is local to the compiled package graph. The canonical id
+  `workspace:repo` is stable and package-scoped, so its fully qualified
+  identity is `pkg:griplab#workspace:repo`.
+*/
+workspace repo {
+  // Keep this id stable even if this file moves or the alias changes.
+  id "workspace:repo"
+
+  # Capabilities are policy atoms. Facets and exchanges refer to them later.
+  capability read_tree
+  capability read_file
+  capability run_command
+  capability open_terminal
+  capability control_terminal
+  capability read_presence
+  capability post_chat
+  capability configure_local_client
+  capability admin_restart
+}

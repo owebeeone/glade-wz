@@ -1,0 +1,16 @@
+// Workspace is the collaboration and security boundary.
+// Terminal permissions are scoped here, independent of provider placement.
+workspace repo {
+  // Stable package-scoped workspace id.
+  id "workspace:repo"
+
+  // Capabilities are policy atoms used by facets, exchanges, and flows.
+  // They are intentionally narrower than "can use the whole app."
+  capability open_terminal
+  capability control_terminal
+  capability read_terminal
+
+  // Lets one participant publish a shared terminal focus for collaborators.
+  // Ordinary personal selection only needs read_terminal.
+  capability share_terminal_focus
+}

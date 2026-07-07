@@ -1,0 +1,166 @@
+// Grip Share advertisement for the terminal-only GripLab slice.
+// This is provisional DSL syntax. The semantic point is that collaborators
+// see serializable participation surfaces, not raw local tap handles.
+grip_share griplab_terminal_participation {
+  id "grip-share:griplab-terminal-participation"
+
+  // Advertisement belongs to the terminal app and workspace boundary.
+  application griplab_terminal
+  workspace repo
+  facet terminal
+
+  // Current GripLab UI reads most lab grips from the main presentation context.
+  // A generated adapter should replace this string with a stable compiled path.
+  context terminal_ui {
+    path "/main-presentation"
+  }
+
+  // Session list is displayed as Lab.Sessions today.
+  // Semantically it is a record-map-shaped view over terminal session handles.
+  surface terminal_sessions {
+    grip "Lab.Sessions"
+    context terminal_ui
+    role output
+    shape record_map key "session_id"
+
+    // Current GripLab stores this as an array snapshot for React convenience.
+    legacy grip_value array_snapshot
+
+    // Participants may read the list, but providers own authoritative writes.
+    allow read requires capability read_terminal
+    deny set by collaborator, agent
+    provider_write griplab_terminal_backend
+  }
+
+  // Current selected terminal. This is participant input, not terminal output.
+  // In collaboration mode it must declare whether the selection is personal
+  // or shared focus.
+  surface selected_session {
+    grip "Lab.SelectedSession"
+    context terminal_ui
+    role input
+    shape atom
+    value string nullable
+
+    visibility session default
+    visibility shared optional requires capability share_terminal_focus
+
+    allow read requires capability read_terminal
+    allow set requires capability read_terminal
+
+    // Local implementation detail. Do not share this object remotely.
+    local_handle "Lab.SelectedSession.Tap" maps_to set
+  }
+
+  // Search text changes what the participant sees. It must not mutate the
+  // provider-owned session records.
+  surface session_search {
+    grip "Lab.SessionSearch"
+    context terminal_ui
+    role input
+    shape atom
+    value string
+
+    visibility session default
+    visibility delegated optional
+
+    allow read requires capability read_terminal
+    allow set requires capability read_terminal
+    local_handle "Lab.SessionSearch.Tap" maps_to set
+  }
+
+  // Filter chips are another participant input over the session-list view.
+  surface session_filters {
+    grip "Lab.SessionFilters"
+    context terminal_ui
+    role input
+    shape record_map key "filter"
+    value enum "errors" "running" "hidden"
+
+    visibility session default
+    visibility delegated optional
+
+    allow read requires capability read_terminal
+    allow upsert requires capability read_terminal
+    allow delete requires capability read_terminal
+    local_handle "Lab.SessionFilters.Tap" maps_to upsert, delete
+  }
+
+  // Session output is a read-only projection for GripLab's current terminal UI.
+  // The canonical Glade flow is TerminalOutput bytes plus TerminalScreen.
+  surface session_output {
+    grip "Lab.SessionOutput"
+    context terminal_ui
+    role output
+    shape materialized_view
+    derived_from log TerminalOutput
+    decode terminal_bytes
+
+    // Current GripLab consumes a full string snapshot. That is compatibility
+    // behavior, not the canonical byte log.
+    legacy grip_value string_snapshot
+
+    allow read requires capability read_terminal
+    deny set by collaborator, agent
+    provider_write griplab_terminal_backend
+  }
+
+  // Source tells followers which terminal handle produced the current output.
+  surface session_output_source {
+    grip "Lab.SessionOutputSource"
+    context terminal_ui
+    role handle
+    shape atom
+    binds handle TerminalHandle
+
+    allow read requires capability read_terminal
+    deny set by collaborator, agent
+    provider_write griplab_terminal_backend
+  }
+
+  // Diagnostics are observable, but they are not authority to control the PTY.
+  surface session_diagnostics {
+    grip "Lab.SessionDiagnostics"
+    context terminal_ui
+    role diagnostic
+    shape atom
+
+    allow read requires capability read_terminal
+    deny set by collaborator, agent
+    provider_write griplab_terminal_backend
+  }
+
+  // Terminal input is not a Grip value today and should not become a replicated
+  // value. It is a directed control operation over the TerminalPty live channel.
+  operation terminal_input {
+    role control
+    target live_channel TerminalPty input TerminalInput
+    route_key handle TerminalHandle
+    payload bytes
+
+    allow invoke requires capability control_terminal
+    legacy method "term.input"
+  }
+
+  // Resize is control over the same source handle.
+  operation terminal_resize {
+    role control
+    target live_channel TerminalPty control TerminalResize
+    route_key handle TerminalHandle
+    payload { cols int rows int }
+
+    allow invoke requires capability control_terminal
+    legacy method "term.resize"
+  }
+
+  // Close is destructive control over the source. It needs explicit control
+  // capability and should be attributable to the invoking principal/session.
+  operation terminal_close {
+    role control
+    target live_channel TerminalPty control TerminalClose
+    route_key handle TerminalHandle
+
+    allow invoke requires capability control_terminal
+    legacy method "term.close"
+  }
+}

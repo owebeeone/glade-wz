@@ -1,0 +1,22 @@
+// Root package manifest for the GripLab declaration package.
+// This file composes package-local declaration files into one graph; it does
+// not define the workspace, application, provider, or scale model inline.
+package griplab version "0.1.0" {
+  // The package id is the trust/provisioning identity for the package.
+  // Imported declaration ids are scoped beneath this id unless made absolute.
+  id "pkg:griplab"
+
+  // The issuer is the principal expected to sign or publish this package.
+  issuer "principal:griplab-team"
+
+  // Imports are declaration-graph includes, not runtime module loads.
+  import "./griplab/workspace.glade"
+  import "./griplab/application.glade"
+  import "./griplab/provider.glade"
+  import "./griplab/scale.mode1.glade"
+
+  // Environment imports are swappable deployment overlays. This local-dev
+  // import is a provisional default for LAN/self-hosted development; hosted
+  // providers or enterprise installs would use their own environment import.
+  import "./griplab/env.local-dev.glade"
+}

@@ -1,0 +1,230 @@
+digraph GlialGladeConceptMap {
+  graph [
+    label="Glial / Glade Concept Map",
+    labelloc="t",
+    fontsize=22,
+    fontname="Helvetica",
+    rankdir=LR,
+    bgcolor="#fbfbf8",
+    pad=0.35,
+    nodesep=0.65,
+    ranksep=1.0,
+    splines=true
+  ];
+
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="Helvetica",
+    fontsize=11,
+    color="#444444",
+    penwidth=1.2,
+    margin="0.10,0.07"
+  ];
+
+  edge [
+    fontname="Helvetica",
+    fontsize=10,
+    color="#555555",
+    arrowsize=0.75
+  ];
+
+  // Color key:
+  // blue   = Glial composition / product surface
+  // green  = Glade kernel / declaration control plane
+  // yellow = declared app data surfaces and flows
+  // orange = provider / runtime placement
+  // pink   = trust, authority, capability, policy
+  // gray   = Grip Share / local runtime adapter
+  // purple = transport / storage substrate
+
+  subgraph cluster_legend {
+    label="Legend";
+    color="#dddddd";
+    style="rounded,filled";
+    fillcolor="#ffffff";
+
+    legend_glial [label="Glial composition", fillcolor="#d7ebff"];
+    legend_glade [label="Glade kernel/control", fillcolor="#dff4dc"];
+    legend_surface [label="Surface / flow", fillcolor="#fff2bf"];
+    legend_provider [label="Provider/runtime", fillcolor="#ffe2c4"];
+    legend_trust [label="Trust/policy", fillcolor="#f5d6e8"];
+    legend_grip [label="Grip adapter", fillcolor="#e8e8e8"];
+    legend_substrate [label="Transport/storage", fillcolor="#e2ddff"];
+  }
+
+  subgraph cluster_glial {
+    label="Glial: app, environment, participant policy";
+    color="#9dc8f2";
+    style="rounded,filled";
+    fillcolor="#eef7ff";
+
+    App [label="Application / HybridApp", fillcolor="#d7ebff"];
+    AppInstance [label="App Instance", fillcolor="#d7ebff"];
+    Session [label="Session", fillcolor="#d7ebff"];
+    Scope [label="Scope / Share Scope", fillcolor="#d7ebff"];
+    Workspace [label="Workspace", fillcolor="#d7ebff"];
+    Facet [label="Facet", fillcolor="#d7ebff"];
+    Environment [label="Environment / Mounts", fillcolor="#d7ebff"];
+  }
+
+  subgraph cluster_trust {
+    label="Trust and authority";
+    color="#d89bbf";
+    style="rounded,filled";
+    fillcolor="#fff0f7";
+
+    Principal [label="Principal", fillcolor="#f5d6e8"];
+    AuthContext [label="Auth Context", fillcolor="#f5d6e8"];
+    Capability [label="Capability", fillcolor="#f5d6e8"];
+    Policy [label="Policy", fillcolor="#f5d6e8"];
+    Genesis [label="Genesis", fillcolor="#f5d6e8"];
+  }
+
+  subgraph cluster_glade_control {
+    label="Glade: declaration/control plane";
+    color="#9bcf94";
+    style="rounded,filled";
+    fillcolor="#f0fbef";
+
+    DeclarationSpace [label="Declaration Space", fillcolor="#dff4dc"];
+    Share [label="Share", fillcolor="#dff4dc"];
+    GraphSpace [label="GraphSpace", fillcolor="#dff4dc"];
+    Definition [label="Definition", fillcolor="#dff4dc"];
+    Instance [label="Instance", fillcolor="#dff4dc"];
+    Claim [label="Claim", fillcolor="#dff4dc"];
+    Lease [label="Lease", fillcolor="#dff4dc"];
+    OwnershipTerm [label="Ownership Term", fillcolor="#dff4dc"];
+    Observation [label="Observation", fillcolor="#dff4dc"];
+    Retention [label="Retention", fillcolor="#dff4dc"];
+    RecordEnvelope [label="Record Envelope", fillcolor="#dff4dc"];
+  }
+
+  subgraph cluster_surface {
+    label="Declared data surfaces";
+    color="#dec15f";
+    style="rounded,filled";
+    fillcolor="#fffbea";
+
+    Source [label="Source", fillcolor="#fff2bf"];
+    Handle [label="Handle", fillcolor="#fff2bf"];
+    Exchange [label="Exchange", fillcolor="#fff2bf"];
+    LiveChannel [label="Live Channel", fillcolor="#fff2bf"];
+    Stream [label="Stream", fillcolor="#fff2bf"];
+    Log [label="Log", fillcolor="#fff2bf"];
+    MaterializedView [label="Materialized View", fillcolor="#fff2bf"];
+    ContentModel [label="Content Model", fillcolor="#fff2bf"];
+  }
+
+  subgraph cluster_provider {
+    label="Provider and placement";
+    color="#e0a05f";
+    style="rounded,filled";
+    fillcolor="#fff3e6";
+
+    ProviderDefinition [label="Provider Definition", fillcolor="#ffe2c4"];
+    ProviderGroup [label="Provider Group", fillcolor="#ffe2c4"];
+    Service [label="Service", fillcolor="#ffe2c4"];
+    ProviderInstance [label="Provider Instance", fillcolor="#ffe2c4"];
+    WorkAssignment [label="Work Assignment", fillcolor="#ffe2c4"];
+  }
+
+  subgraph cluster_grip {
+    label="Grip Share adapter";
+    color="#b5b5b5";
+    style="rounded,filled";
+    fillcolor="#f7f7f7";
+
+    GripShareAdapter [label="Grip Share Adapter", fillcolor="#e8e8e8"];
+    GripTap [label="Grip Tap / Drip", fillcolor="#e8e8e8"];
+    ProjectionEnvelope [label="Projection Envelope", fillcolor="#e8e8e8"];
+  }
+
+  subgraph cluster_substrate {
+    label="Substrate";
+    color="#aaa0dd";
+    style="rounded,filled";
+    fillcolor="#f3f0ff";
+
+    Replica [label="Replica", fillcolor="#e2ddff"];
+    TransportPeer [label="Transport Peer", fillcolor="#e2ddff"];
+    ContentStore [label="Content / Log Store", fillcolor="#e2ddff"];
+  }
+
+  // Glial composition path.
+  App -> AppInstance [label="instantiated as"];
+  App -> Facet [label="declares"];
+  App -> Workspace [label="binds to"];
+  Environment -> AppInstance [label="hosts / mounts"];
+  Principal -> AuthContext [label="authenticates into"];
+  AuthContext -> Session [label="attaches"];
+  Session -> AppInstance [label="participates in"];
+  Session -> Scope [label="joins"];
+  Scope -> Workspace [label="inside boundary"];
+  Facet -> Capability [label="requires"];
+
+  // Trust and declaration validation.
+  Genesis -> DeclarationSpace [label="roots"];
+  Policy -> DeclarationSpace [label="validates"];
+  Capability -> DeclarationSpace [label="authorizes records"];
+  Principal -> Capability [label="receives / delegates"];
+  RecordEnvelope -> Genesis [label="binds to"];
+  RecordEnvelope -> Policy [label="references"];
+  RecordEnvelope -> Capability [label="proves authority"];
+
+  // Glade kernel state.
+  Scope -> Share [label="exposes"];
+  Share -> GraphSpace [label="realized by"];
+  GraphSpace -> Replica [label="materialized as"];
+  DeclarationSpace -> Definition [label="contains"];
+  Definition -> Instance [label="instantiated as"];
+  Instance -> Claim [label="claimed by"];
+  Claim -> Lease [label="bounded by"];
+  Claim -> OwnershipTerm [label="fenced by"];
+  Observation -> Instance [label="observes"];
+  Observation -> Log [label="records cursor"];
+  Retention -> Instance [label="cleans up"];
+  Retention -> Log [label="retains"];
+
+  // Surface contracts.
+  Facet -> Exchange [label="creates / invokes"];
+  Facet -> LiveChannel [label="consumes"];
+  Facet -> Stream [label="consumes"];
+  Facet -> Log [label="consumes"];
+  Facet -> MaterializedView [label="consumes"];
+  Facet -> ContentModel [label="consumes"];
+  Exchange -> Source [label="creates"];
+  Source -> Handle [label="publishes"];
+  Handle -> LiveChannel [label="routes"];
+  Handle -> Stream [label="keys"];
+  Handle -> Log [label="keys replay"];
+  Handle -> MaterializedView [label="keys view"];
+  LiveChannel -> Stream [label="emits hot output"];
+  Stream -> Log [label="tee / append"];
+  Log -> MaterializedView [label="derives"];
+  ContentModel -> MaterializedView [label="window / projection"];
+
+  // Provider and placement.
+  ProviderDefinition -> ProviderGroup [label="belongs to"];
+  ProviderDefinition -> Definition [label="serves"];
+  Service -> ProviderDefinition [label="implements"];
+  Service -> ProviderInstance [label="runs as"];
+  ProviderInstance -> Claim [label="publishes"];
+  ProviderInstance -> TransportPeer [label="may bind"];
+  WorkAssignment -> ProviderInstance [label="assigns to"];
+  WorkAssignment -> Instance [label="targets"];
+  ProviderGroup -> WorkAssignment [label="policy selects"];
+
+  // Grip Share adapter.
+  GripShareAdapter -> Facet [label="maps"];
+  GripShareAdapter -> Handle [label="derives request keys"];
+  GripTap -> GripShareAdapter [label="uses"];
+  ProjectionEnvelope -> MaterializedView [label="carries"];
+  ProjectionEnvelope -> GripTap [label="hydrates"];
+
+  // Storage and transport are implementation, not semantic authority.
+  Replica -> DeclarationSpace [label="syncs"];
+  ContentStore -> Log [label="stores records"];
+  ContentStore -> ContentModel [label="stores content"];
+  TransportPeer -> Replica [label="moves bytes for"];
+}
