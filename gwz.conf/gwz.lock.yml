@@ -6,7 +6,7 @@ members:
     path: ggg-viz
     source_id: src_ggg_viz
     source_kind: git
-    commit: d3f83f2e4cbdf7b5d938173fe2cb666223705c9d
+    commit: 253518ef7eed662e0f21800681b4dc6f3a242882
     branch: main
     detached: false
     dirty: false
@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: f2bd091ec2b61f0f6ee995c67cd99dae5b951109
+    commit: 2dc354571df2966e72a48072e16856d99b7c2960
     branch: main
     detached: false
     dirty: false
@@ -24,7 +24,7 @@ members:
     path: glade-decl
     source_id: src_glade_decl
     source_kind: git
-    commit: 5c5a68733faa3feedb2220817f2daa68f26719d7
+    commit: ccdae14a544d7dedd28c32b0b2a16498e33b366b
     branch: main
     detached: false
     dirty: false
@@ -33,6 +33,7 @@ members:
     path: glade-decl-py
     source_id: src_glade_decl_py
     source_kind: git
+    commit: 37480bae433a61a2493a4d9a05de0059c5af9230
     branch: main
     detached: false
     dirty: false
@@ -41,6 +42,7 @@ members:
     path: glade-decl-rs
     source_id: src_glade_decl_rs
     source_kind: git
+    commit: 42cca3ce62c3d63e6bfa7027cf2f2cfe1bd62823
     branch: main
     detached: false
     dirty: false
@@ -49,6 +51,7 @@ members:
     path: glade-decl-ts
     source_id: src_glade_decl_ts
     source_kind: git
+    commit: d77af7a8833de1430dc26af5567fe6db9841c566
     branch: main
     detached: false
     dirty: false
@@ -66,7 +69,7 @@ members:
     path: grip-core
     source_id: src_grip_core
     source_kind: git
-    commit: 1cf6ab3be607aaf1b530b8d07c39d4285c1efb4d
+    commit: 896557703137f8e505edcdee57b39591da91cc0c
     branch: main
     detached: false
     dirty: false
@@ -93,7 +96,7 @@ members:
     path: taut-shape
     source_id: src_taut_shape
     source_kind: git
-    commit: 44a53cc4947e765115923f0aa019e1b97c3045b2
+    commit: 2376f2f2d335d2de9a9ff4d2eb9dc17c7a649095
     branch: main
     detached: false
     dirty: false
