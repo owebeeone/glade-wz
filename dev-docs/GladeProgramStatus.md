@@ -5,11 +5,12 @@ Last update: 2026-07-07.
 
 > **HOME: `~/limbo/glade-wz`** (gwz workspace — `gwz clone`, never `git
 > clone`) as of 2026-07-07. Docs corpus + ggg-viz live here; glial-dev is the
-> FROZEN fallback (its copy of this file is stale by definition). Members
-> created: glade-decl(+ts/rs/py, empty), ggg-viz (populated). Pending:
-> pin/migrate `glade`, `grip-core`, `grip-react`, `taut`, `taut-shape`;
-> ggg-viz grip deps point at `../../glial-dev/*` in the interim; `glial-wz`
-> and `grip-wz` follow.
+> FROZEN fallback (its copy of this file is stale by definition). Workspace
+> LIVE 2026-07-07: all 10 members registered + lock-pinned (`glade`,
+> `grip-core`, `grip-react`, `taut`, `taut-shape` cloned in; glade-decl-ts/rs/py
+> still empty shells), root + members pushed to github/owebeeone, ggg-viz grip
+> deps re-pointed to `../grip-core`/`../grip-react` (183 tests green).
+> `glial-wz` and `grip-wz` follow.
 
 Stage model: **Design → Proposed (doc + atlas traces) → Ruled (Gianni decided
 specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gated)**.
