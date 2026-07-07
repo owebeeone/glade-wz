@@ -20,22 +20,22 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | Area | Stage | Artifact | Next step |
 | --- | --- | --- | --- |
 | Substrate core (op model, frames, folds lww+log, WS carrier) | **Built** (M-LIMP, oracles frozen) | `glade/dev-docs/GladeSubstrateV1.md` | rebase shapes onto taut-shape (P2) |
-| Workspace directory / home share / discovery | Proposed | `glade/GladeWorkspaceDirectory.md` + s-discovery… | ratify GDL-032; build B3 |
-| Authz (grants, check(), verbs, ownership) | Proposed (+3 rulings) | `glade/GladeAuthzModel.md` + stage-2 traces | ratify GDL-031/033/034; build after E2E stage-1 |
-| Operators / placement / roaming | Proposed | AZ §7a/§7b + s-roam/s-tenant/s-local-guest | ratify GDL-031 |
+| Workspace directory / home share / discovery | **Ratified** (GDL-032, 2026-07-07) | `glade/GladeWorkspaceDirectory.md` + s-discovery… | build B3 (Lane R step 3) |
+| Authz (grants, check(), verbs, ownership) | **Ratified** (GDL-031/033/034, 2026-07-07) | `glade/GladeAuthzModel.md` + stage-2 traces | build after E2E stage-1 |
+| Operators / placement / roaming | **Ratified** (GDL-031, 2026-07-07) | AZ §7a/§7b + s-roam/s-tenant/s-local-guest | build with stage-2 |
 | Sync / checkpoints / migration / service ads | **Ruled** (AZ-12, dedup, repair owner) | s-sync / s-svc-shared / s-migrate | build with B2 |
-| Glial client runtime (persistence-first, assembly, rich events) | Proposed | `glial/GlialClientRuntime.md` + s-stack-* | build Lane T |
-| glade-decl seam | Proposed + skeleton | `glade/GladeDeclSurface.md`, `glade/decl/` | **Lane T step 1** |
-| `<app>.glade` / `glade-sys.glade` (app/substrate split, mgmt surface) | Proposed | GDL-037/038, decl doc | atlas: s-app-register |
-| System-data seam + `~/.glade/sys` layout + data classes | **Ruled** | `glade/GladeSystemDataSeam.md` | **Lane R step 1**; atlas: s-boot |
+| Glial client runtime (persistence-first, assembly, rich events) | **Ratified** (GDL-035, 2026-07-07) | `glial/GlialClientRuntime.md` + s-stack-* | build Lane T; home = `glial` member (repo `glial-runtime`) |
+| glade-decl seam | **Ratified** (GDL-035/037, 2026-07-07) + skeleton | `glade/GladeDeclSurface.md`, `glade/decl/` | **Lane T step 1** (in flight) |
+| `<app>.glade` / `glade-sys.glade` (app/substrate split, mgmt surface) | **Ratified** (GDL-037/038, 2026-07-07) | GDL-037/038, decl doc | atlas: s-app-register (in flight) |
+| System-data seam + `~/.glade/sys` layout + data classes | **Ratified** (GDL-036, 2026-07-07) | `glade/GladeSystemDataSeam.md` | **Lane R step 1**; atlas: s-boot (in flight) |
 | taut-shape consolidation | Planned | `taut-shape/dev-docs/TautShapeGladeConsolidation.md` | Lane C step 1 (shape_value) |
 | Trace atlas (ggg-viz) | Built, leading | 25 traces · 5 invariants · comment loop | s-boot + s-app-register |
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
-| glade-dev repo extraction | **Undecided fork** | — | Gianni: yes/no/when |
+| glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
 
 ## Decision queue (Gianni)
 
-- **Ratify flips**: GDL-031…038 all sit at *open (proposed)*.
+- ~~Ratify flips~~: GDL-031…038 **ratified 2026-07-07** (DecisionLog flipped).
 - **Product calls**: AZ-1 (path-scoped grants v1?) · AZ-2 (multi-user local
   nodes day-one?) · AZ-3 (OIDC v1?) · WD-1 (root custody — the big one) ·
   WD-4 (guest directory visibility) · WD-6 (entry fleet conventions) ·
@@ -77,7 +77,7 @@ Actions (owner):
    plus a commons join gated by one) to the queue with s-boot/s-app-register.
 4. s-sync framing note: chains are per-`(origin, zone)` after D8-refined
    (update trace notes when touched next).
-5. Decide glial-runtime home (with the extraction fork).
+5. ~~Decide glial-runtime home~~ — decided 2026-07-07: extraction YES; new repo `glial-runtime`, member path `glial`.
 
 ## The build: three parallel lanes to E2E (stage-1 posture first)
 

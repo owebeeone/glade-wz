@@ -53,6 +53,15 @@ members:
     detached: false
     dirty: false
     materialized: true
+  mem_glial:
+    path: glial
+    source_id: src_glial
+    source_kind: git
+    commit: d35bd484e8709e73f547f3f82a410343daffdcc4
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
   mem_grip_core:
     path: grip-core
     source_id: src_grip_core
