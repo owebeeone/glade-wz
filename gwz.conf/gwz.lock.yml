@@ -6,7 +6,7 @@ members:
     path: ggg-viz
     source_id: src_ggg_viz
     source_kind: git
-    commit: f64224d8ec161cfd763dbd68d65fa95e91e90a27
+    commit: 8fa8cd3a520fc874a8d228131c3dcf175c2431a7
     branch: main
     detached: false
     dirty: false
