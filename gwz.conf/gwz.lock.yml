@@ -16,7 +16,7 @@ members:
     source_id: src_glade
     source_kind: git
     commit: 3dfc2e6262893b246f3c2f1926bfd6ce12d15edc
-    branch: main
+    branch: gap9-completion
     detached: false
     dirty: false
     materialized: true
@@ -60,7 +60,7 @@ members:
     path: glial
     source_id: src_glial
     source_kind: git
-    commit: a31587f287861fe7871e95bfd4ce915ee695c6a7
+    commit: bb53122596fbfc6db133885857e0dcfa8edc3f5b
     branch: main
     detached: false
     dirty: false
