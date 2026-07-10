@@ -72,13 +72,22 @@ members:
     commit: 896557703137f8e505edcdee57b39591da91cc0c
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_grip_react:
     path: grip-react
     source_id: src_grip_react
     source_kind: git
     commit: c46e14fd8a9318ec59139cbd978750f5ea3ea91e
+    branch: main
+    detached: false
+    dirty: true
+    materialized: true
+  mem_grip_react_demo:
+    path: grip-react-demo
+    source_id: src_grip_react_demo
+    source_kind: git
+    commit: 346b65f30c0815cb26e26b184e198cc28d1816dc
     branch: main
     detached: false
     dirty: true
@@ -97,6 +106,24 @@ members:
     source_id: src_taut_shape
     source_kind: git
     commit: 2376f2f2d335d2de9a9ff4d2eb9dc17c7a649095
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_rs:
+    path: taut-shape-rs
+    source_id: src_taut_shape_rs
+    source_kind: git
+    commit: 7e50457391489d5a2628a60c0462f07f53baf021
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_ts:
+    path: taut-shape-ts
+    source_id: src_taut_shape_ts
+    source_kind: git
+    commit: b1152457ac03c9300ad013ff9e39948a9a723d46
     branch: main
     detached: false
     dirty: false

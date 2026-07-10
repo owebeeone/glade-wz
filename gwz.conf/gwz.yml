@@ -134,3 +134,39 @@ members:
     url: git@github.com:owebeeone/glial-runtime.git
     fetch: true
     push: true
+- id: mem_grip_react_demo
+  path: grip-react-demo
+  type: git
+  source_id: src_grip_react_demo
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/grip-react-demo.git
+    fetch: true
+    push: true
+- id: mem_taut_shape_rs
+  path: taut-shape-rs
+  type: git
+  source_id: src_taut_shape_rs
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/taut-shape-rs.git
+    fetch: true
+    push: true
+- id: mem_taut_shape_ts
+  path: taut-shape-ts
+  type: git
+  source_id: src_taut_shape_ts
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/taut-shape-ts.git
+    fetch: true
+    push: true
