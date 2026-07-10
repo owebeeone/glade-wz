@@ -1,7 +1,7 @@
 # Glade Program Status — the one page that tracks the moving parts
 
 Status: LIVING document — update whenever anything changes stage.
-Last update: 2026-07-08.
+Last update: 2026-07-10.
 
 > **HOME: `~/limbo/glade-wz`** (gwz workspace — `gwz clone`, never `git
 > clone`) as of 2026-07-07. Docs corpus + ggg-viz live here; glial-dev is the
@@ -29,7 +29,7 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | `<app>.glade` / `glade-sys.glade` (app/substrate split, mgmt surface) | **Ratified** (GDL-037/038, 2026-07-07) | GDL-037/038, decl doc; atlas s-app-register landed | build: .glade loader (Lane R step 4) |
 | System-data seam + `~/.glade/sys` layout + data classes | **Built** (2026-07-08: glade 7394ce5+2dc3545 — SystemSnapshot, RegistryApi/StoreApi, ladder, blob≡fold conformance; sysdir boot opt-in) | `glade/GladeSystemDataSeam.md` + `glade/dev-docs/GladeSystemDataSeamNotes.md` | Lane R step 2: iroh carrier + HELLO + heads/gap sync |
 | taut-shape consolidation | **P1 Built** (2026-07-08: 2376f2f — shape_value schema + 11-vector oracle; S3 matrix blocked on taut-shape-<lang> members) | `taut-shape/dev-docs/TautShapeGladeConsolidation.md` | Lane C P2 (glade fold oracles merge) |
-| Trace atlas (ggg-viz) | Built, leading | 28 traces · 5 invariants · 219 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | queue: INV-4 questions from s-zones (see below) |
+| Trace atlas (ggg-viz) | Built, leading | 28 traces · 5 invariants · 222 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | AZ-16/17 landed; queue clear |
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
 | glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
 
@@ -40,11 +40,10 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
   nodes day-one?) · AZ-3 (OIDC v1?) · WD-1 (root custody — the big one) ·
   WD-4 (guest directory visibility) · WD-6 (entry fleet conventions) ·
   AZ-7/13 (org custody; quorum/handover).
-- **From the s-zones build (atlas feedback, needs your reading)**: (a) private-zone
-  serves satisfy INV-4 via the DOC-MEMBERSHIP grant (no zone-specific grant ever
-  exists — asserted mechanically: no grant key contains `self:`) — confirm intended;
-  (b) account-domain serves modeled as owner self-grants — if account domains are
-  self-authoritative without a grant record, INV-4 needs a home-style carve-out.
+- ~~s-zones INV-4 questions~~ **RULED 2026-07-10 (AZ-16/AZ-17)**: (a) private
+  rides the MEMBERSHIP grant — revoking membership cuts commons AND private;
+  (b) account domains are OWNER-exempt by identity (owner-scoped carve-out,
+  non-owners stay gated). INV-4 + s-zones updated; suite 222 green.
 - **Design-owned, non-blocking**: AZ-14/15 (cosign mechanics, agent
   enrollment), GC-1…4 (event schema home, backpressure, binder migration,
   browser store engine).

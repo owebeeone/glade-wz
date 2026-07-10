@@ -303,17 +303,13 @@ grazel binding live; one gwz exchange round-trips; all snapshot files under
 
 ### Awaiting Gianni (do not proceed without his call)
 
-Two INV-4 questions surfaced authoring **s-zones** — recorded in the decision
-queue in `GladeProgramStatus.md`:
+The two INV-4 questions from **s-zones** were **RULED 2026-07-10** (AZ-16 /
+AZ-17 in `GladeAuthzModel.md` §9): private-zone serves ride the membership
+grant (revocation is one clean cut), and account domains serve their owner by
+identity (owner-scoped carve-out — non-owners stay grant-gated). INV-4 and the
+s-zones trace encode both; suite at 222.
 
-1. Private-zone serves satisfy INV-4 via the participant's **doc-membership**
-   grant (no zone-specific grant ever exists; asserted mechanically — no grant
-   key contains `self:`). Confirm this is the intended reading.
-2. Account-domain serves were modeled as **owner self-grants**. If account
-   domains are meant to be self-authoritative *without* a grant record, INV-4
-   needs a `home`-style carve-out.
-
-Plus the standing product calls (WD-1 root custody "the big one", AZ-1/2/3,
+Remaining: the standing product calls (WD-1 root custody "the big one", AZ-1/2/3,
 WD-4/6, AZ-7/13) — see the decision queue.
 
 ### Operating rules that bit us (carry them forward)

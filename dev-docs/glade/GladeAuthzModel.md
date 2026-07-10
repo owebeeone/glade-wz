@@ -150,6 +150,14 @@ canonically names `(domain, commons)`; the D8 refinement (each zone is its
 own contiguous chain) is what makes private zones filterable from what a
 peer receives without breaking chain verification.
 
+Two rulings (2026-07-10) close the INV-4 questions this raised: **AZ-16** —
+the private-zone serve rides the membership grant (no zone-scoped grant
+exists; revoking membership cuts commons and private together); **AZ-17** —
+account domains serve their OWNER by identity with no grant record
+(owner-scoped, not blanket: non-owner access stays gated). One principle:
+grants gate access to *other people's* replicated worlds; identity alone
+gates your own.
+
 ## 5. Verb taxonomy
 
 Verbs name glade's units, not app features. Wire verbs: `read.subscribe`,
@@ -303,6 +311,8 @@ exists, which is also the migration story.
 | AZ-13 | Quorum governance record shape (M-of-N over non-root chains) and whether root HANDOVER (transferring rootship itself) ever exists | Gianni (product) |
 | AZ-14 | Co-sign caveat mechanics: pending-approval record lifetime, approval UX surface, offline sponsor behavior | design |
 | AZ-15 | Agent enrollment ceremony: keypair minted at install, sponsor approves the pubkey (the add-a-device ceremony, for agents) — UX + storage of agent keys | design (with AZ-9) |
+| AZ-16 | Private zones vs INV-4. **RULED 2026-07-10**: a private-zone serve is authorized by the receiver's `(domain, commons)` MEMBERSHIP grant — no zone-scoped grant ever exists ("joining a doc auto-grants your own private zone" means membership IS the entitlement). Which zone you receive is routing (keying), not policy. Consequence: revoking membership cuts commons AND private in one act — offboarding is one clean cut (forward-only caveat unchanged); your private-in-someone-else's-domain data is tenant, not freehold. | ruled |
+| AZ-17 | Account-domain custody vs INV-4. **RULED 2026-07-10**: owner-scoped carve-out — the owning principal reads/writes their own account domain by IDENTITY, no grant record (no self-grant to mint at bootstrap, lag behind replication, or be revoked: self-lockout is unrepresentable). Any NON-owner access to an account domain stays grant-gated as usual (support/admin views need a grant). NOT a blanket exemption. | ruled |
 
 ## 10. ggg-viz mapping (the executable side of this document)
 
