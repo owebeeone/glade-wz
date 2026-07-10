@@ -77,5 +77,5 @@ envelope just delivers it. (Full editor-binding design deferred to the
 | --- | --- |
 | GC-1 | ~~Event envelope home~~ **RULED 2026-07-07**: split — the generic envelope SHELL (`ChangeEvent{glade_id, shape, kind, base_seq, origin_meta, payload}`) lives in **glade-decl** (the grip↔glial tie; grip-core types events without glial); each shape's DELTA payload schema lives in its taut-shape contract, carried opaquely (GDL-003 resolves into those). |
 | GC-2 | Backpressure/conflation for rapid deltas (value conflates; log batches; crdt coalesces?) |
-| GC-3 | Migration of the M-LIMP binder: strangle grip-share in place vs cut over per binding |
+| GC-3 | ~~Migration of the M-LIMP binder~~ **RULED 2026-07-10 (Gianni): per-binding cutover** — each M-LIMP binding moves to a glial mount individually and is verified against the running demo before the next; grip-share shrinks binding-by-binding to deletion. NO compatibility shim / no strangle layer (a shim exists only to be deleted). |
 | GC-4 | Store engine + quota policy in browser (IndexedDB now; OPFS later?) and eviction vs declared retention |
