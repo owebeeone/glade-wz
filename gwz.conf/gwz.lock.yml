@@ -6,7 +6,7 @@ members:
     path: ggg-viz
     source_id: src_ggg_viz
     source_kind: git
-    commit: 8fa8cd3a520fc874a8d228131c3dcf175c2431a7
+    commit: 09381903f08309f5b0ce018b7b18a23cdc2a6ba8
     branch: main
     detached: false
     dirty: false
@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: 2dc354571df2966e72a48072e16856d99b7c2960
+    commit: 62950610940cce1f3d4fbb436a27ed51bef75406
     branch: main
     detached: false
     dirty: false
@@ -60,7 +60,7 @@ members:
     path: glial
     source_id: src_glial
     source_kind: git
-    commit: d35bd484e8709e73f547f3f82a410343daffdcc4
+    commit: d94c49cf988316d872eaf23c1f571676442a1a7d
     branch: main
     detached: false
     dirty: false
@@ -96,7 +96,7 @@ members:
     path: taut
     source_id: src_taut
     source_kind: git
-    commit: 83da9f5a27357f1abb53e2b85f8ae23060e48068
+    commit: c0758b700cb30e55cf36b871ae5f393298be7bea
     branch: main
     detached: false
     dirty: false
@@ -105,7 +105,7 @@ members:
     path: taut-shape
     source_id: src_taut_shape
     source_kind: git
-    commit: 2376f2f2d335d2de9a9ff4d2eb9dc17c7a649095
+    commit: 389c867010a7cb474c03960ba3420308ed2bd64a
     branch: main
     detached: false
     dirty: false
