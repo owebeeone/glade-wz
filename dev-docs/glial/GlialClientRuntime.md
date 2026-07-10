@@ -19,9 +19,10 @@ taps directly to glade sessions; that was scaffolding, not the architecture.
    and not glade's.
 2. **Assembly happens inside glial.** Glial is taut-shape aware: the delivery-
    shape engines (log/value/window/text-crdt folds, the §7 reassembler) run in
-   glial, once per binding — not in taps, not in components. Taps declare
-   (via `glade-decl`) and stay thin conduits; glial fans assembled results to
-   every attached tap. Sharing machinery is never per-tap code.
+   glial, once per **binding instance** (see Boundaries) — not in taps, not in
+   components. Taps declare (via `glade-decl`) and stay thin conduits; glial
+   fans assembled results to every attached tap. Sharing machinery is never
+   per-tap code.
 3. **Rich change events, consumer's choice.** What glial emits to a tap is not
    a bare value but a shape-aware event: enough structure for the receiver to
    choose an incremental patch or a whole-field refresh against its LIVE UI
@@ -55,6 +56,20 @@ envelope just delivers it. (Full editor-binding design deferred to the
 - The orchestration half of glial (environments, mounts, capability issuance,
   facets) is unchanged and CONNECTS here: a mount is precisely the config
   that turns connectivity on for a set of bindings.
+- **Declarations vs instances (clarified 2026-07-10).** A `BindingDecl` is
+  app-static; a **binding instance** is `(decl, domain/zone/key fill)`,
+  created at mount. Several instances of ONE declaration may be live at once
+  (two columns mounted on two documents: same decl, same grips, different
+  domain fill) — each with its own fold/assembly state and a refcounted
+  lifecycle (s-fanout's interest counting, client-side).
+- **The seam is mount/unmount, idiom-agnostic.** How the grip side selects
+  and parameterizes an instance — param grips through one engine-global
+  binding row (grip-react-demo WeatherColumn) or per-context matcher rows
+  (CoinColumn) — is grip's business and never crosses into glial. Glial's
+  API is mount/unmount of instances with fills; it must not reference
+  `MatchingContext` or any matcher/scoring vocabulary. Neither idiom pushes
+  into glade either: only what `BindingDecl` + the fill carry (→ wire
+  `share`/`key` at bind time) crosses that seam.
 
 ## Open questions
 

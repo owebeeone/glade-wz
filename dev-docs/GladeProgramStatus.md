@@ -29,7 +29,7 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | `<app>.glade` / `glade-sys.glade` (app/substrate split, mgmt surface) | **Ratified** (GDL-037/038, 2026-07-07) | GDL-037/038, decl doc; atlas s-app-register landed | build: .glade loader (Lane R step 4) |
 | System-data seam + `~/.glade/sys` layout + data classes | **Built** (2026-07-08: glade 7394ce5+2dc3545 — SystemSnapshot, RegistryApi/StoreApi, ladder, blob≡fold conformance; sysdir boot opt-in) | `glade/GladeSystemDataSeam.md` + `glade/dev-docs/GladeSystemDataSeamNotes.md` | Lane R step 2: iroh carrier + HELLO + heads/gap sync |
 | taut-shape consolidation | **P1 Built** (2026-07-08: 2376f2f — shape_value schema + 11-vector oracle; S3 matrix blocked on taut-shape-<lang> members) | `taut-shape/dev-docs/TautShapeGladeConsolidation.md` | Lane C P2 (glade fold oracles merge) |
-| Trace atlas (ggg-viz) | Built, leading | 28 traces · 5 invariants · 222 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | AZ-16/17 landed; queue clear |
+| Trace atlas (ggg-viz) | Built, leading | 28 traces · 5 invariants · 222 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | queue: s-sync (origin, zone) reframe (with Lane R2) · s-stack multi-instance variant (one decl, two domain fills — with Lane T2) |
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
 | glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
 
@@ -104,7 +104,10 @@ spec for both.
    (compile wall proves the seam).
 2. Glial binder v0: persistence-first store-only path (s-stack-local
    behavior), then mount→session (s-stack-connect); retires direct
-   tap→glade coupling.
+   tap→glade coupling. Mounts create binding INSTANCES `(decl, domain/zone/
+   key fill)` — several per decl, refcounted; the seam is mount/unmount and
+   is grip-idiom-agnostic (never references MatchingContext) — clarified
+   2026-07-10, GlialClientRuntime §Boundaries.
 
 **Lane C (contracts)** — parallel:
 1. taut-shape P1: `shape_value` contract + corpus.

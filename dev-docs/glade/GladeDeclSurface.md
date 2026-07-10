@@ -27,7 +27,7 @@ seams-at-inception rule: the wall exists from day one, even around a stub.
 | `Shape` | the delivery-shape enum (`value`, `log`, `message`, `stream`, `exchange`, `window`…) — names taut-shape contracts, owns none of them |
 | `Authority` | `share` \| `external(source)` |
 | `Domain` / `Zone` | the ZONES vocabulary (`glade/dev-docs/GladeZones.md`, implemented 2026-06-14): domain = which replicated world (→ wire `share`); zone = who converges within it — `commons` \| `private(self)` + future axes (→ wire `key`). The binder's scope maps them at bind time. |
-| `BindingDecl` | `(glade id, shape, authority, domain, zone, retention)` — the unit a tap declares and glial binds (a *surface*, in zones terms) |
+| `BindingDecl` | `(glade id, shape, authority, domain, zone, retention)` — the unit a tap declares and glial binds (a *surface*, in zones terms). The decl is app-static; each **mount** creates a binding *instance* `(decl, domain/zone/key fill)`, and several instances of one decl may be live at once (clarified 2026-07-10; lifecycle + idiom-agnostic seam in `GlialClientRuntime.md` §Boundaries) |
 | `AdvertisementRecord` | what grok enumeration emits for sharable taps (GDL-029) |
 | Canonical-key **interface** | the signature for param→canonical-CBOR keys; implementations live below |
 
