@@ -188,7 +188,8 @@ red = design event. Single-writer per repo per agent wave.
 
 ## Parallelism map
 
-P0: S1‖S2‖S3 then S4(needs S3)‖S5‖S6. P1: S1‖S2 then S3→S4.
+P0: S1‖S2‖S3‖S7 then S4(needs S3)‖S5‖S6. P1 requires P0.S7 (attribution)
++ P0.S2 (F1) landed: S1‖S2 then S3→S4.
 P2: sequential by design (each step raises the security floor the next
 stands on). P3: S1‖S2 then S3; S4 then S5. P4: S1→S2→S3.
 Suppliers are repo-disjoint by construction, so cross-phase overlap is fine
