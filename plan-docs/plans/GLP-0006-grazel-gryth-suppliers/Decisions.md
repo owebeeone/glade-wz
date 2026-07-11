@@ -319,3 +319,23 @@ supplier. Ambiguities resolved (smallest faithful call):
 10. **Fixed a pre-existing clippy warning** in grazel `main.rs::serve_http`
     (`io_other_error`, rust 1.96) since it sat in a file this step already
     rewrites — a 1-line, behavior-identical change to keep the crate clippy-clean.
+
+## 2026-07-12 — P1.S4 decisions (gryth-ui wiring; recorded for the agent)
+
+gryth-ui branch `glp-0006-p1s4-gryth-panels` @ bffbdd0 (Gianni integrates;
+gryth-wz pushes are his). 74 tests + build green, live-verified end-to-end
+(grazel --ui serving dist; chat attributed both ways; gwz run/stream/deny).
+
+1. **chat.msgs codec = JSON in gryth-ui** (demo uses taut ChatLine) — the two
+   UIs are NOT wire-interoperable on chat payloads; fine while each is its own
+   grazel deployment; unify (taut codec in @grythjs/glade) before mixing
+   clients on one node. INTEROP CAVEAT.
+2. MemoryStoreEngine (not IndexedDb) — convergence-first; persistence upgrade
+   later (avoids top-level await in plugin init).
+3. New @grythjs/glade package = the bootstrap seam (plugin-api idiom).
+4. gryth-wz grip-core/grip-react promoted to pnpm workspace members
+   (workspace:* — fixes nested file: resolution, preserves grip singleton).
+5. tsconfig.app relaxed (erasableSyntaxOnly/noUnused*) because tsc deep-checks
+   foreign glade-wz TS source — TECH DEBT, restore when glade pkgs ship .d.ts.
+6. glade.ir.json VENDORED into @grythjs/glade — refresh on wire change.
+7. Cross-workspace file: links are INTERIM (publish-or-member later).

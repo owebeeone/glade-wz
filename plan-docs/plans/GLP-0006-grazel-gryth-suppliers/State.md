@@ -10,4 +10,4 @@ BUILD (fused with F1 in P0.S2: creation mints the records). P0 wave launched
 Baseline: E2E stage-1 audited MET (root `f9671a1` pins; glade `39bd59a`,
 glial `bb53122`). P0 S1-S7 built (waves 1-3, 2026-07-12).
 
-Current checkpoint: `grazel1/p0-foundations` MET 2026-07-12 (tag not minted — Gianni's call). Next: P1 (glade-chat ‖ glade-gwz, then grazel composes + gryth-ui).
+Current checkpoint: `grazel1/p1-first-suppliers` MET 2026-07-12 (P0 also met; neither tag minted — Gianni's call). gryth-ui branch awaits Gianni's merge. Next: P2 (sharing + stage-2) — GATED on WD-1 + AZ-1/2/3.
