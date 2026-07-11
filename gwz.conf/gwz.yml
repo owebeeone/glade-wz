@@ -170,3 +170,15 @@ members:
     url: git@github.com:owebeeone/taut-shape-ts.git
     fetch: true
     push: true
+- id: mem_grazel
+  path: grazel
+  type: git
+  source_id: src_grazel
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/grazel-node.git
+    fetch: true
+    push: true

@@ -40,3 +40,14 @@ pre-declared groups (dynamic creation = create-a-share, rides F2 + P2).
 Also surfaced there: terminal is stage-1 owner-only/local-only (spawns
 processes — `shell.exec` is the canonical stage-2 deny); gwz + files are the
 app-owned-storage consumers foreshadowing AZ-1 path scoping.
+
+## 2026-07-12 — P00 gates ruled; P0 launched
+
+P00-a: wire-attached supplier sessions CONFIRMED. P00-b: new glade-wz
+members; repo `grazel-node` / member path `grazel` (bare `owebeeone/grazel`
+squatted by the June razel spike — untouched; same convention as
+glial-runtime). P00-c: F2 BUILD — fused into P0.S2 since target-routed
+creation IS the natural minting path for WorkspaceEntry/ServeClaim (F1).
+P0 execution: wave 1 = S1(doc)‖S2+S7(glade, fable)‖S4ts+S5a(glial)‖S6
+(grazel); wave 2 = S3+rust kit (glade); wave 3 = S5b demo chassis (glade).
+Single-writer-per-repo preserved across waves.

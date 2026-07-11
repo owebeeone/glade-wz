@@ -65,6 +65,14 @@ members:
     detached: false
     dirty: false
     materialized: true
+  mem_grazel:
+    path: grazel
+    source_id: src_grazel
+    source_kind: git
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
   mem_grip_core:
     path: grip-core
     source_id: src_grip_core
