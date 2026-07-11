@@ -182,3 +182,27 @@ members:
     url: git@github.com:owebeeone/grazel-node.git
     fetch: true
     push: true
+- id: mem_glade_chat
+  path: glade-chat
+  type: git
+  source_id: src_glade_chat
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/glade-chat.git
+    fetch: true
+    push: true
+- id: mem_glade_gwz
+  path: glade-gwz
+  type: git
+  source_id: src_glade_gwz
+  active: true
+  desired:
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/glade-gwz.git
+    fetch: true
+    push: true

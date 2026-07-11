@@ -65,8 +65,14 @@ grazel; glade stays transport.
 | P3-gate | Blob strategy for large binaries (iroh-blobs vs content-addressed store; NOT ops-in-chains) | P3.S2 |
 | P4-gate | `swmr`: first-class Shape vs policy on `value`; text-crdt contract scope | P4.S1 |
 
-Prereq mounts: `gryth-wz` (gryth-ui) and `grip-pyrolyze-dev` (grip-lab
-reference) are not mounted in this environment — mount at P1.S4 / as needed.
+Prereq mounts: `gryth-wz` is at `/Users/owebeeone/limbo/gryth-wz` (its own
+gwz workspace: members gryth-ui + ITS OWN grip-core/grip-react pins +
+glade-decl-ts already a member; gryth-ui is a pnpm monorepo with the
+`@grythjs` plugin system — plugin-chat and plugin-terminals already exist, so
+P1.S4 wires glial taps into those seams rather than building panels).
+Version-skew watch: gryth-wz's grip-core pin vs glade-wz's (which now carries
+glade-decl types). `grip-pyrolyze-dev` (grip-lab reference) still unmounted —
+ask when needed.
 
 ## Phases
 

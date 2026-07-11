@@ -6,7 +6,7 @@ members:
     path: ggg-viz
     source_id: src_ggg_viz
     source_kind: git
-    commit: 09381903f08309f5b0ce018b7b18a23cdc2a6ba8
+    commit: 4afb9a146f4c46ab8b3cd15fb3e6fa09e424cf67
     branch: main
     detached: false
     dirty: false
@@ -15,7 +15,16 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: d872838b93c60412556b4aaae1e61e105f96a6c4
+    commit: 61617d57b237cb9e496271ab14b6eb81c916b9fe
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_chat:
+    path: glade-chat
+    source_id: src_glade_chat
+    source_kind: git
+    commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
     branch: main
     detached: false
     dirty: false
@@ -56,6 +65,15 @@ members:
     detached: false
     dirty: false
     materialized: true
+  mem_glade_gwz:
+    path: glade-gwz
+    source_id: src_glade_gwz
+    source_kind: git
+    commit: e53c87dddb8f40f050d3bd18cb77d96e21a73ed1
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
   mem_glial:
     path: glial
     source_id: src_glial
@@ -69,7 +87,7 @@ members:
     path: grazel
     source_id: src_grazel
     source_kind: git
-    commit: 56d9a320301d724a9941b5a8f3a880c8956db7d2
+    commit: cbb19baa474662ee69c6b8e5e302bc8ab169182b
     branch: main
     detached: false
     dirty: false
