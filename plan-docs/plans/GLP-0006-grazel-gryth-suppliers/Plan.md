@@ -33,7 +33,7 @@ code per app.
 
 ## Architecture posture (P00 confirms)
 
-**Attachment model — working assumption: wire-attached (session model).**
+**Attachment model — RULED 2026-07-12 (P00-a): wire-attached (session model).**
 A supplier is an ordinary authority session that subscribes its declared
 surfaces (exactly R4's provider mechanism, live-proven in the audit).
 Suppliers depend on the wire + a client lib only — language-neutral, zero
@@ -58,9 +58,9 @@ grazel; glade stays transport.
 
 | Gate | Decision | Blocks |
 | --- | --- | --- |
-| P00-a | Confirm wire-attachment as the supplier contract | P0.S3+ |
-| P00-b | Repo homes: new glade-wz members (`grazel`, `glade-chat`, …) vs gryth-wz | P0.S6, P1 |
-| P00-c | F2: s-create target-routing — build in P0 or record deferral | P0.S2 scope |
+| P00-a | ~~Confirm wire-attachment~~ **RULED 2026-07-12: wire-attached sessions** | — |
+| P00-b | ~~Repo homes~~ **RULED 2026-07-12: glade-wz members** (grazel → repo `grazel-node`, path `grazel`) | — |
+| P00-c | ~~F2~~ **RULED 2026-07-12: BUILD, fused into P0.S2** (creation mints the records) | — |
 | P2-gate | WD-1 root custody (the big one) + AZ-1/2/3 v1 scoping | all of P2 |
 | P3-gate | Blob strategy for large binaries (iroh-blobs vs content-addressed store; NOT ops-in-chains) | P3.S2 |
 | P4-gate | `swmr`: first-class Shape vs policy on `value`; text-crdt contract scope | P4.S1 |

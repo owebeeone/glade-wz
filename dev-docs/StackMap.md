@@ -52,6 +52,7 @@ full product story, and to keep Grip integration replaceable.
 | Glade workspace directory | `/Users/owebeeone/limbo/glade-wz/dev-docs/glade/GladeWorkspaceDirectory.md` |
 | Glade authorization model | `/Users/owebeeone/limbo/glade-wz/dev-docs/glade/GladeAuthzModel.md` |
 | Glade declaration surface (glade-decl) | `/Users/owebeeone/limbo/glade-wz/dev-docs/glade/GladeDeclSurface.md` |
+| Glade supplier model | `/Users/owebeeone/limbo/glade-wz/dev-docs/glade/GladeSupplierModel.md` |
 | Glade system-data seam | `/Users/owebeeone/limbo/glade-wz/dev-docs/glade/GladeSystemDataSeam.md` |
 | Glial client runtime | `/Users/owebeeone/limbo/glade-wz/dev-docs/glial/GlialClientRuntime.md` |
 | Glade API boundary study | `/Users/owebeeone/limbo/glade-wz/dev-docs/GladeHypothenicalApiStudy.md` |
