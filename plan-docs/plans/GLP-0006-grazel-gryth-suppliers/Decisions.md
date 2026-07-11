@@ -27,3 +27,16 @@ this file records how they landed in the plan.
   accepted into P0.S5 — from the "so many moving parts" design review, point 1.
 - grip-lab is reference-only (lessons harvested); iroh+react already the
   decided substrate/front-end pairing.
+
+## 2026-07-12 — the chat→users inversion (Gianni)
+
+P1 glade-chat implicitly required users. Resolution: "users" split into two
+layers — **principals minimal** (identity + attribution, stage-1-safe, new
+P0.S7; wire `Hello.principal` + GDL-038's `dir.principals` already provide
+the seams) vs **user management/enforcement** (unchanged, P2/glade-users).
+`SupplierRequirements.md` added as the normative per-supplier needs matrix
+(identity, shapes, storage, grants, dependency spine); P1.S1 rescoped to
+pre-declared groups (dynamic creation = create-a-share, rides F2 + P2).
+Also surfaced there: terminal is stage-1 owner-only/local-only (spawns
+processes — `shell.exec` is the canonical stage-2 deny); gwz + files are the
+app-owned-storage consumers foreshadowing AZ-1 path scoping.

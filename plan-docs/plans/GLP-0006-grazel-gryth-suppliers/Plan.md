@@ -73,6 +73,9 @@ reference) are not mounted in this environment — mount at P1.S4 / as needed.
 Aspirational <500 hand-written LOC per step. Foundational-first;
 steps within a phase are agent-parallel unless marked sequential.
 Every supplier step is: **atlas trace → build → demo tab → live verify**.
+Per-supplier needs (identity, shapes, storage, grants, dependencies) are
+normative in `SupplierRequirements.md` — phase ordering honors its
+dependency spine.
 
 ### P0 — Foundations (milestone: a supplier can exist)
 
@@ -100,11 +103,21 @@ Every supplier step is: **atlas trace → build → demo tab → live verify**.
 - **S6 — grazel skeleton.** New repo (per P00-b): embedded/spawned glade
   node, `--mode local|peer|both`, static HTTP + json bootstrap stub, loads
   `grazel-app.glade`, composes zero suppliers yet. Boots, audits clean.
+- **S7 — principals minimal (identity, NOT management).** Sessions bind to a
+  principal (`Hello.principal` — the wire field exists), principal records
+  land in `dir.principals` (named by GDL-038) as ordinary registry appends,
+  suppliers get attribution. Stage-1 posture: identity as DATA, nothing
+  enforced; replaces the demo's `user=` URL stub. User LIFECYCLE (enroll/
+  attenuate/revoke) stays P2/glade-users — do not smear the layers. Added
+  2026-07-12: the chat→users inversion fix (`SupplierRequirements.md`).
 
 ### P1 — First suppliers (milestone: two suppliers live in demo tabs; grazel serves gryth-ui)
 
-- **S1 — glade-chat.** Group chat on the log shape (`ChatLine` exists).
-  Multiple chats = keyed surfaces. Trace (s-chat) → supplier → demo tab.
+- **S1 — glade-chat.** Group chat on the log shape; `ChatLine.user` becomes
+  a principal ref (additive, corpus-gated); attribution via P0.S7. **Stage-1
+  scope: groups PRE-DECLARED** (grazel-app.glade/config) — dynamic group
+  creation is a create-a-share ceremony that rides F2 + P2, not P1. Trace
+  (s-chat) → supplier → demo tab.
 - **S2 — glade-gwz.** gwz commands over exchange (live-proven leg). Supplier
   wraps gwz invocation; results as exchange responses + log streams for long
   ops. Trace → supplier → demo tab.
