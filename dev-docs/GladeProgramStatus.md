@@ -32,6 +32,7 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | taut-shape consolidation | **P1+P2 Built** (P2 2026-07-10: 389c867 — glade's 12 M-LIMP fold vectors re-homed as fold.v0.json + conflict tripwire, NO conflicts; glade oracle test repointed 6295061; S3 value-matrix assessed ~700-900 LOC, deferred) | `taut-shape/dev-docs/TautShapeGladeConsolidation.md` | S3 value matrix (de-log-hardwire CLIs) when called |
 | Trace atlas (ggg-viz) | Built, leading | 29 traces · 5 invariants · 228 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | s-stack-multi landed 0938190 (228 tests); queue: s-discovery already authored — next new traces ride Lane R3 |
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
+| grazel + gryth suppliers (GLP-0006) | **Proposed** (plan 2026-07-11; supplier vocab RULED GDL-040) | `plan-docs/plans/GLP-0006-grazel-gryth-suppliers/` | Gianni: P00 gates — attachment confirm · repo homes · F2 ruling; then P0 foundations |
 | glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
 
 ## Decision queue (Gianni)

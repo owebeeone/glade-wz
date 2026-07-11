@@ -1,0 +1,13 @@
+# Checkpoints — GLP-0006
+
+Roll-build tag prefix: `grazel1/` (root glade-wz; members pin via gwz lock).
+Tag a phase only when its milestone is met, the demo tab(s) verify live, and
+remaining ambiguities are minor.
+
+| Tag | Phase | Goal (milestone) | Verification | Status |
+| --- | --- | --- | --- | --- |
+| `grazel1/p0-foundations` | P0 | a supplier can exist: vocab+model doc, F1 live minting, rust wire client, supplier kit, typed manifest + tab chassis, grazel skeleton boots | all repo gates green; two-node live mint + route outside tests; typed-manifest TS compile wall demonstrated | pending |
+| `grazel1/p1-first-suppliers` | P1 | chat + gwz suppliers live in demo tabs; grazel composes them and serves gryth-ui | demo tabs verified live (two participants); gryth-ui shows chat+gwz panels via glial | pending |
+| `grazel1/p2-stage2` | P2 | invite → grant → enforced access live; allow-all ends | stage-2 traces + INV-4/INV-5 as live behavior; audit sweep re-run green | pending |
+| `grazel1/p3-heavy-shapes` | P3 | files (windowed + blobs) + live terminal (WINCH) in tabs | window corpus green ×langs; terminal live session survives resize; large-binary path never chains ops | pending |
+| `grazel1/p4-editing` | P4 | collaborative editing in gryth-ui | crdt/swmr corpus green; cursor-stable remote deltas live | pending |
