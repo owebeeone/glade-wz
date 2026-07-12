@@ -105,7 +105,7 @@ members:
     path: grip-react
     source_id: src_grip_react
     source_kind: git
-    commit: 8b17279dbef35f7c82fb298ce72a5929ea9921d4
+    commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
     branch: main
     detached: false
     dirty: false
