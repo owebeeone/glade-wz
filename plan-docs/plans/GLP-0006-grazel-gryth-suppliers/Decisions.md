@@ -339,3 +339,27 @@ gryth-wz pushes are his). 74 tests + build green, live-verified end-to-end
    foreign glade-wz TS source — TECH DEBT, restore when glade pkgs ship .d.ts.
 6. glade.ir.json VENDORED into @grythjs/glade — refresh on wire change.
 7. Cross-workspace file: links are INTERIM (publish-or-member later).
+
+## 2026-07-12 — glade-share ruled (Gianni) + spine planning wave landed
+
+glade-share rulings: (1) chat sharing grants to the MEMBERSHIP SNAPSHOT at
+share time (per-principal grants make not-future-members the default, no
+expiry machinery); (2) sharer-isn't-owner → mint what I can, AUTO-REQUEST
+the rest; (3) link values are ID-type k:v pairs, developer's discipline —
+fat inline state is a documented smell, no enforcement; (4) access requests
+ARE pending grants — CapabilityGrant-shaped with a disposition lifecycle,
+stored in the target share's policy binding (same shape, same place);
+approve↔revoke flips are INSTANCE-MINTS (revocation-wins preserved; the
+chain is the history). Spec: dev-docs/glade/suppliers/glade-share.md;
+traces queued: s-link-share, s-link-knock.
+
+Wave landed: 6 spine traces (ggg-viz 3a4d59f, 242→311, INV-6 as a real suite
+invariant) + PlanGladeUsers.md + PlanGladeWorkspaces.md. Consolidated design
+feedback AWAITING Gianni: R1 materialization seam (lean A: node-issued
+ws.materialize, disk-gates-records) · R2 glade-workspaces = distributed role
+not single session · R3 accept/mint record authorship · C1-C6 confirmations
+(dir.principals replication pin, selection grip-only, ws name dups
+tolerated, clone manifest-with-records, clone=eligible-not-seize, per-verb
+gating) · minor pins (Hello post-migration, flat sponsorship log, petname
+surface home, fp6 fallback, invites' declaring share, single-root→map is
+substrate).
