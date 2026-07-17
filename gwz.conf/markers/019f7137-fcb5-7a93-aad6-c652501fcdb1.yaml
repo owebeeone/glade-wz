@@ -1,6 +1,39 @@
-schema: gwz.lock/v0
+schema: gwz.marker/v0
+gwz_commit_id: 019f7137-fcb5-7a93-aad6-c652501fcdb1
 workspace_id: ws_default
-manifest_schema: gwz.workspace/v0
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1784310922579
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: 803f3656736900633b7106bf8e8c40d4d6bd9283
+  branch: main
+selected_targets:
+- '@root'
+- mem_glade_decl
+- mem_glade_decl_ts
+- mem_glade_decl_rs
+- mem_glade_decl_py
+- mem_ggg_viz
+- mem_glade
+- mem_grip_core
+- mem_grip_react
+- mem_taut
+- mem_taut_shape
+- mem_glial
+- mem_grip_react_demo
+- mem_taut_shape_rs
+- mem_taut_shape_ts
+- mem_grazel
+- mem_glade_chat
+- mem_glade_gwz
+- mem_glade_discover
+committed_targets:
+- mem_ggg_viz
+- mem_glial
+- mem_glade_discover
+- '@root'
 members:
   mem_ggg_viz:
     path: ggg-viz

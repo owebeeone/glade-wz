@@ -1,6 +1,8 @@
 # Glade Authorization Model — grants as data, checks as folds
 
-Status: working draft — **design direction, not yet a contract**
+Status: working draft — **design direction, not yet a contract**, except the
+ratified rulings folded in below: **B4** (§4a + AZ-16), **B5** (§3b), and
+**D3 / D5 / H-R3** (§11) — `RulingWorksheet.md`, ratified 2026-07-12.
 
 Purpose: pin the authorization leg of the security model: how a user's access
 to workspace features (read files, run shells, push/pull, build) is granted,
@@ -120,6 +122,33 @@ construction, not by policy exception.
 Every admin action is a signed op in the share: the audit log is the storage,
 and coup attempts are permanent, attributable data.
 
+## 3b. Signed governance operations (RULED B5)
+
+`RulingWorksheet.md` §I, RULING A (ratified 2026-07-12) — the device-proof leg
+that §3a's "every admin action is a signed op" presumed but the stage-1 store
+did not yet enforce. A claimed device key is not proof of possession, and an
+unsigned grant/revoke record cannot safely govern authority.
+
+- **Device-possession proof at the session.** Session establishment MUST prove
+  possession of a device key certified by the account root — §7b's key-signed
+  session, made mandatory for governance.
+- **Signatures on security-sensitive ops.** grant, revoke, name-claim, and
+  membership operations MUST be signed by an authorized certified device, MUST
+  carry the strict predecessor their log requires, and MUST be verified BEFORE
+  persistence or fold — B2's validate-before-fold (`GladeSupplierModel §8`)
+  applied to the governance record kinds.
+- **Fail closed.** Revoked or unknown devices MUST fail closed.
+- **Legacy is history, not authority.** A legacy unsigned record MAY be retained
+  as unverified history but MUST NOT create, extend, or revoke governance
+  authority; it never wins over a signed chain.
+
+*Gates:* define the signed-operation envelope + validation corpus once, implement
+it in Rust and TS, enforce it in store replay and the users/share suppliers, add
+conformance traces for certification, revocation, and predecessor validation.
+*Negative tests:* forged Hello proof; wrong signature; revoked/uncertified
+device; missing/wrong predecessor; replayed signed op; an unsigned legacy record
+winning governance; a vouched session (§7b) attempting a strong security action.
+
 ## 4. The pivotal placement rule: policy rides the share
 
 Grant and revocation records for a workspace live **in the workspace's own
@@ -145,7 +174,9 @@ join `(domain, commons)`" — while **private zones need no grant at all**:
 they are private by *keying* (`self:<user>`), not permission, with the honest
 caveat that keying is routing-privacy (holds on operator-trusted nodes;
 untrusted hops for private zones are exactly the AZ-10 encryption tier).
-*Sharing is a grant; privacy is a key.* The read-grant `resource` of §3
+*Sharing is a grant; privacy is an identity-bound key* (the **B4** refinement —
+the `self:` key is DERIVED from the authenticated B3 principal, never
+caller-asserted; see AZ-16, §9). The read-grant `resource` of §3
 canonically names `(domain, commons)`; the D8 refinement (each zone is its
 own contiguous chain) is what makes private zones filterable from what a
 peer receives without breaking chain verification.
@@ -311,7 +342,7 @@ exists, which is also the migration story.
 | AZ-13 | Quorum governance record shape (M-of-N over non-root chains) and whether root HANDOVER (transferring rootship itself) ever exists | Gianni (product) |
 | AZ-14 | Co-sign caveat mechanics: pending-approval record lifetime, approval UX surface, offline sponsor behavior | design |
 | AZ-15 | Agent enrollment ceremony: keypair minted at install, sponsor approves the pubkey (the add-a-device ceremony, for agents) — UX + storage of agent keys | design (with AZ-9) |
-| AZ-16 | Private zones vs INV-4. **RULED 2026-07-10**: a private-zone serve is authorized by the receiver's `(domain, commons)` MEMBERSHIP grant — no zone-scoped grant ever exists ("joining a doc auto-grants your own private zone" means membership IS the entitlement). Which zone you receive is routing (keying), not policy. Consequence: revoking membership cuts commons AND private in one act — offboarding is one clean cut (forward-only caveat unchanged); your private-in-someone-else's-domain data is tenant, not freehold. | ruled |
+| AZ-16 | Private zones vs INV-4. **RULED 2026-07-10**: a private-zone serve is authorized by the receiver's `(domain, commons)` MEMBERSHIP grant — no zone-scoped grant ever exists ("joining a doc auto-grants your own private zone" means membership IS the entitlement). Which zone you receive is routing (keying), not policy. Consequence: revoking membership cuts commons AND private in one act — offboarding is one clean cut (forward-only caveat unchanged); your private-in-someone-else's-domain data is tenant, not freehold. **B4 refinement (RULED 2026-07-12, `RulingWorksheet.md` §I):** "privacy is a key" → "privacy is an IDENTITY-BOUND key." `self` is a SYMBOLIC authorization expression, not a routable name — the node DERIVES the concrete zone key from the authenticated **B3 principal** and MUST REJECT a caller-supplied literal identity that does not match; derivation + check apply to subscribe, append, replay, AND forwarding. Membership stays the separate entitlement above (unchanged); revocation additionally cuts subsequent resolution and forwarding. One canonical zone-key/`self` resolver in the common security utilities replaces supplier-local parsing. | ruled |
 | AZ-17 | Account-domain custody vs INV-4. **RULED 2026-07-10**: owner-scoped carve-out — the owning principal reads/writes their own account domain by IDENTITY, no grant record (no self-grant to mint at bootstrap, lag behind replication, or be revoked: self-lockout is unrepresentable). Any NON-owner access to an account domain stays grant-gated as usual (support/admin views need a grant). NOT a blanket exemption. | ruled |
 
 ## 10. ggg-viz mapping (the executable side of this document)
@@ -335,3 +366,45 @@ exposure rule: my data flows to a guest through my node; the guest's private
 share refuses placement on my hardware). INV-5 enforces placement: a node may
 carry `replica <share>` state only when its `hold <share>` entry names its
 operator.
+
+## 11. Derived surfaces, service authority, and authorship (RULED D3 / D5 / H-R3)
+
+Three cross-cutting rulings from `RulingWorksheet.md` (§III D3/D5, §VI H-R3;
+ratified 2026-07-12) this model must carry.
+
+**D3 — derived-surface authorization (INV-7).** A **derived surface** (a diff,
+and any future computed projection over other surfaces) is a read whose authority
+is the authority of its *sources*, not of the derivation. Every subscribe,
+replay, cache delivery, and forwarded delivery of a derived surface MUST
+establish, for the requesting **B3 principal**, read on the definition's whole
+source closure — per-principal `can_read(left) && can_read(right)` (generalizing
+to every source) — and the reader-set closure MUST hold:
+`Readers(derived) ⊆ ∩ Readers(sources)`. The check is re-evaluated **per serving
+hop** and whenever grants or membership change; an already-computed artifact MUST
+NOT bypass a later denial (the §6 re-evaluate-on-fold-change rule, extended to
+derived output). The service receives only exact, read-only source capabilities,
+and reuse of a compute instance MUST NEVER imply reuse of authority. This is
+**INV-7**, joining INV-4/5/6 in the atlas (`invariants.ts`): its vectors MUST
+cover a principal authorized for only the left source, only the right, neither,
+and both, at live and cached delivery paths. (Corrects the earlier backwards
+leak-guard relation — `RulingWorksheet.md` §III D1/D3.)
+
+**D5 — service authority: define ≠ execute (closes GDL-016).** DEFINING a
+demand-service and AUTHORIZING its execution are SEPARATE capabilities — the open
+GDL-016 question resolved: composing a `DemandServiceDefinition` is not a licence
+to run it. The sandbox is its own versioned record, composition-pinned until
+changed by signed governance (B5, §3b). Execution is sandboxed: read-only
+declared inputs; NO ambient filesystem, network, clock, randomness, environment,
+or child-process access; bounded CPU, memory, output, and wall time; typed
+timeout/resource/policy errors. Execution carries no ambient authority — it acts
+only on the exact source capabilities D3 admitted.
+
+**H-R3 — authorship: the authority appends the canonical result.** A client
+submits **intent**; it does not author privileged records directly. The relevant
+authority VALIDATES the intent, PERFORMS the effect, and then APPENDS the
+canonical result — preserving the submitter's **B3 context** (`GladeSupplierModel
+§8`) on the appended record so attribution survives. Direct client appends are
+allowed ONLY for record kinds with no privileged effect. This is the §1
+reads/writes/effects decomposition made explicit for ceremony records: the write
+hop that carries an effect is the authority's, evaluated at execution time; a
+client `APPEND` is honest data only where no effect rides on it.
