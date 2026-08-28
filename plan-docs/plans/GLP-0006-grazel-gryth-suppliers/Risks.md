@@ -1,8 +1,17 @@
 # Risks — GLP-0006
 
 - **Stage-2 arrives mid-plan (P2).** Share/users suppliers force WD-1 +
-  AZ-1/2/3 from parked to blocking. Mitigation: P2-gate is explicit; P3.S1
-  (window contract) can proceed in parallel if rulings stall.
+  AZ-1/2/3 from parked to blocking. Mitigation: only the enforcement/root
+  semantics checkpoint is gated; P3.S1 (`swmr` adapter + file-window projection)
+  and `PlanGladeUsers.md` Phases 0–4 can proceed in parallel.
+- **Catalogue recognition mistaken for runtime support.** Portable `swmr` and
+  `text_crdt` engines are released, but Glade does not yet expose their binding
+  paths. Mitigation: GSC-07 requires exact adapter pins and node/client/Glial
+  positive and fail-closed gates before declarations are accepted.
+- **`window` reintroduced as a shape by old D8 wording.** That would recreate
+  the category error the catalogue closed. Mitigation: preserve D8's viewport,
+  backfill, and generation guarantees as an application view over explicit
+  `swmr`; keep range/retention policy separate from delivery identity.
 - **Blob handling defaulting into op-chains.** A 2GB file must never become
   chain ops. Mitigation: P3-gate ruling BEFORE glade-files; the supplier kit
   gives no convenient wrong path.

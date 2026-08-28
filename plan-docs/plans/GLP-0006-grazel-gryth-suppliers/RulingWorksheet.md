@@ -1,5 +1,9 @@
 # GLP-0006 ruling worksheet — one decision per row
 
+Historical ruling input. `GDL-041` (2026-08-28) supersedes D8/H-P4 category
+wording: `window` is a view over explicit `swmr`, and `text_crdt` is a profile
+over CRDT. Their ruled application semantics remain in force.
+
 Consolidates every open decision blocking spec→plan conversion: both adversarial
 reviews (`dev-docs/glade/suppliers/SupplierSpecReview-F5.md`,
 `SupplierSpecReview-56.md`, `SupplierSpecReview-56-2.md`), the glade-gwz v2

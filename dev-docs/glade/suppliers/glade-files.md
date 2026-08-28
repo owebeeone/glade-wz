@@ -1,15 +1,18 @@
-# glade-files — file tree, windowed reads, and the blob strategy (supplier spec)
+# glade-files — file tree, SWMR-backed views, and the blob strategy (supplier spec)
 
 Status: full spec v1 (2026-07-12); **rulings landed 2026-07-12** from GLP-0006
 `RulingWorksheet.md` §IV (D6/D7/D8/D12/D13/D14/F-GAP10) + §I (B3/B4), which
-RATIFIED the window, blob, save, storage-truth, path, retention, and attribution
-contracts this spec had proposed. Read-first viewing; the **window contract (D8)**
-and the **blob strategy (D6)** were the two forcing contracts — now ruled. Common
+RATIFIED the file-view, blob, save, storage-truth, path, retention, and attribution
+contracts this spec had proposed. GDL-041 (2026-08-28) subsequently classified
+the D8 “window” as an application projection over canonical `swmr`, while
+preserving every D8 behavioral guarantee. Read-first viewing; the **SWMR-backed
+window view (D8)** and the **blob strategy (D6)** are the two forcing contracts.
+Common
 supplier contract: `dev-docs/glade/GladeSupplierModel.md`. Grounded in: **s-window**
 (ggg-viz `scenario/window.ts` — the behavioral spec for windowed loads),
 GladeSubstrateV1 §3 (shapes + retention) · §6 (strict-priority scheduler, built) ·
-§7 (reassembler / interest regions), GladeDeclSurface §Contents (`window` is
-already in the Shape enum), the **P3-gate** (blob strategy) + Plan P3.S1/S2/S3,
+§7 (reassembler / interest regions), `TautShapeCatalogAdoption.md`, the
+**P3-gate** (blob strategy) + Plan P3.S1/S2/S3,
 GladeAuthzModel §2/§6/§8 (AZ-1 path-scoped grants — deferred), grazel-app.glade
 (`ws.tree` / `ws.files` already declared), GAP-10 (retention). glade-diff
 (cross-surface diff) consumes `ws.tree`-shaped surfaces — REFERENCED here,
@@ -32,19 +35,23 @@ residual **(PROPOSED)** is impl-level, not a design choice.
    WITHIN the workspace, never an absolute host path, and a path is never
    derivable from a request. Storage engine (files-for-now / SQLite-later,
    GDL-036) is supplier-internal.
-3. **Genericity:** depends on base glade (window + blob carrier + scheduler),
+3. **Genericity:** depends on base Glade (exact `swmr` adapter + blob carrier +
+   scheduler),
    **glade-workspaces** (selection → which tree; root mapping) and **glade-users**
    (read attribution via the B3 `ProviderCallContext`, §4/§7) only — never on
    grazel. grazel COMPOSES it; any app could.
 
-## 2. The window contract (RULED — D8: full mutable typed window, v1)
+## 2. The file-window view over SWMR (D8 + GDL-041)
 
 Ground truth is **s-window** (`window.ts`): a viewer names a window
 `{from:3000, len:100}` over a 41,200-line `build.log` and paints it in ONE
-round-trip while the rest backfills. **D8 rules the FULL mutable typed window for
-v1 — not a logs-only substitute** — and assigns the previously-unowned reassembler:
+round-trip while the rest backfills. **D8 rules the FULL mutable typed view for
+v1 — not a logs-only substitute** — and assigns the previously-unowned
+reassembler. **GDL-041 rules its category:** `ws.files` uses the canonical
+`swmr` engine for snapshot + bounded deltas + typed in-band reset/repair; the
+range is an application projection/control, not a delivery shape.
 
-1. **Window identity is `{workspace_id, path, revision}` (RULED — D8).** The
+1. **View identity is `{workspace_id, path, revision}` (RULED — D8).** The
    byte/line range `{from, len}` is an INTEREST over that identity, NOT a new
    binding. Routing keys on the identity; the range only refines interest. (This
    supersedes the old "`key = {path, from, len}`" framing — the revision now rides
@@ -56,20 +63,27 @@ v1 — not a logs-only substitute** — and assigns the previously-unowned reass
 3. **Backfill makes scrolling local** (s-window W3/B9): the body replicates
    BEHIND the window so the next window ask never leaves the machine; head-of-line
    blocking is the enemy this design was built against.
-4. **Ownership split (RULED — D8):** **base glade** owns window request / routing /
-   generation; **glial** owns REASSEMBLY (this is the assignment — the reassembler
+4. **Ownership split (D8 + GDL-041):** **base Glade** owns exact SWMR delivery,
+   request routing, and generation; **Glial** owns REASSEMBLY (this is the
+   assignment — the reassembler
    was unowned); **glade-files** owns the authoritative snapshot. The reassembler
    serves ONE coherent generation, tagged by revision — a window that would splice
    two generations is held or re-driven, **never delivered mixed**: a consumer MUST
-   NOT observe mixed generations. This closes the old "Shape or projection" open —
-   the window is one uniform typed contract and the reassembler FILLS it
+   NOT observe mixed generations. This closes the old "Shape or projection" open:
+   the window is a uniform application view and the reassembler FILLS it from
+   the explicit base engine:
    (append-only surfaces → a from-cursor range of the causal log; a mutable
    `ws.files` → an interest region over the reassembled, generation-stamped
    snapshot; §7 `ReassemblerTap`: same-region viewers collapse to one key).
-5. **Window unit (RULED — D8):** line-based `{from, len}` for text, byte-offset for
-   binary — the range is an interest over identity, owned by the surface's shape
-   contract, not the supplier. An edit advances the revision/generation; the reader
-   re-drives its interest against the new generation cursor-stably (never a splice).
+5. **View unit (RULED — D8):** line-based `{from, len}` for text, byte-offset for
+   binary — the range is an interest over identity, owned by the application
+   view contract, not the delivery engine. An edit advances the revision/generation;
+   the reader re-drives its interest against the new generation cursor-stably
+   (never a splice).
+6. **Recovery profile (GDL-041):** ordinary `swmr` typed in-band reset/repair is
+   the default. `snapshot_delta` MAY be selected only where expiry deliberately
+   requires an out-of-band full refresh; it MUST NOT be inferred from the word
+   “window” or from a retention token.
 
 ## 3. The blob strategy — one fetch EXCHANGE, delivery-time authz (RULED — D6)
 
@@ -77,7 +91,7 @@ The standing rule (SupplierOutlines; Plan P3.S2): large binaries must NEVER ride
 the fold as ops-in-chains. **D6 rules the fetch as ONE declared exchange authorized
 at delivery** — killing the bare-hash bearer-token shape and the "is
 `window/exchange` one shape or two" error (it is ONE exchange, distinct from the §2
-window). Modeled on iroh-docs (GLRustiesP2PStory §D) + the plane split
+application view). Modeled on iroh-docs (GLRustiesP2PStory §D) + the plane split
 (GladeScaleModes: blobs/chunks are DATA-plane, records are control-plane):
 
 1. **A blob rides as a content-addressed REFERENCE in an ordinary record.** A
@@ -173,13 +187,14 @@ distinct from the fold's authority.
 | glade id | shape | zone | content |
 | --- | --- | --- | --- |
 | `ws.tree` | value | commons | directory listing keyed by canonical workspace-relative DIRECTORY path (RULED — D7: not `{root}`) + explicit revision + continuation token; the per-dir path policy redacts subtrees. glade-diff's source shape |
-| `ws.files` | window (`log`/snapshot fill) | commons | file content; window identity `{workspace_id, path, revision}`, range `{from, len}` is an INTEREST over it (RULED — D8); glial reassembles, one generation, never mixed |
+| `ws.files` | `swmr` | commons | file content plus application view control; identity `{workspace_id, path, revision}`, range `{from, len}` is an INTEREST over it (D8 + GDL-041); Glial reassembles one generation, never mixed. `snapshot_delta` is an explicit alternative only for out-of-band expiry recovery. |
 | `ws.blob.fetch` | exchange | commons | content-addressed blob FETCH — request names a workspace binding or path + revision + `BlobRef`, response over a bounded carrier/stream; authz RE-RESOLVED at delivery (RULED — D6; the bare-hash carrier op is killed) |
 | `files.write` | exchange | commons | coarse write authority (`replace`/`create`/`delete`/`rename`) taking an expected base revision + lock/lease; explicit conflict, no silent LWW (RULED — D12); AZ-1-gated stage-2 |
 | `doc.editing` | value | commons | "being edited by X" marker — signals a live editing generation exists; consumers still read the last saved revision unless the live generation is explicitly requested (RULED — D13) |
 
-`build.log` / `term.log` are sibling window consumers (glade-terminal / razel own
-those surfaces); the window MACHINERY is shared, the surfaces are not this
+`build.log` / `term.log` are sibling range-view consumers (glade-terminal / razel own
+those surfaces); the projection machinery may be shared, but each surface MUST
+declare its own explicit base delivery shape and recovery policy; the surfaces are not this
 supplier's. Per-viewer interest regions are client-side dest params (§7), not
 replicated surface content.
 
@@ -188,8 +203,9 @@ replicated surface content.
 The security-substrate rulings move attribution into stage-1: "stage-1 allow-all"
 is not honestly exercisable with a spoofable caller payload, so B3/B4 land now.
 
-- **Stage-1 (buildable now):** `ws.tree` reads (per-directory-keyed, D7); windowed
-  `ws.files` reads with viewport-first paint + bulk backfill + local scroll +
+- **Stage-1 (buildable after the exact adapter gate):** `ws.tree` reads
+  (per-directory-keyed, D7); SWMR-backed `ws.files` reads with viewport-first
+  paint + bulk backfill + local scroll +
   generation-coherent reassembly (D8); `BlobRef` in records + on-demand
   `ws.blob.fetch` with delivery-time authz (D6); the `files.write` compare-and-
   replace CONTRACT (D12) exercised via editing's save. **Attribution is REAL, not
@@ -204,13 +220,14 @@ is not honestly exercisable with a spoofable caller payload, so B3/B4 land now.
 
 ## 8. Traces to author before building
 
-- **s-file-window** (D8) — extends s-window from an append log to a MUTABLE FILE:
+- **s-file-window** (D8 + GDL-041) — exercises an application view over SWMR for a MUTABLE FILE:
   viewer asks a range over identity `{workspace:ws1, path:src/big.rs, revision:R}`
   → glial reassembles the region and ships it INTERACTIVE (one round-trip,
   size-independent) → full file backfills BULK → a save advances the revision to
   R+1 and the reader re-drives against the new generation. Proves: the FULL mutable
-  typed window, generation coherence (the reader **never observes a mixed
-  generation**), glial reassembler ownership, file-size-independent first paint.
+  typed view, generation coherence (the reader **never observes a mixed
+  generation**), Glial reassembler ownership, file-size-independent first paint,
+  exact SWMR adapter dispatch, and typed reset/repair.
 - **s-blob-fetch** (D6) — a big binary in `ws.tree` carries
   `BlobRef{hash,size,media}`; the record replicates to every replica while the
   bytes DO NOT; a viewer issues `ws.blob.fetch` naming the binding/path + revision
@@ -234,10 +251,11 @@ is not honestly exercisable with a spoofable caller payload, so B3/B4 land now.
 
 ## 9. Dependencies + user-testable-when
 
-- Depends on: **base glade** (the `window` shape/contract P3.S1, the blob carrier
-  P3.S2, the built priority scheduler), **glade-workspaces** (selection → which
-  tree + root mapping), **glade-users** (read attribution). Forces: the window
-  contract, the blob ruling (P3-gate), and GAP-10 retention.
+- Depends on: **base Glade** (the exact `swmr` adapter in P3.S1, the blob carrier
+  P3.S2, the built priority scheduler), **Glial** (generation-coherent view
+  reassembly), **glade-workspaces** (selection → which tree + root mapping), and
+  **glade-users** (read attribution). Forces: the SWMR-backed view integration,
+  the blob ruling (P3-gate), and GAP-10 retention.
 - Consumers: **glade-diff** (`ws.tree`-shaped sources), **glade-editing** (the
   document to edit), the gryth-ui files plugin.
 - **User-testable when:** I select a workspace; its REAL directory tree renders
@@ -253,12 +271,14 @@ is not honestly exercisable with a spoofable caller payload, so B3/B4 land now.
 All design opens this spec raised are now ruled; residuals are impl-level, not
 design choices.
 
-- **Window: Shape or projection? — RESOLVED (D8).** The FULL mutable typed window
-  ships v1 as one uniform contract; **glial** owns reassembly (the previously
-  unowned reassembler) and serves one generation, never mixed (§2.4).
+- **Window: Shape or projection? — RESOLVED (GDL-041, superseding D8's category
+  wording).** It is an application projection over explicit `swmr`, not a Taut
+  shape. The FULL mutable typed view still ships as one uniform application
+  contract; **Glial** owns reassembly and serves one generation, never mixed
+  (§2.4).
 - **Window unit — RESOLVED (D8).** Line `{from, len}` for text / byte-offset for
   binary is an INTEREST over identity `{workspace_id, path, revision}`, owned by
-  the surface's shape contract (§2.5).
+  the application view contract (§2.5).
 - **Blob carrier (P3-gate) — RESOLVED (D6).** The fetch is ONE `ws.blob.fetch`
   exchange over a bounded carrier/stream; iroh-blobs (native) vs Chunk-frame
   (browser) is an impl choice UNDER that contract, not a surface question (§3.2).

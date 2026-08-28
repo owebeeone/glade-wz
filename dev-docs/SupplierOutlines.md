@@ -103,9 +103,11 @@ Every effect supplier below consumes these; "stage-1 allow-all" now means the
   their panels.
 
 ### glade-files — file tree, windowed reads, blobs
-- Full **mutable typed window** v1 (D8): identity `{workspace_id, path,
-  revision}`, range = interest; base glade routes, **glial reassembles**,
-  glade-files owns the snapshot, no mixed generations. `ws.tree` per-directory
+- Full **mutable typed file view over canonical `swmr`** v1 (D8 + GDL-041):
+  identity `{workspace_id, path, revision}`, range = interest/control; base
+  Glade routes exact SWMR delivery, **Glial reassembles**, glade-files owns the
+  snapshot, no mixed generations. `snapshot_delta` is used only for explicit
+  expiry/out-of-band refresh. `ws.tree` per-directory
   keyed (D7, so a `/src` grant hides `/secret`). Blobs via **one
   `ws.blob.fetch` exchange** with delivery-time authz (D6 — hash = integrity,
   not authority; no bare-hash bearer token). `files.write` = compare-and-replace
@@ -143,14 +145,16 @@ Every effect supplier below consumes these; "stage-1 allow-all" now means the
   of MINE re-attaches with no byte doubled or lost.
 
 ### glade-editing — collaborative editing
-- **RULED text CRDT v1** (H-P4; swmr is NOT a fallback): element IDs
+- **RULED `text_crdt.profile/v1` over CRDT** (H-P4 + GDL-041; SWMR is NOT a
+  fallback): element IDs
   `{actor_id, counter}`, anchored inserts, tombstone deletes, deterministic
   sibling order, **identity-based deltas tolerant of out-of-order** (the shared
   glial primitive, also the A1 logDelta fix + the D8 reassembler). Cursors use
   element IDs + affinity, **private under B4**. `open` records a base revision;
   `save` = D12 compare-and-replace; compaction via causal checkpoint.
 - Depends on: glade-files (document + save target), glade-users, glade-share
-  (who may edit — grant, not lease).
+  (who may edit — grant, not lease), plus exact Glade/Glial adapter integration;
+  the portable contract and three-language engines are already released.
 - User-testable when: the user I invited edits the same file with me, live,
   neither of us losing our cursor.
 

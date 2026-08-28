@@ -3,6 +3,9 @@
 Plan-local decisions + revision history. Corpus-level rulings get GDL rows;
 this file records how they landed in the plan.
 
+Entries are historical at their stated date. The 2026-08-28 GDL-041 entry at
+the end supersedes earlier `window`/`text-crdt` category and spelling claims.
+
 ## 2026-07-11 — plan creation
 
 - **Supplier vocabulary RULED (Gianni)** → GDL-040: "supplier" = the
@@ -899,3 +902,26 @@ AZ-16's "routing not policy" phrasing), blob-fetch authz (F5-4/SR56-22),
 service-definition trust (SR56-25), knock append capability (SR56-09); (3)
 restore glade-share's core membership ceremony (SR56-08) + the F5-1/F5-2
 zone/coherence rulings; (4) the spec fix-wave; (5) the plan wave.
+
+## 2026-08-28 — canonical Taut shape catalogue adopted (`GDL-041`)
+
+The released Taut `0.9.*` catalogue is now the sole source of shape categories
+for this plan: engines are `value`, `atom`, `log`, `stream`, `swmr`, and `crdt`;
+`snapshot_delta` and `text_crdt` are profiles over SWMR and CRDT; `exchange`
+stays a Glade-only service interaction; `message` is unsupported; `window` is
+an application projection over an explicit base delivery shape. The exact
+provenance and acceptance requirements are pinned in
+`dev-docs/TautShapeCatalogAdoption.md`.
+
+This decision supersedes the category wording of D8 and H-P4, not their product
+semantics. D8 still requires viewport-first delivery, background backfill, and
+one coherent `{workspace_id,path,revision}` generation; its base is now
+canonical `swmr` and its range is view/control state. H-P4 still requires a
+simultaneous multi-writer text CRDT with stable identity-anchored cursors; its
+public contract is `text_crdt.profile/v1` over `crdt.oracle/v1`.
+
+Consequently, P3.S1 and P4.S1 are adapter/integration steps. The portable
+contracts, corpora, three language engines, and live matrix are already
+complete. Catalogue recognition MUST NOT be mistaken for a Glade runtime
+capability: each new adapter remains fail-closed until its node, Rust/TS client,
+Glial, recovery, and application-invariant gates pass.

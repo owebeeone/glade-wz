@@ -61,9 +61,9 @@ grazel; glade stays transport.
 | P00-a | ~~Confirm wire-attachment~~ **RULED 2026-07-12: wire-attached sessions** | — |
 | P00-b | ~~Repo homes~~ **RULED 2026-07-12: glade-wz members** (grazel → repo `grazel-node`, path `grazel`) | — |
 | P00-c | ~~F2~~ **RULED 2026-07-12: BUILD, fused into P0.S2** (creation mints the records) | — |
-| P2-gate | WD-1 root custody (the big one) + AZ-1/2/3 v1 scoping | all of P2 |
+| P2-gate | WD-1 root custody + AZ-1/2/3 v1 scoping | P2 stage-2 enforcement/root semantics only (`PlanGladeUsers.md` Phase 5); Phases 0–4 MAY proceed |
 | P3-gate | Blob strategy for large binaries (iroh-blobs vs content-addressed store; NOT ops-in-chains) | P3.S2 |
-| P4-gate | `swmr`: first-class Shape vs policy on `value`; text-crdt contract scope | P4.S1 |
+| Shape-catalogue gate | ~~Engine/profile boundaries and CRDT/SWMR contract scope~~ **CLOSED 2026-08-28** by GDL-041 and the released Taut `0.9.*` catalogue | —; P3/P4 now require Glade/Glial adapters and application integration |
 
 Prereq mounts: `gryth-wz` is at `/Users/owebeeone/limbo/gryth-wz` (its own
 gwz workspace: members gryth-ui + ITS OWN grip-core/grip-react pins +
@@ -136,7 +136,9 @@ dependency spine.
 
 ### P2 — Sharing + stage-2 (milestone: invite → grant → enforced access, live)
 
-Gated by P2-gate (WD-1, AZ-1/2/3). Sequential-ish: S1 → S2 → S3.
+`PlanGladeUsers.md` Phases 0–4 MAY proceed before the P2 gate. Its Phase 5 and
+this phase checkpoint remain gated by WD-1/AZ-1/2/3. Sequential-ish: S1 → S2 →
+S3.
 
 - **S1 — glade-users.** Users + ACL management as ordinary bindings
   (GDL-038): reads = subscriptions to system shares, writes = record appends,
@@ -151,9 +153,13 @@ Gated by P2-gate (WD-1, AZ-1/2/3). Sequential-ish: S1 → S2 → S3.
 
 ### P3 — Heavy shapes (milestone: files + live terminal)
 
-- **S1 — window shape.** taut-shape contract + corpus (Lane C idiom) → node
-  windowed delivery (viewport-first, bulk backfill — scheduler already
-  built) → glial assembly. Closes the audit's s-window PARTIAL.
+- **S1 — SWMR adapter + file-window projection.** The released `swmr.v1`
+  contract/corpus is the base delivery engine. Add exact Glade node, Rust/TS
+  client, and Glial capabilities; then implement the D8 application view:
+  viewport-first, bulk backfill, and one coherent
+  `{workspace_id,path,revision}` generation. The range is control/view state,
+  never a `window` shape. Use `snapshot_delta` only where expiry deliberately
+  requires out-of-band full refresh. Closes the audit's s-window PARTIAL.
 - **S2 — blob strategy** (P3-gate ruling) + implementation: large binaries
   content-addressed, never ops-in-chains; Chunk frame or iroh-blobs per
   ruling.
@@ -167,8 +173,11 @@ Gated by P2-gate (WD-1, AZ-1/2/3). Sequential-ish: S1 → S2 → S3.
 
 ### P4 — Editing + the long tail (milestone: collaborative editing in gryth-ui)
 
-- **S1 — crdt/swmr contracts** (P4-gate ruling first). Designed WITH the
-  gryth-ui tap work, not ahead of it. taut-shape contracts + oracles.
+- **S1 — CRDT/text integration.** The released `crdt.v1` engine and
+  `text_crdt.profile/v1` contract/corpora are inputs, not work items. Add exact
+  Glade transport/declaration capability plus Glial binder/event integration,
+  designed WITH the gryth-ui tap work. H-P4 still requires simultaneous edits;
+  SWMR is not an editing fallback.
 - **S2 — glial delta path.** Consumer-chooses-delta at the grip surface
   (closes GAP-8's deferral); GC-2 conflation as needed by the editor.
 - **S3 — glade-editing.** Supplier + demo tab + the gryth-ui editor tap —
@@ -181,8 +190,7 @@ Gated by P2-gate (WD-1, AZ-1/2/3). Sequential-ish: S1 → S2 → S3.
 GAP-11 offline outbox (may already be fixed in the side session — verify
 before P1) · GAP-10 retention/eviction (needed before P3 files at latest) ·
 F4 SubstrateV1 §11 stale-list sweep (doc-only, anytime) · taut
-`--legacy-codec` migration (before taut v0.10) · S3 taut-shape value matrix
-(when called).
+`--legacy-codec` migration (before taut v0.10).
 
 ## Discipline (unchanged from GLP-0005 + the lane builds)
 
@@ -196,7 +204,8 @@ red = design event. Single-writer per repo per agent wave.
 
 P0: S1‖S2‖S3‖S7 then S4(needs S3)‖S5‖S6. P1 requires P0.S7 (attribution)
 + P0.S2 (F1) landed: S1‖S2 then S3→S4.
-P2: sequential by design (each step raises the security floor the next
-stands on). P3: S1‖S2 then S3; S4 then S5. P4: S1→S2→S3.
+P2: implementation Phases 0–4 may run, but Phase 5/checkpoint remains gated;
+within it each step raises the security floor the next stands on. P3: S1‖S2
+then S3; S4 then S5. P4: S1→S2→S3.
 Suppliers are repo-disjoint by construction, so cross-phase overlap is fine
-once P0 lands (e.g. P3.S1 window contract can start during P2).
+once P0 lands (e.g. P3.S1 adapter/projection work can start during P2).

@@ -1,7 +1,7 @@
 # Glade Program Status — the one page that tracks the moving parts
 
 Status: LIVING document — update whenever anything changes stage.
-Last update: 2026-07-10.
+Last update: 2026-08-28.
 
 > **HOME: `~/limbo/glade-wz`** (gwz workspace — `gwz clone`, never `git
 > clone`) as of 2026-07-07. Docs corpus + ggg-viz live here; glial-dev is the
@@ -19,7 +19,7 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 
 | Area | Stage | Artifact | Next step |
 | --- | --- | --- | --- |
-| Substrate core (op model, frames, folds lww+log, WS carrier) | **Built** (M-LIMP, oracles frozen) | `glade/dev-docs/GladeSubstrateV1.md` | rebase shapes onto taut-shape (P2) |
+| Substrate core (op model, frames, folds lww+log, WS carrier) | **Built** (M-LIMP, oracles frozen; exact fail-closed shape dispatch landed 2026-08-28) | `glade/dev-docs/GladeSubstrateV1.md` + `glade/dev-docs/GladeShapeDispatch.md` | add versioned Glade adapters only at an application-driven checkpoint; current durable fold remains exact `value`/`log` |
 | Workspace directory / home share / discovery | **Ratified** (GDL-032, 2026-07-07) | `glade/GladeWorkspaceDirectory.md` + s-discovery… | build B3 (Lane R step 3) |
 | Authz (grants, check(), verbs, ownership) | **Ratified** (GDL-031/033/034, 2026-07-07) | `glade/GladeAuthzModel.md` + stage-2 traces | build after E2E stage-1 |
 | Operators / placement / roaming | **Ratified** (GDL-031, 2026-07-07) | AZ §7a/§7b + s-roam/s-tenant/s-local-guest | build with stage-2 |
@@ -29,10 +29,10 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | `<app>.glade` / `glade-sys.glade` (app/substrate split, mgmt surface) | **Built** (R4 2026-07-11: glade b9b1126+39bd59a — grazel-app.glade loaded as DATA, seeds→CapabilityGrants under registrant chain, diff-idempotent, revocation-wins survives re-load; exchange routes to AUTHORITY via C2, failure = ExchangeRes data; node 52) | `glade/apps/grazel-app.glade` + `glade/dev-docs/GladeGrazelAttachNotes.md` | **ALL E2E STAGE-1 BUILDERS DONE → DoD audit next**; FLAG: sysdata regen needed --legacy-codec (taut ≥v0.8 fail-closed codec vs frozen wire runtime; flag dies at taut v0.10 — migration follow-up) |
 | System-data seam + `~/.glade/sys` layout + data classes | **Built** (2026-07-08: glade 7394ce5+2dc3545) | `glade/GladeSystemDataSeam.md` + notes | — |
 | Peer sync (iroh carrier, HELLO, per-(origin, zone) heads/gap, verify-as-ingest, equiv proofs) | **Built** (2026-07-10: glade 4789177+02e4522, taut c0758b7 NodeHello/Welcome; store chains were ALREADY per-(origin, zone); crypto stubbed-structure-real) | s-sync (reframed) + `glade/dev-docs/GladePeerSyncNotes.md` | **R3 BUILT 2026-07-10** (glade 6667360+4d190a2: accept loop, dir.workspaces as ordinary binding, C2 claim routing, absence-as-Error; node 45, E2E×5 stable). R4 BUILT 2026-07-11 → **E2E STAGE-1 AUDITED 2026-07-11: MET** (live composed run + 11-trace conformance sweep; `dev-docs/GladeE2EStage1Audit.md`). Closure items: F1 live WorkspaceEntry/ServeClaim minting (small) · F2 s-create target-routing deferral/ruling · F4 SubstrateV1 §11 stale-list sweep. Then STAGE-2 switch-on |
-| taut-shape consolidation | **P1+P2 Built** (P2 2026-07-10: 389c867 — glade's 12 M-LIMP fold vectors re-homed as fold.v0.json + conflict tripwire, NO conflicts; glade oracle test repointed 6295061; S3 value-matrix assessed ~700-900 LOC, deferred) | `taut-shape/dev-docs/TautShapeGladeConsolidation.md` | S3 value matrix (de-log-hardwire CLIs) when called |
+| taut-shape consolidation | **Catalogue + `0.9.*` train Built/Released** (reconciled 2026-08-28): canonical engines `value/atom/log/stream/swmr/crdt`; profiles `snapshot_delta/text_crdt`; Rust/TS/Python engines and live matrix green; Glade/clients fail closed outside exact implemented adapters; Glial consumes released TS `0.9.1` | `dev-docs/TautShapeCatalogAdoption.md` + `taut-shape/dev-docs/TautShapeReleaseCompatibility.md` | GLP-0006 P3: Glade `swmr` adapter + file projection; P4: Glade/Glial `crdt`/`text_crdt` integration |
 | Trace atlas (ggg-viz) | Built, leading | 29 traces · 5 invariants · 228 tests · comment loop (s-boot/s-app-register/s-zones landed 253518e) | s-stack-multi landed 0938190 (228 tests); queue: s-discovery already authored — next new traces ride Lane R3 |
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
-| grazel + gryth suppliers (GLP-0006) | **ACTIVE — P0 Built 2026-07-12** (P00 ruled: wire-attach, glade-wz homes, F2 BUILT; F1+F2 live in glade 8d6f0cd..d872838; supplier kit + typed manifest glial 4dfbd23; rust client-rs; grazel skeleton 56d9a32 → repo grazel-node; supplier model doc + GDL-040) | `plan-docs/plans/GLP-0006-grazel-gryth-suppliers/` + `dev-docs/glade/GladeSupplierModel.md` | **P1 MET 2026-07-12** (suppliers+composition+demo tabs+gryth-ui panels all live; atlas 241; gryth-ui on branch glp-0006-p1s4-gryth-panels @ bffbdd0 awaiting Gianni's merge; INTEROP CAVEAT: gryth-ui chat.msgs=JSON vs demo=taut). Next: P2 — GATED on WD-1 root custody + AZ-1/2/3 |
+| grazel + gryth suppliers (GLP-0006) | **ACTIVE — P1 Met; shape gate closed 2026-08-28** (P0/P1 history retained in the plan; canonical shape contracts and `0.9.*` packages now landed) | `plan-docs/plans/GLP-0006-grazel-gryth-suppliers/` + `dev-docs/glade/GladeSupplierModel.md` | P2 enforcement remains gated on WD-1/AZ-1/2/3; P3/P4 adapter and application integration MAY proceed in parallel but MUST retain B1–B5 security prerequisites |
 | glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
 
 ## Decision queue (Gianni)
@@ -112,8 +112,12 @@ spec for both.
    2026-07-10, GlialClientRuntime §Boundaries.
 
 **Lane C (contracts)** — parallel:
-1. taut-shape P1: `shape_value` contract + corpus.
-2. P2: glade fold oracles merge into taut-shape corpora.
+1. ~~taut-shape contracts + corpora~~ — **complete** for all six engines and two
+   profiles in the `0.9.*` release train.
+2. ~~Rust/TypeScript/Python portable engines + live matrix~~ — **complete**.
+3. Consumer integration: expose only exact versioned adapters. GLP-0006 P3 owns
+   `swmr` + the file-window projection; P4 owns `crdt`/`text_crdt` transport,
+   binder, and cursor-delta integration.
 
 **Atlas stays ahead**: s-boot + s-app-register authored before Lane R
 steps 1/4 build them.

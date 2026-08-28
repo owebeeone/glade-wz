@@ -89,17 +89,21 @@ context; (2) **user management + enforcement** — lifecycle, grant ceremonies,
 
 ## glade-files (P3)
 
-- **Needs — shapes:** full mutable **window** `{workspace_id, path, revision}`
-  (D8 — base glade routes, glial reassembles, files owns the snapshot, no mixed
-  generations); `ws.tree` per-directory keyed (D7); **`ws.blob.fetch` exchange**
-  with delivery-time authz (D6, never bare-hash).
+- **Needs — delivery/view:** canonical **`swmr`** base delivery plus a full
+  mutable file-window projection identified by `{workspace_id, path, revision}`
+  (D8 — base Glade routes SWMR, Glial reassembles the view, files owns the
+  snapshot, no mixed generations). `snapshot_delta` MAY be selected only for an
+  explicit expiry/out-of-band-refresh policy. Also: `ws.tree` per-directory
+  keyed (D7); **`ws.blob.fetch` exchange** with delivery-time authz (D6, never
+  bare-hash).
 - **Needs — identity/grants:** read attribution (B3); `files.write` =
   compare-and-replace + expected base revision (D12), AZ-1 path scoping stage-2;
   one `RootRelativePath` + safe-open (D14).
 - **Needs — storage:** THE app-owned storage case; at-rest truth + `doc.editing`
   marker (D13). **Retention (F-GAP10) ruled** — a shared TTL/size/pressure
   policy (blob/window cache row).
-- **Provides:** file surfaces; the window + blob + path-type consumer.
+- **Provides:** file surfaces; the SWMR-backed window view + blob + path-type
+  consumer.
 
 ## glade-terminal (P3)
 
@@ -117,8 +121,9 @@ context; (2) **user management + enforcement** — lifecycle, grant ceremonies,
 
 - **Needs — shapes:** **RULED text CRDT** (H-P4 — swmr not a fallback): element
   IDs, tombstones, **identity-based deltas tolerant of out-of-order** (the shared
-  glial primitive + A1 fix + D8 reassembler); the `text-crdt` taut contract is
-  now REQUIRED.
+  glial primitive + A1 fix + D8 reassembler). The released
+  `text_crdt.profile/v1` contract over `crdt.oracle/v1` is now an input; Glade
+  transport/declaration and Glial binder/event integration remain.
 - **Needs — identity:** per-editor cursors, element-ID-anchored, **private under
   B4**; who-may-edit = the glade-share grant (not a lease).
 - **Needs — save:** D12 compare-and-replace into the glade-files snapshot (D13).
@@ -155,9 +160,9 @@ P0.S7 principals-minimal ───▶ chat, gwz, files, terminal, editing, diff
 glade-users (B5 signed) ────▶ glade-share; every supplier's stage-2 upgrade
 glade-share direct ceremony ▶ chat (group = share), editing (who may edit)
 stable-ID authority ────────▶ gwz/files/terminal/diff targeting
-window + blobs + reassembler▶ glade-files (glial owns reassembly)
+swmr + file view + blobs ───▶ glade-files (glial owns reassembly)
 TermOut + channels ─────────▶ glade-terminal (live half)
-text-crdt + identity-delta ─▶ glade-editing
+text_crdt + identity-delta ─▶ glade-editing
 service instantiation ──────▶ glade-diff (its own build driver)
 the gwz-family gate ────────▶ glade-razel (deferred)
 ```

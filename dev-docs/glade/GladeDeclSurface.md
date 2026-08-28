@@ -24,7 +24,7 @@ seams-at-inception rule: the wall exists from day one, even around a stub.
 | Item | What it is |
 | --- | --- |
 | `GladeId` | stable share-space address + the GQ-6 derivation/pinning rules (derive from package id + grip key; frozen once shared; renames are alias records) |
-| `Shape` | the delivery-shape enum (`value`, `log`, `message`, `stream`, `exchange`, `window`…) — names taut-shape contracts, owns none of them |
+| `Shape` | a compatibility declaration discriminator governed by `TautShapeCatalogAdoption.md`: canonical engines are `value`, `atom`, `log`, `stream`, `swmr`, `crdt`; `snapshot_delta`/`text_crdt` are profiles. Registry recognition does not grant runtime support. `exchange` is a separate Glade service interaction; `message` is unsupported; `window` is a view over an explicit base shape. The module names contracts and capabilities, and owns none of their engines. |
 | `Authority` | `share` \| `external(source)` |
 | `Domain` / `Zone` | the ZONES vocabulary (`glade/dev-docs/GladeZones.md`, implemented 2026-06-14): domain = which replicated world (→ wire `share`); zone = who converges within it — `commons` \| `private(self)` + future axes (→ wire `key`). The binder's scope maps them at bind time. |
 | `BindingDecl` | `(glade id, shape, authority, domain, zone, retention)` — the unit a tap declares and glial binds (a *surface*, in zones terms). The decl is app-static; each **mount** creates a binding *instance* `(decl, domain/zone/key fill)`, and several instances of one decl may be live at once (clarified 2026-07-10; lifecycle + idiom-agnostic seam in `GlialClientRuntime.md` §Boundaries) |

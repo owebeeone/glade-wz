@@ -1,7 +1,8 @@
 # glade-editing — collaborative editing over glade (supplier spec)
 
-Status: full spec v1 (2026-07-12, rev CRDT) — expands the `SupplierOutlines.md`
-entry. The editing-shape gate is **RULED: text CRDT for v1** (`RulingWorksheet.md`
+Status: full spec v1 (2026-07-12, rev CRDT; catalogue reconciled 2026-08-28) —
+expands the `SupplierOutlines.md` entry. The editing-shape gate is **RULED: text
+CRDT for v1** (`RulingWorksheet.md`
 §V H-P4; single-writer/multi-reader is **NOT** an allowed fallback), so this doc
 LANDS that ruling, it no longer weighs it. Common contract:
 `GladeSupplierModel.md`. Context: s-zones / `GladeZones.md` (private-zone
@@ -10,9 +11,11 @@ zone) · B4 (symbolic `self:` derived from the authenticated principal) ·
 `GlialClientRuntime.md` rule 3 + GC-1/GC-2 + glial-DecisionLog GAP-8 (the
 ChangeEvent delta path this supplier motivates) + A1 (the identity-set logDelta
 fix) — the identity-based, out-of-order-tolerant delta is a **SHARED glial
-primitive**, not editing-local (§3).
+primitive**, not editing-local (§3). GDL-041 now fixes the public contract as
+`text_crdt.profile/v1` over `crdt.oracle/v1`; the portable engines/corpora are
+released, while Glade transport/declaration and Glial binder integration remain.
 
-## 1. The editing shape — text CRDT (H-P4)
+## 1. The editing profile — text CRDT (H-P4 + GDL-041)
 
 The P4 gate asked ONE thing: does "edit live, neither losing our cursor" need
 simultaneous keystrokes? **RULED (H-P4): yes — v1 is a text CRDT.** swmr
@@ -23,12 +26,15 @@ reject, and accepted-head handoff (the SR56-2-35 finding). Once you pay for the
 fence the single-writer story stops saving substrate — and it still can't do the
 concurrent case the done-criterion wants. So CRDT is v1, outright.
 
-### 1.1 The Shape
-`doc.body` is a first-class **`text-crdt`** Shape, added to the glade Shape enum
-alongside `value·log·message·stream·exchange·window…` (today `text-crdt` is named
-only in glial's fold-engine list, NOT yet declared — this ruling promotes it to a
-declared Shape). The P4-gate taut-shape `text-crdt` contract is now **REQUIRED for
-v1**, not deferred to a v2 (§7, §10).
+### 1.1 The public profile and runtime gate
+
+`doc.body` uses the canonical **`text_crdt`** profile over the CRDT engine. Its
+released `text_crdt.profile/v1` contract and corpus are **REQUIRED for v1**, not
+deferred to a v2 (§7, §10). This catalogue row does not by itself make Glade's
+binding enum/runtime capable: the node, Rust/TypeScript clients, and Glial binder
+MUST pass the GSC-07 adapter gates before a `.glade` declaration may use it.
+Glial's current collaborative-text adapter proves the profile as a standalone
+consumer; its durable multi-writer mount remains `value`/`log` only.
 
 ### 1.2 First-class identities + operations (not an opaque patch blob)
 The protocol names identities and operations; it never ships a diff blob:
@@ -92,8 +98,9 @@ an **identity-based delta that tolerates out-of-order delivery**.
   `glial/events.ts`); the GAP-8 write seam (`GlialTapController` set/append +
   `PayloadCodec`); GAP-9 reload-resume (own-origin ops reach a rebuilt session;
   the semantic echo-guard folds catch-up with no remount).
-- **This spec FORCES:** the **`text-crdt` delta payload** (the P4.S1 taut-shape
-  contract, now required) carrying element-id ops; the **consumer-chooses-delta**
+- **This spec CONSUMES:** the **`text_crdt` delta payload** (the released P4.S1
+  Taut profile) carrying element-id ops; it still forces the
+  **consumer-chooses-delta**
   tail (GAP-8's deferred half, P4.S2) — an active-cursor editor applies the delta
   incrementally and rebases its element-anchored caret, while an idle/unmounted
   viewer takes the whole refresh (`GlialClientRuntime` rule 3, glade-editing is its
@@ -138,17 +145,19 @@ an **identity-based delta that tolerates out-of-order delivery**.
 
 | glade id | shape | zone | content |
 | --- | --- | --- | --- |
-| `doc.body` | `text-crdt` | commons | the CRDT op set (insert names an anchor; delete names element ids → tombstones); folds to the converged text — one world for all members |
+| `doc.body` | `text_crdt` | commons | the CRDT op set (insert names an anchor; delete names element ids → tombstones); folds to the converged text — one world for all members |
 | `doc.selection` | value | private (`self:`, B4) | per-editor caret/selection as `{element_id, affinity}` — private by DERIVATION from the authenticated principal, no grant, no `check()` (§2) |
 | `doc.save` | exchange | — | compare-and-replace flush — delegates to `files.write/replace` w/ expected base revision + lock (D12); conflict explicit; result as data (§4) |
 | `doc.editing` | value | commons | D13 marker: a live collaborative session exists; consumers still read last-saved unless they request the live generation |
 | policy binding entries | log | the doc's policy binding | write grants (glade-share, E-share-1; AZ-16) — NOT this supplier's data, referenced |
 
 The supplier is thin: serve the CRDT ops and orchestrate save. Records are
-ordinary appends in existing shares (GDL-038 — no privileged plane). The one new
-substrate is the `text-crdt` Shape + its P4.S1 taut-shape contract (now REQUIRED,
-not deferred) + the element-id allocator + the merge fold + the compaction
-checkpoint.
+ordinary appends in existing shares (GDL-038 — no privileged plane). The
+portable CRDT core, `text_crdt` profile, merge fold, and convergence corpora are
+released inputs. The remaining substrate work is exact Glade transport/
+declaration capability plus Glial binder/event integration; application work
+still includes element-ID allocation, save orchestration, cursor events, and
+compaction policy.
 
 ## 7. Stage split — security is stage-1; the identity-delta primitive is a prerequisite
 
@@ -168,18 +177,20 @@ whole build.
   one.
 - **Stage-2 (grants gate):** the write grant gates commons edit; revoke ends it
   (commons AND private, one act). The private selection needs no grant (by key).
-- **New code for v1:** the `text-crdt` Shape + P4.S1 contract + element-id
-  allocator + merge fold + compaction checkpoint + the consumer-chooses-delta tail
-  (P4.S2) + GC-2 conflation. The private-selection zone and the ChangeEvent
-  envelope already exist.
+- **New integration for v1:** exact Glade `crdt`/`text_crdt` transport and
+  declaration capability, Glial durable binder/event support, element-ID
+  allocation, compaction policy, the consumer-chooses-delta tail (P4.S2), and
+  GC-2 conflation. The portable merge engine/corpora, private-selection zone,
+  and ChangeEvent envelope already exist.
 
 ## 8. Traces to author before building (atlas leads)
 
 - **s-edit-crdt** — two editors type into one `doc.body` SIMULTANEOUSLY; concurrent
   inserts at the same anchor and interleaved deletes converge to identical text on
   both replicas (deterministic sibling order; deletes leave tombstones; duplicate
-  op replay is a no-op). Proves the `text-crdt` Shape + element-id/anchor/tombstone
-  model (H-P4); forces the P4.S1 taut-shape contract.
+  op replay is a no-op). Proves the Glade/Glial `text_crdt` integration preserves
+  the released element-id/anchor/tombstone model (H-P4); it does not redefine
+  the Taut profile.
 - **s-edit-cursor** — an active-cursor editor consumes `doc.body` deltas
   incrementally; its `{element_id, affinity}` caret stays put across remote
   insert/delete, AND stays correct when deltas arrive **out of order or
@@ -206,9 +217,10 @@ whole build.
   principal + the B4 `self:` derivation + attribution), **glade-share** (the
   membership grants — E-share-1), **glial** (the shared identity-based delta
   primitive + rule 3's consumer-chooses-delta tail; the A1 logDelta fix),
-  **glade-workspaces** (which workspace's file). Forces: the `text-crdt` Shape +
-  its P4.S1 taut-shape contract (now REQUIRED), glial's consumer-chooses-delta tail
-  (P4.S2, closes GAP-8's deferral), GC-2 conflation.
+  **glade-workspaces** (which workspace's file). Consumes the released
+  `text_crdt.profile/v1` contract over `crdt.oracle/v1`; forces the exact
+  Glade/Glial adapter boundary, Glial's consumer-chooses-delta tail (P4.S2,
+  closes GAP-8's deferral), and GC-2 conflation.
 - **User-testable when** (normative, `SupplierOutlines.md`): the user I invited via
   glade-share edits the same workspace file with me from another machine, live —
   **we both type at once and the text converges**, each keeps their own private
@@ -219,17 +231,20 @@ whole build.
 
 ## 10. Open questions (Gianni)
 
-- **H-P4 — RESOLVED: text CRDT for v1.** The P4 gate is CLOSED — `doc.body` is a
-  first-class `text-crdt` Shape; swmr is not an allowed fallback (§1). The former
+- **H-P4 — RESOLVED: text CRDT for v1.** The P4 gate is CLOSED — `doc.body` uses
+  the canonical `text_crdt` profile over CRDT; SWMR is not an allowed fallback
+  (§1). The former
   Q1 (simultaneous vs turn-based), Q2 (policy-over-`log` vs Shape), and Q4
-  (lease-handoff grant) are MOOT: there is no lease. The `text-crdt` taut-shape
-  contract (P4.S1) is REQUIRED, not deferred.
+  (lease-handoff grant) are MOOT: there is no lease. The released
+  `text_crdt.profile/v1` contract is REQUIRED; P4.S1 now owns Glade/Glial
+  integration, not contract creation.
 - **Q3 (save, per §4).** D12/D13 fix the seam (live CRDT layered over the saved
   snapshot; explicit compare-and-replace flush). Still open: autosave cadence, and
   how a `gwz pull` that changes the file under an open session surfaces as a
   compare-and-replace conflict.
-- **Q5.** Very-large documents: does `doc.body` need the `window` shape (viewport)
-  composed with `text-crdt`, or is that deferred? (Ties to D8 — same reassembler;
-  slot reserved.)
+- **Q5.** Very-large documents: is a viewport application view over
+  `text_crdt` deferred, or does it require the future IR-v2 composable-view
+  trigger? `window` MUST NOT be introduced as a shape. Any implementation must
+  state its base delivery/profile, range control, and recovery semantics.
 - **Q6.** GC-2 conflation for the editor (coalesce rapid selection moves; batch
   body deltas) — decided with the gryth-ui tap or here?

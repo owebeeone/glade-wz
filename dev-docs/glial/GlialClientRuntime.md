@@ -1,6 +1,7 @@
 # Glial Client Runtime — persistence first, glade optional, assembly inside
 
-Status: working draft — records the GDL-035 direction (Gianni, 2026-07-05)
+Status: working draft — records the GDL-035 direction (Gianni, 2026-07-05),
+shape catalogue reconciled by GDL-041 (2026-08-28)
 
 Purpose: pin glial's client-side identity. OLD glial was a persistence layer
 (local browser store) — that identity is KEPT and promoted: glial is the
@@ -17,12 +18,15 @@ taps directly to glade sessions; that was scaffolding, not the architecture.
    substrate — SubstrateV1 §5 already says persistence is the degenerate
    share — it assigns OWNERSHIP: the client store is glial's, not the tap's
    and not glade's.
-2. **Assembly happens inside glial.** Glial is taut-shape aware: the delivery-
-   shape engines (log/value/window/text-crdt folds, the §7 reassembler) run in
-   glial, once per **binding instance** (see Boundaries) — not in taps, not in
-   components. Taps declare (via `glade-decl`) and stay thin conduits; glial
-   fans assembled results to every attached tap. Sharing machinery is never
-   per-tap code.
+2. **Assembly happens inside glial.** Glial is Taut-shape aware. The canonical
+   engines/profiles it can execute are exact registered adapter capabilities,
+   never inferred from the catalogue. Current standalone consumers cover
+   `atom`, `stream`, `crdt`, and `text_crdt`; the durable binding-instance fold
+   remains exactly `value`/`log`. A window is an application view reassembled
+   over an explicit base such as `swmr`, not an engine. Assembly runs once per
+   **binding instance** (see Boundaries) — not in taps or components. Taps
+   declare (via `glade-decl`) and stay thin conduits; Glial fans assembled
+   results to every attached tap.
 3. **Rich change events, consumer's choice.** What glial emits to a tap is not
    a bare value but a shape-aware event: enough structure for the receiver to
    choose an incremental patch or a whole-field refresh against its LIVE UI
@@ -35,14 +39,14 @@ taps directly to glade sessions; that was scaffolding, not the architecture.
 | `shape` | which delivery shape produced this |
 | `kind` | `refresh` (whole value present) \| `delta` (incremental) |
 | `value?` | the assembled whole (always available on demand) |
-| `delta?` | shape-specific: appended log entries; value replace; text-crdt ops with **stable position identity** |
+| `delta?` | shape-specific: appended log entries; value replace; `text_crdt` ops with **stable position identity** |
 | `baseSeq` / `meta` | what the delta applies against; origin attribution |
 
-The text-crdt case is why this exists: a multi-line field must apply remote
+The `text_crdt` case is why this exists: a multi-line field must apply remote
 deltas into a live editor without rewriting the field, and the cursor anchors
-to CRDT element identity — position stability is the shape's gift, the event
-envelope just delivers it. (Full editor-binding design deferred to the
-`text-crdt` shape's turn in the contracts track.)
+to CRDT element identity — position stability is the profile's gift, the event
+envelope just delivers it. Its portable contract is released; full Glade binder
+and editor-event integration remains GLP-0006 P4 work.
 
 ## Boundaries
 

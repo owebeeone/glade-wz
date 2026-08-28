@@ -212,5 +212,9 @@ members:
   source_id: src_glade_discover
   active: true
   desired:
-    local_only: true
-  remotes: []
+    branch: main
+  remotes:
+  - name: origin
+    url: git@github.com:owebeeone/glade-discover.git
+    fetch: true
+    push: true
