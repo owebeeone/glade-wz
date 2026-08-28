@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: 4dc5ffd4df47abe49a9bb2e3e5f05f0a4bbe295f
+    commit: cfbb18d709bc703e2314a75e0c0b33e918ad4254
     branch: main
     detached: false
     dirty: false
@@ -33,7 +33,7 @@ members:
     path: glade-decl
     source_id: src_glade_decl
     source_kind: git
-    commit: ccdae14a544d7dedd28c32b0b2a16498e33b366b
+    commit: 99a04e0b960d03cbe92c0ec17321761eda860845
     branch: main
     detached: false
     dirty: false
@@ -42,7 +42,7 @@ members:
     path: glade-decl-py
     source_id: src_glade_decl_py
     source_kind: git
-    commit: 37480bae433a61a2493a4d9a05de0059c5af9230
+    commit: 43cb78358ee54d660852b134f159716e6c9571e6
     branch: main
     detached: false
     dirty: false
@@ -51,7 +51,7 @@ members:
     path: glade-decl-rs
     source_id: src_glade_decl_rs
     source_kind: git
-    commit: 42cca3ce62c3d63e6bfa7027cf2f2cfe1bd62823
+    commit: 2dba7089ea1ba6efee80c8271ba923e5f6deb13f
     branch: main
     detached: false
     dirty: false
@@ -60,7 +60,7 @@ members:
     path: glade-decl-ts
     source_id: src_glade_decl_ts
     source_kind: git
-    commit: 4467e310ddfba206f4e7d6f2c6ff516bbc77f007
+    commit: 7059c1bfbc17e1094af4e4c36164a5039a0ea0a5
     branch: main
     detached: false
     dirty: false
@@ -87,7 +87,7 @@ members:
     path: glial
     source_id: src_glial
     source_kind: git
-    commit: 03578db8aa7b04a661c68501c38c28ca6d4b41f4
+    commit: da069896db606587eaa6c58f28470ad37aaa6762
     branch: main
     detached: false
     dirty: false
@@ -96,7 +96,7 @@ members:
     path: grazel
     source_id: src_grazel
     source_kind: git
-    commit: cbb19baa474662ee69c6b8e5e302bc8ab169182b
+    commit: 643cc2a95d179930b63c637675d04abf93385471
     branch: main
     detached: false
     dirty: false
@@ -132,7 +132,7 @@ members:
     path: taut
     source_id: src_taut
     source_kind: git
-    commit: 5f0c0fd5af43c10b83aff4cba86abc7c0ac92e41
+    commit: 434ca54263002ccafe530094a9b977a9465c9194
     branch: main
     detached: false
     dirty: false

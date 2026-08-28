@@ -32,16 +32,16 @@ concerns. A retention token MUST NOT create or imply a delivery shape.
 
 Catalogue recognition does not grant runtime capability.
 
-- The Glade node and its Rust/TypeScript clients currently accept `value` and
-  `log` for durable binding/fold paths. They reject every other delivery name
-  before registration, store, or chain mutation.
+- The Glade node and its Rust/TypeScript clients accept `value`, `log`, and the
+  exact `glade.swmr.adapter/v1` durable op capability. Local folds remain
+  `value`/`log`; SWMR is never reinterpreted as either.
 - Glade serves `exchange` through its existing provider/service path, never
   through fold dispatch.
 - Glial has tested standalone adapters for `atom`, `stream`, `crdt`, and
-  `text_crdt`, as well as `value` and `log`. Its durable binder/mount path remains
-  exactly `value`/`log` until a versioned Glade adapter is added.
-- `swmr` and `snapshot_delta` have released portable engines and corpora but no
-  Glade/Glial binding adapter yet.
+  `text_crdt`, value/log folds, and a durable SWMR mount that replays through
+  the released `SwmrNode`.
+- `swmr` now has a Glade/Glial binding adapter. `snapshot_delta` remains a
+  separate expiry profile and is not silently enabled by that adapter.
 - Terminal live I/O remains Glade's ordered channel mechanism. It MUST NOT be
   relabelled as the Taut `stream` engine without a versioned adapter contract.
 
@@ -49,22 +49,23 @@ Catalogue recognition does not grant runtime capability.
 
 | ID | Requirement | Present evidence |
 | --- | --- | --- |
-| `GSC-01` | A fold or durable mount MUST dispatch only to an exact implemented adapter; current Glade/Glial folds are `value` and `log`. | `glade/client-ts/test/session.test.ts`; `glade/client-rs/src/session.rs`; `glial/test/shapes.test.ts` |
+| `GSC-01` | A fold or durable mount MUST dispatch only to an exact implemented adapter; Glade durable ops are `value`, `log`, `swmr`, while local folds remain `value` and `log`. | `glade/client-ts/test/session.test.ts`; `glade/client-rs/src/session.rs`; `glial/test/shapes.test.ts` |
 | `GSC-02` | `exchange` MUST remain a separate service path and MUST NOT be folded. | `glade/client-rs/tests/integration.rs`; `glial/test/shapes.test.ts` |
 | `GSC-03` | `message` and `window` MUST be rejected as delivery shapes. | `glade/node/src/appdecl.rs`; `glade/client-ts/test/session.test.ts`; `glial/test/shapes.test.ts` |
 | `GSC-04` | Unknown, unimplemented, or unsupported capabilities MUST fail before registration or mutation. | `glade/dev-docs/GladeShapeDispatch.md`; the three dispatch suites cited above |
 | `GSC-05` | A profile MUST reuse its canonical engine core and MUST retain its own conformance rows. | `taut-shape/release/compatibility.v1.json`; `taut-shape/corpus/` |
 | `GSC-06` | Every application view MUST name an explicit base delivery shape and recovery policy. | GLP-0006 P3 and `dev-docs/glade/suppliers/glade-files.md` |
-| `GSC-07` | A new Glade adapter MUST pin a contract/corpus version and MUST add node, client, and Glial success, failure, and edge-case gates before declarations are accepted. | `glade/dev-docs/GladeShapeDispatch.md`; GLP-0006 checkpoints |
+| `GSC-07` | A new Glade adapter MUST pin a contract/corpus version and MUST add node, client, and Glial success, failure, and edge-case gates before declarations are accepted. | `glade/dev-docs/GladeSwmrAdapter.md`; GLP-0006 checkpoints |
 | `GSC-08` | Retention MUST remain separate from shape and view identity. Ambiguous policies MUST be resolved explicitly, not inferred. | `glade/dev-docs/GladeShapeDispatch.md` (`term.log` follow-up) |
 
 ## Roadmap consequences
 
 1. Taut-shape contract creation and the three-language value matrix are complete;
    roadmap work moves to Glade/Glial adapters and live integration.
-2. GLP-0006 P3.S1 is an `swmr` adapter plus a file-window projection. The D8
-   guarantees remain: viewport-first delivery, background backfill, and one
-   coherent `{workspace_id, path, revision}` generation.
+2. GLP-0006 P3.S1's transport/assembly vertical slice is built: `swmr` adapter,
+   generation-coherent file-window projection, and live demo. The remaining D8
+   work is path-addressed viewport-first delivery and background bulk backfill
+   for one coherent `{workspace_id, path, revision}` generation.
 3. `snapshot_delta` is used only when expiry deliberately requires an
    out-of-band full refresh. The default mutable-file plan uses SWMR's typed
    in-band reset/repair.

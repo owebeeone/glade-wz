@@ -1,7 +1,8 @@
 # Glial Client Runtime — persistence first, glade optional, assembly inside
 
 Status: working draft — records the GDL-035 direction (Gianni, 2026-07-05),
-shape catalogue reconciled by GDL-041 (2026-08-28)
+shape catalogue reconciled by GDL-041 (2026-08-28), SWMR durable adapter built
+2026-08-29
 
 Purpose: pin glial's client-side identity. OLD glial was a persistence layer
 (local browser store) — that identity is KEPT and promoted: glial is the
@@ -21,9 +22,9 @@ taps directly to glade sessions; that was scaffolding, not the architecture.
 2. **Assembly happens inside glial.** Glial is Taut-shape aware. The canonical
    engines/profiles it can execute are exact registered adapter capabilities,
    never inferred from the catalogue. Current standalone consumers cover
-   `atom`, `stream`, `crdt`, and `text_crdt`; the durable binding-instance fold
-   remains exactly `value`/`log`. A window is an application view reassembled
-   over an explicit base such as `swmr`, not an engine. Assembly runs once per
+   `atom`, `stream`, `crdt`, and `text_crdt`; durable binding instances support
+   exact `value`/`log` folds plus canonical `swmr` assembly. A window is an
+   application view reassembled over `swmr`, not an engine. Assembly runs once per
    **binding instance** (see Boundaries) — not in taps or components. Taps
    declare (via `glade-decl`) and stay thin conduits; Glial fans assembled
    results to every attached tap.

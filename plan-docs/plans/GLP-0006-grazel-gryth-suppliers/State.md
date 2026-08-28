@@ -17,10 +17,24 @@ merge.
 Shape-catalogue checkpoint (2026-08-28): **CLOSED and materialized**. GWZ now
 pins the canonical Taut `0.9.*` release train and exact fail-closed Glade/Glial
 dispatch (`GDL-041`, `dev-docs/TautShapeCatalogAdoption.md`). Contract creation
-and the three-language matrix are complete. P3 may start at the Glade `swmr`
-adapter + file-window projection; P4 may start at Glade/Glial `crdt`/
-`text_crdt` integration. Neither lane may bypass the B1–B5 security substrate.
+and the three-language matrix are complete. P3 started with the Glade `swmr`
+adapter + file-window projection recorded below; P4 may start at Glade/Glial
+`crdt`/`text_crdt` integration. Neither lane may bypass the B1–B5 security
+substrate.
 
 Next governance checkpoint: P2 sharing + stage-2 enforcement remains gated on
 WD-1 + AZ-1/2/3. `PlanGladeUsers.md` Phases 0–4 MAY proceed; only its Phase 5
 and the P2 enforcement checkpoint remain behind that gate.
+
+P3.S1 vertical slice (2026-08-29): **BUILT, P3 checkpoint still open**. Glade
+wire/declaration contracts append `swmr`; node and both clients validate
+`glade.swmr.adapter/v1`; the node rejects malformed actions, mixed shapes, and
+second writers before persistence; Glial assembles through released
+`SwmrNode`; `ws.files` now declares SWMR; and the live demo proves
+snapshot→delta→reset→new-snapshot epochs without cross-generation bytes.
+
+Next P3 checkpoint: turn the demo's bounded full-image projection into the
+path-addressed `{workspace_id,path,revision}` viewport/backfill seam, then rule
+the large/binary blob strategy before building `glade-files`. Authoritative
+write acknowledgement remains an explicit residual; node rejection MUST NOT be
+treated as an acknowledged optimistic local write.

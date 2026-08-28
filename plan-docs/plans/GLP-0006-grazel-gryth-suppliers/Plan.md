@@ -160,6 +160,10 @@ S3.
   `{workspace_id,path,revision}` generation. The range is control/view state,
   never a `window` shape. Use `snapshot_delta` only where expiry deliberately
   requires out-of-band full refresh. Closes the audit's s-window PARTIAL.
+  **2026-08-29:** the exact adapter, `ws.files` declaration migration,
+  canonical Glial assembly, bounded full-image projection, and live demo are
+  built. Remaining S1 work is path-addressed viewport control, bulk backfill,
+  authoritative write acknowledgement, and the complete D8 generation key.
 - **S2 — blob strategy** (P3-gate ruling) + implementation: large binaries
   content-addressed, never ops-in-chains; Chunk frame or iroh-blobs per
   ruling.
