@@ -1,0 +1,196 @@
+schema: gwz.marker/v0
+gwz_commit_id: 01a04ad4-c9b6-7c63-a7e7-d2adb3ced008
+workspace_id: ws_default
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1787961854410
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: f872df7650eb4940cdbf9ffb91046de2b4257800
+  branch: main
+selected_targets:
+- '@root'
+- mem_glade_decl
+- mem_glade_decl_ts
+- mem_glade_decl_rs
+- mem_glade_decl_py
+- mem_ggg_viz
+- mem_glade
+- mem_grip_core
+- mem_grip_react
+- mem_taut
+- mem_taut_shape
+- mem_glial
+- mem_grip_react_demo
+- mem_taut_shape_rs
+- mem_taut_shape_ts
+- mem_grazel
+- mem_glade_chat
+- mem_glade_gwz
+- mem_glade_discover
+committed_targets:
+- '@root'
+members:
+  mem_ggg_viz:
+    path: ggg-viz
+    source_id: src_ggg_viz
+    source_kind: git
+    commit: f0b8c4f6a45063ee900077624053069925b47354
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade:
+    path: glade
+    source_id: src_glade
+    source_kind: git
+    commit: cfbb18d709bc703e2314a75e0c0b33e918ad4254
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_chat:
+    path: glade-chat
+    source_id: src_glade_chat
+    source_kind: git
+    commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl:
+    path: glade-decl
+    source_id: src_glade_decl
+    source_kind: git
+    commit: 99a04e0b960d03cbe92c0ec17321761eda860845
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_py:
+    path: glade-decl-py
+    source_id: src_glade_decl_py
+    source_kind: git
+    commit: 43cb78358ee54d660852b134f159716e6c9571e6
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_rs:
+    path: glade-decl-rs
+    source_id: src_glade_decl_rs
+    source_kind: git
+    commit: 2dba7089ea1ba6efee80c8271ba923e5f6deb13f
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_ts:
+    path: glade-decl-ts
+    source_id: src_glade_decl_ts
+    source_kind: git
+    commit: 7059c1bfbc17e1094af4e4c36164a5039a0ea0a5
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_discover:
+    path: glade-discover
+    source_id: src_glade_discover
+    source_kind: git
+    commit: 65fc18bebc56562b9b43db5254b087e28f3ff3f9
+    branch: main
+    detached: false
+    dirty: true
+    materialized: true
+  mem_glade_gwz:
+    path: glade-gwz
+    source_id: src_glade_gwz
+    source_kind: git
+    commit: e53c87dddb8f40f050d3bd18cb77d96e21a73ed1
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glial:
+    path: glial
+    source_id: src_glial
+    source_kind: git
+    commit: da069896db606587eaa6c58f28470ad37aaa6762
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grazel:
+    path: grazel
+    source_id: src_grazel
+    source_kind: git
+    commit: 643cc2a95d179930b63c637675d04abf93385471
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_core:
+    path: grip-core
+    source_id: src_grip_core
+    source_kind: git
+    commit: 97ff6c26f12e2808cd794d2947a852d7c16e4e22
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_react:
+    path: grip-react
+    source_id: src_grip_react
+    source_kind: git
+    commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_react_demo:
+    path: grip-react-demo
+    source_id: src_grip_react_demo
+    source_kind: git
+    commit: c1bf60df3d4f56fc1c5faa2bb5c8c6692e98816d
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut:
+    path: taut
+    source_id: src_taut
+    source_kind: git
+    commit: 434ca54263002ccafe530094a9b977a9465c9194
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape:
+    path: taut-shape
+    source_id: src_taut_shape
+    source_kind: git
+    commit: 9a752094dbede65babcc6c44185f64cef4c6e974
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_rs:
+    path: taut-shape-rs
+    source_id: src_taut_shape_rs
+    source_kind: git
+    commit: 4154bb7953c30c3695f125d15268de3d37980d4d
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_ts:
+    path: taut-shape-ts
+    source_id: src_taut_shape_ts
+    source_kind: git
+    commit: 137f843edddfef64dadc8b550834d9c9a5a6f74f
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
