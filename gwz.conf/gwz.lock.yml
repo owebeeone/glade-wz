@@ -96,7 +96,7 @@ members:
     path: grazel
     source_id: src_grazel
     source_kind: git
-    commit: 643cc2a95d179930b63c637675d04abf93385471
+    commit: a07af54e837b2243425d91c6b07869632369d606
     branch: main
     detached: false
     dirty: false
