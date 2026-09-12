@@ -14,6 +14,32 @@
 4. Verify: run relevant tests, lint, and type checks.
 5. Report: summarize changed files, why, and residual risks.
 
+## Library Boundaries and Fast Feedback
+
+Current delivery context: start Glade architecture/build work with
+[`dev-docs/GladeBuildEntry.md`](dev-docs/GladeBuildEntry.md) and the linked
+source-qualified problem capture. The owner has parked Gyld's next phase to
+prioritize Glade. Read the selected slice's canonical sources; the capture is
+not a replacement specification or authority to weaken existing contracts.
+
+Before introducing a library, changing a public interface, adding a dependency,
+or changing test selection, read and follow
+[`dev-docs/LibraryBoundaryAndTestingPolicy.md`](dev-docs/LibraryBoundaryAndTestingPolicy.md).
+It requires explicit library roles, meaningful trait/interface contracts for
+replaceable implementations, minimal dependencies, and fast isolated tests.
+Pure state machines and protocol/data libraries require justified classifications,
+not artificial marker traits. Agents MUST NOT relax classifications or dependency
+allowlists merely to make a check pass; record and obtain review of the change.
+
+For Glade-specific package boundaries and staging, also read
+[`dev-docs/GladePackageArchitecture.md`](dev-docs/GladePackageArchitecture.md).
+Its constraints apply; package names and extractions remain proposals.
+Run the adopting repository's architecture gate alongside relevant package tests.
+In `glade-discover`, use `./scripts/check-architecture.sh`. Do not substitute a
+whole-workspace test run for the normal minor-edit loop, or omit affected-consumer
+checks when changing a contract. Other repositories need explicit gate adoption;
+do not claim they are already covered.
+
 ## Definition Of Done
 - Tests added/updated and passing.
 - Existing relevant tests still passing.
