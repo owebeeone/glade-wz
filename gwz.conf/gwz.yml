@@ -1,3 +1,6 @@
+# Machine-managed by gwz. Hand edits to gwz.conf/ are detected and refused.
+# Structural changes: `gwz repo <add|clone|create|detach|attach|sync>`.
+# Already edited? Revert it, or `gwz init --update --force` to accept this state.
 schema: gwz.workspace/v0
 workspace:
   id: ws_default
@@ -218,3 +221,11 @@ members:
     url: git@github.com:owebeeone/glade-discover.git
     fetch: true
     push: true
+- id: mem_glade_gyld
+  path: glade-gyld
+  type: git
+  source_id: src_glade_gyld
+  active: true
+  desired:
+    local_only: true
+  remotes: []
