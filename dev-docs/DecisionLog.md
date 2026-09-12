@@ -58,7 +58,51 @@ G* design work.
 | `GDL-041` | Canonical Taut shape catalogue | Adopt the canonical catalogue pinned by `TautShapeCatalogAdoption.md`: engines are `value`, `atom`, `log`, `stream`, `swmr`, and `crdt`; `snapshot_delta` and `text_crdt` are profiles over SWMR and CRDT; `unary` is an interaction kind; Glade `exchange` remains a separate correlated service path; `message` is unsupported; `window` is an application projection over an explicit base shape. Recognition MUST NOT imply runtime support, and unsupported paths MUST fail closed before mutation. This supersedes D8/H-P4 category wording while preserving their file-view and collaborative-editing guarantees. | **ratified 2026-08-28** |
 | `GDL-039` | Zones vocabulary (domain/zone/surface) | Adopt `glade/dev-docs/GladeZones.md` (implemented+verified 2026-06-14, rediscovered during repo reconciliation 2026-07-06): domain→`share`, zone→`key` (commons \| private(self) + future axes), surface→`glade_id`; grants gate commons joins, privacy is a key (AZ §4a); D8 refined — each zone is its own chain. `BindingDecl` carries domain/zone (`GladeDeclSurface.md`). Open sub-items (from its §Open): axis vocabulary, account-domain shape, domain anchoring, wire field naming. Code status: grip-core ShareDecl +domain/zone and glade client-ts changes are UNCOMMITTED — commit adjudication pending (Gianni). | open (implemented, pending ratify) |
 
+## Package and registry discussion decisions (2026-09-05)
+
+| ID | Topic | Outcome / remaining question | Status |
+| --- | --- | --- | --- |
+| `GDL-042` | Independent library contracts and fast feedback | Owner requires minimal library dependencies, interface/implementation separation for replaceable services, TDD/conformance checks, and fast isolated testing rather than a full-system run for every minor edit. The reusable policy is [LibraryBoundaryAndTestingPolicy.md](LibraryBoundaryAndTestingPolicy.md); the Glade-specific proposal is [GladePackageArchitecture.md](GladePackageArchitecture.md). Exact crate extraction, budgets, and wider CI adoption remain open. Explicit classifications preserve pure state-machine/data boundaries without meaningless marker traits. | **constraints adopted 2026-09-05; decomposition open** |
+| `GDL-043` | Renewable registry advertisements and acceptance | Owner identifies ephemeral registry state. Proposed: renewable provider advertisements, local acceptance, asynchronous replication, idempotent retry and partition reconciliation. Exact receipt/freshness guarantees remain open. Existing discovery v3.1 persistence-before-acceptance/gossip remains mandatory; availability expiry does not discard authority history or source fencing. See [GladePackageArchitecture.md](GladePackageArchitecture.md) §5 and [GladeArchitectureDiscussion.md](GladeArchitectureDiscussion.md) GAD-06. | **proposal; receipt contract open** |
+| `GDL-044` | Interface-only host tranche while lifecycle research proceeds | Owner authorizes trait contracts and canonical TDD tests now. Three independent opt-in contract crates cover transport, signatures, and canonical-operation storage, with no production adapters/demo changes. Generic Send futures and exact receipt/error semantics are draft review choices; lifecycle orchestration, public discovery receipts, trust policy, shard placement and atomic accepted-intent/clock transactions remain open. See [DraftHostContracts.md](../glade-discover/dev-docs/DraftHostContracts.md). | **draft contracts added; production implementation not authorized by this tranche** |
+| `GDL-045` | Acceptance, registry, trust and placement draft contracts | Owner authorizes steps 1–3: atomic accepted-intent recovery, publish/renew/resolve, and independent trust/shard-location seams with canonical tests and adversarial review. Four new contract crates preserve the existing demo and implementations. Receipts mean durable local acceptance, not replication; authorization requires complete source scope and per-operation reevaluation. Namespace authority proof schema, real storage crash safety, lifecycle orchestration and implementation approval remain open. See [RegistryContractDraft.md](../glade-discover/dev-docs/RegistryContractDraft.md). | **draft contracts added; no production cutover** |
+| `GDL-046` | Broader Glade contract-first tranche | Owner authorizes extending traits/tests beyond discovery without production implementation or demo cutover. The independent `glade/contracts` workspace now covers persistence, binding resolution, invocation, subscriptions, replica synchronization and resource lifecycle. Existing declarations are reused; other ports use associated binding/cursor types, with no node/runtime imports. Canonical tests, rejection witnesses and adversarial review cover the draft profile; wire/security integration, real durability, scheduling and schema decisions remain separate. See [ApplicationContractDraft.md](../glade/dev-docs/ApplicationContractDraft.md). | **draft interfaces/tests added; stable API ratification and production adapters remain open** |
+
 ## Notes
+
+GDL-049 — Owner direction, 2026-09-12: use **sdax-rs** as Glade's async orchestration
+manager. sdax-rs is the owner's Rust declarative async lifecycle library (crates `sdax`
+std-only core, `sdax-tokio` runtime adapter, `sdax-testkit`; stages 0–3 landed with
+conformance, Monte Carlo and adversarial review; private at github.com/owebeeone/sdax-rs,
+not yet on crates.io). It sits at the runtime host (Runtime services and NodeAssembly),
+beside owner-selected Shaku; domain contracts and pure crates stay framework-free (arch1
+A5 is unchanged: no domain API requires it). Consequences: the open async witness
+(DI-E01..E04, AR-08) becomes the sdax-rs plus Shaku witness; the matrix row R28/Q10
+lean "compose Tokio primitives in-house" is superseded by this direction; the frozen
+research report `Rust Async Lifecycle Orchestration.md` predates sdax-rs and is stale on
+its "no Rust equivalent exists" finding, kept unedited as the sdax program's input.
+Publication posture is a shared blocker with garns-rust: Glade can consume it as a Git
+dependency now, from crates.io only after publication. This records a direction, not a
+completed integration or a lifecycle conformance result.
+
+GDL-048 — Owner selection, 2026-09-09: use **Shaku** for Glade dependency injection
+and record it in the Gyld architecture. Candidate 1 revision 3 adds the assembly-only
+library dependency, with a regression witness that domain components/contracts do
+not depend on it. This selects the technology, not a production Cargo installation,
+public-trait change, completed async bridge or automatic lifecycle guarantee.
+The [reading map](arch1/ReadingMap.md) separates product capabilities from wiring
+and assurance views; its display grouping does not change package boundaries.
+
+GDL-047 — Owner direction, 2026-09-09: evaluate Shaku and Dill, especially scoped
+injection and testing. GWZ's AppContext was a rescue from uncontrolled wiring,
+not the selected Glade pattern. [The evaluation](arch1/DependencyInjectionEvaluation.md)
+records 23 runtime probes and four expected compile failures against pinned releases;
+Shaku is the assistant's preferred next witness, not an adopted dependency.
+[Graph revision 2](arch1/InjectionGraphRefinement.md) adds explicit bindings and
+cleanup relationships and separates pure DirectoryRules from the live facade.
+These are proposals; existing public async contracts, production manifests, demo
+and dependency/test-selection policy are unchanged. Async bridging, complete wiring
+and cancellation/partial-startup conformance remain unresolved.
 
 - These decisions are derived from the current stack documents in this folder.
 - No decision is considered closed until it is reflected in the future detailed
