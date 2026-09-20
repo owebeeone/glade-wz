@@ -33,7 +33,7 @@ members:
     path: glade-decl
     source_id: src_glade_decl
     source_kind: git
-    commit: bbce73d67146124780c3f5fc226d032618aa446c
+    commit: d671f10c13e6d8f3e3da0b80a6d9ee924aa23681
     branch: main
     detached: false
     dirty: false
@@ -51,10 +51,10 @@ members:
     path: glade-decl-rs
     source_id: src_glade_decl_rs
     source_kind: git
-    commit: 555a97746fc6b9841d984ea46dcfbde02f3f98d5
+    commit: 21eefa1c3a5317becb77e313645785f5478fbf4b
     branch: main
     detached: false
-    dirty: true
+    dirty: false
     materialized: true
   mem_glade_decl_ts:
     path: glade-decl-ts
