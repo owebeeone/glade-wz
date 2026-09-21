@@ -678,6 +678,69 @@ running in parallel). Step 3.2's re-bind therefore waits for the release with a 
 the node's own tests do with two seconds. An immediate bind that fails is not a leak; a
 bind that still fails at the bound is.
 
+**Update, 2026-09-21, from Phases 1 and 2.** Both phases are complete and the gate is
+green at glade `dce5e21` (18 tests in `fast`, 23 in `real`, 7 in `ports`). Each claim below
+was checked against the source it cites before being written here. Items 1 to 5 bind
+Phase 3; items 3 and 6 to 9 bind the Phase 4 write-up.
+
+1. **Step 3.3 cannot import Phase 1's bridge.** `architecture-policy.json` does not let
+   `async-witness-real` depend on `async-witness-fast`, and §7 forbids widening an
+   allowlist to make a check pass. Step 3.3 declares its own facade traits in `real`, a
+   trait and a blanket impl per port. That suits the design, since a facade is local to
+   one assembly. "Depends on 1.1" means the pattern, not the crate.
+2. **Step 3.6 cannot run the engine on `sdax_testkit::FakeClock` on a real runtime.** Its
+   `sleep` answers `Pending` without registering a waker
+   (`crates/sdax-testkit/src/clock.rs:59-71` at the pinned rev), so a task sleeping on it
+   on a multi-thread tokio runtime never wakes unless something else polls it. sdax's own
+   multi-thread conformance suite uses a scaled real clock instead
+   (`crates/sdax-tokio/tests/conformance/multi_thread.rs:157`). Step 3.6 drives the engine
+   with a scaled clock, or with a driver that advances the fake clock and wakes the
+   sleeper, and says which. What the step has to show is unchanged: two clocks, and
+   neither appears in `async-witness-ports`.
+3. **`tracked() == 0` alone does not prove nothing was abandoned.** When a budget expires,
+   sdax aborts the async task as well as listing it
+   (`crates/sdax/src/host/engine/cleanup.rs:310-333`), so `TokioRuntime::shutdown` still
+   answers `Ok(())` and the count still falls to zero. `report.incomplete` is the
+   abandonment signal. `Err(n)` is reachable only for a blocking step, which cannot be
+   aborted; the node's synchronous `Store` (§3.3) is where that would bite, and tokio's
+   runtime drop then waits for it with no budget. §8.3's clauses stand, but `tracked()`
+   is read together with an empty `report.incomplete`, never on its own.
+4. **For Step 3.1's `cx.hold(...)`.** The factory returns the bare value, not an `Arc`:
+   returning `Arc<PeerEndpoint>` makes the held type `Arc<Arc<PeerEndpoint>>`. `hold`
+   consumes the `Cx<Acquire>`, so take `cx.shared()` first if the continuation needs the
+   clock or cancellation. The bind goes inside the factory, because registration happens
+   in the poll that sees the factory return `Ok`. The acquire and release closures are
+   `Fn + Send + Sync + 'static`, so clone what they capture on each call.
+5. **A dropped `Running` handle is not invisible.** It cancels the run and leaves one
+   tracked drainer, and the release graph still runs in reverse. This holds on a
+   multi-thread runtime only. The pinned rev also offers
+   `TokioRuntime::current_thread_no_background_drain`, which this plan did not mention;
+   the witness does not use it.
+6. **sdax runs a run's release graph exactly once.** `ManagedResource` asks for a shutdown
+   that can be retried without repeating finished cleanup, so the Step 2.3 adapter owns
+   the retry and sdax owns each attempt, over only what is still outstanding. A Glade
+   supervisor would need the same loop above sdax. This is reported against R28/Q10 and is
+   not a defect. The adapter lives in the test target, because `glade-lifecycle-api` is a
+   dev-dependency; Step 2.3's "Touches" column was loose about that.
+7. **Step 1.3's third diagnostic is E0599 at the natural call site, not E0277.** A
+   multibound interface gets no `HasComponent` impl at all, so there is no `resolve`
+   method to call. E0277 appears only where the bound is named explicitly. Both call
+   sites are in the fixture and both diagnostics are in the witness README. DI-E03 is
+   still met, because the ambiguity fails to compile. Shaku's diagnostics do not tell
+   nothing-bound from two-things-bound.
+8. **§4.4's `std::net` claim cannot be checked from a manifest,** because `std::net` is in
+   the standard library. Phase 1 substituted a compile-time assertion over the `fast`
+   crate's one source file. Phase 4 words the claim that way.
+9. **The `#[cfg]` scanner gap of §4.5 is wider than stated.** The checker's own refusal of
+   `#[path]` modules sits behind the same "skip it if it is conditional" test, so
+   `#[cfg_attr(all(), path = "hidden.rs")]` compiles a whole module the scanner never
+   sees, and the gate reports `PASS`. A required method behind `#[cfg(all())]` does fail
+   closed. Both directions were measured and the table is in the witness README; the
+   fixture is `fast/examples/cfg_scanner_gap.rs`, which breaks the standing rule of §7 on
+   purpose and says so at its head. The dependency half of the gate reads
+   `cargo metadata` and is not affected. The checker belongs to `glade-discover`; the
+   witness does not change it.
+
 ### Phase 4 — the verdict
 
 | Step | Goal | Touches | Test / observable result | Depends on |
