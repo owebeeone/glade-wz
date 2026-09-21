@@ -744,3 +744,121 @@ against it by this change.
 bundle also carries the first build under Gyld's corrected branch rule, where a chosen
 alternative opens the questions it implies, which moved nothing in the four streams it holds
 because none of their selections implies a question.
+
+## Revision v5, 2026-09-21: `metadata_exposure` and `relay_posture`
+
+The third correction, and the first that is STRUCTURAL rather than a correction of
+words. Revisions v3 and v4 moved a docstring and nothing else; this one changes the
+graph, so the entry below lists what moved in the declaration as well as the old and
+new text. Two records are touched and no other. Nothing is ruled here either: no
+status changed, no alternative is marked `Preferred`, no trigger was added and no
+question was renamed.
+
+**What moved in the declaration.**
+
+- `MetadataExposure` gains `offers = Offers[LegibleByDesign, GrantedSharesOnly,
+  PolicyZoneSplit, OpaqueWireIds]`, four new `Alternative` classes beside it, four new
+  members on the root `GladeDecisions`, and a third source tag,
+  `GladeMetadataExposureTable §7`. Its status stays `Open`, its matrix row stays `R8`,
+  and it stays branch-induced: `node_trust` and `gossip_overlay` still imply it.
+- `Topology.implies` loses `RelayPosture` and keeps `TrafficBudgetNumbers`. Nothing on
+  `RelayPosture` itself moved: same docstring, same `Lean`, same matrix row `Q1`, same
+  sources, same `Requires[TransportKeyBinding, VersionPin]`, same three alternatives
+  with the same recorded lean on `self_hosted`, and no gate was put in the branch's
+  place.
+- Counts, for the record: 45 alternatives become 49, six `Implies` edges become five,
+  and `relay_posture` leaves the `branch-induced` tier for `third`, which is where
+  `GladeDecisionGraph.md` §2 had always placed it. Twenty four questions, five
+  triggers, twenty `Requires` edges, six gates, the four answerable-now questions and
+  all thirteen recorded leans are exactly what they were.
+
+### `metadata_exposure` - matrix row `R8`
+
+*declared as `MetadataExposure`, status `Open`. The question line is untouched; the
+stakes paragraph moved, four alternatives were added where there were none, and
+`GladeMetadataExposureTable §7` joins `GDL-010` and `WD-3` as a source.*
+
+- **Question, unchanged**: What can a node or relay learn about a share it holds no grant for?
+- **OLD stakes**: Which envelope fields, workspace ids, share ids, provider claims and topic identifiers may be visible to a relay-only peer is an open ruling, and the security analysis wants a table saying exactly what each scope model leaks. Content does not flow without a grant either way; this is about what is learned from the outside.
+- **NEW stakes**: The table the sources asked for now exists (GladeMetadataExposureTable). Transport encryption hides everything from a relay but endpoint ids, timing and volume, while an accepted node is handed the whole directory, and as of 2026-09-21 nothing in the node checks a grant before serving a share. The four answers are a ladder: each one includes the one before it.
+
+**Alternatives.** There were none; these four are new, and none of them is marked.
+
+- `legible_by_design`: Accept that any node the operator accepts sees the whole directory in plaintext: every workspace id, share id, principal name and grant, plus the heads of any share it asks for. Nothing is built and debugging stays readable. The security analysis's advice to treat readable names as sensitive is refused rather than deferred, and a node later found to be someone else's has already read the list.
+- `granted_shares_only`: Filter what a peer or session is offered by the grants its operator or principal holds, at the one point the sync path already names, so nothing of a share reaches a node with no grant for it. It makes this question's own premise true for one fold query on the serve path. The directory still replicates whole, so share ids, principal names and the grant table stay visible to every accepted node, and a stale fold needs a defined fail direction.
+- `policy_zone_split`: Keep the directory replicating everywhere, but move the policy streams into a zone only nodes holding a policy grant receive, using the per-zone chains that already make a zone filterable. An ungranted node then learns that shares exist but not who may touch them. It costs a second replication rule, a boot path for a node that has the shares but not the policy, and the property that the directory is one ordinary share.
+- `opaque_wire_ids`: Replace share, glade and origin ids on the wire with opaque derived ids, keeping the readable names in a mapping only granted peers hold. It is the only option that closes the name leak against a relay and a lookup service as well as a peer, and the only one that matches the table the security analysis drafted. It costs a wire change, the readability of every log, trace and test, and a mapping kept correct forever.
+
+**Why it changed.**
+
+The old stakes paragraph did two things that stopped being true. It said the table the
+security analysis wants is wanted, which was right until the table was written; and it
+closed with "content does not flow without a grant either way", which the table found
+false of the code. `serve_peer_subscribe` takes a `Subscribe` frame from any linked
+peer, acks with the zone's heads, ships the gap and then feeds it live, with no
+authorization step anywhere on that path; `grants_for` exists and is never called
+outside tests. So the question was reassuring a reader about the one thing that is
+actually open. The new paragraph says what is true today in three clauses - what a
+relay gets, what an accepted node gets, and that no grant is checked before a share is
+served - and then says the shape of the answers, because that is what a reader needs
+to choose between them.
+
+The four alternatives are §7's four candidates, written the way the graph writes
+alternatives: what taking it means, then what it costs. They are a ladder rather than
+a menu, each rung including the one below it, and they are mutually exclusive as a
+ruling. None is marked `Preferred`, which is deliberate twice over: the table is
+evidence and the ruling is the owner's, and the capture host refuses a preferred
+alternative on an `Open` question anyway.
+
+**Stands on.**
+
+- glade/GladeMetadataExposureTable.md, `7. Candidate alternatives for metadata_exposure`, lines 432-470: the four candidates and the ladder reading, which is what the declaration now carries.
+- The same document, `6.1 Content flows to any accepted peer that asks for it`: the premise the old stakes paragraph closed with does not hold in the code, which is why that sentence is gone.
+- The same document, `3.1 Observers outside the node`: iroh's transport encryption gives a relay the endpoint ids, the timing, the volume and the two addresses and nothing else, which is the first clause of the new paragraph.
+- The same document, `6.4 The ids are legible, and the security analysis says they should not be`: the security analysis wants human-readable workspace, binding and principal names treated as sensitive metadata, which is the cost `legible_by_design` names and the leak `opaque_wire_ids` closes.
+- `GDL-010` and `WD-3` are unchanged and still cited: the table was written to answer them, so it joins them rather than replacing them.
+
+### `relay_posture` - matrix row `Q1`
+
+*declared as `RelayPosture`, status `Lean`. No text moved at all. One `Implies` edge
+did, and it belonged to `Topology` rather than to this question.*
+
+- **Text, unchanged**: Whose relays and whose DNS does the first real route run on?
+- **OLD structure**: live only if `scope_model = topology` is taken, and unanswerable until then; tier `branch-induced`.
+- **NEW structure**: an ordinary question, placed by its own `Requires` depth at tier `third`, blocked by `transport_key_binding` and `version_pin` and saying so.
+
+**Why it changed.**
+
+The branch made the question conditional on an alternative nobody took. The owner
+ruled `scope_model = node_trust` on 2026-09-21, so the one question that governs the
+whole route column - whose relays, whose DNS - was not on the graph at all, while a
+relay is not optional for a real route: iroh falls back to one automatically when
+hole-punching fails, and address lookup has to resolve somewhere. Whose infrastructure
+that is, and what a relay operator therefore sees, is a metadata decision under every
+scope model and not a consequence of topology scoping. Topology scoping does change
+the relay SIZING, which is why the edge was drawn in the first place; sizing is inside
+`traffic_budget_numbers`, which `topology` still implies, so nothing is lost by taking
+this question off the branch.
+
+No gate was put in its place, and it was not re-hung on `metadata_exposure` or on the
+first-real-route slice, both of which §6.6 offered. Hanging it on `metadata_exposure`
+would make it conditional again, on a question that is itself branch-induced; gating
+it on the slice would say it is not worth answering until a real route exists, and
+choosing whose relay to run is work that has to happen before one can. Its two
+prerequisites already say what it waits for.
+
+**Stands on.**
+
+- glade/GladeMetadataExposureTable.md, `6.6 The relay and DNS question is gated behind a branch that was not taken`, lines 415-428: the finding, and its note that the choice is a metadata decision under every scope model rather than only under topology. That section says the fix is a graph edit and that the document does not make it; this is the owner making it.
+- The eight rulings of 2026-09-21, `scope_model = node_trust` among them, which are what left the branch untaken.
+- GladeDecisionGraph.md, `2. Tiers`: that document already listed relay posture in the Third tier with transport-key binding and version pin as its prerequisites, so the declaration now agrees with the reading aid. The branch-point bullet for topology and the one dashed edge in its mermaid graph are corrected to match.
+
+**What it is published as.** The base declaration is lineage `glade-decision-graph`
+revision `v5`, snapshot digest
+`ae7cb39eda9064b0dff21edc465d11fd6865a3906009aec85f06d2386f1e4a98`. The rebuilt bundle
+is `artifacts/decision-streams-v12` and `GladeDecisionIndex.md` is regenerated from it;
+`artifacts/decision-streams-v11` holds revision `v4` and stays exactly as it was. This
+is the first revision whose change is drawn: the `decisions` and `status` lenses carry
+four new Offers lines and draw 31 edges rather than 32, the `branch` lens 9 nodes and 9
+edges rather than 10 and 10, and every tier grouping and decide-now list in the bundle
+moves with `relay_posture`.
