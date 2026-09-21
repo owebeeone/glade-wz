@@ -4,6 +4,9 @@ Status: **DRAFT for the owner's review**, 2026-09-21, written against glade
 commit `4467696`. **Nothing here is a ruling.** It is evidence assembled so a
 ruling can be made.
 
+Update 2026-09-21: §7's four candidates are now `metadata_exposure`'s
+alternatives and `relay_posture` is an ordinary question, in gyld `d544824`.
+
 Purpose: produce the table `IrohGladeMapping.md` §5.2 names as the deliverable
 GDL-010 needs — "exactly which of `TopicId`, share id, origin ids and head
 hashes a non-granted node observes", per scope model — and answer

@@ -52,8 +52,7 @@ everything below it.
 Three alternatives reshape other questions rather than merely preceding them:
 
 - **Scope model = topology.** One gossip instance per share with its own ALPN, so
-  connections multiply per peer; that feeds the traffic budget numbers and the
-  relay sizing in the relay posture.
+  connections multiply per peer; that feeds the traffic budget numbers.
 - **Scope model = node trust.** Non-granted trusted nodes may learn share ids and
   heads; the metadata exposure question (GDL-010, WD-3) must be answered instead.
 - **Scope model = cryptography.** Per-share payload encryption and the blind-relay
@@ -132,7 +131,6 @@ flowchart TB
   Slice -.-> Sim
 
   ScopeModel -. if topology .-> Budgets
-  ScopeModel -. if topology .-> Relay
   ScopeModel -. if node trust .-> Metadata
   ScopeModel -. if cryptography .-> Blind
   Dissemination -. if gossip .-> Budgets
