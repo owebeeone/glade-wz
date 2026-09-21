@@ -741,6 +741,76 @@ Phase 3; items 3 and 6 to 9 bind the Phase 4 write-up.
    `cargo metadata` and is not affected. The checker belongs to `glade-discover`; the
    witness does not change it.
 
+**Update, 2026-09-22, from Phase 3.** All six steps are complete and the gate is green at
+glade `5f2658f` (71 tests: 7 in `ports`, 18 in `fast`, 46 in `real`). The lane owner reran
+the gate, the `real` suite five times in a row and twice more under load; all passed. Each
+claim below was checked against the test or the source line it names. All of it binds the
+Phase 4 write-up.
+
+1. **Step 3.4's two runs did not diverge.** With and without the Shaku module step the
+   reports are identical field for field, both are `is_clean()`, and both free every port
+   within the bound. That held in both running orders and over three repeated pairs
+   (`real/tests/differential.rs`). No fault of any kind arose, so §8.1 has nothing to
+   attribute to either side, and no §9.2 trigger fired.
+2. **The release sequence is not an observable; the partial order is.** Pairs the plan
+   declares unordered finish in either order, and did: three distinct total orders in six
+   runs of the same configuration. The differential compares what `release_order()`
+   declares, and one test asserts that the pairs left out are exactly the unordered ones.
+3. **§4.2's predicted risk did not arise, for a reason §4.2 does not state.** The Shaku
+   module's `Arc` clones do not keep the socket bound, because the provider gives its
+   handles up by value: `WitnessEndpoint` owns its `PeerEndpoint` as a
+   `Mutex<Option<..>>`, and the release body takes it and calls `close(self)`. That shape
+   was forced by sdax, not by Shaku. For an async release sdax leaves the resource's `Arc`
+   in its slots and takes the value out only for a by-drop release
+   (`crates/sdax/src/host/bodies.rs:404-421`). A provider that closed a clone would leave
+   the port bound with or without Shaku. §8.4 caveat 3 is therefore read together with
+   the by-value design: a module that deliberately outlives its step holds no socket
+   (`a_module_that_outlives_the_step_holds_no_socket`), but only because the carrier it
+   holds owns nothing by then. Reported against R28/Q10: an async release body cannot be
+   handed the owned value.
+4. **A leaked handle is invisible to the sdax report.** With one endpoint clone escaping,
+   the run is `is_clean()`, `incomplete` is empty, `shutdown` answers `Ok(())` and
+   `tracked()` is 0, while the UDP port is still bound at the two-second bound; it frees
+   within microseconds of the clone being dropped. An escaped `Connection` does the same
+   (measured: held for 2.005 s, free 41 µs after the drop). Of §8.3's clauses only the
+   re-bind sees a leak; `is_clean()` is necessary and not sufficient
+   (`real/tests/peer_release.rs`).
+5. **iroh 1.2.0 runs on `noq` 1.3.0, not quinn.** Quinn is not in the witness's graph at
+   all. The driver's exit condition (`noq-1.3.0/src/endpoint.rs:471-476`: the connection
+   map is empty, and either no handle is left or `close` was called) settles nothing about
+   the socket in either direction, so item 4 rests on the measurement. iroh's own note
+   stands: the UDP sockets close only once every clone of the endpoint is dropped
+   (`iroh-1.2.0/src/endpoint.rs:1717-1718`). On a clean run the port was already free at
+   the first poll, in 5 to 22 µs; the bound stays at two seconds.
+6. **Step 3.3's "release" is a completion obligation.** An sdax step has no release body,
+   so `release_order().before(MODULE, ACCEPTOR)` orders the step's completion before the
+   endpoint's release, as Phase 2 asserted for its exchange step. A plain component
+   override put the acquired handle into the module; the registered constructor did not
+   run (counter 0, and a separate test binary shows the counter does move when nothing is
+   overridden).
+7. **Step 3.5's fixture is executable and in the gate.** `arch002-fixture.sh` works on a
+   copy, never on the live manifests. It passes only on
+   `ARCH-002 async-witness-ports: undeclared dependency normal:shaku`, after a positive
+   control on the untouched copy, and each of its failing branches was produced on
+   purpose. `cargo metadata --no-deps` does not check the lockfile against a manifest
+   edit, which is why the fixture stays offline. §4.5 names two inversions; `check.sh` has
+   inverted the tree from six frameworks since Phase 0, and none reaches the ports crate.
+8. **Step 3.6 used a witness-own clock, not a scaled one.** A scaled clock still measures
+   wall time, so agreement would be a fact about machine load. `WitnessClock`
+   (`real/src/two_clocks.rs`) records wakers, wakes them when advanced, and says how many
+   deadlines an advance crossed: ticks one to nine cross none, the tenth crosses exactly
+   one, and the port's `FakeClock` reads 500 ms for the same wait. A second test advances
+   them apart and shows the disagreement. `Running::poll` is what launches the engine
+   (`crates/sdax-tokio/src/running.rs:339`), so the ticking shares a `join!` with the run.
+9. **Two facts about `async-witness-ports` are caveats to state, not failures.** Its ports
+   carry an `Any + Send + Sync` bound and its futures are a boxed `PortFuture`. Both date
+   from Phase 0, both are inside the witness's own port crate, and no Glade contract was
+   changed; `git log -- ports/` shows nothing after Phase 0. §8.4 says an unrecorded
+   caveat is a failure, so Phase 4 records them.
+10. **Measured so far** (rustc 1.96.0, Apple silicon, 12 cores, `dev` profile): the whole
+    gate warm in about 5 s, the `real` suite in about 2.9 s, a cold build of `real` in
+    33 s and 1.6 GB. §9.2's build-cost trigger is nowhere near.
+
 ### Phase 4 — the verdict
 
 | Step | Goal | Touches | Test / observable result | Depends on |
