@@ -665,6 +665,19 @@ Needs both earlier phases.
 
 3.2 and 3.5 are independent of each other after 3.1. 3.4 is the gate for Phase 4.
 
+**Update, 2026-09-21, from Phase 0.** `PeerEndpoint` could only be dropped: it had no
+`close()` and its endpoint field is private, so the witness could not await iroh's drain.
+The owner ruled that the node gets a graceful `close()` (glade `22e3cd3`). It is a change
+the node needs anyway, made outside the witness, and it is the one exception to §10's
+"the node is not edited". Two facts from it bind Steps 3.1 to 3.4. First, `close(self)`
+consumes the handle, and iroh frees the UDP socket only when every clone is gone; after it
+resolves, `accept` on a remaining clone answers `Ok(None)`. Second, iroh gives no signal
+for the socket being released: its driver task ends a few milliseconds after `close`
+resolves and the last handle drops (measured at 6 to 10 ms with the node's whole suite
+running in parallel). Step 3.2's re-bind therefore waits for the release with a bound, as
+the node's own tests do with two seconds. An immediate bind that fails is not a leak; a
+bind that still fails at the bound is.
+
 ### Phase 4 — the verdict
 
 | Step | Goal | Touches | Test / observable result | Depends on |
