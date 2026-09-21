@@ -571,7 +571,7 @@ The bound is not *only* Shaku's. An injected port is shared as
 `Arc<dyn CarrierPort>` across tasks on a multi-thread runtime, which needs `Sync`
 whatever assembles it, and `Any` is a `'static` bound that any `'static` type
 already satisfies. All three are `std` traits and the crate never names Shaku. But
-the coincidence is a coincidence, and it is honest to record that the port was
+the match is not a coincidence, and it is honest to record that the port was
 written knowing what `shaku::Interface` demands — which is a blanket impl over
 every `T: Any + Send + Sync` with no `?Sized` (`shaku-0.6.3/src/component.rs:47-55`).
 
@@ -579,6 +579,72 @@ every `T: Any + Send + Sync` with no `?Sized` (`shaku-0.6.3/src/component.rs:47-
 crate, it dates from Phase 0, and `git log -- ports/` is two commits, `b2b6779` and
 `8a7ed44`, both Phase 0. §8.2's reopen clause is about adding `Sync` "to a Glade
 contract"; none was touched.
+
+**Lane owner's probe, 2026-09-22: would a real Glade contract have to change?**
+The witness left this open, because its own ports name all three bounds. Glade's
+injectable contracts today declare `Send + Sync` and none names `Any`:
+`Subscriber` (`glade/contracts/subscription-api/src/lib.rs:104`), `Invoker`
+(`glade/contracts/invocation-api/src/lib.rs:64`), `SnapshotStore`
+(`glade/contracts/persistence-api/src/lib.rs:58`), `ReplicaSync`
+(`glade/contracts/sync-api/src/lib.rs:62`) and `BindingResolver`
+(`glade/contracts/binding-api/src/lib.rs:54`). A scratch crate outside the
+workspace, on `shaku =0.6.3` and the same toolchain, tried both forms over a
+stand-in trait of that shape:
+
+```rust
+use std::sync::Arc;
+
+use shaku::{module, Component, HasComponent};
+
+// Stands in for a Glade contract: `Send + Sync`, no `Any`, no framework.
+pub trait InvokerLike: Send + Sync {
+    fn answer(&self) -> i64;
+}
+
+// The assembly-local facade. `'static` is asked of the IMPLEMENTATION, here in
+// the assembly crate, so the contract stays as it is.
+pub trait Inv: InvokerLike + shaku::Interface {}
+impl<T: InvokerLike + 'static> Inv for T {}
+
+#[derive(Component)]
+#[shaku(interface = Inv)]
+struct RealInvoker;
+
+impl InvokerLike for RealInvoker {
+    fn answer(&self) -> i64 {
+        42
+    }
+}
+
+module! {
+    Assembly {
+        components = [RealInvoker],
+        providers = []
+    }
+}
+
+fn main() {
+    let module = Assembly::builder().build();
+    let facade: Arc<dyn Inv> = module.resolve();
+    let port: Arc<dyn InvokerLike> = facade; // trait upcasting
+    assert_eq!(port.answer(), 42);
+}
+```
+
+That compiles, resolves through a Shaku module, upcasts to the contract and runs.
+The witness's own blanket form, `impl<T: InvokerLike> Inv for T {}`, does not
+compile over the same trait: `error[E0310]: the parameter type T may not live long
+enough`. So the `Any` on the witness's ports is avoidable — the facade can ask
+`'static` of the implementation, in the assembly crate — and bridging one of
+Glade's `Send + Sync` contracts needs no change to the contract. The two contracts
+that are `Send` only, `ManagedResource`
+(`glade/contracts/lifecycle-api/src/lib.rs:57`) and `Subscription`
+(`glade/contracts/subscription-api/src/lib.rs:61`), are handles whose methods take
+`&mut self` and return `impl Future`, so they are not dyn-compatible at all. That is
+the shape the plan's §3.5 rules out as a Shaku interface for `ManagedResource`, and
+`Subscription` has the same shape. The probe is not in the workspace and not in the
+gate; it is recorded here so the caveat can be weighed, and it changes no finding
+in §1.
 
 ### Caveat 5 — `async-witness-ports` boxes its port futures
 
@@ -660,9 +726,10 @@ change and it was not made to please a container.
   The relay and discovery questions are elsewhere on the graph and the witness
   touches neither.
 - **The DI-E02 race is a probe, not a search.** Two threads meet at a barrier and
-  both resolve once, per test run. The lane owner separately recorded running the
-  compiled binary 200 times without a failure (glade `aa3c5da`'s commit message);
-  that figure is not in the witness `README.md` and was not re-run in Phase 4. A
+  both resolve once, per test run. Step 1.4 also recorded running the compiled test
+  binary 200 times without a failure, and the only place that is written down is
+  glade `aa3c5da`'s commit message; the figure is not in the witness `README.md`,
+  is not asserted by any test, and was not re-run in Phase 4. A
   passing race is evidence that this construction is atomic. It is not an
   exhaustive interleaving search, and two threads and a barrier are a probe rather
   than a proposed Glade threading architecture.
