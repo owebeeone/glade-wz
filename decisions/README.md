@@ -29,6 +29,12 @@ the notebook:
 
         version_pin_ruling = use(VersionPinRuling)
 
+One notebook can hold as many answers as you like: each time you answer a
+question, the desk adds those few lines to the notebook and leaves everything
+else in the file exactly as it was, comments and all. Answering the same question
+twice in one notebook is refused, and it says so plainly — to change an answer,
+open the file, edit the lines above and press Rebuild.
+
 Gyld checks every notebook each time the desk rebuilds. It refuses an answer
 that is not one of the offered ones, a second answer to the same question, and
 an answer to a question whose prerequisites are still open.
