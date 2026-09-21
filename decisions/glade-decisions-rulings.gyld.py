@@ -24,14 +24,18 @@ gyld-stream-record:
 from glade_decisions import (
     BindingRecord,
     BumpToCurrent,
+    Dissemination,
     GladeDecisions,
+    IdentityAdapters,
     KeyCustody,
     LifecycleComposition,
     NodeTrust,
+    NoneInV1,
     ProofFamily,
     RecoveryKeys,
     ScopeModel,
     SdaxRs,
+    SyncRoundOnly,
     TautGrants,
     TransportKeyBinding,
     VersionPin,
@@ -107,6 +111,27 @@ class ProofFamilyRuling(Ruling):
     selects = Selects[TautGrants]
 
 
+class DisseminationRuling(Ruling):
+    """Sync round only. Everything runs on the owner's own nodes for now, so noticing a change at the next round costs nothing; it adds no 0.x dependency and leaves no shared topic for the node-trust metadata leak. Gossip can be added later behind the carrier port without undoing anything, since the sync round is the repair path either way; revisit when a feature across nodes needs changes to arrive faster than a round.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T12:18:45Z"
+    decides = Decides[Dissemination]
+    selects = Selects[SyncRoundOnly]
+
+
+class IdentityAdaptersRuling(Ruling):
+    """No adapter in v1: device certificates and grants made by hand, with the trust-provider interface declared and unimplemented. No user with a company directory exists yet, and each adapter is someone else's system to keep working; if one ships later it is OIDC, the one job AZ §2 left to JWT at the edge.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T12:18:45Z"
+    sources = ("AZ §2",)
+    decides = Decides[IdentityAdapters]
+    selects = Selects[NoneInV1]
+
+
 @model
 class GladeDecisionsRulings(GladeDecisions):
     """rulings root: every member base carries, with nothing added yet."""
@@ -116,3 +141,5 @@ class GladeDecisionsRulings(GladeDecisions):
     version_pin_ruling = use(VersionPinRuling)
     transport_key_binding_ruling = use(TransportKeyBindingRuling)
     proof_family_ruling = use(ProofFamilyRuling)
+    dissemination_ruling = use(DisseminationRuling)
+    identity_adapters_ruling = use(IdentityAdaptersRuling)
