@@ -22,6 +22,7 @@ gyld-stream-record:
 """
 
 from glade_decisions import (
+    AsyncWitness,
     BindingRecord,
     BumpToCurrent,
     Dissemination,
@@ -33,8 +34,11 @@ from glade_decisions import (
     NoneInV1,
     ProofFamily,
     RecoveryKeys,
+    RelayPosture,
     ScopeModel,
     SdaxRs,
+    SelfHosted,
+    ShakuConfirmed,
     SyncRoundOnly,
     TautGrants,
     TransportKeyBinding,
@@ -132,6 +136,28 @@ class IdentityAdaptersRuling(Ruling):
     selects = Selects[NoneInV1]
 
 
+class AsyncWitnessRuling(Ruling):
+    """The witness passes: DI-E01 to E04 are met on Glade's own carrier port over a real iroh endpoint, with sdax-rs owning start-up and cleanup, and the same plan run with and without Shaku does not diverge. Shaku stays at assembly only. Carried forward: every real provider in a test composition is overridden or lazy, and a provider whose close consumes its handle gives it up by value, because a leaked handle is invisible to the sdax report. The evidence is dev-docs/arch1/AsyncWitnessResult.md.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T16:03:27Z"
+    sources = ("DependencyInjectionEvaluation", "GDL-048")
+    decides = Decides[AsyncWitness]
+    selects = Selects[ShakuConfirmed]
+
+
+class RelayPostureRuling(Ruling):
+    """Run our own iroh-relay for the first real route, admitting only allow-listed endpoint ids, so the only party that sees which nodes talk, from where, when and how much is us. No address lookup service for the fixed-peer slice: a peer's address is its endpoint id plus our relay's URL. If lookup is ever needed, iroh-dns-server is self-hosted too. n0's free relays never carry real data.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T16:03:27Z"
+    sources = ("IrohReview §7", "GladeDiscoveryModel §5")
+    decides = Decides[RelayPosture]
+    selects = Selects[SelfHosted]
+
+
 @model
 class GladeDecisionsRulings(GladeDecisions):
     """rulings root: every member base carries, with nothing added yet."""
@@ -143,3 +169,5 @@ class GladeDecisionsRulings(GladeDecisions):
     proof_family_ruling = use(ProofFamilyRuling)
     dissemination_ruling = use(DisseminationRuling)
     identity_adapters_ruling = use(IdentityAdaptersRuling)
+    async_witness_ruling = use(AsyncWitnessRuling)
+    relay_posture_ruling = use(RelayPostureRuling)
