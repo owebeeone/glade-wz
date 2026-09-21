@@ -22,14 +22,18 @@ gyld-stream-record:
 """
 
 from glade_decisions import (
+    BindingRecord,
     BumpToCurrent,
     GladeDecisions,
     KeyCustody,
     LifecycleComposition,
     NodeTrust,
+    ProofFamily,
     RecoveryKeys,
     ScopeModel,
     SdaxRs,
+    TautGrants,
+    TransportKeyBinding,
     VersionPin,
 )
 
@@ -82,6 +86,27 @@ class VersionPinRuling(Ruling):
     selects = Selects[BumpToCurrent]
 
 
+class TransportKeyBindingRuling(Ruling):
+    """A signed binding record in the node's own chain names its iroh endpoint key. The node already binds with the identity from node.key and keeps the iroh key transport-only, and recovery keys mean identity must survive a transport key being replaced; one key for both roles is simpler only until the first rotation.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T12:05:58Z"
+    decides = Decides[TransportKeyBinding]
+    selects = Selects[BindingRecord]
+
+
+class ProofFamilyRuling(Ruling):
+    """Keep the encoding our own: a chain of signed taut grants, each link signed by its parent and only ever narrowing scope, with one corpus proving Rust, TypeScript and Python agree on the bytes. Owning the format keeps the recovery rule ours to write; the cost is that no outside tool can mint or check a Glade proof, which is felt at identity_adapters.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-21T12:05:58Z"
+    sources = ("AZ §2",)
+    decides = Decides[ProofFamily]
+    selects = Selects[TautGrants]
+
+
 @model
 class GladeDecisionsRulings(GladeDecisions):
     """rulings root: every member base carries, with nothing added yet."""
@@ -89,3 +114,5 @@ class GladeDecisionsRulings(GladeDecisions):
     scope_model_ruling = use(ScopeModelRuling)
     key_custody_ruling = use(KeyCustodyRuling)
     version_pin_ruling = use(VersionPinRuling)
+    transport_key_binding_ruling = use(TransportKeyBindingRuling)
+    proof_family_ruling = use(ProofFamilyRuling)
