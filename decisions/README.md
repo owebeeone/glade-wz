@@ -33,6 +33,11 @@ Gyld checks every notebook each time the desk rebuilds. It refuses an answer
 that is not one of the offered ones, a second answer to the same question, and
 an answer to a question whose prerequisites are still open.
 
+When that happens the desk puts the notebook back exactly as it was, so nothing
+here is left half-answered and every other stream goes on working. The Decide
+window tells you why, in Gyld's own words, and the answer you typed stays in the
+box so you can fix it and send it again.
+
 If you answer inside one of the sample notebooks that ship with Gyld
 (`stream-a`, `stream-b`, `fork-a`), the desk puts your copy here and leaves the
 shipped sample untouched. Your copy is the one the desk uses from then on.
