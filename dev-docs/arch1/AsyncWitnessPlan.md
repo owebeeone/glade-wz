@@ -577,6 +577,19 @@ remote is SSH-only with anonymous access explicitly unverified
 owner must confirm the rev on the remote and decide the access story. This is an owner
 action; the plan does not assume it.
 
+**Update, 2026-09-21, after the owner pushed.** `origin/main` is now
+`ccf06e76a90e22a454471a71f0cf6f5cb878baac`, and it contains both lane tips, `7ec4b67` and
+`4599e3d`. **Pin `ccf06e7`, not `ce339a5`**, in all three entries above. Against the
+reading this plan was written from (`7ec4b67`) the library differs by 109 added lines, all
+in `crates/sdax/src` (`required_output.rs` is new, `recovery.rs` grew, `lib.rs` gained
+three lines); `sdax-tokio` and `sdax-testkit` are unchanged, so §3.6 stands. Step 2.2
+should check whether the new required-output rule changes what `report.is_clean()` means.
+The owner has also decided the repository can be public. As of this note it is still
+private (an anonymous `git ls-remote` is refused), so Step 0.0 is half done: the rev is
+confirmed, and the access story is decided but not yet in effect. Until the visibility
+changes the URL stays the SSH form above; once it is public, use
+`https://github.com/owebeeone/sdax-rs` so that a fresh clone needs no credentials.
+
 ---
 
 ## 6. The phased plan
@@ -597,7 +610,7 @@ Goal: an empty but complete, gated, reproducible workspace. No witness logic yet
 
 | Step | Goal | Touches | Test / observable result | Depends on |
 |---|---|---|---|---|
-| 0.0 | **Owner action, not an agent step.** Confirm `ce339a5` is on `github.com/owebeeone/sdax-rs`; decide SSH credentials or public visibility | nothing in these repos | `git ls-remote` shows the rev; a scratch crate outside all workzones resolves the three Git deps | — |
+| 0.0 | **Owner action, not an agent step.** Confirm `ce339a5` is on `github.com/owebeeone/sdax-rs`; decide SSH credentials or public visibility. *(2026-09-21: the rev to pin is now `ccf06e7` and the owner chose public visibility, not yet in effect; see the update in §5.)* | nothing in these repos | `git ls-remote` shows the rev; a scratch crate outside all workzones resolves the three Git deps | — |
 | 0.1 | Create the workspace skeleton: root `Cargo.toml` with three members, `.gitignore` with `/target/` and `!Cargo.lock`, a README stating harness-not-production | new `glade/dev-docs/async-witness/` | `cargo metadata --no-deps --locked --offline` succeeds; `Cargo.lock` is tracked | — |
 | 0.2 | `async-witness-ports`: `ClockPort`, `CarrierPort`, `FakeClock`, fake carrier. Zero framework dependencies | ports crate | Compiles with `glade-wire` as its only dependency; `cargo tree -p async-witness-ports` shows one edge | 0.1 |
 | 0.3 | Adopt the architecture gate: `architecture-policy.json` classifying the three members plus `glade-wire` and `glade-decl`, and a `check.sh` copied from `glade/contracts/check.sh` | policy + script | Gate passes; a scratch edit adding `shaku` to the ports manifest makes it fail with `ARCH-002` | 0.1 |
