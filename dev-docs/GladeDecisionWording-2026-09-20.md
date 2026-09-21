@@ -649,3 +649,44 @@ A trigger is an event, not a question, so it still opens with the event.
 ## What I could not stand on anything
 
 Some cited tags resolve to no passage at all in the source index, and the wording above leans on the matrix row or on the declaration's own edges instead. They are `DependencyInjectionEvaluation` and `GladePersistenceReview` and `GLResearchConsolidatedFindings` (bare document names, which the index cannot resolve to a row or a heading), `AZ §2-§6`, `AZ §2`, `AZ §7a`, `GladeDiscoveryModel §5`, `GladeDirectoryNotes ambiguity 2` and `SEC-55 trust providers` (free-text locators), and `B4`, `B5`, `GAD-04`, `GAD-05`, `GPI-03`, `GLA-072`, `INV-5`, `INV-D5`, `INV-D6`, `AR-08` and `A5` (row ids no document in the index declares). I found every one of them by hand and quoted them above, so the wording stands on real text; the source index still reports them unresolved, which is a separate thing to fix if you want it fixed.
+
+## Revision v3, 2026-09-21: `version_pin`
+
+One correction, made after everything above was written. It is a correction of a PREMISE
+rather than of prose, so the entry below reads the revision `v2` text as its OLD. Nothing
+else on this page moved, and no other question was touched.
+
+### `version_pin` - matrix row `Q2`
+
+*declared as `VersionPin`, status `Lean`. Status, matrix row, sources, `Requires`, `Offers`
+and the recorded lean are all untouched; only the three docstrings moved.*
+
+- **OLD question**: Do we move iroh off the locked 1.0.2 to 1.2.0 now, and pin each 0.x crate by hand?
+- **NEW question**: Do we require iroh 1.2 or later, and pin each 0.x crate exactly when we add one?
+- **OLD stakes**: The lockfile resolves 1.0.2, and 1.1.0 fixed a crash on a crafted address, which matters the moment addresses are read from untrusted input such as tickets or directory records. The 1.x line promises wire compatibility; the protocol crates are 0.x and outside that promise, so they need pins of their own.
+- **NEW stakes**: The node's lockfile is not tracked, so nothing in the repository pins iroh: a fresh clone resolves the newest 1.x, and an old checkout keeps whatever it last resolved (this one kept 1.0.2 until 2026-09-21). 1.1.0 fixed a crash on a crafted address, which matters the moment addresses are read from untrusted input such as tickets or directory records. The manifest is therefore the only place a minimum can be recorded. The 1.x line promises wire compatibility; the protocol crates are 0.x and outside that promise, so each needs an exact pin of its own when it is first added.
+
+**Alternatives.**
+
+- `bump_to_current`
+  - OLD: Move to 1.2.0 now, picking up the 1.1.0 fixes for crafted address input, the relay CPU pin and NAT misrouting. The manifest already admits it, so this is the lockfile.
+  - NEW: Require 1.2 or later in the manifest now, so no checkout can build a release that still has the crafted-address crash, the relay CPU pin or NAT misrouting. One tracked line; the node's tests pass on 1.2.0.
+- `stay_on_lock`
+  - OLD: Stay on 1.0.2 until the first real route is built. Nothing moves today, and the address-parsing fix is not in place when untrusted addresses first arrive.
+  - NEW: Leave the requirement at any 1.x until the first real route is built. Nothing to maintain today, and nothing stops a stale checkout from building a release with the address-parsing crash when untrusted addresses first arrive.
+
+**Why it changed.**
+
+The old sentence called `node/Cargo.lock` the thing that pins iroh, and it is git-ignored. So the repository pinned nothing at all: the 1.0.2 this page, IrohReview §1 and IrohReview §11 all read as what Glade was on was one checkout's stale resolution, a fresh clone would have resolved the newest 1.x, and "move off the lock" was a choice nobody could have recorded anywhere a reader could see. The manifest is the only place a minimum can be written down, so that is what the question now asks about: whether we require 1.2 or later there, and whether each 0.x protocol crate gets an exact pin of its own as it is added. The owner raised that floor on 2026-09-21, `iroh = "1.2"` in `node/Cargo.toml` at glade `74ffeb0`, and the two alternatives are now leaving the floor at any 1.x or requiring 1.2 or later, which is what the recorded lean already pointed at.
+
+**Stands on.**
+
+- glade/node/.gitignore: `/Cargo.lock`, so the node's lockfile is not a tracked file and nothing committed to the repository resolves a version.
+- glade `74ffeb0`, "Require iroh 1.2 or later in the node": `iroh = "1.2"` in `node/Cargo.toml`, built and tested against iroh 1.2.0, iroh-dns 1.3.0 and noq 1.3.0, with the node's 61 tests passing, including the dial, hello, sync, exchange and mesh tests that run over real iroh.
+- glade/dev-docs/IrohReview.md, `11. Observations for glade`, the dated update under **Version gap**: the review's own record that the 1.0.2 above it was a stale resolution and not a pin. The review is verified against 2026-09-12 and is otherwise left as written.
+
+**What it is published as.** The base declaration is lineage `glade-decision-graph` revision
+`v3`, snapshot digest
+`443ab91bb03c3b46bc2f065ec65f883a5929a2943d0afed9a47fecc8081a8475`. The rebuilt bundle is
+`artifacts/decision-streams-v10` and `GladeDecisionIndex.md` is regenerated from it;
+`artifacts/decision-streams-v9` holds revision `v2` and stays exactly as it was.
