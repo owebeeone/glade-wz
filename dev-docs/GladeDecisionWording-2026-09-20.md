@@ -690,3 +690,57 @@ The old sentence called `node/Cargo.lock` the thing that pins iroh, and it is gi
 `443ab91bb03c3b46bc2f065ec65f883a5929a2943d0afed9a47fecc8081a8475`. The rebuilt bundle is
 `artifacts/decision-streams-v10` and `GladeDecisionIndex.md` is regenerated from it;
 `artifacts/decision-streams-v9` holds revision `v2` and stays exactly as it was.
+
+## Revision v4, 2026-09-21: `ucan`
+
+A second correction, of one alternative rather than a question. It is again a correction of a
+PREMISE and not of prose: the sentence was true when it was written and had stopped being
+true, so the entry below reads the revision `v2` and `v3` text, which is the same text, as
+its OLD. Nothing else on this page moved, `proof_family` itself was not touched, and no
+other alternative was.
+
+### `ucan` - an alternative of `proof_family`, matrix row `Q6`
+
+*declared as `Ucan`, offered by `proof_family` beside `taut_grants`, `biscuit` and
+`macaroons`. The question, its status, its sources, its `Requires`, its `Offers` list and the
+recorded lean on `taut_grants` are all untouched; one docstring moved.*
+
+- **OLD**: Adopt UCAN, whose proofs are JWT-shaped. The delegation semantics are close to what the grant chain already does, and it puts JWT inside Glade, which AZ §2 kept out.
+- **NEW**: Adopt UCAN, whose delegation semantics are close to what the grant chain already does. Since version 1.0 its proofs are DAG-CBOR in UCAN's own envelope and no longer JWT, so AZ §2's case against JWT does not apply to it. What remains is an IPLD encoding with its own identifiers, which Glade does not control and the taut corpus does not cover.
+
+**Why it changed.**
+
+The old sentence led with an encoding UCAN no longer has and then argued against the
+alternative on that basis. JWT-shaped proofs were the 0.x drafts; UCAN is at version 1.0.0
+and requires DAG-CBOR carried in the specification's own envelope, with JWT surviving only as
+a historical reference. So the decisive-sounding half of that box, that adopting UCAN would
+put JWT inside Glade and AZ §2 kept JWT out, was an argument against something the candidate
+does not do, and an owner reading the graph was being pushed off a choice by an expired fact.
+The corrected text leads with the delegation semantics, which is the real reason UCAN is on
+the list at all, says what the encoding actually is, and keeps the cost that did not expire:
+DAG-CBOR is an IPLD encoding with its own identifiers, Glade does not control it, and the
+taut corpus proves nothing about it in any of the three languages. That cost is now the whole
+case against, which is a weaker case than the page made before and is the honest one. Nothing
+was decided here: `proof_family` is still `Lean` on `taut_grants` and no ruling was recorded
+against it by this change.
+
+**Stands on.**
+
+- The UCAN specification repository, `github.com/ucan-wg/spec` at version 1.0.0, its README
+  and its `Encoding` and `Envelope` sections: DAG-CBOR in UCAN's own envelope is what a 1.0
+  proof is, and JWT appears as a historical reference rather than as a carrier. Verified
+  2026-09-21.
+- `AZ §2` is unchanged and is still what it was: it kept JWT out of Glade. What moved is that
+  the section no longer reaches UCAN, not that the section was wrong.
+- The taut grant corpus, which is what `taut_grants` stands on: it proves the three languages
+  agree about signed taut grants, and it says nothing about IPLD, which is why the corrected
+  text names that gap as the cost rather than leaving it implied.
+
+**What it is published as.** The base declaration is lineage `glade-decision-graph` revision
+`v4`, snapshot digest
+`3d6487dd82d2fbeccd832f21f29edb99ba57adc2151e630533527fe61d5e3232`. The rebuilt bundle is
+`artifacts/decision-streams-v11` and `GladeDecisionIndex.md` is regenerated from it;
+`artifacts/decision-streams-v10` holds revision `v3` and stays exactly as it was. That
+bundle also carries the first build under Gyld's corrected branch rule, where a chosen
+alternative opens the questions it implies, which moved nothing in the four streams it holds
+because none of their selections implies a question.
