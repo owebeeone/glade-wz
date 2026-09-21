@@ -310,7 +310,7 @@ They are independent clones that **diverged at `ce339a5`**; neither object store
 the other's HEAD. There is no mainline tip among them: they are two sibling lanes both
 called `main`.
 
-**Pin `rev = "ce339a59eefcd136562b16f4f20035c29ef0c988"`.** It is `origin/main` in both
+**Pin `rev = "ce339a59eefcd136562b16f4f20035c29ef0c988"`.** *(Superseded the same day, once the owner pushed both lanes: pin `ccf06e7`; see the update in §5.)* It is `origin/main` in both
 clones, it is the only one of the three commits reachable from the remote, and because
 both lanes changed only tests and documents, the library you compile is identical at all
 three. Nothing is lost. The authoring lane (`7ec4b67`) is the line to follow *afterwards*,
@@ -546,13 +546,13 @@ workspace alone.
 ```toml
 # glade/dev-docs/async-witness/real/Cargo.toml — illustrative, not yet written
 [dependencies]
-sdax       = { git = "ssh://git@github.com/owebeeone/sdax-rs", package = "sdax",       rev = "ce339a59eefcd136562b16f4f20035c29ef0c988" }
-sdax-tokio = { git = "ssh://git@github.com/owebeeone/sdax-rs", package = "sdax-tokio", rev = "ce339a59eefcd136562b16f4f20035c29ef0c988" }
+sdax       = { git = "https://github.com/owebeeone/sdax-rs", package = "sdax",       rev = "ccf06e76a90e22a454471a71f0cf6f5cb878baac" }
+sdax-tokio = { git = "https://github.com/owebeeone/sdax-rs", package = "sdax-tokio", rev = "ccf06e76a90e22a454471a71f0cf6f5cb878baac" }
 shaku      = "=0.6.3"
 glade-node = { path = "../../../node" }
 
 [dev-dependencies]
-sdax-testkit = { git = "ssh://git@github.com/owebeeone/sdax-rs", package = "sdax-testkit", rev = "ce339a59eefcd136562b16f4f20035c29ef0c988" }
+sdax-testkit = { git = "https://github.com/owebeeone/sdax-rs", package = "sdax-testkit", rev = "ccf06e76a90e22a454471a71f0cf6f5cb878baac" }
 ```
 
 - **sdax-rs from Git at an explicit `rev`**, as `LifecycleCompositionRuling` requires.
@@ -584,11 +584,11 @@ reading this plan was written from (`7ec4b67`) the library differs by 109 added 
 in `crates/sdax/src` (`required_output.rs` is new, `recovery.rs` grew, `lib.rs` gained
 three lines); `sdax-tokio` and `sdax-testkit` are unchanged, so §3.6 stands. Step 2.2
 should check whether the new required-output rule changes what `report.is_clean()` means.
-The owner has also decided the repository can be public. As of this note it is still
-private (an anonymous `git ls-remote` is refused), so Step 0.0 is half done: the rev is
-confirmed, and the access story is decided but not yet in effect. Until the visibility
-changes the URL stays the SSH form above; once it is public, use
-`https://github.com/owebeeone/sdax-rs` so that a fresh clone needs no credentials.
+The owner then made the repository public, the same day: an anonymous
+`git ls-remote https://github.com/owebeeone/sdax-rs refs/heads/main` answers `ccf06e7`.
+The three entries above now use the `https` URL and that rev, so a fresh clone needs no
+credentials. **Step 0.0 is done.** What remains of it is its own test: a scratch crate
+outside every workzone resolving the three Git dependencies, which Step 0.4 does anyway.
 
 ---
 
@@ -610,7 +610,7 @@ Goal: an empty but complete, gated, reproducible workspace. No witness logic yet
 
 | Step | Goal | Touches | Test / observable result | Depends on |
 |---|---|---|---|---|
-| 0.0 | **Owner action, not an agent step.** Confirm `ce339a5` is on `github.com/owebeeone/sdax-rs`; decide SSH credentials or public visibility. *(2026-09-21: the rev to pin is now `ccf06e7` and the owner chose public visibility, not yet in effect; see the update in §5.)* | nothing in these repos | `git ls-remote` shows the rev; a scratch crate outside all workzones resolves the three Git deps | — |
+| 0.0 | **Owner action, not an agent step.** Confirm `ce339a5` is on `github.com/owebeeone/sdax-rs`; decide SSH credentials or public visibility. *(Done 2026-09-21: the rev to pin is `ccf06e7` and the repository is public; see the update in §5.)* | nothing in these repos | `git ls-remote` shows the rev; a scratch crate outside all workzones resolves the three Git deps | — |
 | 0.1 | Create the workspace skeleton: root `Cargo.toml` with three members, `.gitignore` with `/target/` and `!Cargo.lock`, a README stating harness-not-production | new `glade/dev-docs/async-witness/` | `cargo metadata --no-deps --locked --offline` succeeds; `Cargo.lock` is tracked | — |
 | 0.2 | `async-witness-ports`: `ClockPort`, `CarrierPort`, `FakeClock`, fake carrier. Zero framework dependencies | ports crate | Compiles with `glade-wire` as its only dependency; `cargo tree -p async-witness-ports` shows one edge | 0.1 |
 | 0.3 | Adopt the architecture gate: `architecture-policy.json` classifying the three members plus `glade-wire` and `glade-decl`, and a `check.sh` copied from `glade/contracts/check.sh` | policy + script | Gate passes; a scratch edit adding `shaku` to the ports manifest makes it fail with `ARCH-002` | 0.1 |
