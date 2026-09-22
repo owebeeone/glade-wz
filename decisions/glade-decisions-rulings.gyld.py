@@ -25,6 +25,7 @@ from glade_decisions import (
     AsyncWitness,
     BindingRecord,
     BumpToCurrent,
+    CommunityDevOnly,
     Dissemination,
     GladeDecisions,
     GrantedSharesOnly,
@@ -39,7 +40,6 @@ from glade_decisions import (
     RelayPosture,
     ScopeModel,
     SdaxRs,
-    SelfHosted,
     ShakuConfirmed,
     SyncRoundOnly,
     TautGrants,
@@ -150,14 +150,14 @@ class AsyncWitnessRuling(Ruling):
 
 
 class RelayPostureRuling(Ruling):
-    """Run our own iroh-relay for the first real route, admitting only allow-listed endpoint ids, so the only party that sees which nodes talk, from where, when and how much is us. No address lookup service for the fixed-peer slice: a peer's address is its endpoint id plus our relay's URL. If lookup is ever needed, iroh-dns-server is self-hosted too. n0's free relays never carry real data.
+    """Community relays for now: n0's free public relays carry development and the first route, with no address-lookup service and peers named directly. This is not a primary architecture decision: the relay is a configuration value, and our own iroh-relay with an allowlist takes over before real data or before a node that is not ours joins. Until the accept-time check on the binding record lands, endpoint ids stay on our own machines, since on a public relay they are the only lock on the door.
 
-    Drafted by claude-fable-5-1, accepted by gianni."""
+    Drafted by claude-fable-5-1, accepted by gianni. Replaces the self_hosted ruling of 2026-09-21T16:03:27Z."""
     principal = "gianni"
-    stamp = "2026-09-21T16:03:27Z"
+    stamp = "2026-09-22T04:59:18Z"
     sources = ("IrohReview §7", "GladeDiscoveryModel §5")
     decides = Decides[RelayPosture]
-    selects = Selects[SelfHosted]
+    selects = Selects[CommunityDevOnly]
 
 
 class MetadataExposureRuling(Ruling):
