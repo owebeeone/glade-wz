@@ -81,6 +81,8 @@ corrections as the process permits. The object is **accepted at `3b60234` after 
 three `-Review<Axis>-4.md` reports reported GO; this accepts the assessment and the
 amendment shape only.** The three open P3s and the Surface residual ride the
 amendment's own commit (slice plan Phase 2), not another revision of this document.
-Round accounting closes: round 1 (`b132b7e` → `1defe3b`), round 2 (`1defe3b` →
-`c26211d`), round 3 (`c26211d` → `3b60234`); 46 findings raised across the three
-rounds and four revisions, 43 closed by their raising reviewers, 3 open at P3.
+Round accounting closes: remediation round 1 (`b132b7e` → `1defe3b`), round 2
+(`1defe3b` → `c26211d`), round 3 (`c26211d` → `3b60234`). Across the four review
+rounds 53 numbered findings were raised (29 on revision 1, 16 on revision 2, 6 on
+revision 3, 2 on revision 4); 51 are closed by their raising reviewers and 2 stand
+open at P3 (CON-P3-11, SAF-P3-13), beside the un-numbered Surface residual.

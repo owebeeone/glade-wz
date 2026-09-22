@@ -5,8 +5,8 @@ Status: assessment + amendment proposal, revision 4 — **accepted at glade-wz r
 of `a617c33`) after `-ReviewConsistency-4.md`, `-ReviewSafety-4.md` and
 `-ReviewSurface-4.md` reported GO; this accepts the assessment and the amendment
 shape only.** The amendment itself (§4) is not made, the rulings R1–R11 are not
-made, and nothing is published by this acceptance. Three P3s stand open as riders on
-the amendment's own commit, not on this document: SAF-P3-13 (§4.7 row 9's assertion
+made, and nothing is published by this acceptance. Two P3s and one recorded residual
+stand open as riders on the amendment's own commit, not on this document: SAF-P3-13 (§4.7 row 9's assertion
 is stated in tree-wide units; a single registry sees its files' share), CON-P3-11
 (R9's option (s) has no §4.7 row), and the Surface axis's standing residual (no
 user-facing page is named for the grammar to move to). **No code, schema or corpus
