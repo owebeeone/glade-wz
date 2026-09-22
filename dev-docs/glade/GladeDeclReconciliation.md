@@ -1,14 +1,68 @@
 # Glade Declaration Reconciliation — `glade-decl` vs the node, 2026-09-21
 
-Status: assessment + amendment proposal, **DRAFT**, revision 2. **No code, schema
+Status: assessment + amendment proposal, **DRAFT**, revision 3. **No code, schema
 or corpus changed by this document.** It exists to make the amendment a SINGLE
 edit.
 
-**Review status: revision 2 has NOT been re-reviewed.** The owner held the review loop on
-2026-09-21 before the round-1 re-verdicts were dispatched. Revision 1's three NO-GO verdicts
-therefore stand as the last verdicts on record, no finding is closed, and nothing here is
-accepted. Resuming means sending this revision to the same three reviewers against the
-tuple in `-RemPlan.md`.
+**Review status: revision 3 awaits its re-verdicts.** Revision 2 was re-reviewed on
+three axes at glade-wz root `1defe3b`, against the round-2 tuple in `-RemPlan.md`, and
+all three returned **NO-GO**: `-ReviewConsistency-2.md` (2 P2, 3 P3; all eleven round-1
+findings CLOSED), `-ReviewSafety-2.md` (3 P2, 1 P3; all eight CLOSED),
+`-ReviewSurface-2.md` (4 P2 of which one carried, 6 P3; six of ten CLOSED). All three
+reviewers pre-committed to GO on a revision resolving their P2s as specified, and all
+three state in terms that none of their findings is architectural. This revision is
+that remediation, drafted under `-RemPlan-2.md`; it is **remediation round 2 of at most
+2**. **The three round-2 NO-GO verdicts stand as the last on record**: no round-2
+finding is closed by anything written here, nothing in this document is accepted, and
+closure is the raising reviewer's to verify against the original counterexample —
+this document only says where the correction is. Resuming means sending revision 3 to
+the same three reviewers, context intact, against the revision-3 tuple.
+
+### Revision 3 (2026-09-22) — what changed and where
+
+Revision 2 was reviewed at glade-wz root `1defe3b` and the round-2 member tuple; the
+three reports are filed verbatim beside this file as `-ReviewConsistency-2.md`,
+`-ReviewSafety-2.md` and `-ReviewSurface-2.md`, and the lane owner's `-RemPlan-2.md`
+governs this revision. Every blocking finding and every accepted rider is implemented
+below. Where a correction needed a CHOICE, this revision states the options and their
+true costs and leaves the choice to §3's rulings — that is why R9(b) is now **two
+shapes** rather than one, and why R2's sub-choice is written out with a third option
+rather than choosing for the owner. **No ruling's outcome or recommendation is
+changed** except where a disposition required it: R9(b)'s split into b1/b2 with their
+true durable costs, R10(a)'s newly stated ordering cost, and R2's written-out
+sub-choice.
+
+**Closure map, by round-2 finding ID.** Each pointer is a **heading plus the bullet or
+row text** it lands on, never a bare ordinal — ordinals renumber under edit, which is
+how five of revision 2's pointers came to be wrong (CON-P3-9).
+
+| Finding | Where the closure is |
+| --- | --- |
+| **CON-P2-6** — "every row of §4.7 is green" over conditional, red-by-design and non-gate rows | §4.7 "The checks that prove it", now three blocks: "**(a) Unconditional gates**", "**(b) Gates conditional on a ruling**" (each row naming its ruling and what green means per option), "**(c) Evidence, not gates**" (rows 14 and 16). §4.0 "**Publish ordering**" — the two bullets "every row of §4.7(a) is green on a settled tree" and "every row of §4.7(b) is green under the answers the owner actually recorded", plus "**Under R4(a), row 2 is replaced, not left red.**" |
+| **CON-P2-7** — the sub-choice's third option has no landing step, and R2's imported an end condition that decides nothing about retention | §3 R2 "**Sub-choice, row 18b — validate token 5?**", written out in full with option (iii) "the token stays inert, and R2's own vocabulary is the only thing that could ever make it validatable", plus "**Cost, on a token-5 value.**" · §2e row 18b's *Ratified* cell, now "**no ratified entry requires it — and none governs retention at all**" · §4.4 bullet 2's third branch "**(iii) do not validate** — **this bullet does not land for that token.**" · §4.7(b) row 7, "Under **(iii)** the token is not validated … the row **does not apply to that token**" |
+| **SAF-P2-9** — the landing order moves the header before a node can parse it | §4.4 "**Landing order, and why**" — "**The token and the header have opposite safe orders**" and step "**0. A both-headers node first.**", with the headers moving last at step 4 · §3 R10's App-files cell "**the token edits and the header bump are NOT the same commit**" and its new "**Ordering cost**" column ("one extra landing step" against (a); "**none**" against (b)) · §4.4 "**Every intermediate commit is a gate, not only the last one.**" · §4.7(b) row 17 |
+| **SAF-P2-10** — `--compat` cannot be green under the recommended R7(b) | §4.2 "**Compatibility**" — the two enumerations "Options that move a surviving vector's bytes" and "Options that delete a v0 vector outright, moving no surviving byte", the three-case superset statement including "v1 is a byte superset **of a stated subset of v0**", and the numbered `--compat` specification (assert over `n ∈ v0 ∩ v1`; fail on an undeclared `n ∈ v0 \ v1`; fail on a declared name still present) · §4.7(b) row 2 · §4.0 "**Publish ordering**" |
+| **SAF-P2-11** — R9(b) normalises inside `parse()`, so its title and its cost are false | §3 R9's option table rows "**(b1) The file keeps its spellings; the node maps them where a CONSUMER reads the record**" and "**(b2) … `parse()` normalises on the way into `sysdata::BindingDecl`**", under the new "**Durable cost on the first boot**" column (0 / 13 / 15) · R9's recommendation, "**within (b), b1 if the durable cost is what matters and b2 if a single stored vocabulary is**", with the marked correction of "removes the … question for 13 of the 15" · §4.4 bullet 5's "**Under R9(b) the page owes the fold and retract rules for fifteen surfaces, not two**" · §4.7(b) row 9, "the asserted `appended` … must equal it: **0** under (b1), **13** under (b2)" |
+| **SUR-P2-1** — the mount sentence has a third home, the one the other two cite | §4.4 "**And the contradicting sentence must go, in all four of its homes**", naming `dev-docs/glade/GladeDeclSurface.md:29-30` beside the two `grazel-app.glade` copies and `GladeGrazelAttachNotes.md:49-51` · §4.7(a) row 20 |
+| **SUR-P2-6** — token 5 is validated in the same bullet as token 4 and documented nowhere | §4.4 "**Token 5 — the retention (SUR-P2-6)**", the five statements from "What `latest` means" to "What omission means" · §4.4 bullet 15, "`dev-docs/glade/GladeDeclSurface.md` gains a `Retention` row" · §4.2 "**Step 6 — the front page's own gaps**", "including the `Retention` members, which no published page names at all" · §4.7(b) row 18 |
+| **SUR-P2-7** — R9(a)'s retraction has no stated scope | §3 R9 "**(a)'s retraction scope, stated in the option (SUR-P2-7)**" — "per `(app, glade_id)` … a file that is **not loaded** on a given boot **retracts nothing**" — with the two-file counterexample on grazel's documented default boot · §4.4 bullet 5's "**A surface declared by an app file that is not loaded on this boot stays declared**" · §4.7(b) row 10, widened to the two-file case |
+| **SUR-P2-8** — nothing updates the grammar the author copies from | §3 R11's option table, which now carries a "**Docs**" column naming `GladeGrazelAttachNotes.md:32` and the three in-file comments, plus the sentence on how an author learns the tail exists · §3 R10's Docs cell, `GladeGrazelAttachNotes.md:30` · §4.4 bullet 12, "**Every published grammar and every in-file grammar comment moves with the line**" · §4.4 bullet 4's "**Under R11(a) this is not enough**" · §4.7(b) row 19 |
+| **CON-P3-7** — claims new in revision 2 that the mechanical pass did not catch | §4.4 "**Landing order**", "The **five** app files live in **four** repositories" · §2m A9, `exchange.rs:651-658` marked "**test code** … `grazel_attach_end_to_end`" and "lists every directive **it publishes** — and it omits `workspace`" · §3 R6's "*(Premise restated — CON-P3-7 …)*" against `README.md:42` · §4.2 "**Step 6**", the quote restored to "**frozen once shared (GQ-6), derived from package id + grip key**" · §1 "**Revision 3 mechanical passes**" item 1 |
+| **CON-P3-8** — the evidence is pinned to the round-1 members | Appendix "**Revisions — re-pinned to the round-2 tuple**" · §4.4 step 1, `grazel/src/lib.rs:159` · §3 R11 "**Naming (SUR-P2-4)**", `glade-gyld/README.md:499` · §3 R9's option (c) cell, `glade-gyld/README.md:1147` · §4.7(a) row 15, 61 suites and `vite.config.ts:310-316` · §2m A10's census, `0 2 0 0 0` · §1 "**Revision 3 mechanical passes**" item 2 |
+| **CON-P3-9** — five closure-map rows point at the wrong place | This block's closure map, whose pointers are headings plus row or bullet text · the Revision 2 block's map below, whose five wrong targets are corrected in place and marked *(CON-P3-9)* and whose pointers are restated in the same anchor form |
+| **SAF-P3-12** — §4.1.8 reserves a retired message name taut cannot reserve | §4.1.8 item 8, "**And for a retired message name (R7(b)) taut has no facility either**", naming the module docstring and `OpenNotes.md` as the carrier, with `model.py:136-140` as the proof |
+| **SUR-P3-6** — sixteen `.glade` files, five of this format | §4.4 bullet 14, "**Say which `.glade` dialect this amendment freezes**", with the sixteen/five/eleven counts and the A3 treatment or the extension question |
+| **SUR-P3-7** — "six app-file copies"; there are five | CON-P3-7's first item: §4.4 "**Landing order**", and §4.4 bullet 6's closing `grep -rln` |
+| **SUR-P3-8** — three citations that do not reproduce at the round-2 tuple | CON-P3-8's second and third items: §3 R11's naming note, §3 R9(c), §2m A10 |
+| **SUR-P3-9** — the file-side spelling rule, and the refusal that names the other one | §3 R9 "**Which spellings a file may contain, under each shape (SUR-P3-9)**" · §4.4 bullet 7's two per-shape refusal messages · §4.4 bullet 13, "**The joining-character convention goes in the format's own grammar documentation**" |
+| Residual — §4.0 should read "every *gate* row" | Folded into CON-P2-6: §4.0 "**Publish ordering**" and "**§4.7(c) is evidence, not a gate.**" |
+| Residual — R2's sub-choice imports R1's zone-specific cost example | Folded into CON-P2-7: §3 R2 "**Cost, on a token-5 value.**" |
+| Residual — `glade-decl-ts/README.md:21-22` still teaches npm | §2m A5's "**And its README still teaches npm**" · §4.8's first bullet, "Fix the two command lines when A4's collapse is made" |
+| Residual — §3's preamble implies eleven answers, not thirteen | §3's opening, "**Eleven rulings — but thirteen answers**" |
+| Residual — "the retract form" reads as something an author writes | §4.4 bullet 5's "*(Say "the retraction rule", not "the retract form" …)*" |
+
+Revision 2's and revision 1's false claims stay corrected **in place and marked**, not
+deleted; revision 3 adds its own marks in the same form.
 
 ### Revision 2 (2026-09-21) — what changed and where
 
@@ -19,31 +73,34 @@ returned NO-GO. The reports are filed verbatim beside this file —
 `-RemPlan.md` governs this revision. Every blocking finding and every accepted
 rider is implemented below. Where a correction needed a CHOICE, this revision
 states the options and their true costs and adds the choice to §3; it does not
-make the choice. Closure map, by finding ID:
+make the choice. Closure map, by finding ID — **five targets corrected and every
+pointer restated as a heading plus the bullet or row text it lands on
+(CON-P3-9)**, because revision 2 wrote them as ordinals against an earlier
+draft's numbering and §4.4, §4.5 and §4.7 were renumbered after:
 
 | Finding | Where the closure is |
 | --- | --- |
-| SAF-P1-1 (taut `optional` is nullable-and-always-emitted) | §1 "One encoding fact"; §2h row 34; §3 R3, R4; §4.1.2; §4.2 "Compatibility" |
-| SAF-P1-2 + SUR-P2-5 (a changed or deleted binding line) | §2m A9; §3 **R9**; §4.4 bullets 5–6; §4.6 bullet 4; §4.7 rows 9–10 |
-| CON-P2-1 (`glade/grip-share` missing from the survey) | §2 legend; §2c rows 12–14; §2d rows 15, 16; §2h row 30; §3 R1; §4.5.4; Appendix |
-| CON-P2-2 + SAF-P2-5 (regeneration writes to the wrong dirs; ungated copies) | §2m A4; §4.3; §4.7 rows 1, 11 |
-| CON-P2-3 (`decl.v0` retarget list) | §4.2 "Every reference that must move" |
-| CON-P2-4 (SETTLED rows pre-empting open rulings) | §2e rows 18a/18b; §2h rows 31a/31b; §2 header arithmetic; §3 R1, R2 |
-| CON-P2-5 (`glade-decl/dev-docs/DeclSurface.md:27` vs GDL-041) | §2m A12; §3 R8; §4.2 step 5 |
-| SAF-P2-3 (un-migrated app files become a boot failure) | §4.4 "Landing order"; §4.7 rows 5–8 |
-| SAF-P2-4 (`private` frozen as an unimplemented guarantee) | §2d row 16 (now DIVERGENT); §3 R1 note; §4.1.7 |
-| SUR-P2-1 (`zone` enforced while undocumented) | §4.4 "What must be written before validation is turned on" |
-| SUR-P2-2 (`glade-app v0` naming two languages) | §2m A10; §3 **R10**; §4.4 bullet 2 |
-| SUR-P2-3 + SUR-P2-4 (`ttl`'s duration; the sixth token) | §2m A11; §3 **R11**; §4.4 bullets 3–4 |
-| CON-P3-1 | §1 "Precedence applied" (the L1-07 claim was false; corrected here) |
-| CON-P3-2 | every `file:line` re-opened; the eight corrections are marked *(CON-P3-2)* |
-| CON-P3-3 | §2e row 18a, §2m A5, §4.2, §4.7 — each count now carries its command |
-| CON-P3-4 | §3 "Which ruling decides what" |
-| CON-P3-5 | §4.0 "Where every SETTLED item lands" |
-| CON-P3-6 | §2m A4 |
-| SAF-P3-6 / SAF-P3-7 / SAF-P3-8 | §4.1.8 / §3 R3 option (b) / §4.1.1 |
-| SUR-P3-1 … SUR-P3-5 | §4.4 "What must be written…", §4.4 bullet 7, §3 R9(b), §4.4 bullet 8, §4.2 step 6 |
-| Safety residual (publish ordering) | §4.0 last sentence |
+| SAF-P1-1 (taut `optional` is nullable-and-always-emitted) | §1 "**One encoding fact this document turns on**"; §2h row 34's "**Adding the field is not free**"; §3 R3's struck third reason and R4's rewritten option table; §4.1 item 2 (`Msg("BindingDecl", …)`); §4.2 "**Compatibility**" |
+| SAF-P1-2 + SUR-P2-5 (a changed or deleted binding line) | §2m **A9**; §3 **R9**; §4.4 bullets 5 ("**What a changed or deleted line does, under R9**") and 6 ("**App-file data, under R9 and R2**"); §4.6's "*(SAF-P1-2)* The retention and zone tokens are **not** 'fields nothing reads'"; §4.7(b) rows 9 and 10 |
+| CON-P2-1 (`glade/grip-share` missing from the survey) | §2 legend ("two different binders"); §2c rows 12–14; §2d rows 15, 16; §2h row 30; §3 R1's "**`glade/grip-share` + `glade/demo`**" column; §4.5 item 3, "**`glade/grip-share` + `glade/demo`**" *(corrected — CON-P3-9: revision 2 said §4.5.**4**, which is the gryth-ui step)*; Appendix |
+| CON-P2-2 + SAF-P2-5 (regeneration writes to the wrong dirs; ungated copies) | §2m **A4**; §4.3, including "**The copy step must be gated, not remembered**"; §4.7(a) rows 1 and 11 |
+| CON-P2-3 (`decl.v0` retarget list) | §4.2 "**Every reference that must move**" |
+| CON-P2-4 (SETTLED rows pre-empting open rulings) | §2e rows 18a/18b; §2h rows 31a/31b; §2's header arithmetic and its recount command; §3 R1's "**Sub-choice, row 31b**" and R2's "**Sub-choice, row 18b**" |
+| CON-P2-5 (`glade-decl/dev-docs/DeclSurface.md:27` vs GDL-041) | §2m **A12**; §3 R8's "**Which document is controlling**"; §4.2 "**Step 5 — `glade-decl/dev-docs/DeclSurface.md`**" |
+| SAF-P2-3 (un-migrated app files become a boot failure) | §4.4 "**Landing order, and why**"; §4.7 rows **6, 7 and 8** *(corrected — CON-P3-9: revision 2 said rows 5–8, and row 5 is `pytest` from a built wheel, which closes CON-P2-3)* |
+| SAF-P2-4 (`private` frozen as an unimplemented guarantee) | §2d row 16, now **DIVERGENT BETWEEN BINDERS**; §3 R1's "**Note on `private`**"; §4.1 item 7 (`ZoneKind`'s comment, `README.md:39-41`, OpenNote N9); §4.7(c) row 14 |
+| SUR-P2-1 (`zone` enforced while undocumented) | §4.4 "**What must be written before validation is turned on**", the "**Token 4 — the zone**" statements and "**And the contradicting sentence must go, in all four of its homes**" (the fourth home is revision 3's — SUR-P2-1 stayed open) |
+| SUR-P2-2 (`glade-app v0` naming two languages) | §2m **A10**; §3 **R10**; §4.4 bullet **3**, "**The header, under R10**" *(corrected — CON-P3-9: revision 2 said bullet 2, which is the token validation)* |
+| SUR-P2-3 + SUR-P2-4 (`ttl`'s duration; the sixth token) | §2m **A11**; §3 **R11**; §4.4 bullet **4**, "**The sixth thing on the line, under R11 and R4**" *(corrected — CON-P3-9: revision 2 said bullets 3–4; bullet 3 is R10's header)* |
+| CON-P3-1 | §1 "**The process authority this document actually rests on**" — the L1-07 claim was false and is corrected and marked there *(corrected — CON-P3-9: revision 2 pointed at §1 "Precedence applied, in order", which contains no L1-07 correction)* |
+| CON-P3-2 | every `file:line` re-opened; the eight corrections are marked *(CON-P3-2)* at the point of use |
+| CON-P3-3 | §2e row 18a ("**three** of them `value`-shaped"); §2m A5's two `find`s; §4.2's ten taut-shape corpora; §4.7 row 15 — each count carries its command |
+| CON-P3-4 | §3 "**Which ruling decides what**" and the two precedence blocks under it |
+| CON-P3-5 | §4.0 "**Where every SETTLED item lands, and what rides separately**" |
+| CON-P3-6 | §2m **A4** |
+| SAF-P3-6 / SAF-P3-7 / SAF-P3-8 | §4.1 item 8 ("**Any delete option also reserves**") / §3 R3's option (b) cell ("**the synth … vectors change regardless**") / §4.1 item 1's "**Also add an `edge/binding-*-atom` curated vector**" |
+| SUR-P3-1 … SUR-P3-5 | §4.4 "**What must be written before validation is turned on**" / §4.4 bullet 7 ("**Removed and renamed tokens stay recognised-but-refused**") / §3 R9's option (b) and its hyphen reason / §4.4 bullet 8 (`GladeGrazelAttachNotes.md:98`) / §4.2 "**Step 6 — the front page's own gaps**" |
+| Safety residual (publish ordering) | §4.0 "**Publish ordering**" |
 
 Revision 1's false claims are corrected in place and marked, not deleted.
 
@@ -170,7 +227,9 @@ at `ff431743cc4c`:
 Files read and cited by line, at the revisions in the Appendix. No builds, no
 writes outside this file. One read-only command was run: `python3
 corpus/build.py --check` in `glade-decl/` — red at revision 1 (A2), green at
-revision 2 after the owner's ruling.
+revision 2 after the owner's ruling, and re-run green at revision 3
+(`all 3 glade-decl artifacts in lockstep with the schema.`, exit 0, `git status
+--short` empty in `glade-decl` and `glade-decl-rs` afterwards).
 
 **Revision 2 mechanical passes** (CON-P3-2, CON-P3-3). Every `<file>:<line>` in
 this document was re-opened at the pinned revision with `git -C <repo> show
@@ -183,6 +242,32 @@ carried uncommitted rustfmt-only edits to `src/api.rs` and `src/vectors.rs`;
 those are now committed formatted at `21eefa1` (A2), and no citation into either
 file survives in this document. `corpus/build.py` and `glade-decl/README.md` were
 re-opened at `d671f10` after A2's fix grew both.
+
+**Revision 3 mechanical passes** (CON-P3-7, CON-P3-8). Revision 2's pass checked
+that a cited line *existed* at the pinned revision. Two gaps in that pass were
+found, and both are closed here.
+
+1. *The line can exist and the claim about it still be false.* The pass now
+   prints the cited line **and its enclosing item** — function, `mod`, heading —
+   and both are compared against the claim. Five places where that changes the
+   answer are corrected and marked *(CON-P3-7)*: §4.4's landing order, which said
+   "six" app-file copies where there are five; `exchange.rs:651-658` (inside
+   `mod tests`, in `grazel_attach_end_to_end`); `GladeGrazelAttachNotes.md:30-35`
+   ("every directive" omits `workspace`); R6's premise about `README.md:47` (its
+   subsection heading at `:42` does qualify it); and §4.2 step 6's reversed quote
+   of `README.md:28-29`.
+2. *The pins themselves go stale.* Four members moved between review rounds, and
+   revision 2 had already built the re-pinning habit under A2 but applied it only
+   to the two the owner's A2 ruling moved. The Appendix is re-pinned to the
+   round-2 tuple, the five stale proofs are re-opened there, and **every count
+   whose target can move now carries both its command and the revision it was run
+   at** — so a later reader can tell staleness from error without re-deriving the
+   claim. Marked *(CON-P3-8)* or *(SUR-P3-8)* at the point of use.
+
+A separate assertion belongs to the same pass and is run here: **no bare number
+in this document contradicts an enumeration within ten lines of it.** That is the
+check §4.4's "six app-file copies" failed, three lines above an enumeration of
+five.
 
 ---
 
@@ -276,7 +361,7 @@ and words the claim more carefully — CON-P3-2.)*
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 17 | `RetentionPolicy.latest=0` | present | free `STR`, unvalidated; 13 binding lines | glial `DEFAULT_RETENTION` (`glial/src/manifest.ts:64`); nothing enforces it (`glial` GAP-10, GC-4 `GlialClientRuntime.md:86` *(CON-P3-2: was `:87`)*) | none | vocabulary agrees; wholly unenforced | keep | **agrees** |
 | 18a | spelling: `from-cursor` vs `from_cursor` | `from_cursor=1` | **13 binding lines across all five files spell it `from-cursor`** (`grazel-app.glade:23,24,32,33`; `gyld-app.glade:47,48`; both fixtures); `appdecl.rs:352` spells it `from_cursor` — both parse, because nothing validates | `glade/demo/src/manifest.ts:30,35,40,46,51,56` uses `from_cursor` on six surfaces — **three** of them `value`-shaped (`:29`, `:34`, `:39`), the rest `crdt` (`:45`), `log` (`:50`), `swmr` (`:55`) *(CON-P3-3: revision 1 said five)* | none | two spellings for one policy, coexisting only because the field is unchecked | a taut enum member must be an identifier, so the **contract's** member stays `from_cursor`. Whether the **file** must respell is R9's (b) sub-choice, not a settled fact — see SUR-P3-3 | **SETTLED** |
-| 18b | enforcement: validate token 5 node-side | — | `appdecl.rs:137-138` stores `toks[5]` raw | — | **GDL-039 not ratified**; no ratified entry requires it | validation is a new normative act on a vocabulary R2 has not fixed; under R2(d) there is no vocabulary to validate at all | see R2, with the hard-error-or-warn sub-choice | **RULING (R2)** |
+| 18b | enforcement: validate token 5 node-side | — | `appdecl.rs:137-138` stores `toks[5]` raw | — | **no ratified entry requires it** — and none governs retention at all: the log's only retention-bearing entries are GDL-006 (`:24`, exchange observation and retention) and GDL-012 (`:30`, instance retention), both **open** and neither about this token *(struck — CON-P2-7. Revision 2 opened this cell with the zones entry's ratification status, which is R1's end condition and decides nothing here; only the second clause was ever true, and rows 17, 19 and 20 correctly say "none".)* | validation is a new normative act on a vocabulary R2 has not fixed; under R2(d) there is no vocabulary to validate at all | see R2, whose sub-choice is written out in full there rather than by reference to R1's (CON-P2-7) | **RULING (R2)** |
 | 19 | `RetentionPolicy.ttl=2` | present | **no app file uses it**; the grammar has no slot for its duration (see A11) | no consumer; wire `ErrorCode.Retention=5` exists and is never produced | none | unexercised at freeze, and unusable-as-specified: `binding cache.entries value share commons ttl` parses and the duration is unsayable | see R2 for whether it survives; R11 for whether the line can carry a duration | **RULING (R2)** |
 | 20 | `windowed` *(absent)* | **missing** | `grazel-app.glade:25` `binding term.log log share commons windowed` — 2 lines (the file is dual-maintained), loaded by the running demo | no consumer | none. GDL-041 says a window is a projection over a base shape, i.e. not retention | the app file names a retention policy the contract does not have | see R2 | **RULING (R2)** |
 
@@ -361,12 +446,12 @@ contradicted by R2's own option (d).)*
 | A2 | ~~The drift gate is red today.~~ **RESOLVED by the owner, 2026-09-21, between review round 1 and this revision.** Revision 1 reported `python3 corpus/build.py --check` exiting nonzero with `STALE: glade-decl-rs/src/vectors.rs`, caused by uncommitted rustfmt-only edits to `glade-decl-rs/src/{api,vectors}.rs` (284 / 43 lines) against a generator that emits unformatted text — a gate that could not distinguish formatting from content. The owner ruled **"discard them and have `build.py` run rustfmt"**: the working-tree edits were discarded; `corpus/build.py` now formats the generated Rust through `rustfmt` on the write path *and* before `--check` compares (`_rustfmt` at `:179-201`, `_vectors_text` at `:204-206`), taking the edition from the crate's `Cargo.toml` and honouring a crate `rustfmt.toml`, and failing loudly if `rustfmt` is absent rather than comparing unformatted against formatted; `src/api.rs` and `src/vectors.rs` are committed formatted; and both rendering procedures gained a `cargo fmt` step after the copy-in (`glade-decl/README.md:90-98`, `glade-decl-rs/README.md:28-40`). | `glade-decl d671f10` ("Format the generated Rust before writing and before the gate"), `glade-decl-rs 21eefa1` ("Commit the generated sources formatted"), glade-wz root `dc311ba`. Re-verified here: `git -C glade-decl-rs status --short` empty; `/opt/homebrew/bin/python3 corpus/build.py --check` → `all 3 glade-decl artifacts in lockstep with the schema.`, exit 0. `ir/glade_decl.ir.json` (`1e7d4d16…`) and `corpus/decl.v0.json` (`f669da0b…`) are **byte-unchanged** from `bbce73d`, so every schema and corpus citation in this document still holds | **CLOSED** — no longer a precondition on the freeze. Two consequences remain live: `--check` still compares only **3** artefacts, not the four rendering copies (SAF-P2-5, §4.3), and `CONTRACT_VERSION` is still unchecked (A1) |
 | A3 | A superseded SKETCH of the same schema lives inside the node repo: `glade/decl/glade_decl.taut.py` (`Shape { value, log, message, stream, exchange, window }`, `domain: STRING`, `zone: STRING`, `retention: STRING` with the vocabulary "ttl / latest / from-cursor") plus `glade/decl/README.md` marked "Status: SKELETON". This is the origin of the node's free-string fields and of the hyphen spelling in row 18a. | `glade/decl/glade_decl.taut.py:13,28-30`; `glade/decl/README.md:19-20` | **SETTLED** — archive or banner it as superseded by `glade-decl/`; it is a second answer to a frozen question. Lands at §4.4 bullet 10 |
 | A4 | The rendering procedure is documented in **five** places, **three** of them correct and complete: `glade-decl/README.md:78-88` (three `-l` invocations, `-o <out>`, no copy step — though `:90-98` now adds a Rust copy-and-`cargo fmt` block, A2) and `glade-decl/ir/glade_decl.taut.py:31-33` (`-l rust,typescript,python --api-only [--with-runtime]`, `-o <out>`, no copy step) are the two incomplete contract-side forms; `glade-decl-rs/README.md:28-34`, `glade-decl-ts/README.md:29-34` and `glade-decl-py/README.md:32-37` each generate to `/tmp/g`, copy `/tmp/g/<lang>/*` into `src/`, and — for ts and py — copy the ir + corpus (`-ts/README.md:33`, `-py/README.md:36`); rs runs `build.py` for its generated `src/vectors.rs` (`-rs/README.md:32`) and then `cargo fmt` for `api.rs` (`:33`). There are **four** ir/corpus copies in **two** renderings, all four byte-identical to the contract's (`glade_decl.ir.json` `1e7d4d16…`, `decl.v0.json` `f669da0b…`); `glade-decl-rs/src/` holds none. | as cited; `shasum glade-decl/ir/glade_decl.ir.json glade-decl-{ts/src,py/src/glade_decl}/glade_decl.ir.json` etc.; `ls glade-decl-rs/src/` | **SETTLED** — collapse onto the **rendering READMEs'** shape, including the copies, since the copies are what the gates read. *(Restated — CON-P3-6. Revision 1 said "twice", "neither documents the copy step", "all three copies", and would have deleted the three correct forms; that error is what produced revision 1's §4.3 — CON-P2-2.)* |
-| A5 | `glade-decl-ts` carries an npm `package-lock.json` (45 687 B, lockfileVersion 3) and no `pnpm-lock.yaml`. It is **one of two** such TypeScript members, not the only one: `glade-wz/ggg-viz` is the other. `grip-core` and `grip-react-demo` carry both; `glial`, `grip-react`, `taut-shape-ts`, `glade-chat` and `gryth-ui` are pnpm-only. | `find . /Users/owebeeone/limbo/gryth-wz/gryth-ui -name package-lock.json -not -path '*/node_modules/*'` → 4; `find … -maxdepth 2 -name pnpm-lock.yaml …` → 7. *(CON-P3-3: revision 1 said "only".)* | note only — see §4.8, tooling |
-| A6 | GDL-038 (ratified) says base glade ships `glade-sys.glade`. **No such file exists** in either workzone. | `find /Users/owebeeone/limbo/{glade-wz,gryth-wz} -name glade-sys.glade` → empty | **out of scope** — adjacent to R8; it rides GDL-038's own amendment, not this one (§4.0) |
+| A5 | `glade-decl-ts` carries an npm `package-lock.json` (45 687 B, lockfileVersion 3) and no `pnpm-lock.yaml`. It is **one of two** such TypeScript members, not the only one: `glade-wz/ggg-viz` is the other. `grip-core` and `grip-react-demo` carry both; `glial`, `grip-react`, `taut-shape-ts`, `glade-chat` and `gryth-ui` are pnpm-only. **And its README still teaches npm**: `glade-decl-ts/README.md:21-22` is `npm install` / `npm test`, while §4.7 row 3 and §4.8 both prescribe `pnpm` and §4.3 adopts that README's own shape as canonical *(added — CON residual)*. | `find . /Users/owebeeone/limbo/gryth-wz/gryth-ui -name package-lock.json -not -path '*/node_modules/*'` → 4; `find … -maxdepth 2 -name pnpm-lock.yaml …` → 7, both at the Appendix tuple. *(CON-P3-3: revision 1 said "only".)* | note only — see §4.8, tooling, and A4's collapse |
+| A6 | GDL-038 (ratified) says base glade ships `glade-sys.glade`. **No such file exists** in either workzone. | `find /Users/owebeeone/limbo/{glade-wz,gryth-wz} -name glade-sys.glade` → empty, at the Appendix tuple | **out of scope** — adjacent to R8; it rides GDL-038's own amendment, not this one (§4.0) |
 | A7 | `glade/client-rs/src/session.rs:19-30` — `shape_of` accepts `"crdt"` (`:24`) but its error text (`:27`) lists "supported: value, log, swmr". | as cited | **SETTLED** — message fix; lands at §4.4 bullet 11 |
 | A8 | `gryth-ui/packages/glade/src/glade.ir.json` is the **node's WIRE IR** vendored by hand (`runtime.ts:31-32`), not the declaration IR — a different contract, a same-named different `Shape` enum. It is separately stale: `{value:0, log:1, stream:2}` against the source's `{value:0, log:1, stream:2, swmr:3, crdt:4}`. | agent-verified 2026-09-21; `PackageExtractionPlan.md` step 2.6 owns the fix; `GlialFitAssessment` S1 (`:149`) owns the drift check | **out of scope** — named in §4.6 as must-not-change |
-| A9 | **A changed binding line has no defined effect on an already-registered declaration, and a deleted one has none at all.** `register` diffs on `(glade_id, payload bytes)` (`appdecl.rs:264`), so any token edit appends a **second** `BindingDecl` beside the first. Nothing folds `dir.bindings`: `RegistryApi` (`registry.rs:191-211`) exposes `append/who_serves/replicas_of/grants_for/nodes_of/snapshot` and no binding query; the only production reader is `exchange.rs:62-78`'s `declared_exchange`, an `any()` over every op. The duplicates are ordinary home-share records, so they fan out to every peer and to every client that subscribes to `dir.bindings` (`exchange.rs:651-658`). Removing a line appends nothing and retracts nothing; the grammar has no retract form (`GladeGrazelAttachNotes.md:30-35` lists every directive). | as cited; `appdecl.rs:404-413` `registering_twice_appends_nothing` registers the **same** decl twice into a **fresh** `Registry` and cannot see this | **RULING (R9)** — the amendment's own headline action (rewriting a token on up to 15 lines) is the first mass exercise of an undefined operation (SAF-P1-2 + SUR-P2-5) |
-| A10 | **`glade-app v0` would name two incompatible languages.** The header is parsed (`appdecl.rs:89-95`, `toks != ["glade-app", "v0"]`) and never advanced. After token validation, a third-party file that boots today stops booting, with the same header, so neither the user nor the parser can tell a pre- from a post-amendment file and no diagnostic can name the version a spelling changed in. There is no CHANGELOG, migration or release note in any of the **four** repositories that hold app files, nor in `glade-decl`. | `grazel/README.md:73-79` documents `--app` repeated, i.e. third-party app files are the intended shape; `for r in grazel glade glade-gyld glade-gwz glade-decl; do git -C $r ls-files \| grep -icE 'changelog\|migrat\|upgrad\|releas'; done` → `0` five times *(rev-2 pass: the Surface report said "five repos"; the five `.glade` **files** live in four repositories)* | **RULING (R10)** (SUR-P2-2) |
+| A9 | **A changed binding line has no defined effect on an already-registered declaration, and a deleted one has none at all.** `register` diffs on `(glade_id, payload bytes)` (`appdecl.rs:264`), so any token edit appends a **second** `BindingDecl` beside the first. Nothing folds `dir.bindings`: `RegistryApi` (`registry.rs:191-211`) exposes `append/who_serves/replicas_of/grants_for/nodes_of/snapshot` and no binding query; the only production reader is `exchange.rs:62-78`'s `declared_exchange`, an `any()` over every op. The duplicates are ordinary home-share records, so they fan out to every peer and to every client that subscribes to `dir.bindings` — demonstrated end to end by `exchange.rs:651-658`, which is **test code**: `mod tests` opens at `:266` and the function is `grazel_attach_end_to_end` (`:599`), a `#[tokio::test]` that boots a real node, connects a WebSocket client and reads the `BindingDecl` records back as Ops. It is evidence of production behaviour rather than a production call site, and it is marked as such here for the same reason row 16's `#[cfg(test)]` fixtures are *(CON-P3-7: revision 2 cited it unmarked, alone among this document's test citations, while supporting its newest ruling)*. Removing a line appends nothing and retracts nothing; **the grammar has no retract form**, which is true on the code: `parse()`'s directive arms are exactly `app` (`:98`), `binding` (`:107`), `service` (`:141`), `seed` (`:155`), `workspace` (`:168`) and a catch-all refusal (`:180`), and none of them retracts. The published grammar is weaker evidence than the object claimed: `GladeGrazelAttachNotes.md:30-35` lists every directive **it publishes** — and it omits `workspace`, which `appdecl.rs:21` documents and `:168-179` parses *(CON-P3-7: revision 2 said it "lists every directive")*. | as cited; `appdecl.rs:404-413` `registering_twice_appends_nothing` registers the **same** decl twice into a **fresh** `Registry` and cannot see this | **RULING (R9)** — the amendment's own headline action (rewriting a token on up to 15 lines) is the first mass exercise of an undefined operation (SAF-P1-2 + SUR-P2-5) |
+| A10 | **`glade-app v0` would name two incompatible languages.** The header is parsed (`appdecl.rs:89-95`, `toks != ["glade-app", "v0"]`) and never advanced. After token validation, a third-party file that boots today stops booting, with the same header, so neither the user nor the parser can tell a pre- from a post-amendment file and no diagnostic can name the version a spelling changed in. There is no CHANGELOG, migration or release note in any of the **four** repositories that hold app files, nor in `glade-decl`. | `grazel/README.md:73-79` documents `--app` repeated, i.e. third-party app files are the intended shape. Census command, run at grazel `c66f029` · glade `559cb2c` · glade-gyld `65da8cb` · glade-gwz `e53c87d` · glade-decl `d671f10`: `for r in grazel glade glade-gyld glade-gwz glade-decl; do git -C $r ls-files \| grep -icE 'changelog\|migrat\|upgrad\|releas'; done` → **`0 2 0 0 0`**. The two are `glade/dev-docs/async-witness/real/tests/peer_release.rs` and `release_order.rs` — Rust tests about lock-release ordering, matched on the filename and **not** release notes, so the claim holds and its proof needed re-stating rather than the claim *(re-pinned — CON-P3-8 / SUR-P3-8: revision 2 published "`0` five times" at glade `960c9b0`; the async-witness workspace landed at `559cb2c`)*. Read as a count of release-note documents it is still `0` in all five. *(rev-2 pass: the Surface report said "five repos"; the five `.glade` **files** live in four repositories)* | **RULING (R10)** (SUR-P2-2) |
 | A11 | **The binding line's last positional slot is contested.** `appdecl.rs:111-114` requires exactly six whitespace tokens (`binding` + 5). Two things want position 6: `ttl`'s duration (row 19/25) and, under R4(a), the shape profile (row 34). Whichever takes it, the other can never be added without a compatibility break, because position 7 would make position 6 mandatory. The format has no `key=value` form. | as cited; `GladeGrazelAttachNotes.md:32` is the published 5-token grammar | **RULING (R11)** (SUR-P2-3 + SUR-P2-4) |
 | A12 | **The repo being frozen ships a design document that contradicts the ratified catalogue.** `diff dev-docs/glade/GladeDeclSurface.md glade-decl/dev-docs/DeclSurface.md` → three differing lines. `:27` — root: "canonical engines are `value`, `atom`, `log`, `stream`, `swmr`, `crdt`; … Registry recognition does not grant runtime support. … `message` is unsupported; `window` is a view over an explicit base shape." glade-decl copy: "the delivery-shape enum (`value`, `log`, `message`, `stream`, `exchange`, `window`, `swmr`, `crdt`) — names taut-shape engines, owns none of them; `text_crdt` is a profile over `crdt`" — pre-GDL-041. `:30` lacks the mount-instance clause; the root's `:32` Supplier row (GDL-040) is absent entirely (149 lines vs 148). | as cited | **SETTLED** by §1 rule 1 — a ratified entry outranks the copy, so the root document is controlling. **R8 decides only** whether `GladeDeclSurface.md` additionally gains a record-kinds amendment sentence. Lands at §4.2 step 5 (CON-P2-5) |
 
@@ -374,7 +459,11 @@ contradicted by R2's own option (d).)*
 
 ## 3. The rulings needed
 
-Eleven. Each is answerable in a line.
+Eleven rulings — but **thirteen answers**: R1 and R2 each carry a sub-choice
+(rows 31b and 18b), and each sub-choice is a separate act with its own three
+options. Each of the thirteen is answerable in a line. *(Stated explicitly —
+CON residual: revision 2 said "Eleven. Each is answerable in a line", and a
+reader counting answers came up two short.)*
 
 ### Which ruling decides what (CON-P3-4)
 
@@ -475,6 +564,13 @@ channel `parse()` does not have (see R10(a)); (iii) costs nothing and leaves
 `binding g value share frobnicate latest` parsing. **Recommendation: (ii)**, with
 the landing order of §4.4 — it is the only one that is never worse than today.
 
+This sub-choice is R1's alone. R2's row-18b sub-choice is **written out
+separately** there, and it is not "the same three options": (iii) here can name
+GDL-039 as its end condition, because GDL-039 *is* the zones vocabulary that
+introduced this token; the corresponding option under R2 has no entry of any kind
+to wait for, which is why it is stated in full there rather than imported
+(CON-P2-7).
+
 **Note on `private` (SAF-P2-4).** Whatever R1 returns, row 16's caveat lands:
 `private` is honoured by the grip-share binder and **not** by glial mounts, and
 gryth-ui mounts through glial. Validating the token (31b) *elevates* `private`
@@ -508,12 +604,52 @@ two parts. (d) is the honest "it means nothing" answer but throws away the only
 typed vocabulary either side has, and it is not cheap: it rewrites every
 `BindingDecl` vector.
 
-**Sub-choice, row 18b — validate token 5?** Same three options as R1's 31b, same
-recommendation (warn for one release). *(Revision 1 ended this section with
-"Whatever is chosen, the spelling normalizes to `from_cursor` and the node starts
-validating the token — that part is settled (row 18/31)". **Deleted** — it is
-false under this section's own option (d), and it asserted a normative act on an
-unratified vocabulary. CON-P2-4.)*
+**Sub-choice, row 18b — validate token 5?** *(Written out in full — CON-P2-7.
+Revision 2 stated it as "Same three options as R1's 31b, same recommendation",
+which imported R1's end condition and R1's zone-specific cost example onto a
+token neither governs.)* The set the node would validate against is whichever
+set (a)–(d) above returns.
+
+- **(i) Validate as a hard error**, consistent with the shape and authority
+  checks at `appdecl.rs:116-130`. Cost: it turns an inert token into a boot
+  refusal across four repositories (SAF-P2-3), so it cannot land before the app
+  files and before §4.4's documentation wave for token 5 (SUR-P2-6) — today no
+  published page glosses a single retention value.
+- **(ii) Validate as a warning for one release**, hard error after. Cost: a
+  warning channel `parse()` does not have — it returns `Result<AppDecl, String>`
+  — so it needs R10(a)'s API change or an `eprintln!` in `load`.
+- **(iii) Do not validate; the token stays inert, and R2's own vocabulary is the
+  only thing that could ever make it validatable.** There is no external end
+  condition to wait for, and that is the substantive difference from R1's (iii):
+  R1's zone token has a pending zones ratification over it, which R1's own (iii)
+  names, whereas **no decision-log entry governs retention at all**. The log's
+  only retention-bearing entries are GDL-006 (`DecisionLog.md:24`, exchange
+  observation and retention) and GDL-012 (`:30`, instance retention); both are
+  open, and neither is about a declaration's retention token. So (iii) ends when
+  R2 fixes the vocabulary and the owner returns to this sub-choice — not when
+  some other entry ratifies. An end condition borrowed from R1 would one day read
+  as satisfied by an event that decides nothing here, and token 5 would then be
+  validated against a vocabulary no ratified entry decides: exactly the act
+  CON-P2-4 split row 18 to prevent.
+
+**Cost, on a token-5 value.** Under (iii),
+`binding cache.entries value share commons hourly` keeps parsing today and keeps
+parsing after the amendment — and `"hourly"`, a policy no enum has, is written
+into a durable record (`appdecl.rs:138` → `sysdata.BindingDecl.retention`) and
+read as **bytes** by `register`'s diff (A9). That is (iii)'s real price: not a
+wrong answer, but a token that no v1 vocabulary constrains and that any later
+validation turns into a boot refusal on a file already in the field. Under (i)
+the same line is a line-numbered refusal at the first boot after the node
+lands; under (ii) it is a warning for one release and then that refusal.
+
+**Recommendation: (ii)**, with the landing order of §4.4 — the same reason as
+R1's 31b: it is the only one of the three that is never worse than today.
+
+*(Revision 1 ended this section with "Whatever is chosen, the spelling
+normalizes to `from_cursor` and the node starts validating the token — that part
+is settled (row 18/31)". **Deleted** — it is false under this section's own
+option (d), and it asserted a normative act on a vocabulary no ratified entry
+fixes. CON-P2-4.)*
 
 ### R3 — `message`, `window`: delete the members, or retain them reserved?
 
@@ -537,8 +673,11 @@ numeric wire values remain reserved" (`appdecl.rs:39-42`).
 *(Revision 1 gave a third reason — "(a) makes the v1 corpus a strict superset of
 v0's bytes, which makes the compatibility proof in §4 free". **Struck** —
 SAF-P1-1. Superset-ness is decided by R4, not by R3: under R4(a) no option of R3
-yields a superset, and under R4(b)/(c) both R3 options are byte-stable in the
-enum and differ only as the table above says.)*
+yields a superset, and under R4(b)/(c) the two R3 options differ exactly as the
+table above says: (a) moves no byte, while (b) moves the synth `BindingDecl` and
+`ChangeEvent` vectors — the enum's **wire values** are stable under both, but
+synth selects by member index. §4.2's compatibility enumeration files (b) under
+the byte-moving options for that reason.)*
 
 Note `PackageExtractionPlan.md:155` phrases the option as "`message`/`window`
 out, `atom` in" — that is a plan's shorthand, not a ratification, and this is the
@@ -564,7 +703,7 @@ null on every vector.)*
 | **(b) A separate message keyed by glade id** — e.g. `ShapeProfileDecl{glade_id, profile}` | **zero existing vectors change**; a new message adds a new synth vector only (`synth.py:51-53` is one per message) | one new vector | the node can carry it as a second record kind, or not carry it at all | reads a second declaration, or a lookup table | a second directive line, or none |
 | **(c) Defer past the freeze; profile stays mount config** | no edit | no edit | no edit | keeps throwing without out-of-band config | no edit; `crdt` stays unauthorable-in-practice even after row 8 lands |
 
-**Count command:** `python3 -c "import json;d=json.load(open('glade-decl/corpus/decl.v0.json'));print(sum(1 for v in d.values() if v['message'] in ('BindingDecl','AdvertisementRecord')),'of',len(d))"` → `11 of 26`.
+**Count command**, run at glade-decl `d671f10` (`corpus/decl.v0.json` = `f669da0b…`): `python3 -c "import json;d=json.load(open('glade-decl/corpus/decl.v0.json'));print(sum(1 for v in d.values() if v['message'] in ('BindingDecl','AdvertisementRecord')),'of',len(d))"` → `11 of 26`.
 
 **Recommendation: (b).** A declaration that cannot be mounted from its own
 contents is not a declaration, so (c) is the wrong end state — but (a) buys that
@@ -631,15 +770,24 @@ carry no ordinal on the wire), so the only cost is reserving the retired name.
 extraction on an unchosen hash would stall the whole TypeScript track
 (`PackageExtractionPlan.md:150`). The hardening is narrower than revision 1
 stated: `README.md:48-50` **already** says `derive_glade_id`'s "algorithm + its
-golden derivation vectors are deferred to the implementation step (N4)". It is
-`canonical_key` at `README.md:47` that reads as part of the contract with nothing
-qualifying it. *(Narrowed — CON residual. Revision 1 said `README.md:42-50`
-"currently reads as if the interfaces are part of the contract"; half of that is
-already correct.)* Amend `:47` to say it is **not implemented and not oracled in
-v1**, add the same line to `OpenNotes.md` N4 with the version it is deferred
-past, and give `canonical_key` a named owner: four live conventions are already
-diverging, and freezing a contract that claims a canonical key while four exist
-is exactly the kind of claim L1-07 tells this document not to make.
+golden derivation vectors are deferred to the implementation step (N4)". *(Premise
+restated — CON-P3-7. Revision 2 said it is `canonical_key` at `README.md:47`
+"that reads as part of the contract **with nothing qualifying it**". Something
+does qualify it: `:42`, the heading of the subsection `:47` sits in, reads
+"### Interfaces (signatures, documented — not encoded; see `dev-docs/OpenNotes.md`)",
+and `:44-45` adds "taut models data, so these two live as documented signatures,
+not schema constructs". What `:47` lacks is **not** a statement that it is
+unencoded — it has that — but a statement of its v1 **status**: unlike `:48-50`
+beside it, `:47` does not say the function is unimplemented and unoracled, so a
+reader takes "documented signature" to mean "documented and implemented
+somewhere". Revision 1's wider claim about `README.md:42-50` was already narrowed
+once, and this is the second narrowing.)* Amend `:47` to say it is **not
+implemented and not oracled in v1** — the status line `:48-50` already carries
+and `:47` does not — add the same line to `OpenNotes.md` N4 with the version it
+is deferred past, and give `canonical_key` a named owner: four live conventions
+are already diverging (row 49), and freezing a contract that claims a canonical
+key while four exist is exactly the kind of claim L1-07 tells this document not
+to make.
 
 ### R7 — Which unexercised elements ship in the frozen v1?
 
@@ -714,24 +862,74 @@ determine from any page whether their migrated file took effect.
 
 **Options.**
 
-| | Node | glade-decl | App files | Clients |
-| --- | --- | --- | --- | --- |
-| **(a) Fold by `glade_id`, newest wins; retract explicitly** | a `bindings_of()` fold beside `grants_for` in `registry.rs`; `exchange.rs:62-78` folds instead of `any()`; a new `BindingRetraction` record kind in `sysdata.taut.py` and a `Record::Retract` arm; `register` diffs the parsed file against the fold to know what to retract. Durable-record addition → `sysdata.rs` regenerates with `--legacy-codec`. ~200 LOC | none (the node's record, not the contract's) | none | a client subscribing to `dir.bindings` (`exchange.rs:651-658`) must fold the same way; today none does |
-| **(b) Never rewrite a stored token: the file keeps its spellings, the node maps at the boundary** | `parse()` normalises `from-cursor` → `from_cursor` on the way into `BindingDecl` (~10 LOC in the binding arm, plus SUR-P3-2's diagnostics). The file keeps the hyphen | none | **0 edits for the 13 `from-cursor` lines**; 2 edits for `windowed`, which is a meaning change, not a spelling one | none |
-| **(c) Duplicates accepted, with a stated fold rule** | `exchange.rs:62-78` must fold rather than `any()` — today a stale `exchange` record keeps a retired surface routable. The rule ("highest `(lamport, origin)` for a `glade_id` wins", matching the `value` fold at `glade-gyld/README.md:934`) goes in `GladeGrazelAttachNotes.md:56-61` and in the format page. ~40 LOC | none | none | as (a) |
+*(Option (b) restated as two shapes with their true costs, and (a) given its
+retraction scope — SAF-P2-11 and SUR-P2-7. The choice between b1 and b2 is
+R9's; this document states both and recommends, it does not choose.)*
 
-**Recommendation: (b) for the spellings, plus (a) for what remains.** (b) is not
-an alternative to (a): it is a reduction of (a)'s blast radius, and it is large —
-it cuts the mandated rewrite from 15 lines to 2 (the two `windowed` lines, which
-are the one dual-maintained surface), removes the "did my migration take effect?"
-question for 13 of the 15, and keeps the format's hyphen convention (SUR-P3-3:
-there is not one underscore in any authored token of any of the five files, so
-`from_cursor` would be a convention of one). (a) is then the only option that
-answers **deletion**, which (c) leaves permanently unanswered, and the only one
-under which a later retention-honouring store (GC-4) can ask "what is
-`term.log`'s retention?" and get one answer. If the owner takes (c), the fold
-rule must land in the **same commit** as the first token edit, not after — a
-duplicate written before the rule exists is a record nothing can adjudicate.
+| | Node | glade-decl | App files | Clients | **Durable cost on the first boot** |
+| --- | --- | --- | --- | --- | --- |
+| **(a) Fold by `glade_id`, newest wins; retract explicitly** | a `bindings_of()` fold beside `grants_for` in `registry.rs`; `exchange.rs:62-78` folds instead of `any()`; a new `BindingRetraction` record kind in `sysdata.taut.py` and a `Record::Retract` arm; `register` diffs the parsed file against the fold **within the scope stated below** to know what to retract. Durable-record addition → `sysdata.rs` regenerates with `--legacy-codec`. ~200 LOC, scope rule included | none (the node's record, not the contract's) | none of its own; whatever R2's answer forces | a client subscribing to `dir.bindings` (an integration test drives exactly this today — `exchange.rs:651-658`, inside `mod tests` at `:266`) must fold the same way; today none does | **15 appends** if the file side respells (13 `from-cursor` + 2 `windowed`), **2** if it does not — the `windowed` lines change under every R2 option, so they are the floor — plus a retraction record for every line R2's answer removes. The fold then makes the superseded records unreachable, which is what (a) buys and neither (b) shape does |
+| **(b1) The file keeps its spellings; the node maps them where a CONSUMER reads the record** | `parse()` stores `toks[5]` raw, as today; the mapping `from-cursor` → `from_cursor` happens in the fold/read path a consumer goes through, not on the way in (~10 LOC there, plus SUR-P3-2's diagnostics) | none | **0 edits for the 13 `from-cursor` lines**; 2 edits for `windowed`, which is a meaning change, not a spelling one | every reader maps, for the life of the store | **0.** No stored byte changes. Cost instead: the **stored** vocabulary and the **contract** vocabulary differ permanently, and every consumer that reads a stored `BindingDecl` must know both |
+| **(b2) The file keeps its spellings; `parse()` normalises on the way into `sysdata::BindingDecl`** | `parse()` normalises in the binding arm (~10 LOC, plus SUR-P3-2's diagnostics) — but `appdecl.rs:37` imports `BindingDecl` from `crate::sysdata`, so the value normalised at `:138` **is** the durable record's byte | none | as (b1) | none — the store already speaks the contract's spelling | **13 appends.** `register`'s diff is on `(glade_id, payload bytes)` (`appdecl.rs:264`); every stored record still carries `"from-cursor"`, so none matches and all 13 are appended (`:267`) and persisted (`glade-node.rs:91`). **(b2) therefore needs (a)'s or (c)'s fold exactly as much as they do** |
+| **(c) Duplicates accepted, with a stated fold rule** | `exchange.rs:62-78` must fold rather than `any()` — today a stale `exchange` record keeps a retired surface routable. The rule ("highest `(lamport, origin)` for a `glade_id` wins", matching the `value` fold at `glade-gyld/README.md:1147` *(re-pinned — CON-P3-8 / SUR-P3-8: `:934` at glade-gyld `024d2a8`, now `:1147` at `65da8cb`)*) goes in `GladeGrazelAttachNotes.md:56-61` and in the format page. ~40 LOC | none | none | as (a) | as (a) or (b2), whichever the spelling answer produces — (c) does not reduce the appends, it only makes them adjudicable |
+
+**(a)'s retraction scope, stated in the option (SUR-P2-7).** Retraction is
+computed **per `(app, glade_id)`**, against the declarations previously
+registered for the `app` named in the file being registered. Therefore: a file
+that is **not loaded** on a given boot **retracts nothing**, and a declaration
+made by a **different** app file is **never** in scope. The scoping key already
+exists — `sysdata.BindingDecl` carries `app` as field 1 (`sysdata.taut.py:79`),
+set from the `app` line at `appdecl.rs:133`, which is row 33's mapping.
+
+Without that sentence the option is unsafe as written, and the counterexample is
+grazel's documented default boot. `glade-node` accepts `--app` repeatedly and
+grazel passes two files when its gyld leg is on (`grazel/README.md:73-79`):
+`grazel-app.glade` registers its **7** bindings, then `gyld-app.glade` is parsed
+and diffed against the fold — under an unscoped diff, grazel's 7 are in the fold
+and absent from this file, so `ws.tree`, `ws.files`, `ws.diff`, `term.log`,
+`gwz.output`, `chat.msgs` and `chat.groups` are retracted on a boot where nobody
+edited anything. The same hole reaches the flag: the gyld leg is **default off**
+(`grazel/README.md:41-42`), and "everything this registrant declared" as a scope
+would retract gyld's 7 surfaces whenever the supplier is switched off — against
+the files' own stated purpose, "Pre-declared here so they exist node-side
+whether or not a supplier is running" (`grazel/apps/gyld-app.glade:19-20`) and
+the same of `chat.msgs`/`chat.groups` at `grazel/README.md:15-17`. Declare-ahead,
+provider-optional is the documented design; absence-implies-retraction is its
+negation. §4.7 row 10 tests all three cases.
+
+**Which spellings a file may contain, under each shape (SUR-P3-9).** Under
+**(b1)** the stored token is whatever the file wrote, so the file side must be
+told which spellings are legal — and the answer that keeps one spelling in the
+store's history is: the file writes `from-cursor`, and `from_cursor` is
+recognised-but-refused with a diagnostic naming the hyphen. Under **(b2)** both
+spellings parse and normalise to `from_cursor`, so a file containing either is
+accepted and stores one value; whether the hyphen is nevertheless the only
+*legal* spelling is R2's 18b sub-choice, not R9's. Under **(a)** and **(c)** with
+a file-side respelling, `from_cursor` is the file's spelling and `from-cursor`
+becomes the recognised-but-refused one. Whichever shape is taken, §4.4 bullet 7's
+refusal message must name a spelling the file format actually accepts.
+
+**Recommendation: (b) for the spellings, plus (a) for what remains — and, within
+(b), b1 if the durable cost is what matters and b2 if a single stored vocabulary
+is.** (b) in either shape is not an alternative to (a): it is a reduction of (a)'s
+blast radius on the **file** side, and that reduction is real and large — it cuts
+the mandated rewrite from **15 file edits to 2** (the two `windowed` lines, which
+are the one dual-maintained surface) and keeps the format's hyphen convention
+(SUR-P3-3: there is not one underscore in any authored token of any of the five
+files, so `from_cursor` would be a convention of one). *(Corrected — SAF-P2-11.
+Revision 2 claimed (b) also "removes the 'did my migration take effect?' question
+for 13 of the 15". That is true of **b1** and false of **b2**: b2 normalises
+inside `parse()`, which builds `sysdata::BindingDecl`, so those 13 records are
+appended and the question is live for exactly them. The benefit (b) genuinely
+buys is 13 fewer FILE edits and the hyphen, not 13 fewer durable records.)*
+
+(a) is then the only option that answers **deletion**, which (c) leaves
+permanently unanswered, and the only one under which a later retention-honouring
+store (GC-4) can ask "what is `term.log`'s retention?" and get one answer. Under
+**b2 the fold in (a) is not optional but required**, because b2 appends 13
+records that nothing else adjudicates. If the owner takes (c), the fold rule must
+land in the **same commit** as the first token edit, not after — a duplicate
+written before the rule exists is a record nothing can adjudicate.
 
 **Whatever is chosen, it must be written in a page a user reads before any file
 is migrated**, because the migration is the first mass exercise of it
@@ -749,20 +947,22 @@ notice before the node fails to start.
 
 **Options.**
 
-| | Node | App files | Third-party files | Docs |
-| --- | --- | --- | --- | --- |
-| **(a) `v1` is the validated grammar; `v0` still loads, warned** | `appdecl.rs:89-95` gains a version variable and the binding arm branches on it (~25 LOC) — **plus a warning channel `parse()` does not have**: it returns `Result<AppDecl, String>`, so a non-fatal message needs either a `Vec<String>` on `AppDecl` or an `eprintln!` in `load`, which touches `glade-node.rs:88` and grazel's integration path | each file's header moves to `v1` in the same commit as its token edits | keep working, with a message naming the replacement and the version it changed in | a migration note, which these repos do not have yet |
-| **(b) Redefine `v0` in place, stated explicitly** | 0 beyond the validation itself | 0 beyond the token edits | **break at boot**, with no version to key a message on | the draft must say so in terms, plus the same migration note |
+| | Node | App files | Third-party files | Docs | **Ordering cost** |
+| --- | --- | --- | --- | --- | --- |
+| **(a) `v1` is the validated grammar; `v0` still loads, warned** | `appdecl.rs:89-95` gains a version variable and the binding arm branches on it (~25 LOC) — **plus a warning channel `parse()` does not have**: it returns `Result<AppDecl, String>`, so a non-fatal message needs either a `Vec<String>` on `AppDecl` or an `eprintln!` in `load`, which touches `glade-node.rs:88` and grazel's integration path | **the token edits and the header bump are NOT the same commit** *(corrected — SAF-P2-9; revision 2 said "each file's header moves to `v1` in the same commit as its token edits")*. The tokens move in §4.4's step 1; each file's header moves **after** a both-headers node is deployed, in §4.4's step 4 | keep working, with a message naming the replacement and the version it changed in | a migration note, which these repos do not have yet — **and** the header token in the one published grammar block, `GladeGrazelAttachNotes.md:30`, which still reads `glade-app v0`. Without that edit the format's own specification instructs every new author to write the deprecated header, i.e. to generate a deprecation warning (SUR-P2-8). No in-file comment shows the header in any of the five files — the header is only ever the data line itself (`grazel-app.glade:16`, `gyld-app.glade:14`) — so `:30` is the **only** place an author can read it | **one extra landing step.** A node that accepts both `glade-app v0` and `glade-app v1` must be deployed **before any file's header moves**, because the header is an exact-equality check at `appdecl.rs:89-95` and an old node **refuses** a new header. §4.4 step 0 |
+| **(b) Redefine `v0` in place, stated explicitly** | 0 beyond the validation itself | 0 beyond the token edits | **break at boot**, with no version to key a message on | the draft must say so in terms, plus the same migration note; `GladeGrazelAttachNotes.md:30` keeps `v0` and gains the sentence saying it now means the shrunken language | **none.** No header moves, so no node ever meets a header it cannot parse. This is (b)'s one genuine advantage over (a) |
 
 **Recommendation: (a).** The mechanism is already in the file and already parsed;
 using it costs about 25 lines in one function and converts an unannounced
 breaking change into an announced one. Not using it burns the mechanism
 permanently: after the freeze `v0` means both languages forever, and the next
-shrinkage has the same problem with no way out. The real cost to weigh is the
-warning channel, which is a small API change to `parse()`/`load()` that three
-call sites see. Note the interaction with R9(b): if the file keeps `from-cursor`,
-the only shrinkage is `windowed`, and (a)'s deprecation path has one token to
-carry rather than two.
+shrinkage has the same problem with no way out. The real costs to weigh are two:
+the warning channel, a small API change to `parse()`/`load()` that three call
+sites see; and the extra landing step in the column above, which is not optional
+— §4.4 step 0 exists because of it. Note the interaction with R9(b): if the file
+keeps `from-cursor`, the only shrinkage is `windowed`, and (a)'s deprecation path
+has one token to carry rather than two — but the header hazard is unchanged,
+because it is the header and not the token that an old node refuses.
 
 ### R11 — Does the binding line get a keyword tail?
 
@@ -775,11 +975,15 @@ trailing token" forbids. Does the grammar gain a keyword tail instead?
 
 **Options.**
 
-| | Node | glade-decl | App files | What it leaves open |
-| --- | --- | --- | --- | --- |
-| **(a) A keyword tail after the five positional tokens** — `binding <id> <shape> <authority> <zone> <retention> [k=v …]`, e.g. `ttl=10m`, `shape-profile=text_crdt`; an unknown key is refused by name with a line number | `appdecl.rs:111-140` splits the tail on `=` (~35 LOC); the arity check at `:111-114` becomes a minimum and `:113`'s template gains the tail; each key that must persist adds a `sysdata.BindingDecl` field → durable-record change, `--legacy-codec`, and R9 applies | none beyond what R2/R4 already decide | **0 edits** — no existing line has a tail | everything: a later option is a new key, not a new position, and it changes the meaning of no existing line |
-| **(b) Hold `ttl` reserved and unauthorable until it has a slot**; `profile` takes position 6 | one entry in the refusal table; `:113`'s template gains the optional token | `RetentionPolicy.ttl` becomes a **fourth** declaration-only gap beside `external`, `source` and `Retention`'s parameters | 0 | **nothing** — position 6 is spent, so a duration can only ever go at position 7, which makes the profile mandatory whenever a duration is present. One-way door |
-| **(c) Neither: the line stays exactly five tokens** | 0 | 0 | 0 | position 6, still free — but only reachable if R2 drops `ttl` **and** R4 returns (b) or (c) |
+*(A **Docs** column added — SUR-P2-8. Revision 2's table had none, and both
+R11(a) and R10(a) change the line an author copies from without costing a line
+for the two places that show it.)*
+
+| | Node | glade-decl | App files | **Docs** | What it leaves open |
+| --- | --- | --- | --- | --- | --- |
+| **(a) A keyword tail after the five positional tokens** — `binding <id> <shape> <authority> <zone> <retention> [k=v …]`, e.g. `ttl=10m`, `shape-profile=text_crdt`; an unknown key is refused by name with a line number | `appdecl.rs:111-140` splits the tail on `=` (~35 LOC); the arity check at `:111-114` becomes a minimum and `:113`'s template gains the tail; each key that must persist adds a `sysdata.BindingDecl` field → durable-record change, `--legacy-codec`, and R9 applies | none beyond what R2/R4 already decide | **0 edits** — no existing line has a tail | **the published grammar at `GladeGrazelAttachNotes.md:32`** and **the three in-file grammar comments** that carry the same template — `grazel/apps/grazel-app.glade:19`, its byte-identical twin `glade/apps/grazel-app.glade:19`, and `grazel/apps/gyld-app.glade:17` (the two fixtures carry no grammar comment at all, so the in-file grammar is a 3-of-5 property). **Plus one sentence on how an author learns the tail exists**, because (a) makes `:113`'s template unreachable for them: once the arity check is a minimum, a legal five-token line never trips arity, so the corrected template never prints for the author who wrote a valid line and now wants a TTL, and `:121`-style refusals fire only on a wrong key, which presupposes knowing keys exist | everything: a later option is a new key, not a new position, and it changes the meaning of no existing line |
+| **(b) Hold `ttl` reserved and unauthorable until it has a slot**; `profile` takes position 6 | one entry in the refusal table; `:113`'s template gains the optional token | `RetentionPolicy.ttl` becomes a **fourth** declaration-only gap beside `external`, `source` and `Retention`'s parameters | 0 | the same four artefacts, carrying a sixth **positional** token instead of a tail: `GladeGrazelAttachNotes.md:32` and the three in-file comments. Here `:113` does still reach the author, because a five-token `crdt` line is an arity refusal | **nothing** — position 6 is spent, so a duration can only ever go at position 7, which makes the profile mandatory whenever a duration is present. One-way door |
+| **(c) Neither: the line stays exactly five tokens** | 0 | 0 | 0 | 0 — the published grammar and the three in-file comments already show exactly this line | position 6, still free — but only reachable if R2 drops `ttl` **and** R4 returns (b) or (c) |
 
 **Recommendation: (a) if either R2 keeps `ttl` or R4 returns (a); (c) otherwise.**
 (a) is the single highest-leverage pre-freeze change available: it costs one
@@ -790,10 +994,12 @@ answers to R2 and R4, which is why R11 cannot be decided before them.
 
 **Naming (SUR-P2-4).** If the tail carries the profile, do not spell the key
 `profile`: `grazel/README.md:102-106` documents the node's `--profile local|peer`
-boot profile and `glade-gyld/README.md:315` documents an LLM "compatibility
-profile", so the word already means two other things in the same product. Spell
-the file key `shape-profile=` (hyphen, per R9(b)/SUR-P3-3). The contract's field
-name stays `profile`, because GDL-041 calls them profiles.
+boot profile and `glade-gyld/README.md:499` documents an LLM "compatibility
+profile" *(re-pinned — CON-P3-8 / SUR-P3-8: `:315` at glade-gyld `024d2a8`, where
+the section heading then was; the README grew 981 → 1192 lines and the heading is
+`:499` at `65da8cb`)*, so the word already means two other things in the same
+product. Spell the file key `shape-profile=` (hyphen, per R9(b)/SUR-P3-3). The
+contract's field name stays `profile`, because GDL-041 calls them profiles.
 
 ---
 
@@ -815,7 +1021,7 @@ substitute freely, subject to §4.1.8.
 | Row 43 (`base_seq` comment) | §4.1.4 |
 | A1 (`CONTRACT_VERSION`) | §4.3 |
 | A2 (the drift gate) | **already closed** at `glade-decl d671f10` / `glade-decl-rs 21eefa1` — not a step of this amendment; §4.3 and §4.7 row 1 record what it now guarantees |
-| A3 (`glade/decl/*` sketch) | §4.4 bullet 10 |
+| A3 (`glade/decl/*` sketch) | §4.4 bullet 10 — and §4.4 bullet 14 applies the same treatment to the eleven `dev-docs/examples/*.glade` files of the other dialect (SUR-P3-6) |
 | A4 (one rendering procedure) | §4.3 |
 | A5 (lockfile) | §4.8 |
 | A7 (`session.rs` error text) | §4.4 bullet 11 |
@@ -829,8 +1035,34 @@ own app surface, not a reconciliation of `glade-decl`. **A8**
 `PackageExtractionPlan.md` step 2.6 and `GlialFitAssessment` S1 (`:149`);
 touching it here would smear two unrelated contracts into one commit (§4.6).
 
-**Publish ordering.** *(Safety residual.)* Nothing is published — to npm,
-crates.io or PyPI — until **every row of §4.7 is green on a settled tree**.
+**Publish ordering.** *(Safety residual; restated over §4.7's split —
+CON-P2-6.)* Nothing is published — to npm, crates.io or PyPI — until
+
+- **every row of §4.7(a) is green on a settled tree**, and
+- **every row of §4.7(b) is green under the answers the owner actually
+  recorded** — each (b) row names its ruling and says what green means under
+  each of that ruling's options, so "which rows count" is read off the recorded
+  answers rather than decided at the publish boundary. A (b) row whose condition
+  does not arise under those answers is not a gate and nothing waits on it.
+
+**§4.7(c) is evidence, not a gate.** Rows 14 and 16 are recorded pre-freeze
+items — a glial test that does not exist yet, and a manual demo observation —
+and no publish waits on either.
+
+*(Revision 2 read "every row of §4.7 is green on a settled tree" over a table in
+which row 2 fails by design under R4(a), row 7 presupposes a validation R1's and
+R2's sub-choice (iii) decline to turn on, row 14 says in its own cell that it is
+not a gate, and row 16 has no green/red state. Under R4(a) the precondition was
+unsatisfiable for ever; under row 14 it was self-contradictory on its face.
+Corrected — CON-P2-6.)*
+
+**Under R4(a), row 2 is replaced, not left red.** The substitute is the
+compatibility artefact §4.2 already names in the taut-shape idiom
+(`taut-shape/release/compatibility.v1.json`): it must exist and enumerate
+exactly which of the 26 vectors changed, and the superset claim is deleted
+rather than weakened. The same substitution applies to every other byte-moving
+option (R1(c)/(d), R2(c)/(d), R3(b), R5(c)) — see §4.7 row 2.
+
 `PackageExtractionPlan.md:155`'s step-1.1 exit check covers only `pnpm test` in
 `glade-decl-ts` plus a `-ts`/`-rs` hash comparison, and step 1.2 publishes; that
 is not sufficient here, because the node half of this reconciliation (§4.4) has
@@ -849,8 +1081,11 @@ its own gates and they are in a different repository.
    `curated_values()`** (`:84-150` is hand-authored; `synth_values` is one per
    *message*, never per enum member), and keep `edge/binding-message-private` and
    `edge/binding-deployment-window` as the relabelled recognition cases R3(a)'s
-   table promises. Without the vector, `README.md:55-58`'s "every shape" coverage
-   claim is false at the moment of freeze (SAF-P3-8). *(rows 3, 4, 6, 9)*
+   table promises — **keeping their keys**, so the relabelling is a comment
+   change and not a rename: a renamed key is a deletion plus an addition under
+   §4.2's `--compat` gate and would have to be declared. Without the `atom`
+   vector, `README.md:55-58`'s "every shape" coverage claim is false at the
+   moment of freeze (SAF-P3-8). *(rows 3, 4, 6, 9)*
 2. `Msg("BindingDecl", …)` — **under R4(a)** add `F("profile", 8, STR,
    optional=True)`, and delete every superset claim (§4.2). **Under R4(b)** add a
    new `Msg("ShapeProfileDecl", F("glade_id", 1, Ref("GladeId")), F("profile", 2,
@@ -885,11 +1120,31 @@ its own gates and they are in a different repository.
    is explicit — "When you remove a field, reserve its tag and name so they can
    never be reused (reuse with a different type silently corrupts the wire)".
    So: R1(d) → `reserved=[5, "domain"]` on `BindingDecl`; R5(c) → `reserved=[4,
-   "source"]`; R2(c) → `reserved=[2, "ttl_ms"]` on `Retention`; R7(b) → reserve
-   the retired message **name**. Set `next_id` above every used and reserved tag
-   on any message that is edited. For a retired **enum** member (R3(b)) taut has
-   no `reserved`, so record the retired number in the enum comment — which is
-   what R3(b)'s "hold the numbering" actually requires.
+   "source"]`; R2(c) → `reserved=[2, "ttl_ms"]` on `Retention`. Set `next_id`
+   above every used and reserved tag on any message that is edited. For a
+   retired **enum** member (R3(b)) taut has no `reserved`, so record the retired
+   number in the enum comment — which is what R3(b)'s "hold the numbering"
+   actually requires.
+
+   **And for a retired message name (R7(b)) taut has no facility either**
+   *(corrected — SAF-P3-12; revision 2 said "R7(b) → reserve the retired message
+   **name**", which cannot be executed as written)*. `reserved` is a per-message
+   field list: `dsl.py:176-179` splits it into `reserved_tags` and
+   `reserved_names`, `model.py:69-71` holds both on `MessageDef` as "retired
+   tags" and "retired **field** names", and `validate.py:55-58` enforces them
+   against that message's own `f.tag` and `f.name`. `model.py:136-140` shows
+   `Schema` carrying `enums`, `messages`, `services` and `extensions` and **no
+   reservation list of any kind**, so there is nowhere to record that a *message*
+   name is retired and nothing that would reject a later schema re-declaring it.
+   Treat it exactly as the enum case beside it: record the retired message name
+   in `glade_decl.taut.py`'s **module docstring** and in
+   `glade-decl/dev-docs/OpenNotes.md`, naming the version it was retired in and
+   forbidding reuse with a different shape. That is the carrier — not
+   `Msg(reserved=…)`. It matters because the node's `--legacy-codec` decoder is
+   fail-open (`sysdata.rs:138-147`), so a v2 that re-added `AdvertisementRecord`
+   with different fields would decode v1 bytes into the wrong shape **quietly**,
+   which is the hazard SAF-P3-6 named. A build-time check would need a taut
+   feature that does not exist and must not be invented here.
 
 Field numbers 1–7 of `BindingDecl` and every existing enum number stay exactly
 where they are under every recommended option. *(Revision 1 added "which is what
@@ -907,8 +1162,9 @@ byte-identical copy at one fixed name and its gate reads that name:
 `glade-decl-py/src/glade_decl/decl.v0.json` (`tests/test_corpus.py:27`), and
 `glade-decl-rs/src/vectors.rs` (generated table). The sibling precedent agrees:
 `taut-shape/corpus/` has **ten** corpora (`ls taut-shape/corpus/*.json | wc -l`
-→ 10) *(CON-P3-3: revision 1 said nine)* and never two versions of the same one —
-the suffix is *that contract's* version, one live file each.
+→ 10, at taut-shape `9a75209`) *(CON-P3-3: revision 1 said nine)* and never two
+versions of the same one — the suffix is *that contract's* version, one live file
+each.
 
 **Conclusion: the README implies replacement, not coexistence.** Add
 `corpus/decl.v1.json` and delete `corpus/decl.v0.json` in the same commit. v0
@@ -918,7 +1174,9 @@ one, `:41, :59-63`) and would leave the renderings' gates ambiguous about which
 file is authoritative — the opposite of what the oracle is for.
 
 **Every reference that must move (CON-P2-3).** Revision 1 named four; there are
-**20**, plus the two data files themselves. Enumerating command:
+**20**, plus the two data files themselves. Enumerating command, run at
+glade-decl `d671f10` · glade-decl-ts `7e16e32` · glade-decl-rs `21eefa1` ·
+glade-decl-py `1b0f6d1` and glade-wz root `61bb479`:
 
 ```sh
 for r in glade-decl glade-decl-ts glade-decl-rs glade-decl-py; do \
@@ -952,32 +1210,87 @@ filename) move. R8's answer adds the record-kinds sentence to the **root** copy.
 **Step 6 — the front page's own gaps (SUR-P3-1, SUR-P3-5).** `glade-decl/README.md`
 names six enums (`:24`) and not one member of any of them. Grow it a members
 table per enum with a one-line gloss each — including which values an app file
-may actually write (`BINDING_SHAPES` is three of eight today). And state at
-`:28-30` whether an app-file glade id is **authored or derived**: the front page
-says ids are "derived from package id + grip key … frozen once shared" while 14
-ids were typed by hand into app files and `derive_glade_id` is deferred (`:48-50`).
-If authored, give the syntax rule (charset, the dot's meaning, length) and say
-what `derive_glade_id` is then for.
+may actually write (`BINDING_SHAPES` is three of eight today) — including the
+`Retention` members, which no published page names at all (SUR-P2-6; §4.4's
+token-5 block). And state at `:28-30` whether an app-file glade id is **authored
+or derived**: the front page says a `GladeId` is "**frozen once shared (GQ-6),
+derived from package id + grip key**" (`:28-29`, verbatim) *(quote corrected —
+CON-P3-7: revision 2 elided it to "derived from package id + grip key … frozen
+once shared", which implies a forward order the source does not have)* while 14
+ids were typed by hand into the five app files and `derive_glade_id` is deferred
+(`:48-50`). If authored, give the syntax rule (charset, the dot's meaning,
+length) and say what `derive_glade_id` is then for.
 
-**Compatibility.** *(Rewritten — SAF-P1-1.)* Whether v1's bytes are a superset of
-v0's is decided by **R4**, not by R3:
+**Compatibility.** *(Rewritten — SAF-P1-1; the condition list and the gate
+corrected for vectors v1 **deletes** — SAF-P2-10.)* A v0 vector can leave v1 in
+two different ways, and revision 2's model accounted for only one of them.
+Enumerate both, over the 26 vectors of `corpus/decl.v0.json` (`f669da0b…`) at
+glade-decl `d671f10`:
 
-- Under **R4(b)** or **R4(c)**, with R3(a), R2(a) and R5(b): no enum number
-  moves, no message gains or loses a field, and every v0 vector re-encodes
-  identically. v1 **is** a byte superset.
-- Under **R4(a)**: 11 of the 26 vectors change (the 9 `BindingDecl` and the 2
-  `AdvertisementRecord`). v1 is **not** a superset, and no text anywhere may say
-  it is.
+- **Options that move a surviving vector's bytes.** `R4(a)` (11 of 26 — the 9
+  `BindingDecl` and the 2 `AdvertisementRecord`), `R1(c)` and `R1(d)` (the same
+  11), `R5(c)` (the same 11), `R2(c)` (the 3 surviving `Retention` vectors shrink
+  `a2 …` → `a1 …`, **and** all 11, each embedding a `Retention` at tag 7),
+  `R2(d)` (all 11, tag 7 from a nested map to a text string), `R3(b)` (the synth
+  `BindingDecl` and `ChangeEvent` vectors, because synth selects by member
+  *index* — `2 % 6` now picks `stream`, so tag 2 goes `02` → `03`).
+- **Options that delete a v0 vector outright, moving no surviving byte.**
+  `R7(b)` removes `AdvertisementRecord` and `edge/advert`; `R6(c)` removes
+  `GladeIdManifest` and `edge/manifest`; `R3(b)` additionally removes
+  `edge/binding-message-private` and `edge/binding-deployment-window`; `R2(c)`
+  additionally removes `edge/retention-ttl`; `R2(d)` additionally removes all
+  four `Retention` vectors. All nine key names verified present in v0 at this
+  tuple.
+
+So:
+
+- Under **R4(b)** or **R4(c)**, with **R1(a)/(b), R2(a)/(b), R3(a), R5(a)/(b),
+  R6(a)/(b) and R7(a)**: no enum number moves, no message gains or loses a
+  field, no vector is deleted, and every v0 vector re-encodes identically. v1
+  **is** a byte superset of v0.
+- Under that same set **but with R7(b) or R6(c)**: every surviving vector
+  re-encodes identically and v1 is a byte superset **of a stated subset of v0** —
+  v0 minus `{AdvertisementRecord, edge/advert}` under R7(b), minus
+  `{GladeIdManifest, edge/manifest}` under R6(c). The sentence must name the
+  subset; "superset of v0" is then false. *(This is the case revision 2 missed
+  entirely, and **R7(b) is this document's recommendation** — SAF-P2-10.)*
+- Under **any byte-moving option** — R4(a), R1(c)/(d), R2(c)/(d), R3(b), R5(c) —
+  v1 is **not** a superset in either sense, and no text anywhere may say it is.
 
 **The claim must be proved, not asserted.** Add a `--compat` mode to
-`corpus/build.py` that asserts `decl.v1.json[n].cbor == decl.v0.json[n].cbor` for
-every `n` present in v0, reading v0 from `git show bbce73d:corpus/decl.v0.json`.
+`corpus/build.py`, reading v0 from `git show bbce73d:corpus/decl.v0.json`. It
+takes an explicit, enumerated deletion list on the invocation — e.g.
+`python3 corpus/build.py --compat --deleted AdvertisementRecord,edge/advert` —
+and it:
+
+1. asserts `decl.v1.json[n].cbor == decl.v0.json[n].cbor` for every
+   `n ∈ v0 ∩ v1`;
+2. **fails if any `n ∈ v0 \ v1` is not named in the invocation** — an undeclared
+   absence is a failure exactly like byte drift, so a deletion is a checked
+   decision and never a silent pass;
+3. **fails if any declared name is in fact still present in v1**, so the list
+   cannot rot into a blanket waiver as the corpus changes.
+
+A **renamed** vector key is a deletion plus an addition under rule 2, so any
+relabelling that changes a key — R3(a)'s two recognition cases are the live
+candidates — must appear in the deletion list or the gate is red. Say which of
+the two a relabelling is: if the key survives and only the comment changes, the
+gate never sees it.
+
 It is a ~40-line addition. **No "strict superset" sentence survives anywhere in
 this document, in `README.md` or in the DecisionLog unless that gate is stated as
-its proof and is green.** If the owner takes R4(a), delete the claim rather than
-weakening it, and expect `--compat` to fail by design on those 11 vectors; a
-separate artefact in the taut-shape idiom (`taut-shape/release/compatibility.v1.json`)
-is then the right place to record *what* changed, not that nothing did.
+its proof and is green** — and, where a deletion list is non-empty, unless the
+sentence names the subset. Under the recommended answer set
+{R1(a), R2(a), R3(a), R4(b), R5(b), R6(a), R7(b)} the gate is green **with**
+`AdvertisementRecord,edge/advert` declared and **red without it**, which is the
+behaviour that makes it worth running.
+
+If the owner takes R4(a) — or any other byte-moving option — delete the claim
+rather than weakening it, and expect `--compat` to fail by design on the vectors
+named above; a separate artefact in the taut-shape idiom
+(`taut-shape/release/compatibility.v1.json`) is then the right place to record
+*what* changed, not that nothing did. §4.7 row 2 and §4.0's publish ordering
+state the same three cases in the same words.
 
 ### 4.3 Regenerate the three renderings
 
@@ -1054,26 +1367,84 @@ or stop calling it a pin: it is an unread string constant in all three rendering
 
 Not a consumer — the other half of the reconciliation.
 
-**Landing order, and why (SAF-P2-3).** `appdecl::load` propagates a parse error
-with `?` out of `main` (`glade-node.rs:49,88`; `appdecl.rs:204-211` wraps it as
+**Landing order, and why (SAF-P2-3; corrected for the header — SAF-P2-9).**
+`appdecl::load` propagates a parse error with `?` out of `main`
+(`glade-node.rs:49,88`; `appdecl.rs:204-211` wraps it as
 `io::ErrorKind::InvalidData`), so one bad token is a process exit before the
-listener binds. The six app-file copies live in **four** repositories and cannot
-land atomically. Therefore:
+listener binds. The **five** app files live in **four** repositories and cannot
+land atomically. *(Corrected — CON-P3-7 / SUR-P3-7: revision 2 said "six
+app-file copies", contradicting its own enumeration one line below, A10, §4.4
+bullet 6, R9's prose and §2's legend ("the five live `.glade` files"). Command,
+run over both workzones at the tuple in the Appendix:
+`grep -rln 'glade-app v0' --include='*.glade' .` → the five paths enumerated in
+step 1.)*
 
-1. **App files first, in all four repositories** — `grazel` (two files),
-   `glade` (the demo's copy of `grazel-app.glade`), `glade-gyld` and `glade-gwz`
-   (one fixture each). An **old** node accepts the new spelling (the token is
-   unvalidated); a **new** node refuses the old one. The reverse order is the
-   only one with a stuck state, and it is invisible to
-   `cargo test -p glade-node`, which reads `CARGO_MANIFEST_DIR/../apps/grazel-app.glade`
-   (`appdecl.rs:281`) — the `glade` copy — and would be green while the node
-   refuses to boot on the files grazel actually ships (`grazel/src/lib.rs:150`).
-2. **Then the node's vocabulary** (bullets 1, 4, 7, 9, 10, 11 below).
-3. **Then validation** (bullets 2–3), under R1's and R2's sub-choices and R10's
-   header answer.
+**The token and the header have opposite safe orders**, and this is what
+revision 2's step 1 got wrong by writing its justification about the token only:
 
-**What must be written before validation is turned on (SUR-P2-1, SUR-P3-1).** In
-the same wave, the format's documentation must state:
+- An **old** node **accepts** a new *token*. `appdecl.rs:137-138` stores
+  `toks[4]` and `toks[5]` raw, with no validation, so a pre-amendment node loads
+  a file that already says `from_cursor`. Tokens are therefore safe to move
+  first.
+- An **old** node **refuses** a new *header*. `appdecl.rs:89-95` is an exact
+  equality — `if toks != ["glade-app", "v0"] { return Err(…) }` at `:90-91` —
+  checked seventeen lines before the binding arm opens at `:107`, so it fires
+  before any token is looked at. A file headed `glade-app v1` is a process exit
+  on every node that has not been upgraded. Headers are therefore safe to move
+  **last**, and only after a node that accepts both headers is deployed.
+
+Therefore, under **R10(a)**:
+
+0. **Step 0 — a both-headers node first.** Deploy a node whose `parse()` accepts
+   `glade-app v0` **and** `glade-app v1` — bullet 3 below, the `appdecl.rs:89-95`
+   branch and the warning channel — with **no** new token validation. This node
+   is strictly more permissive than today's: it accepts everything today's node
+   accepts and one thing more, so deploying it breaks nothing.
+1. **Step 1 — then the app files' tokens, in all four repositories** — `grazel`
+   (`apps/grazel-app.glade`, `apps/gyld-app.glade`), `glade`
+   (`apps/grazel-app.glade`, the demo's byte-identical copy), `glade-gyld`
+   (`tests/fixtures/gyld-test-app.glade`) and `glade-gwz`
+   (`tests/fixtures/gwz-test-app.glade`). **Headers stay `v0` in this commit.**
+   The reverse order — node validation before the files — is the only one with a
+   stuck state on the *token*, and it is invisible to `cargo test -p glade-node`,
+   which reads `CARGO_MANIFEST_DIR/../apps/grazel-app.glade` (`appdecl.rs:281`)
+   — the `glade` copy — and would be green while the node refuses to boot on the
+   files grazel actually ships (`grazel/src/lib.rs:159`, `let mut app =
+   PathBuf::from("apps/grazel-app.glade")`) *(re-pinned — CON-P3-8: `:150` at
+   grazel `924cb3c`; the config parsing moved into an `impl Config` block at
+   `c66f029` and `:150` is now a doc comment)*.
+2. **Step 2 — then the node's vocabulary** (bullets 1, 4, 7, 9, 10, 11 below).
+3. **Step 3 — then validation** (bullet 2), under R1's 31b and R2's 18b
+   sub-choices — and not at all for a token whose sub-choice is (iii).
+4. **Step 4 — last, each file's header moves to `v1`.** A `v1` header is the file's own
+   assertion that it is written in the validated language, which is true only
+   once its tokens are migrated (step 1) and the validating node is deployed
+   (step 3). Step 0 is what makes this step safe; steps 1–3 are what make it
+   true.
+
+**Under R10(b)** there is no step 0 and no step 4: no header moves, so no node
+ever meets a header it cannot parse. That is the ordering cost R10's table
+carries against (a).
+
+**Every intermediate commit is a gate, not only the last one.**
+`cargo test -p glade-node` and `cargo test -p grazel` (§4.7 rows 6 and 8) must be
+green after each of steps 0–4 — both suites boot a node on a file this wave
+edits, so a red between two steps is the fleet down, not a deferred failure.
+§4.7 row 17 is the regression that pins step 0: the **pre**-amendment `parse()`
+refuses a `glade-app v1` header with `:91`'s diagnostic, which is why the
+both-headers node cannot come after the headers move.
+
+**What must be written before validation is turned on (SUR-P2-1, SUR-P2-6,
+SUR-P3-1).** In the same wave, the format's documentation must state the
+following — **for token 4 and token 5 alike**. *(Extended to token 5 —
+SUR-P2-6. Revision 2 wrote five statements about the zone and none about
+retention, while bullet 2 below switches **both** tokens from ignored to
+enforced in one sentence. Token 5 is the one the amendment migrates, on the
+only 15 lines that change, and its wrong choice is **silent**: a legal token
+produces no diagnostic, so an author who reaches for `latest` on an append log
+gets a last-writer-wins value and no error.)*
+
+**Token 4 — the zone.**
 
 - **What `commons` means**: everyone in the domain; the wire `key` is empty
   (`demo/src/manifest.ts:74`).
@@ -1089,20 +1460,77 @@ the same wave, the format's documentation must state:
   (`grip-share/src/manifest.ts:64`), so the declared zone wins and the manifest's
   surface spec is only a fallback. On the glial path the question does not arise,
   because `Fill.zone` never reaches the wire.
-- **And the contradicting sentence must go.** `grazel/apps/grazel-app.glade:19-21`
-  (byte-identical at `glade/apps/grazel-app.glade`) tells the author to type a
-  `<zone>` on line 19 and, on line 21, that "the mount fills domain/zone/key".
-  `glade/dev-docs/GladeGrazelAttachNotes.md:49-51` says both halves in one
-  sentence pair. Today the contradiction is inert; after validation it is a
-  line-numbered boot refusal the surface does not resolve. Rewrite it in **both**
-  homes of `grazel-app.glade` and in `GladeGrazelAttachNotes.md:49`.
+
+**Token 5 — the retention (SUR-P2-6).** Symmetrically, and for whichever set R2
+returns:
+
+- **What `latest` means**: the surface keeps one value, last write wins. This is
+  the hazardous default to reach for: on a `log`-shaped surface it silently
+  converts an append log into a last-writer-wins value, and no diagnostic fires,
+  because `latest` is a legal token.
+- **What `from_cursor` means**: the surface keeps its history and a subscriber
+  resumes from a position rather than from the head. This is what
+  terminal-scrollback, output-stream and message-log surfaces want — which is
+  why 13 of the 28 authored lines say it.
+- **What `ttl` means**, if R2 keeps it: the surface's records expire after a
+  duration — and, **as the grammar stands, the duration is unsayable**, so a
+  bare `ttl` parses and says nothing. Under **R11(a)** the duration is expressed
+  as a tail key, `ttl=10m` / `ttl=1h`, spelled per R11's naming note; under
+  R11(b)/(c) `ttl` is unauthorable or absent, and the page must say so rather
+  than leave a member of a published enum unexplained.
+- **Which to write, by surface kind**, in one line each: an append log or an
+  output stream → `from_cursor`; a settings or status value read at the head →
+  `latest`; a cache whose entries should expire → `ttl` with its duration, or
+  nothing at all if R11 leaves the duration unsayable.
+- **What omission means**: as for token 4, there is no default — a five-token
+  line is an arity refusal, not a defaulted retention.
+
+Today none of this exists anywhere. Over the eight published pages, `latest`,
+`from-cursor`, `from_cursor`, `windowed` and `ttl` score **zero** hits in the
+retention sense (`latest`'s ten hits are all `latest.json` or "the latest
+build"), `dev-docs/glade/GladeDeclSurface.md` has no `Retention` row beside its
+`Shape`, `Authority` and `Domain`/`Zone` rows, and `glade-decl/README.md:24-25`
+names `RetentionPolicy` and `Retention` and no member of either. The two page
+edits that fix it are named §4 steps: **§4.4 bullet 15** (the `Retention` row in
+`GladeDeclSurface.md`) and **§4.2 step 6** (the members table on
+`glade-decl/README.md`). §4.7 row 18 is the gate.
+
+**And the contradicting sentence must go, in all four of its homes
+(SUR-P2-1).** `grazel/apps/grazel-app.glade:19-21` (byte-identical at
+`glade/apps/grazel-app.glade`) tells the author to type a `<zone>` on line 19
+and, on line 21, that "the mount fills domain/zone/key (GladeDeclSurface.md)".
+`glade/dev-docs/GladeGrazelAttachNotes.md:49-51` says both halves in one
+sentence pair, with the clause itself at `:50` and the same parenthetical
+citation. **And the page both of them cite is
+`dev-docs/glade/GladeDeclSurface.md`, where `:29` reads "The binder's scope maps
+them at bind time" and `:30` "each **mount** creates a binding *instance*
+`(decl, domain/zone/key fill)`"** — so an author who does what the citation
+invites lands on the authoritative statement of the thing the other two were
+about to stop saying. *(Added — SUR-P2-1. Revision 2's rewrite list named the
+two derivative homes and omitted the source; rewriting only those two silences
+the pages that would have warned the author and leaves the authority
+untouched.)*
+
+Rewrite it in **both** homes of `grazel-app.glade` (`:21`), in
+`GladeGrazelAttachNotes.md:49-51` (the clause is `:50`), and in
+`dev-docs/glade/GladeDeclSurface.md:29-30`, carrying in each the answer this
+section already gives: the authored zone is the author's to choose, the mount
+does not override it on the path that honours it, and on the path that does not,
+the fill never reaches the wire. `GladeDeclSurface.md` is the one document R8 and
+§4.2 step 5 already open for amendment, so the edit costs nothing extra. Today
+the contradiction is inert; after validation it is a line-numbered boot refusal
+that no page resolves. §4.7 row 20 is the grep.
 
 Note also that `glade/docs/` — which `glade/README.md:23` advertises as "Public
 support contracts and user-facing documentation" — contains exactly one 8-line
-placeholder README. The only specification of the hand-edited format is
+placeholder README, which additionally carries the standing rule "Do not move
+internal architecture drafts here until they are intended to become public
+promises." The only specification of the hand-edited format is
 `GladeGrazelAttachNotes.md`, which `glade/README.md:24` classifies as "Internal
 engineering design" and which is titled after a different subject. The grammar
-block should move to, or be mirrored in, a page presented as user-facing.
+block should move to, or be mirrored in, a page presented as user-facing — and
+that page, not this document, is where the conventions in bullets 13 and 14
+belong.
 
 Then:
 
@@ -1113,15 +1541,33 @@ Then:
   `:121` — there is nothing to redirect to; `:121`'s message then prints only the
   implemented list for `atom`, `message` and `window`. Say so, or give them a
   reserved note (SUR-P3-4).
-- **2.** `appdecl.rs:107-140` — validate token 4 against `{commons, private}`
-  (row 31b, R1 sub-choice) and token 5 against the R2 policy set (row 18b, R2
-  sub-choice), with the same line-numbered diagnostics as the shape and authority
-  checks. **Hard error or warn-for-one-release is the owner's sub-choice**, not
-  a given; it interacts with R10.
-- **3.** The header, under **R10**. Under (a), `appdecl.rs:89-95` branches on
-  `v0` vs `v1` and `parse()` gains a way to return a non-fatal message; under
-  (b), `v0` is redefined in place and the change is stated in terms, with a
-  migration note — the first such document in these repos.
+- **2.** `appdecl.rs:107-140` — validation, **per token and per sub-choice; the
+  two tokens are independent and each has three answers, so this bullet has
+  three branches, not two** *(third branch added — CON-P2-7: revision 2 wrote
+  "hard error or warn-for-one-release is the owner's sub-choice", which lands
+  two of the three options and leaves an owner who answers (iii) with no step)*:
+  - **(i) hard error** — validate token 4 against `{commons, private}` (row 31b,
+    R1 sub-choice) and/or token 5 against the set R2 returns (row 18b, R2
+    sub-choice), with the same line-numbered diagnostics as the shape and
+    authority checks at `:116-130`.
+  - **(ii) warn for one release** — the same check, reported through the
+    non-fatal channel R10(a) adds, hard error at the next release.
+  - **(iii) do not validate** — **this bullet does not land for that token.**
+    No code changes in `appdecl.rs` for it; the token keeps being stored raw at
+    `:137` / `:138`; §4.7 row 7 does not apply to it; and §4.4's documentation
+    block above is still owed, because the meaning of the token is what the
+    author needs whether or not the parser checks the spelling.
+
+  The two sub-choices are answered separately: (i) for the zone and (iii) for
+  retention is a legal pair, and so is its converse. Both interact with R10,
+  because the shrinkage is what R10 announces.
+- **3.** The header, under **R10** — **landing at step 0, ahead of the app-file
+  wave, not after it** (SAF-P2-9). Under (a), `appdecl.rs:89-95` branches on
+  `v0` vs `v1` — accepting **both** — and `parse()` gains a way to return a
+  non-fatal message, which touches `glade-node.rs:88` and grazel's integration
+  path; under (b), `v0` is redefined in place and the change is stated in terms,
+  with a migration note — the first such document in these repos — and there is
+  no step 0 and no step 4.
 - **4.** The sixth thing on the line, under **R11** and **R4**. If it exists, it
   ships with its rules (SUR-P2-4), which are:
   - **Legal values**: exactly the GDL-041 profiles, which
@@ -1138,34 +1584,77 @@ Then:
     spelling is by then in durable records.
   - **The arity diagnostic at `appdecl.rs:113`** updated: it prints the
     five-token template today, so it does not reveal that a sixth thing exists.
+    **Under R11(a) this is not enough**, because the arity check at `:111-114`
+    becomes a minimum: a legal five-token line never trips it, so the corrected
+    template never prints for the author who wrote a valid line and now wants a
+    TTL. The tail must therefore also reach the **published** grammar and the
+    in-file comments — bullet 12 (SUR-P2-8).
   - **A name that does not collide** — see R11's naming note.
 - **5.** **What a changed or deleted line does, under R9**, written *before* any
   file is migrated, in `glade/dev-docs/GladeGrazelAttachNotes.md:56-61` (which
   states the diff rule and stops) and in whatever page §4.4's documentation wave
-  makes user-facing. Under R9(a) that is the fold rule plus the retract form;
+  makes user-facing. Under R9(a) that is the **retraction rule** plus the fold;
   under (c) it is the fold rule plus an explicit "a deleted line retracts
-  nothing"; under (b) it is both, for two lines instead of fifteen.
-- **6.** App-file data, under **R9** and **R2**. Under R9(b): 0 edits for the 13
-  `from-cursor` lines, 2 for `windowed`. Under R9(a)/(c) with a file-side
-  respelling: `from-cursor` → `from_cursor` on 13 lines across 5 files, plus
-  `windowed` → the R2 replacement on 2. `grazel-app.glade` is dual-maintained
-  byte-identical in two homes (`grazel/apps/` and `glade/apps/`, see its header
-  note at `:10-13` and `grazel/README.md:7-8`) — edit both or the node tests
-  fail. Census command:
+  nothing". *(Say "the retraction rule", not "the retract form": deletion is
+  expressed by a line's **absence** from the file, not by a directive an author
+  writes — SUR residual.)*
+  - **Under R9(b) the page owes the fold and retract rules for **fifteen**
+    surfaces, not two** *(corrected — SAF-P2-11; revision 2 said "under (b) it is
+    both, for two lines instead of fifteen")*. (b) reduces the **file** edits to
+    two; it does not reduce the surfaces a reader has to be able to reason about.
+    Under **b2** it does not reduce the durable churn either: the 13 normalised
+    records are appended on the first boot, so those are exactly the 13 surfaces
+    for which "did my migration take effect?" is live and the page must answer
+    it. Under **b1** no record moves, but the page must then say that the store
+    holds the file's spelling and the contract's spelling is produced at read
+    time.
+  - **A surface declared by an app file that is not loaded on this boot stays
+    declared (SUR-P2-7).** Retraction under R9(a) is scoped per `(app,
+    glade_id)`; `glade-node` accepts `--app` repeatedly and grazel passes two
+    files when its gyld leg is on, so an unscoped rule would retract grazel's
+    seven surfaces the moment `gyld-app.glade` is registered, and gyld's seven
+    the moment the leg is switched off. Both files say in terms that their
+    surfaces are pre-declared "whether or not a supplier is running"
+    (`grazel/apps/gyld-app.glade:19-20`; `grazel/README.md:15-17`). The page must
+    say this, because it is the property an author relies on when they declare a
+    surface a supplier will serve later.
+- **6.** App-file data, under **R9** and **R2**. Under R9(b1) or (b2): **0 edits
+  for the 13 `from-cursor` lines**, 2 for `windowed`. Under R9(a)/(c) with a
+  file-side respelling: `from-cursor` → `from_cursor` on 13 lines across the 5
+  files, plus `windowed` → the R2 replacement on 2. The **durable** cost of each
+  is R9's "Durable cost on the first boot" column, and it is not the same number:
+  0 under b1, 13 under b2, 15 under (a)/(c). `grazel-app.glade` is
+  dual-maintained byte-identical in two homes (`grazel/apps/` and `glade/apps/`,
+  see its header note at `:10-13` and `grazel/README.md:7-8`) — edit both or the
+  node tests fail. Census command, run at grazel `c66f029`, glade `559cb2c`,
+  glade-gyld `65da8cb`, glade-gwz `e53c87d`:
   ```sh
   cat grazel/apps/{grazel,gyld}-app.glade glade/apps/grazel-app.glade \
       glade-gyld/tests/fixtures/*.glade glade-gwz/tests/fixtures/*.glade \
     | grep '^binding ' | awk '{print $6}' | sort | uniq -c
   #   13 from-cursor   13 latest   2 windowed        (28 binding lines total)
   ```
+  The same five paths are the whole of the migration: `grep -rln 'glade-app v0'
+  --include='*.glade' .` over both workzones returns exactly them (SUR-P3-7).
 - **7.** **Removed and renamed tokens stay recognised-but-refused** (SUR-P3-2),
   with a diagnostic naming the replacement, in the exact shape of `:121`'s
-  "exchange uses `service`": ``unknown retention `windowed` (removed; use
-  `from_cursor`)`` and, if the file side respells, the same for `from-cursor`.
+  "exchange uses `service`". **The replacement the message names must be a
+  spelling the file format accepts** *(SUR-P3-9; revision 2's example message
+  named `from_cursor` — the underscore — while its own recommended R9(b) keeps
+  the file's hyphen, so an author following the parser's instruction would have
+  written a token the format does not use)*:
+  - under **R9(b1)** or **(b2)** with the file keeping the hyphen:
+    ``unknown retention `windowed` (removed; use `from-cursor`)``;
+  - under **R9(a)** or **(c)** with a file-side respelling:
+    ``unknown retention `windowed` (removed; use `from_cursor`)``, and the same
+    message for `from-cursor` itself, naming `from_cursor`.
+
   Without it, a reader migrating `term.log` — terminal scrollback — meets
   `["latest","from_cursor","ttl"]`, reaches for `latest` (which silently converts
   an append log into a last-writer-wins value) or `ttl` (which parses and leaves
-  the duration unsayable), and the migration is a one-shot event.
+  the duration unsayable), and the migration is a one-shot event. The diagnostic
+  covers the **removed** token; only the documentation block above covers the
+  author who types a legal token and means something else (SUR-P2-6).
 - **8.** **`GladeGrazelAttachNotes.md:98`** (SUR-P3-4) says a provider may attach
   to a glade id declared by "a `dir.services` record, **or a `dir.bindings`
   record with shape `exchange`**". A reader following that writes `binding
@@ -1181,11 +1670,65 @@ Then:
   spelling, and it is a second answer to a question this amendment freezes.
 - **11.** `glade/client-rs/src/session.rs:27` (A7) — the error text lists
   "supported: value, log, swmr" while `:24` accepts `"crdt"`.
+- **12.** **Every published grammar and every in-file grammar comment moves with
+  the line** (SUR-P2-8). The format has exactly two kinds of place an author
+  copies from, and the amendment changes the line in both R10(a) and R11(a)
+  without either ruling costing a line for them:
+  - `glade/dev-docs/GladeGrazelAttachNotes.md:29-36`, the one published grammar
+    block: `:30` is the header token (moves under **R10(a)**) and `:32` is
+    ``binding <glade_id> <shape> <authority> <zone> <retention>`` (gains the
+    tail under **R11(a)**, or the sixth positional token under **R11(b)**).
+  - The in-file comment, present in **3 of the 5** files —
+    `grazel/apps/grazel-app.glade:19`, its byte-identical twin
+    `glade/apps/grazel-app.glade:19`, and `grazel/apps/gyld-app.glade:17`. The
+    two fixtures carry no grammar comment and no token names at all, so the
+    in-file grammar is a 3-of-5 property, not a 5-of-5 one; say so, or give the
+    two fixtures the comment.
+  - **And one sentence on how an author learns the tail exists**, because under
+    R11(a) `:113`'s template is unreachable for them (bullet 4). The honest
+    answer is that the tail must be in the grammar they read, since neither the
+    arity check nor a key refusal will teach it to someone who wrote a valid
+    five-token line. §4.7 row 19 is the gate.
+- **13.** **The joining-character convention goes in the format's own grammar
+  documentation**, not only in this design document (SUR-P3-9, SUR-P3-3). There
+  is not one underscore in any authored token of any of the five files, so the
+  convention is the hyphen; state it once, beside the grammar block, so the next
+  multi-word token is not a second coin flip after the freeze. Today the
+  convention exists only in R9's prose and R11's naming note — both inside this
+  file, which no author reads.
+- **14.** **Say which `.glade` dialect this amendment freezes** (SUR-P3-6). One
+  file extension names two mutually unintelligible declaration languages:
+  `find . -name '*.glade'` over `glade-wz` returns **sixteen** files, of which
+  `grep -rln 'glade-app v0' --include='*.glade' .` matches exactly **five** —
+  the app files. The other **eleven**, all under root `dev-docs/examples/`, are
+  brace-nested with `//` and `/* */` comments, quoted string ids and
+  `package … version "0.1.0" { … }` / `application … { }` blocks composing a
+  package graph. The amendment must say, in one sentence, that what it freezes
+  is the line-oriented `glade-app` app-declaration dialect and not that one.
+  Then either give the eleven the **A3 treatment** — a banner naming them a
+  different, unimplemented language — or record the extension question for the
+  owner. Bounded, because the header check refuses the wrong dialect at line 1
+  with a line number (`appdecl.rs:90-91`) and `--app` takes explicit paths with
+  no globbing; but this is the review that fixes what the extension means, and
+  `dev-docs/glade/GladeDeclSurface.md:123` makes a promise the other language
+  visibly does not keep — "`.glade` is data; it never becomes a compiler
+  front-end".
+- **15.** **`dev-docs/glade/GladeDeclSurface.md` gains a `Retention` row**
+  beside its `Shape` (`:27`), `Authority` (`:28`) and `Domain`/`Zone` (`:29`)
+  rows, glossing each member of the set R2 returns (SUR-P2-6). This is the
+  companion to §4.2 step 6's members table on `glade-decl/README.md`, and it
+  lands in the same edit as A12 and the zone-sentence rewrite, since §4.2 step 5
+  already opens that document. Today `retention` appears in it only inside
+  `BindingDecl`'s tuple at `:30`, and `GladeGrazelAttachNotes.md:145`
+  explicitly defers the question ("retention/timeout policy per declaration is a
+  decl-surface question") — which is the deferral this amendment ends.
 - **Gate:** `cargo test -p glade-node` (`appdecl.rs`'s **7** `#[test]` functions —
-  `grep -c '#\[test\]' glade/node/src/appdecl.rs` → 7 — including the 7-binding
-  assertion at `:296` and the 11-record one at `:408`) **and** `cargo test -p grazel`
-  (`grazel/tests/integration.rs:109,280,454` boot a node on `apps/grazel-app.glade`;
-  nothing in §4.7 reached that repository in revision 1).
+  `grep -c '#\[test\]' glade/node/src/appdecl.rs` → 7 at glade `559cb2c` —
+  including the 7-binding assertion at `:296` and the 11-record one at `:408`)
+  **and** `cargo test -p grazel` (`grazel/tests/integration.rs:109,280,454` boot
+  a node on `apps/grazel-app.glade`; nothing in §4.7 reached that repository in
+  revision 1). Both must be green **after every step of the landing order**, not
+  only after the last (SAF-P2-9).
 
 ### 4.5 Consumers, in order
 
@@ -1253,24 +1796,57 @@ Then:
 
 ### 4.7 The checks that prove it
 
+*(Split into (a) gates, (b) gates conditional on a ruling, and (c) evidence —
+CON-P2-6. Revision 2 stated one flat table under a publish precondition reading
+"every row of §4.7 is green", while row 2 fails by design under R4(a), row 7
+presupposes a validation the sub-choices may decline to turn on, row 14 declares
+in its own cell that it is "not a gate", and row 16 is a manual observation with
+no green/red state. The row numbers are unchanged, so every pointer into revision
+2's table still lands; rows 17–20 are new.)*
+
+**(a) Unconditional gates.** Green on a settled tree under every combination of
+answers to R1–R11 — and, for rows 6 and 8, green at **every intermediate commit**
+of §4.4's landing wave, not only at its end (SAF-P2-9).
+
 | # | Check | Where | Proves |
 | --- | --- | --- | --- |
-| 1 | `python3 corpus/build.py --check` | `glade-decl/` | IR + corpus + rs vectors + **the four rendering copies** in lockstep. Green today (A2 closed at `d671f10`/`21eefa1`; the Rust vectors are rustfmt'd on both paths, so the gate compares like with like) — but until §4.3's artefact-list extension lands it proves only **three** of the seven paths (SAF-P2-5), and `rustfmt` must be on `PATH` or it fails by design |
-| 2 | `python3 corpus/build.py --compat` | `glade-decl/` | every v0 vector's bytes survive into v1 — **or fails by design under R4(a)**, in which case no superset claim may exist (§4.2) |
+| 1 | `python3 corpus/build.py --check` | `glade-decl/` | IR + corpus + rs vectors + **the four rendering copies** in lockstep. Green today (A2 closed at `d671f10`/`21eefa1`; the Rust vectors are rustfmt'd on both paths, so the gate compares like with like) — but until §4.3's artefact-list extension lands it proves only **three** of the seven paths (SAF-P2-5). `rustfmt` must be on `PATH`: `build.py` exits with a clear error when it is absent (`_rustfmt`, `:179-201`) rather than comparing unformatted output against formatted files, so a missing tool is a red gate and never a false green |
 | 3 | `pnpm test` (`vitest run`) | `glade-decl-ts/` | independent TS codec reproduces every v1 byte. **Does not exercise `api.ts`** (`corpus.test.ts:9-20` never imports it; `index.ts:15` erases it at build) — see row 11 |
 | 4 | `cargo test` | `glade-decl-rs/` | independent Rust codec reproduces every v1 byte |
 | 5 | `pytest`, from a built wheel | `glade-decl-py/` | reference codec round-trips **and** the renamed corpus is in the distribution (`pyproject.toml:20`) |
-| 6 | `cargo test -p glade-node` | `glade/` | `appdecl.rs`'s 7 tests — 7 bindings, 11 records, the new `crdt`/zone/retention validation |
-| 7 | new `glade-node` unit test | `glade/` | the **line-numbered diagnostic** for each of `from-cursor`, `windowed` and an unknown zone token — i.e. that a refusal names the replacement (SUR-P3-2) |
+| 6 | `cargo test -p glade-node` | `glade/` | `appdecl.rs`'s **7** `#[test]` functions — the 7-binding assertion at `:296`, the 11-record one at `:408` — still pass with `crdt` and `atom` in `KNOWN_SHAPES` (rows 8 and 9, both SETTLED). Count at glade `559cb2c`: `grep -c '#\[test\]' glade/node/src/appdecl.rs` → 7. The zone/retention assertions are row 7's, not this row's |
 | 8 | `cargo test -p grazel` | `grazel/` | the node boots on the app files grazel actually ships (`tests/integration.rs:109,280,454`) — the repository revision 1's table never reached (SAF-P2-3) |
-| 9 | new `glade-node` unit test | `glade/` | register the **pre**-amendment parse into a `Registry`, then the **post**-amendment parse; assert the intended `Registered{appended, unchanged}` and the resulting `dir.bindings` content. This is the test that encodes R9's answer; `registering_twice_appends_nothing` (`appdecl.rs:404-413`) cannot see it, because it registers the same decl twice into a fresh registry (SAF-P1-2) |
-| 10 | new `glade-node` unit test | `glade/` | under R9(a): a deleted binding line retracts its surface. Under R9(c): the documented fold picks the newer record |
 | 11 | `git status --porcelain` shows no `typescript/`, `rust/` or `python/` path, and `grep -q '"atom"'` in all three generated APIs | the three renderings | the regeneration landed in `src/`, not in a new directory, and the new member is actually in the shipped types (CON-P2-2) |
 | 12 | `vitest run` + `tsc --noEmit` | `glial/` | `Surface extends BindingDecl` still holds; the compile wall still errors on an undefined key |
-| 13 | the demo resolves `{domain:"account", zone:"private"}` | `glade/grip-share` + `glade/demo` | `manifestScope` still produces `share="account:<user>"`, `key=utf8("self:<user>")` — the clause §4.6 protects (CON-P2-1) |
-| 14 | a glial test: mounting `zone: "private"` either produces a `self:`-prefixed wire key or throws | `glial/` | recorded as a **pre-freeze item**, not a gate: today it silently does neither, which is exactly row 16 (SAF-P2-4) |
-| 15 | `pnpm test` + `pnpm build:gyld` | `gryth-ui/` | **60** vitest suites, incl. `packages/plugins/chat/src/groups.test.ts:23-40` (the only decl-field assertions in the repo). Count command: `git -C ../gryth-wz/gryth-ui ls-files \| grep -cE '\.test\.tsx?$'` → 60, and all 60 match `vite.config.ts:287-293`'s include globs *(revision 1 said 58; corrected — CON-P3-3 / CON residual)* |
-| 16 | manual: `gyld-ui.py start` reaches its published-builds line | — | the running demo untouched |
+| 15 | `pnpm test` + `pnpm build:gyld` | `gryth-ui/` | **61** vitest suites, incl. `packages/plugins/chat/src/groups.test.ts:23-40` (the only decl-field assertions in the repo). Count command, run at gryth-ui `9323818`: `git -C ../gryth-wz/gryth-ui ls-files \| grep -cE '\.test\.tsx?$'` → **61**, and all 61 match the include globs at `vite.config.ts:310-316` (the `test:` block opens at `:309`) *(re-pinned — CON-P3-8 / SUR-P3-8. Revision 2 said 60 against `vite.config.ts:287-293` at gryth-ui `3af64c2`; eight `gyld` suites landed in between and the vitest block moved, so `:287-293` is now a dev-server proxy comment.)* |
+| 20 | grep the page set for "fills domain/zone/key", "zone … fill" and "maps them at bind time" | the published pages | every surviving occurrence says the author writes the zone and what a mount does with it — no page tells an author the mount fills a token the parser requires them to type (SUR-P2-1). Unconditional, because the sentence is already wrong on the grip-share path today: `manifestScope` reads `decl.zone ?? spec?.zone ?? ""`, so the declared zone wins. The four homes are `grazel/apps/grazel-app.glade:21`, its byte-identical twin at `glade/apps/grazel-app.glade:21`, `GladeGrazelAttachNotes.md:50`, and `dev-docs/glade/GladeDeclSurface.md:29-30` — the page the other three cite by name |
+
+**(b) Gates conditional on a ruling.** Each row names the ruling it turns on and
+what green means under each of that ruling's options. Once the owner records the
+answers, every (b) row whose condition arises joins (a); a row whose condition
+does not arise is not a gate and no publish waits on it. **R8 appears in no (b)
+row**, and that is deliberate: both of its options are additive (new messages, so
+new synth vectors and no existing one moves — §4.2), so R8's whole gate set is
+(a). Every other ruling, R1–R7 and R9–R11, is named in at least one row below.
+
+| # | Check | Ruling | What green means, per option |
+| --- | --- | --- | --- |
+| 2 | `python3 corpus/build.py --compat` (`glade-decl/`) | **R4**, and every ruling with an option that deletes or moves a vector: **R1, R2, R3, R5, R6, R7** | **No byte moves and nothing is deleted** — R4(b)/(c) with R1(a)/(b), R2(a)/(b), R3(a), R5(a)/(b), R6(a)/(b), R7(a): green with an **empty** deletion list. **Deletions only** — add R7(b) (drops `AdvertisementRecord`, `edge/advert`) or R6(c) (drops `GladeIdManifest`, `edge/manifest`): green **only** when the invocation declares exactly the departing vectors. Under the recommended set that is `--compat --deleted AdvertisementRecord,edge/advert`; **without the declaration the gate is red**, which is the point (SAF-P2-10). **Any byte move** — R4(a), R1(c)/(d), R2(c)/(d), R3(b), R5(c): this row **does not apply**. It is replaced by the taut-shape-idiom compatibility artefact §4.2 names (`taut-shape/release/compatibility.v1.json`), which must exist and enumerate exactly which vectors changed; the superset claim is then **deleted**, not weakened (§4.2) |
+| 7 | new `glade-node` unit test (`glade/`) | **R1**'s sub-choice (row 31b) and **R2**'s (row 18b) | Under **(i)** or **(ii)** of a sub-choice, the **line-numbered diagnostic** exists for that token and names the replacement (SUR-P3-2): an unknown zone under R1(31b); `windowed`, and `from-cursor` if the file side respells, under R2(18b). Under **(iii)** the token is not validated, no diagnostic is produced, and the row **does not apply to that token** — asserting one would be asserting a refusal the owner declined. Both sub-choices (iii) ⇒ the row is not a gate at all (CON-P2-7) |
+| 9 | new `glade-node` unit test (`glade/`) | **R9** | register the **pre**-amendment parse into a `Registry`, then the **post**-amendment parse; assert the intended `Registered{appended, unchanged}` and the resulting `dir.bindings`. **The asserted `appended` is the chosen option's own stated durable cost and must equal it**: **0** under (b1), **13** under (b2), **15** under (a) or (c) taken with a file-side respelling. `registering_twice_appends_nothing` (`appdecl.rs:404-413`) cannot see this, because it registers the same decl twice into a fresh registry (SAF-P1-2, SAF-P2-11) |
+| 10 | new `glade-node` unit tests (`glade/`) | **R9** | Under **(a)**, three tests, because retraction is scoped per `(app, glade_id)` (SUR-P2-7): register `grazel-app.glade` then `gyld-app.glade` into **one** registry and assert all **14** bindings live and none retracted; register `grazel-app.glade` alone on the next boot and assert gyld's **7** untouched; delete one line from `gyld-app.glade`, reload both, and assert exactly that one surface retracted. Under **(c)**: assert the documented fold picks the newer record **and** that a deleted line retracts nothing, so the page and the code say the same thing. Under **(b)** alone: there is no retraction to test, and no answer to deletion either |
+| 13 | the demo resolves `{domain:"account", zone:"private"}` (`glade/grip-share` + `glade/demo`) | **R1** | Under **(a)** or **(b)**: `manifestScope` still produces `share="account:<user>"`, `key=utf8("self:<user>")` with **no edit** — the clause §4.6 protects (CON-P2-1). Under **(c)** or **(d)**: this is the repository that breaks; green then means the demo resolves the same surface through whatever replaces the anchor, and R1's option table prices that work |
+| 17 | new `glade-node` unit test (`glade/`) | **R10** | Under **(a)**: the **pre**-amendment `parse()` refuses a `glade-app v1` header with `appdecl.rs:91`'s diagnostic — it does today, and that is exactly why a both-headers node must be deployed before any file's header moves. This test is the regression that pins §4.4's step 0 (SAF-P2-9). Under **(b)**: no header moves, so there is no ordering hazard and no test |
+| 18 | grep the published page set for each member of the retention set v1 keeps | **R2** | every value an app file may write has a one-line gloss **in the retention sense** on a page an author reads (SUR-P2-6). Under **(a)**: `latest`, `from_cursor`, `ttl`. Under **(b)**: those three plus `windowed`, with what a window retains. Under **(c)**: `latest`, `from_cursor`. Under **(d)**: there is no vocabulary to gloss, so what must be written is the free-string convention and the fact that nothing enforces it. Baseline, over the eight published pages at this tuple: `latest`, `from-cursor`, `from_cursor`, `windowed` and `ttl` score **zero** hits in the retention sense |
+| 19 | every published grammar and every in-file grammar comment shows the line the parser accepts | **R10** and **R11** | Under **R10(a)** the header token at `GladeGrazelAttachNotes.md:30` moves to `v1`; under **R10(b)** it does not, and the page says in terms that `v0` was redefined. Under **R11(a)** the tail appears at `GladeGrazelAttachNotes.md:32` and in the three in-file comments (`grazel/apps/grazel-app.glade:19`, `glade/apps/grazel-app.glade:19`, `grazel/apps/gyld-app.glade:17`); under **R11(b)** or **(c)** the line keeps its five tokens and only `:113`'s template moves. Green means an author who has read only those and never provoked a parse error writes `ttl=10m` and `shape-profile=text_crdt` correctly at the first attempt (SUR-P2-8) |
+
+**(c) Evidence, not gates.** Recorded so the freeze is made with them known.
+Neither has a green/red state and no publish waits on either.
+
+| # | Observation | Where | What it records |
+| --- | --- | --- | --- |
+| 14 | a glial test: mounting `zone: "private"` either produces a `self:`-prefixed wire key or throws | `glial/` | a **pre-freeze item**: today it silently does neither, which is exactly row 16's divergence (SAF-P2-4). Written down so the gap is a known one at the freeze, not a discovery after it |
+| 16 | manual: `gyld-ui.py start` reaches its published-builds line | — | the running demo untouched. A human observation of `/Users/owebeeone/limbo/gryth-wz/gryth-ui/gyld-ui.py`, with no exit code to read |
 
 ### 4.8 Tooling facts found
 
@@ -1279,6 +1855,11 @@ Then:
   *commands* (`pnpm test`, `pnpm install`) and **no unasked lockfile migration** —
   so run pnpm, leave the npm lockfile alone, and raise the migration as its own
   question. `PackageExtractionPlan.md` step 1.2 is where it naturally belongs.
+  One consequence lands inside this amendment rather than there: `glade-decl-ts/README.md:21-22`
+  still documents `npm install` / `npm test`, and §4.3 adopts that README's
+  procedure as canonical while §4.7 row 3 and this section prescribe `pnpm`. Fix
+  the two command lines when A4's collapse is made — that is a *command* change,
+  not a lockfile migration, so the standing rule permits it.
 - `glade-decl` itself has no build manifest and is not a package
   (`PackageExtractionPlan.md:72`); `corpus/build.py` needs its siblings at fixed
   relative positions (`:44-46` for `glade-decl-rs`, `:50` for `taut`). Step 4.7
@@ -1293,8 +1874,15 @@ Then:
 
 ## 5. Should this go through the adversarial review loop before the freeze?
 
-**Yes — the full loop, three axes, before any publish.** Round 1 has been run;
-this document is its remediation. The object is precisely the one
+**Yes — the full loop, three axes, before any publish.** Rounds 1 and 2 have both
+been run; this document is round 2's remediation, and **remediation round 2 is
+the last one the loop allows**: if any re-verdict on revision 3 names a new
+ARCHITECTURAL root cause, the lane stops and the owner decides redesign-or-accept
+rather than a fourth revision. No reviewer has so classified any finding in either
+round — all three round-2 reports state in terms that none of theirs is
+architectural, and the architectural facts in play (no fold for `dir.bindings`;
+glial not producing the private key) remain properties of the system this document
+describes, stated truthfully rather than fixed here. The object is precisely the one
 `AgentProcessRules.md` L1-09 names: a change to a shared interface and a
 compatibility rule — and, via §4.4, to durable state — at a release boundary.
 L1-18 (`:387-393`) makes two independent review axes mandatory there, and its
@@ -1325,24 +1913,66 @@ would have published pre-amendment types silently (CON-P2-2), and the fact that
 people type by hand with no page naming a single legal value of three of those
 tokens (SUR-P3-1). None of that is reachable from the schema alone.
 
+Round 2 is the second piece of evidence, and it is about the **remediation**
+rather than the original: every one of its nine blocking findings lives inside
+text revision 2 added, and three of them are the same shape — a correction made
+for the thing it was asked about and not for the thing beside it. The zone token
+was documented and the retention token was not (SUR-P2-6); the two derivative
+homes of a false sentence were rewritten and the page they both cite was not
+(SUR-P2-1); the app-file wave was ordered correctly for the token and not for the
+header the same commit moved (SAF-P2-9); the option recommended to avoid a
+durable rewrite was placed where the durable record is built (SAF-P2-11); the
+gate that proves compatibility was written for vectors that change and not for
+vectors that leave (SAF-P2-10). A one-shot amendment is exactly where that class
+of near-miss is expensive, and none of the five is reachable without reading the
+code and the pages the amendment does not cite.
+
 ---
 
 ## Appendix — files read
 
-Revisions: glade-wz root `dc311ba98ff1` (documents; the round-1 reports were read
-at `879de50a455e`, unchanged since) · `glade-decl d671f10c13e6` (A2's fix; the
-audit was performed at `bbce73d67146` and `ir/glade_decl.ir.json` +
-`corpus/decl.v0.json` are byte-identical across the two, so every schema and
-corpus citation holds — only `corpus/build.py` and `README.md` line numbers moved,
-and those were re-opened at `d671f10`) ·
+**Revisions — re-pinned to the round-2 tuple (CON-P3-8 / SUR-P3-8).** Revision 2
+pinned the members it was drafted against; four of them moved between rounds, and
+five of its published proofs stopped reproducing at the tuple it is read at. The
+pins below are the tuple recorded in `-RemPlan.md`'s "Round 2 — tuple and tier"
+block and verified directly (`git -C <member> rev-parse --short=12 HEAD`, every
+tree clean), and every citation into a moved member was re-opened at its new SHA.
+
+glade-wz root `61bb479dadf4` (documents; the round-1 reports were read at
+`879de50a455e` and the round-2 reports at `574319d`, unchanged since) ·
+**`glade 559cb2c87e85`** (was `960c9b0fa038`: 25 commits, the async-witness
+workspace under `dev-docs/`, `node/src/iroh_carrier.rs`, an iroh floor. No
+`node/src` path this document cites changed — `appdecl.rs` is byte-identical
+across the two — but A10's repository-wide census does, and is restated) ·
+`glade-decl d671f10c13e6` (A2's fix; the audit was performed at `bbce73d67146`
+and `ir/glade_decl.ir.json` + `corpus/decl.v0.json` are byte-identical across the
+two, so every schema and corpus citation holds — only `corpus/build.py` and
+`README.md` line numbers moved, and those were re-opened at `d671f10`) ·
 `glade-decl-ts 7e16e324630a` · `glade-decl-rs 21eefa1c3a53` (clean; the audit was
 performed at `555a97746fc6` with `git show`, its tree then being dirty — A2) ·
-`glade-decl-py 1b0f6d1f7886` ·
-`glade 960c9b0fa038` · `glial 0dfe4b930063` · `grip-core 97ff6c26f12e` ·
-`grazel 924cb3c4bab9` · `glade-gyld 024d2a8ae061` · `glade-gwz e53c87dddb8f` ·
-`glade-chat 9238d21f6a36` · `taut 7a5f616c3a9f` ·
-`/Users/owebeeone/limbo/gryth-wz/gryth-ui 3af64c2bab74`; for authority only,
-`/Users/owebeeone/limbo/gwz-dev ff431743cc4c`.
+`glade-decl-py 1b0f6d1f7886` · `glial 0dfe4b930063` · `grip-core 97ff6c26f12e` ·
+**`grazel c66f029ad060`** (was `924cb3c4bab9`: one commit, `src/lib.rs` only,
++83/−8; the default app path moved `:150` → `:159` into an `impl Config` block —
+§4.4 step 1 re-pinned; `apps/*.glade` and `tests/integration.rs` unchanged) ·
+**`glade-gyld 65da8cb7e2b7`** (was `024d2a8ae061`: `README.md` 981 → 1192 lines;
+`:315` → `:499` for the compatibility profile (R11's naming note) and `:934` →
+`:1147` for the `(lamport, origin)` value fold (R9(c)); `tests/fixtures/gyld-test-app.glade`
+unchanged) · `glade-gwz e53c87dddb8f` · `glade-chat 9238d21f6a36` ·
+`taut 7a5f616c3a9f` · `taut-shape 9a752094dbed` (the ten-corpora count, §4.2) ·
+**`/Users/owebeeone/limbo/gryth-wz/gryth-ui 9323818a39d2`** (was `3af64c2bab74`:
+eight new `gyld` suites, so §4.7 row 15's count is 61 and its include globs are
+`vite.config.ts:310-316`, not 60 and `:287-293`); for authority only,
+`/Users/owebeeone/limbo/gwz-dev ff431743cc4c` (`dev-docs/AgentProcessRules.md`
+byte-unchanged at gwz-dev HEAD `7b3f1bc723d6`).
+
+**Every count in this document states the command that produced it and the
+revision it was run at**, so a later reader can tell staleness from error: §4.7
+row 15 (61, gryth-ui `9323818`), A10's census (`0 2 0 0 0`, the five repositories
+above), §4.4 bullet 6's app-file census and the five-file `grep -rln`, §4.2's 20
+`decl.v0` references and its ten taut-shape corpora, R4's `11 of 26`, A5's two
+`find`s, A6's `find`, and `grep -c '#\[test\]'` → 7 at glade `559cb2c`. A count
+whose target can move and which carries no revision is a defect of this document,
+not of the reader.
 
 Contract: `glade-decl/{README.md, ir/glade_decl.taut.py, ir/glade_decl.ir.json,
 corpus/build.py, corpus/decl.v0.json, dev-docs/DeclSurface.md,
