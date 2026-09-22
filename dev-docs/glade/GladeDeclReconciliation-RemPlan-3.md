@@ -69,3 +69,18 @@ Safety re-verdicts SAF-P2-12 on the revision-4 tuple with a closure table. Consi
 and Surface re-verdict on the diff `c26211d..<revision 4>` restricted to their sections
 and their riders, so that GO from all three axes stands on the same revision. Filed as
 `-Review<Axis>-4.md`.
+
+## Status: accepted, 2026-09-23
+
+Revision 4 (`3b60234`) received GO from all three axes, filed verbatim at `00eac99`:
+Consistency (1 P3: CON-P3-11, R9's option (s) has no §4.7 row), Safety (1 P3:
+SAF-P3-13, row 9's assertion is in tree-wide units), Surface (no new finding). No
+reviewer classified any finding in any round as architectural, so the cap was never
+engaged; three remediation rounds were used, the third confined to non-architectural
+corrections as the process permits. The object is **accepted at `3b60234` after the
+three `-Review<Axis>-4.md` reports reported GO; this accepts the assessment and the
+amendment shape only.** The three open P3s and the Surface residual ride the
+amendment's own commit (slice plan Phase 2), not another revision of this document.
+Round accounting closes: round 1 (`b132b7e` → `1defe3b`), round 2 (`1defe3b` →
+`c26211d`), round 3 (`c26211d` → `3b60234`); 46 findings raised across the three
+rounds and four revisions, 43 closed by their raising reviewers, 3 open at P3.

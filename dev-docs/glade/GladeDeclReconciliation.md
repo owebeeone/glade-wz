@@ -1,10 +1,24 @@
 # Glade Declaration Reconciliation — `glade-decl` vs the node, 2026-09-21
 
-Status: assessment + amendment proposal, **DRAFT**, revision 4. **No code, schema
-or corpus changed by this document.** It exists to make the amendment a SINGLE
-edit.
+Status: assessment + amendment proposal, revision 4 — **accepted at glade-wz root
+`3b60234` (glade `559cb2c`, glade-decl `d671f10`, glade-decl-rs `21eefa1`, the lock
+of `a617c33`) after `-ReviewConsistency-4.md`, `-ReviewSafety-4.md` and
+`-ReviewSurface-4.md` reported GO; this accepts the assessment and the amendment
+shape only.** The amendment itself (§4) is not made, the rulings R1–R11 are not
+made, and nothing is published by this acceptance. Three P3s stand open as riders on
+the amendment's own commit, not on this document: SAF-P3-13 (§4.7 row 9's assertion
+is stated in tree-wide units; a single registry sees its files' share), CON-P3-11
+(R9's option (s) has no §4.7 row), and the Surface axis's standing residual (no
+user-facing page is named for the grammar to move to). **No code, schema or corpus
+changed by this document.** It exists to make the amendment a SINGLE edit.
 
-**Review status: revision 4 awaits its re-verdicts.** Revision 3 was re-reviewed on
+**Review status: accepted, 2026-09-23.** Revision 4 was re-verdicted by the same
+three reviewers at `3b60234`, filed verbatim at `00eac99`: Consistency **GO** (0 P2,
+1 P3, all round-3 items CLOSED), Safety **GO** (0 P2, 1 P3, SAF-P2-12 CLOSED on all
+five items), Surface **GO** (0 P2, 0 new P3, all four round-3 findings CLOSED). Every
+report states that no finding of its axis in any round is architectural; the
+three-round cap was not engaged. The paragraph below is the record as it stood
+before those re-verdicts, kept as history. Revision 3 was re-reviewed on
 three axes at glade-wz root `c26211d`, against the round-3 tuple, and the three
 reports are filed verbatim beside this file at `2bafc02`:
 `-ReviewConsistency-3.md` — **GO** (0 P2, 1 P3; all five round-2 findings CLOSED);
