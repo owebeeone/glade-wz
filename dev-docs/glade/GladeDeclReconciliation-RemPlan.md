@@ -120,3 +120,57 @@ Facts the resuming lane owner needs:
 - The reviewers ran on a tier one below the session's at the owner's standing
   instruction to conserve quota. An interface freeze calls for the strongest tier, so
   the resuming owner should decide the tier before dispatching.
+
+## Round 2 — tuple and tier, 2026-09-22
+
+Recorded by the lane owner on resuming the loop (owner: "resume the review loop as
+phase 1"; on the tier, "go with the defaults"). This is Step 1.1 of
+`dev-docs/GladeFirstSlicePlan.md` (glade-wz `a617c33`).
+
+**Object.** `dev-docs/glade/GladeDeclReconciliation.md`, revision 2, at glade-wz root
+`1defe3b`, unchanged since: `git log 1defe3b..a617c33 -- dev-docs/glade/GladeDeclReconciliation.md`
+is empty. The root moved to `a617c33` for decisions, arch1 documents and the slice
+plan only.
+
+**Tuple** — the root lock at `a617c33` (`gwz.conf/gwz.lock.yml`), compared with the
+round-1 lock at `b132b7e`:
+
+| Member | Round 1 | Round 2 | What moved |
+|---|---|---|---|
+| glade | `960c9b0fa038` | `559cb2c87e85` | 25 commits: the async-witness workspace under `dev-docs/`, `node/src/iroh_carrier.rs` (+69, a graceful close), `node/Cargo.toml` (iroh 1.2 floor). No path the object cites changed. |
+| glade-decl | `bbce73d67146` | `d671f10c13e6` | A2: `corpus/build.py` formats the generated Rust on both paths; `ir/glade_decl.ir.json` and `corpus/decl.v0.json` byte-identical. |
+| glade-decl-rs | `555a97746fc6` | `21eefa1c3a53` | A2: committed sources formatted; the rustfmt drift discarded. |
+| glade-gyld | `024d2a8ae061` | `65da8cb7e2b7` | 17 commits in `src/`, `tests/integration.rs`, `README.md` (+247 lines). `tests/fixtures/gyld-test-app.glade` unchanged. The Surface axis re-runs its vocabulary grep over that README. |
+| grazel | `924cb3c4bab9` | `c66f029ad060` | one commit, `src/lib.rs` only; `apps/*.glade` and `tests/integration.rs` unchanged. |
+| glade-decl-ts `7e16e324630a`, glade-decl-py `1b0f6d1f7886`, taut `7a5f616c3a9f`, glial `0dfe4b930063`, glade-gwz `e53c87dddb8f`, glade-chat `9238d21f6a36`, glade-discover `fd94a1f87bbc`, grip-core `97ff6c26f12e`, grip-react `c13b8a75e88e`, grip-react-demo `c1bf60df3d4f`, ggg-viz `f0b8c4f6a450`, taut-shape `9a752094dbed`, taut-shape-rs `4154bb7953c3`, taut-shape-ts `137f843edddf` | as round 1 | same | unchanged |
+| gryth-ui (in `gryth-wz`, not a member of this lock) | not recorded | `9323818a39d2` | clean; the reports cite it by path |
+| gwz-dev `dev-docs/AgentProcessRules.md` | `ff431743cc4c` | HEAD `7b3f1bc723d6` | no commit has touched the file since `ff431743cc4c`; the L1-07..09 and L1-17..19 citations hold |
+
+Dirty trees: none, except two working states that are someone else's and are named
+OUT OF SCOPE — `glade-discover` (` M dev-docs/GladeDiscoverPlan.md`, ` M dev-docs/P7ReviewDisposition.md`,
+` M dev-docs/RequirementTrace.md`, `?? dev-docs/GladeDiscoverCode-ReviewF5.md`,
+`?? dev-docs/GladeDiscoverCodeReviewPlan.md`) and gwz-dev (four untracked
+`GwzRemoteTransportSshN2b-Prompt*.md`). No source file is modified anywhere.
+
+**Gate.** `/opt/homebrew/bin/python3 corpus/build.py --check` in `glade-decl/` at
+`d671f10`: `all 3 glade-decl artifacts in lockstep with the schema.`, exit 0; `git
+status --short` empty in glade-decl and glade-decl-rs after the run. The standing
+precondition above is met. The gate still compares three artefacts, not the rendering
+copies (revision 2, §4.7 row 1): that is SAF-P2-5's open correction for the Safety
+reviewer to verify, not a precondition.
+
+**Tier.** Opus for the three re-verdicts, by the owner's standing quota instruction;
+any P0 or P1 in a round-2 report is adjudicated by the lane owner at the session's
+own tier before the verdict merge. Recorded as a departure from L1-18's strongest-tier
+expectation at an interface freeze. The acceptance review of the amendment itself
+(slice plan Step 2.6) decides its own tier then.
+
+**Reviewers.** Fresh per axis: the round-1 reviewers' contexts did not survive the
+session compaction of 2026-09-22. Each reviewer receives the full template with its
+axis role section, this block as the tuple, `-RemPlan.md`, the round-1 report of the
+same axis only, and the object diff `b132b7e..1defe3b`; each report opens with the
+prior-finding closure table over that axis's round-1 IDs and the changed-range
+analysis. Round accounting is unchanged: remediation round 1 of at most 2, re-verdict
+outstanding until the three `-Review<Axis>-2.md` files are filed.
+
+**Status: resumed 2026-09-22.** Re-verdicts dispatched once this block is committed.
