@@ -27,9 +27,11 @@ from glade_decisions import (
     BumpToCurrent,
     Dissemination,
     GladeDecisions,
+    GrantedSharesOnly,
     IdentityAdapters,
     KeyCustody,
     LifecycleComposition,
+    MetadataExposure,
     NodeTrust,
     NoneInV1,
     ProofFamily,
@@ -158,6 +160,17 @@ class RelayPostureRuling(Ruling):
     selects = Selects[SelfHosted]
 
 
+class MetadataExposureRuling(Ruling):
+    """Granted shares only: a peer or session is served a share only when the grant fold shows a grant for it, checked at the serve point the code already names, and the check fails closed: no grant visible, nothing served, and a revocation cuts a live stream when the fold sees it. The directory stays exempt, since it is how grants arrive. This makes the node-trust ruling's own premise true at small cost. The check is keyed on claimed identities until the binding record and session identity land. The policy zone split and opaque wire ids wait for the trigger node_trust already names: someone else's node joining.
+
+    Drafted by claude-fable-5-1, accepted by gianni."""
+    principal = "gianni"
+    stamp = "2026-09-22T00:49:46Z"
+    sources = ("GladeMetadataExposureTable §6.1", "GladeAuthzModel §7")
+    decides = Decides[MetadataExposure]
+    selects = Selects[GrantedSharesOnly]
+
+
 @model
 class GladeDecisionsRulings(GladeDecisions):
     """rulings root: every member base carries, with nothing added yet."""
@@ -171,3 +184,4 @@ class GladeDecisionsRulings(GladeDecisions):
     identity_adapters_ruling = use(IdentityAdaptersRuling)
     async_witness_ruling = use(AsyncWitnessRuling)
     relay_posture_ruling = use(RelayPostureRuling)
+    metadata_exposure_ruling = use(MetadataExposureRuling)
