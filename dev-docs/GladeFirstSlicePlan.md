@@ -443,7 +443,7 @@ Goal: the shrinkage switched on, as warnings for one release.
   and every shipped file loads with no warning except the `v0` header's.
 - Depends on 2.5.
 
-- **Done, 2026-09-23.** glade `d4db2fc`, root `bc73bbd`. A `v1` file's bad token is a line-numbered warning; `V1_TOKEN_CHECKS_REFUSE` flips it to a refusal at the next node version above `0.0.0`; `v0` files are warned, never refused. Rows 6, 7, 8 and the fixture repos green.
+- **Done, 2026-09-23.** glade `d4db2fc`, root `bc73bbd`. A `v1` file's bad token is a line-numbered warning; the warnings ship in the first node release (the first version above `0.0.0`) and the release after it sets `V1_TOKEN_CHECKS_REFUSE` (corrected per COD-P3-2: this line first put the flip one release early); `v0` files are warned, never refused. Rows 6, 7, 8 and the fixture repos green.
 
 ### Step 2.7 — The headers (landing step 4)
 
@@ -590,6 +590,8 @@ contracts workspace, framework-free.
   passes; an ARCH-002 fixture on the witness's pattern refuses a framework
   dependency injected into any contract crate.
 - Depends on nothing; can start today, beside Phase 1.
+
+- **Done, 2026-09-23.** glade `831eded`, root `05b2025`. Four framework-free contract crates (`glade-carrier-api`, `-clock-api`, `-grant-api`, `-signer-api`), no dependencies, each with a conformance suite and wrong-fixture tests; `check.sh` 86 tests green; the Shaku bridge form proven by doctests, the E0310 form `compile_fail`; `arch002-fixture.sh` refuses an injected `shaku` in all 10 contract crates. `SignerPort` is local: discovery's `Signer`/`Verifier` take a `SignedOp` and are not dyn-safe. About 1,590 lines against the ~500 budget. Ten open questions in the agent's report, among them the node's own grants (owner ruling).
 
 ### Step 3.2 — The assembly
 
@@ -747,6 +749,14 @@ Goal: `metadata_exposure` built.
   stream.
 - Depends on 3.1 (`GrantPort`); may land before 4.2, keyed on the claimed
   identity, with the tests saying so.
+- Preconditions carried from the v1 amendment's review (`glade/GladeDeclAmendment-RemPlan.md`,
+  SUR-P3-4 and SUR-P3-6): before grants are enforced, the route that revokes a seeded
+  grant is documented beside `seed` on `glade/docs/AppFileFormat.md`; the page defines what
+  `service <name>` and a seed's `<share>` refer to, and the verb and principal vocabulary;
+  the shipped `seed` lines follow that definition (corrected together with the revocation
+  route, so the old grants can be withdrawn); and the node warns on a seed whose share no
+  loaded `workspace` declares. **Owner question:** is a seed's share the workspace share
+  (gyld-app's convention) or a share named after the app (grazel-app's)?
 
 ### Step 4.4 — Durable-local acceptance and restart
 
@@ -799,6 +809,15 @@ Goal: the build entry's acceptance sentence, verbatim, as one script.
 - Done when: one script runs the route journey against two configured nodes and
   exits 0; its log is the evidence.
 - Depends on 4.1–4.5.
+- Open before two nodes load one app (STA-P3-1 of the v1 amendment's review): the binding
+  family's order and retraction scope hold within one registry only. The binding lamport
+  is per node (the registry never ingests a peer's op), and a `BindingRetraction` is keyed
+  `(app, glade_id)` with no origin, so in a served store holding several nodes' records one
+  node's retraction can outrank another's live declaration. Options: a merged clock (the
+  maximum over the served store's binding family at boot), the origin in the retraction's
+  scope, or both. **Owner question** from the same review (SUR-P3-5, classified
+  architectural): whether a later format gives `service` and `workspace` lines a retract
+  half, R9's option (s), declined for v1.
 
 ## Phase 5 — The slice passes and the graph moves
 
