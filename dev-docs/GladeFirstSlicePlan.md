@@ -504,6 +504,8 @@ Goal: the freeze.
 - Done when: the publish is recorded with the tuple and the three GO files.
 - Depends on 2.1–2.8.
 
+- **Accepted, 2026-09-24** at root `73c2bf7`, glade `1b9ac3f`, glade-decl `3d10917`, glade-decl-rs `d3be799`, glade-decl-ts `85ec18d`, glade-decl-py `ee2f960`, grazel `e1a4078`, glade-gyld `c9ef7a6`, glade-gwz `fc0bb99`, glial `4c6e856`, grip-core `97ff6c2`, after `glade/GladeDeclAmendment-Review{Code,State,Surface}-2.md` reported GO (round 1: Code and State NO-GO, one remediation, `glade/GladeDeclAmendment-RemPlan.md`). This accepts Steps 2.1–2.8 only. Open P3s, none blocking: SUR-P3-9 = STA-P3-4 (the page's retirement text overclaims), SUR-P3-10 (a missing `--app` file is reported without its path), SUR-P3-11 (refusals print as a Rust Debug dump), COD-P3-7 (the flip check misses an early flip). The publish waits on §4.7's gates and the owner.
+
 ### Step 2.10 — The discovery-side slice profile and its consumer tests
 
 Goal: the rest of build entry step 1 (`:47-51`) — the canonical records, the

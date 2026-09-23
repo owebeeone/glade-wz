@@ -155,3 +155,11 @@ Rules:
 ## Re-verdict
 
 The same three reviewers continue, with their contexts intact. Each receives this plan and the revised tuple, re-checks its own counterexamples, and files `-Review<Axis>-2.md` with a closure table.
+
+## Outcome, 2026-09-24
+
+All three axes re-verdicted **GO** at the revised tuple (root `73c2bf7`; glade `1b9ac3f`, glade-decl `3d10917`, renderings `d3be799`/`85ec18d`/`ee2f960`, grazel `e1a4078`): `-ReviewCode-2.md` (7 of 7 closed; new COD-P3-7), `-ReviewState-2.md` (5 of 5 closed; new STA-P3-4), `-ReviewSurface-2.md` (6 closed, 2 deferred-accepted; new SUR-P3-9, -10, -11). The Surface reviewer re-issued its report after the lane owner's tuple note (`-ReviewSurface-2-reissue.md`, same verdict and findings); both are filed verbatim. The root's move to `690f2f6` during the round was gwz bookkeeping for glade-discover only, and all three axes treated the tuple as held.
+
+**Blind convergence, round 2:** the retirement bullet on the format page withdraws bindings only, not a service's exchange, the workspace entry or seed grants — SUR-P3-9 and STA-P3-4, and Code's §3 item 7 as an observation.
+
+No finding in either round was classified architectural beyond SUR-P3-5. One remediation round of two was used.
