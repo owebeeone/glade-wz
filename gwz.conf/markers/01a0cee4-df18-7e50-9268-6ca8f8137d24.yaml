@@ -1,6 +1,18 @@
-schema: gwz.lock/v0
+schema: gwz.marker/v0
+gwz_commit_id: 01a0cee4-df18-7e50-9268-6ca8f8137d24
 workspace_id: ws_default
-manifest_schema: gwz.workspace/v0
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1790177501079
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: 29c485f865e66483069bd6d5f8ab7f93121642a8
+  branch: main
+selected_targets:
+- '@root'
+committed_targets:
+- '@root'
 members:
   mem_ggg_viz:
     path: ggg-viz
@@ -63,7 +75,7 @@ members:
     commit: 85ec18da1cb71f7fc84710a206c75915f12e339a
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_discover:
     path: glade-discover
@@ -117,7 +129,7 @@ members:
     commit: 97ff6c26f12e2808cd794d2947a852d7c16e4e22
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_grip_react:
     path: grip-react
