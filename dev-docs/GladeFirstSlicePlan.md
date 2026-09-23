@@ -680,6 +680,8 @@ Goal: one script no step of Phases 3–4 can pass without.
   dependency.
 - Depends on 3.1; written beside 3.2.
 
+- **Done (the gate itself), 2026-09-23.** glade `97d6afc`. `glade/node/check.sh`: 8 components green on today's tree, run from the root with any `CARGO_TARGET_DIR`; red on an injected `shaku` (6 of 8 fail); `arch002-fixture.sh` refuses it as a normal and a `cfg(windows)` dependency. Confinement allowlist: iroh only in `glade-node`, no shaku or sdax anywhere yet. Counted gaps printed on every run: glade-node 339 rustfmt hunks and 11 clippy warnings, glade-wire 43 and 7; the checker's `#[cfg]` blind spot; untracked `node/Cargo.lock`; the policy's five checks, three only partly performed. `glade/node/architecture-policy.json` is provisional until the owner reviews it. Green on 3.2–3.4 waits for those steps.
+
 Phase 3 exit: assembly, lifecycle, eight journeys and the gate, all deterministic.
 This phase depends on Phases 1–2 in one place only: 3.4's denied-authority journey
 reads the R9 fold, and that one test waits for 2.5.
