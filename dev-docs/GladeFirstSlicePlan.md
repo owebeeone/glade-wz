@@ -591,7 +591,7 @@ contracts workspace, framework-free.
   dependency injected into any contract crate.
 - Depends on nothing; can start today, beside Phase 1.
 
-- **Done, 2026-09-23.** glade `831eded`, root `05b2025`. Four framework-free contract crates (`glade-carrier-api`, `-clock-api`, `-grant-api`, `-signer-api`), no dependencies, each with a conformance suite and wrong-fixture tests; `check.sh` 86 tests green; the Shaku bridge form proven by doctests, the E0310 form `compile_fail`; `arch002-fixture.sh` refuses an injected `shaku` in all 10 contract crates. `SignerPort` is local: discovery's `Signer`/`Verifier` take a `SignedOp` and are not dyn-safe. About 1,590 lines against the ~500 budget. Ten open questions in the agent's report, among them the node's own grants (owner ruling).
+- **Done, 2026-09-23.** glade `831eded`, root `05b2025`. Four framework-free contract crates (`glade-carrier-api`, `-clock-api`, `-grant-api`, `-signer-api`), no dependencies, each with a conformance suite and wrong-fixture tests; `check.sh` 86 tests green; the Shaku bridge form proven by doctests, the E0310 form `compile_fail`; `arch002-fixture.sh` refuses an injected `shaku` in all 10 contract crates. `SignerPort` is local: discovery's `Signer`/`Verifier` take a `SignedOp` and are not dyn-safe. About 1,590 lines against the ~500 budget. Owner, 2026-09-23 ("all recommended"): carrier frames stay opaque bytes (the session owns the codec; no glade-wire in the crate); no budget port for the slice. The node's own grants are open at 4.3.
 
 ### Step 3.2 — The assembly
 
@@ -605,7 +605,7 @@ resolves from a module.
   `directory_profile_binding` — all `AssembledBy[NodeAssembly]` and
   `SharedWithin[NodeScope]` (`:21`), plus the grant and signer bindings from
   3.1. Deterministic providers as components: fake clock, in-memory store and
-  registry, fake carrier, no-op signer, fixed configuration. Eager construction
+  registry, fake carrier, a keyed test signer (an accept-anything verifier fails `SignerPort`'s SI-002 by design; 3.1's `signer-api` tests hold one), fixed configuration; each fake runs its contract's suite through the `conformance` feature. Eager construction
   unless overridden or `#[lazy]`; every real provider overridden in a test
   composition (the witness's DI-E01 and DI-E02 lessons). `DirectoryRules` breaks
   the Directory↔Records constructor cycle as `:35-40` describes; it need not be a
@@ -726,6 +726,10 @@ identity by a record, checked at HELLO and at accept.
   (`wire-rs/src/generated.rs:285-289`): the binding is a record, not a wire change.
 - This is what the relay ruling calls the lock on the door; until it lands,
   endpoint ids stay on our own machines.
+- From 3.1's `CarrierPort`: a link does not yet expose the remote transport identity;
+  HELLO's check needs it, so this step adds the accessor. Closing an endpoint ends its
+  links, so the iroh adapter tracks its links (the witness measured that a surviving
+  connection keeps the socket bound).
 - Done when: an unknown endpoint key cannot complete HELLO; a bound one can; a
   revoked binding is refused once the fold has seen the revocation.
 - Depends on 4.1.
@@ -755,8 +759,15 @@ Goal: `metadata_exposure` built.
   `service <name>` and a seed's `<share>` refer to, and the verb and principal vocabulary;
   the shipped `seed` lines follow that definition (corrected together with the revocation
   route, so the old grants can be withdrawn); and the node warns on a seed whose share no
-  loaded `workspace` declares. **Owner question:** is a seed's share the workspace share
-  (gyld-app's convention) or a share named after the app (grazel-app's)?
+  loaded `workspace` declares. **Owner question, open:** is a seed's share the workspace
+  share (gyld-app's convention) or a share named after the app (grazel-app's)?
+  Recommended: the workspace share. The format page's own example (`seed owner ws-notes
+  notes.*`) and gyld-app's comment both say so, and no file declares a share named after
+  an app.
+- **Owner question, open (from 3.1):** how a node's own grants are recorded, since a node
+  does not inherit its operator's grants. Recommended: an ordinary grant record whose
+  principal is the node id, so there is no new record kind and `GrantPort::check` stays one
+  path over one fold.
 
 ### Step 4.4 — Durable-local acceptance and restart
 

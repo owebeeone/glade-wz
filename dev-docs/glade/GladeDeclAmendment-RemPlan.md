@@ -16,6 +16,8 @@ at root `87ce46f`:
 this object: SUR-P3-5, a P3. It is the missing retract for `service` and `workspace` lines,
 which R9 already declined as option (s). None of the reports calls a P2 architectural.
 
+**Owner, 2026-09-23 ("all recommended"):** the refusal variant for COD-P2-1 = STA-P2-1, State's variant for STA-P2-2 (a `v1` file keeps the refusal), and the deferral of SUR-P3-4 and SUR-P3-6 to Step 4.3 are confirmed.
+
 **Blind convergence.** The reviewers could not read one another's reports.
 
 - **Two `--app` files naming one app.** All three axes found it:
