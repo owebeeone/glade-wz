@@ -293,13 +293,17 @@ which is the amendment commit the renderings pin.
   banner-marked mirror of the root `dev-docs/glade/GladeDeclSurface.md`, with a
   drift check in `--check` (§4.2 step 5, A12).
 - The root page, in this step's root commit, because §4.4 bullet 15 makes these
-  one edit and the mirror must match it: A12's `:27`, `:30` (with `source`, R5),
-  `:32` and `:58`; R8's record-kinds sentence; the `Retention` row (bullet 15);
-  the zone sentence at `:29-30` (SUR-P2-1). The root `decl.v0` references move
-  with it (§4.2 item 8).
+  one edit and the mirror must match it: `source` in `BindingDecl`'s field list
+  (R5); R8's record-kinds sentence; the `Retention` row (bullet 15); the zone
+  sentence at `:29-30` (SUR-P2-1); the corpus name; and the rows the rulings
+  make false (`AdvertisementRecord` held out, a `ShapeProfileDecl` row, the
+  canonical-key and derivation deferrals). The mirror then carries A12's repair
+  of the repository copy. The root `decl.v0` references move with it (§4.2
+  item 8).
 - Done when: `python3 corpus/build.py --compat --deleted AdvertisementRecord,edge/advert`
   is green, and red without the declaration (§4.7 row 2); `git -C glade-decl
-  grep 'decl\.v0'` is empty. Row 1 is not a gate of this step: it compares the
+  grep 'decl\.v0'` returns only `--compat`'s source (`V0_PATH`, read at
+  bbce73d). Row 1 is not a gate of this step: it compares the
   rendering copies and `vectors.rs`, which 2.2 regenerates. `build.py` rewrites
   `glade-decl-rs/src/vectors.rs` when it runs; 2.2 commits that file.
 - Depends on 1.4.
@@ -320,7 +324,7 @@ commit, in lockstep with it.
   change, not a lockfile migration (§4.8).
 - Done when: §4.7 rows 1, 3, 4, 5 and 11 are green, and §4.2's enumerating
   command, with this plan also excluded (`':!dev-docs/GladeFirstSlicePlan.md'`),
-  returns nothing.
+  returns only `--compat`'s source in `corpus/build.py`.
 - Depends on 2.1.
 
 ### Step 2.3 — A node that accepts both headers (landing step 0)

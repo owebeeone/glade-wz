@@ -1,6 +1,18 @@
-schema: gwz.lock/v0
+schema: gwz.marker/v0
+gwz_commit_id: 01a0cde9-a115-74b9-91c8-75ed14dba1d0
 workspace_id: ws_default
-manifest_schema: gwz.workspace/v0
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1790161035612
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: 846e1eb499e952d36f15e5ffaae0fa79c81fed5e
+  branch: main
+selected_targets:
+- '@root'
+committed_targets:
+- '@root'
 members:
   mem_ggg_viz:
     path: ggg-viz
@@ -18,7 +30,7 @@ members:
     commit: 559cb2c87e85db176d76d7f9dab5a5a482bde08b
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_chat:
     path: glade-chat
@@ -45,7 +57,7 @@ members:
     commit: 1b0f6d1f78862e7372440ba5b5b64adcbf426700
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_decl_rs:
     path: glade-decl-rs
@@ -54,7 +66,7 @@ members:
     commit: 21eefa1c3a5317becb77e313645785f5478fbf4b
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_decl_ts:
     path: glade-decl-ts
@@ -63,7 +75,7 @@ members:
     commit: 7e16e324630a4518b024ba9cfd95935a00db2892
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_discover:
     path: glade-discover

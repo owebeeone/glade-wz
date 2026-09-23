@@ -160,7 +160,8 @@ through *independent* codecs, this is a genuine cross-language conformance proof
 not a tautology.
 
 - glade-decl: `corpus/build.py` exports the IR, writes the golden
-  (`corpus/decl.v0.json`), and regenerates `glade-decl-rs/src/vectors.rs`.
+  (`corpus/decl.v0.json`; replaced by `corpus/decl.v1.json` at the v1
+  amendment), and regenerates `glade-decl-rs/src/vectors.rs`.
   `python3 corpus/build.py --check` is the drift gate (3 artifacts lockstep).
 - glade-decl-{rs,py,ts}: `cargo test` / `pytest` / `npm test` each run the
   corpus byte-parity gate.
