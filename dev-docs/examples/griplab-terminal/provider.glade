@@ -1,3 +1,9 @@
+// NOT A GLADE APP FILE. This file is written in the Glade Declaration DSL, a
+// different declaration language that is sketched in
+// dev-docs/glade/GladeDeclarationDSL.md and not implemented: nothing parses it.
+// The `.glade` file a glade node loads (`glade-node --app`) is the
+// line-oriented `glade-app` app file, specified in glade/docs/AppFileFormat.md.
+
 // Provider declares who can serve these terminal surfaces.
 // It is a capability and placement contract, not a concrete websocket endpoint.
 provider griplab_terminal_backend {
