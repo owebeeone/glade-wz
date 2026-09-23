@@ -542,7 +542,7 @@ fixes; §4.0 says how §4's conditional steps and §4.7(b)'s gates resolve under
 these answers.
 
 **Not reached by these answers** (found while recording them; neither is one of
-the thirteen):
+the thirteen), **and ruled the same day**:
 
 - *Which spelling of `from_cursor` an app file may write.* Under R9(b2) both
   `from-cursor` and `from_cursor` parse and normalise, and R9's "Which spellings
@@ -556,9 +556,15 @@ the thirteen):
   same four revisions: 13 `from-cursor`, 13 `latest`, 2 `windowed`; the tree's
   only `from_cursor` tokens are in two `dev-docs/examples/*.glade` files, the
   other dialect §4.4 bullet 14 banners), so either answer edits no line.
+  **RULED (Gianni 2026-09-23): the hyphen only.** An app file writes
+  `from-cursor`; `parse()` normalises it to `from_cursor` for the stored record
+  (R9(b2)). A file that writes `from_cursor` is recognised and warned, naming
+  `from-cursor`, for one release, and refused after (18b (ii)) — the rule R9
+  already states for b1's file side. Pages an author reads gloss `from-cursor`;
+  the contract's `from_cursor` is the stored and published spelling.
 - *Who owns `canonical_key`.* R6(a)'s hardening gives it a named owner, and the
   ruling names none. Due at plan Step 2.1, where `OpenNotes.md` N4 carries the
-  name.
+  name. **RULED (Gianni 2026-09-23): Gianni.**
 
 ### Which ruling decides what (CON-P3-4)
 
@@ -880,7 +886,8 @@ step 5).
 **RULED (Gianni 2026-09-23): (a), with the hardening.** Both publish labelled
 DEFERRED; `README.md:47` gains the v1 status line `:48-50` already carries;
 `OpenNotes.md` N4 names the version they are deferred past; `canonical_key` gets
-a named owner, whom this ruling does not name (§3's note above).
+a named owner, whom this ruling does not name; ruled separately the same day:
+Gianni (§3's note above).
 
 **The question.** Both are documented signatures with no implementation in any
 language and no golden vectors (`OpenNotes.md` N4 defers them). `GladeIdManifest`
@@ -1113,7 +1120,8 @@ store's history is: the file writes `from-cursor`, and `from_cursor` is
 recognised-but-refused with a diagnostic naming the hyphen. Under **(b2)** both
 spellings parse and normalise to `from_cursor`, so a file containing either is
 accepted and stores one value; whether the hyphen is nevertheless the only
-*legal* spelling is R2's 18b sub-choice, not R9's. Under **(a)** and **(c)** with
+*legal* spelling is R2's 18b sub-choice, not R9's *(18b's options do not carry
+it; ruled separately on 2026-09-23 — the hyphen only, §3)*. Under **(a)** and **(c)** with
 a file-side respelling, `from_cursor` is the file's spelling and `from-cursor`
 becomes the recognised-but-refused one. Whichever shape is taken, §4.4 bullet 7's
 refusal message must name a spelling the file format actually accepts.
@@ -1292,16 +1300,16 @@ in §4 is left to branch on.
 | Where | Resolves to |
 | --- | --- |
 | §4.7 row 2 | the "deletions only" case: green only as `build.py --compat --deleted AdvertisementRecord,edge/advert` (R7(b)); R1(a), R2(a), R3(a), R4(b), R5(b) and R6(a) move no byte |
-| §4.7 row 7 | both tokens, as warnings for one release (31b (ii), 18b (ii)): an unknown zone, and `windowed` naming `from-cursor`. No `from-cursor` diagnostic, because under R9(b2) the file keeps the hyphen |
+| §4.7 row 7 | both tokens, as warnings for one release (31b (ii), 18b (ii)): an unknown zone; `windowed`, naming `from-cursor`; and `from_cursor` written in a file, also naming `from-cursor` (hyphen only, §3). No diagnostic on `from-cursor` itself, because under R9(b2) it is the file's spelling |
 | §4.7 row 9 | `appended` = **15** under {R2(a), R9(b2)}, in the census's tree-wide units (SAF-P3-13 rides the amendment) |
 | §4.7 row 10 | R9(a)'s three scoped-retraction tests |
 | §4.7 row 13 | R1(a): the demo resolves with no edit |
 | §4.7 row 17 | R10(a): the pre-amendment `parse()` refuses a `v1` header |
-| §4.7 row 18 | R2(a): `latest`, `from_cursor` and `ttl` glossed, in the file's spelling, which §3's first note leaves open |
+| §4.7 row 18 | R2(a), in the file's spelling (hyphen only, §3): `latest`, `from-cursor` and `ttl` glossed; the page may add that the contract spells the second `from_cursor` |
 | §4.7 row 19 | R10(a) and R11(a): `v1` at `GladeGrazelAttachNotes.md:30`; the tail at `:32` and in the three in-file comments |
 | §4.7 row 21 | R8(b): the amendment sentence in the root `GladeDeclSurface.md`, and the mirror banner |
 | §4.1 | item 2 adds `ShapeProfileDecl`; item 5 removes `AdvertisementRecord`, its name reserved (item 8) |
-| §4.4 | steps 0–4 all land (R10(a)); bullet 2 lands branch (ii) for both tokens; bullet 5 owes the fold and retraction rules for 15 surfaces; bullet 6 is 0 edits for the 13 `from-cursor` lines and 2 for `windowed`; bullet 7's message names `from-cursor` |
+| §4.4 | steps 0–4 all land (R10(a)); bullet 2 lands branch (ii) for both tokens; bullet 5 owes the fold and retraction rules for 15 surfaces; bullet 6 is 0 edits for the 13 `from-cursor` lines and 2 for `windowed`; bullet 7's message names `from-cursor`, and a second message covers `from_cursor` written in a file; the token-5 documentation block glosses the file's `from-cursor` |
 | §4.5 | glial looks the profile up (R4(b)) rather than reading a field |
 | Does not arise | "Under R4(a), row 2 is replaced" below; R9(c)'s same-commit fold rule; R10(b)'s redefinition of `v0`; R9's option (s), so the row CON-P3-11 found missing would gate nothing under these answers (the finding stays open until the Consistency reviewer closes it) |
 

@@ -198,9 +198,10 @@ amendment reads it.
   branches.
 - **Done, 2026-09-23.** Every recommendation, and b2 within R9(b), recorded as
   RULED lines in the document's §3, with §4.0 stating how every conditional step
-  and §4.7(b) gate resolves. Two questions the answers do not reach are noted in
-  §3: the spelling of `from_cursor` an app file may write (due before 2.3) and
-  who owns `canonical_key` (due at 2.1).
+  and §4.7(b) gate resolves. Two questions the answers did not reach were ruled
+  the same day and are recorded in §3: an app file writes the hyphen only
+  (`from_cursor` in a file is warned for one release, then refused), and
+  `canonical_key`'s owner is Gianni.
 
 Phase 1 exit: accepted status plus eleven rulings. Nothing in glade-decl, the
 renderings, the node or the app files has changed.
