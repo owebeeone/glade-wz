@@ -539,6 +539,8 @@ executable test.
   and `check-contracts.sh` passes.
 - Depends on nothing in 2.1–2.9; runs beside them from the start of the phase.
 
+- **Done, 2026-09-23.** glade-discover `48bc104`. `dev-docs/glade/GladeFirstSliceProfile.md`: records SP-R1..R4, proof SP-P1..P5, clock SP-C1..C3, local acceptance SP-L1, trust and namespace SP-T1..T3 and SP-N1; the seven drafts' divergences recorded, not refactored. `crates/glade-discover-node-adapter/tests/slice_profile.rs`: 14 tests (6 pins, 8 wrong fixtures), 0.03 s warm; `check-contracts.sh` and `check-architecture.sh` green. Twelve items the profile marks not decided (§8), among them the signature algorithm and the monotonic instant that 3.1's `ClockPort` does not supply.
+
 Phase 2 exit: a published contract at a recorded tuple; a slice profile with
 green consumer tests.
 
