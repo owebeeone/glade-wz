@@ -424,6 +424,8 @@ gets R9's rule, with nothing validated yet.
   (SAF-P3-13); row 10's three tests pass; and row 19's tail half is green.
 - Depends on 2.4.
 
+- **Done, 2026-09-23.** glade `967fcdf`, grazel `bf86347`, root `d2d7b59`. `BindingRetraction` on `dir.binding-retractions`; one lamport clock across the two binding streams; the tail validated, not stored. Census 15 (5 + 5 + 2 + 2 + 1), 7 for a grazel + gyld store; rows 6, 8, 9, 10, 19's tail half and the fixture repos green.
+
 ### Step 2.6 — Validation (landing step 3)
 
 Goal: the shrinkage switched on, as warnings for one release.
@@ -441,6 +443,8 @@ Goal: the shrinkage switched on, as warnings for one release.
   and every shipped file loads with no warning except the `v0` header's.
 - Depends on 2.5.
 
+- **Done, 2026-09-23.** glade `d4db2fc`, root `bc73bbd`. A `v1` file's bad token is a line-numbered warning; `V1_TOKEN_CHECKS_REFUSE` flips it to a refusal at the next node version above `0.0.0`; `v0` files are warned, never refused. Rows 6, 7, 8 and the fixture repos green.
+
 ### Step 2.7 — The headers (landing step 4)
 
 Goal: each file declares the validated language.
@@ -451,6 +455,8 @@ Goal: each file declares the validated language.
 - Done when: rows 6, 8 and 19 are green with the fixture repositories' tests,
   and every shipped file loads with no warning.
 - Depends on 2.6.
+
+- **Done, 2026-09-23.** glade `dddf8b8`, grazel `b604a06`, glade-gyld `c9ef7a6`, glade-gwz `fc0bb99`, root `332855a`. All five files `glade-app v1`, twins identical; every shipped file loads with no warning; census unchanged. Rows 6, 8, 19 and the fixture repos green.
 
 ### Step 2.8 — Consumers
 
