@@ -4,8 +4,9 @@ Status: assessment + amendment proposal, revision 4 — **accepted at glade-wz r
 `3b60234` (glade `559cb2c`, glade-decl `d671f10`, glade-decl-rs `21eefa1`, the lock
 of `a617c33`) after `-ReviewConsistency-4.md`, `-ReviewSafety-4.md` and
 `-ReviewSurface-4.md` reported GO; this accepts the assessment and the amendment
-shape only.** The amendment itself (§4) is not made, the rulings R1–R11 are not
-made, and nothing is published by this acceptance. Two P3s and one recorded residual
+shape only.** The amendment itself (§4) is not made and nothing is published by
+this acceptance; the rulings R1–R11 were not part of it, and were recorded
+afterwards in §3 (ruled 2026-09-23). Two P3s and one recorded residual
 stand open as riders on the amendment's own commit, not on this document: SAF-P3-13 (§4.7 row 9's assertion
 is stated in tree-wide units; a single registry sees its files' share), CON-P3-11
 (R9's option (s) has no §4.7 row), and the Surface axis's standing residual (no
@@ -533,6 +534,32 @@ options. Each of the thirteen is answerable in a line. *(Stated explicitly —
 CON residual: revision 2 said "Eleven. Each is answerable in a line", and a
 reader counting answers came up two short.)*
 
+**RULED (Gianni 2026-09-23): every recommendation, and b2 within R9(b).** The
+thirteen answers: R1 (a), with (b) as a separate step · 31b (ii) · R2 (a) ·
+18b (ii) · R3 (a) · R4 (b) · R5 (b) · R6 (a) · R7 (b) · R8 (b) · R9 (b2) + (a),
+(s) not taken · R10 (a) · R11 (a). Each ruling's own line below says what it
+fixes; §4.0 says how §4's conditional steps and §4.7(b)'s gates resolve under
+these answers.
+
+**Not reached by these answers** (found while recording them; neither is one of
+the thirteen):
+
+- *Which spelling of `from_cursor` an app file may write.* Under R9(b2) both
+  `from-cursor` and `from_cursor` parse and normalise, and R9's "Which spellings
+  a file may contain" hands the question of whether the hyphen is nevertheless
+  the file's only legal spelling to 18b. But 18b's options say whether token 5 is
+  validated, not in which spelling, so (ii) does not answer it. It matters
+  because §4.4's token-5 block and §4.7 row 18 gloss `from_cursor`, the
+  contract's spelling, while bullet 7's message under b2 names `from-cursor`.
+  Due before plan Step 2.3, whose format page glosses the token. No app file
+  contains `from_cursor` today (§4.4 bullet 6's census, re-run 2026-09-23 at the
+  same four revisions: 13 `from-cursor`, 13 `latest`, 2 `windowed`; the tree's
+  only `from_cursor` tokens are in two `dev-docs/examples/*.glade` files, the
+  other dialect §4.4 bullet 14 banners), so either answer edits no line.
+- *Who owns `canonical_key`.* R6(a)'s hardening gives it a named owner, and the
+  ruling names none. Due at plan Step 2.1, where `OpenNotes.md` N4 carries the
+  name.
+
 ### Which ruling decides what (CON-P3-4)
 
 Each row below is decided by **exactly one** ruling. Where revision 1 pointed a
@@ -585,6 +612,13 @@ the row was restated (row 33) or split (rows 18, 31). Concretely:
   and the caveat it demands (§4.1.7) rides every option of R1.
 
 ### R1 — Does `BindingDecl.domain` (and `DomainAnchor`) survive, change, or go?
+
+**RULED (Gianni 2026-09-23): (a) now, (b) as a separate step; row 31b (ii).**
+`BindingDecl.domain` and `DomainAnchor` stay as they are, documented as a
+declaration-time hint the binder resolves (grip-share already does; glial gains
+the mapping later, GlialFitAssessment S6). The zone token is validated against
+`{commons, private}` as a warning for one release and a hard error after,
+landing by §4.4's order. No vector's bytes move.
 
 **The question.** The contract says a surface declares which replicated world it
 anchors to. The node has never had the field and the app-file grammar has no
@@ -646,6 +680,14 @@ from an unread string to a checked vocabulary, which makes the caveat more
 necessary, not less.
 
 ### R2 — What is the retention vocabulary, and is it enforced?
+
+**RULED (Gianni 2026-09-23): (a); row 18b (ii).** v1 keeps `{latest,
+from_cursor, ttl}` with `ttl_ms` and drops `windowed`, which becomes
+recognised-but-refused; `term.log`'s `windowed` line, in both homes of
+`grazel-app.glade`, becomes `from-cursor` (the file's spelling under R9(b2)),
+with the window kept app-side. Token 5 is validated as a warning for one release
+and a hard error after. The contract edit is comment-only; no vector's bytes
+move.
 
 **The question.** The contract says `{latest, from_cursor, ttl}` + `ttl_ms`. The
 app files say `latest`, `from-cursor`, `windowed`. Nothing reads any of it as a
@@ -721,6 +763,10 @@ fixes. CON-P2-4.)*
 
 ### R3 — `message`, `window`: delete the members, or retain them reserved?
 
+**RULED (Gianni 2026-09-23): (a).** `message` and `window` stay as reserved,
+recognised-but-unbindable members with their numbers; `atom=8` is added with its
+curated vector. No existing vector's bytes move.
+
 **The question.** GDL-041 says `message` is unsupported and `window` is not an
 engine. Every runtime refuses both. Does the enum lose the members, or keep them
 as reserved-and-unbindable names?
@@ -752,6 +798,11 @@ out, `atom` in" — that is a plan's shorthand, not a ratification, and this is 
 ruling that settles it either way.
 
 ### R4 — Does `BindingDecl` carry the shape profile?
+
+**RULED (Gianni 2026-09-23): (b).** The profile is a separate message keyed by
+glade id, `ShapeProfileDecl{glade_id, profile}` (§4.1 item 2). `BindingDecl` is
+untouched, so no existing vector changes and the corpus gains one synth vector.
+An app file writes the profile as R11(a)'s `shape-profile=` key.
 
 **The question.** GDL-041 ratifies `snapshot_delta` and `text_crdt` as profiles
 over `swmr`/`crdt`. glial *requires* the profile at mount and throws without it
@@ -793,6 +844,11 @@ they are written in §4.4 bullet 4.
 
 ### R5 — Do `Authority.external` and `BindingDecl.source` survive v1?
 
+**RULED (Gianni 2026-09-23): (b), with (a) when a bridged source appears.**
+`Authority.external` and `BindingDecl.source` stay, recorded as "declared, not
+yet authorable"; `dev-docs/glade/GladeDeclSurface.md:30`'s field list gains
+`source`.
+
 **The question.** `external(source)` is in the ratified DeclSurface §Contents, is
 accepted by the node's parser, and has zero uses. The app-file grammar has no
 token to name the source, so an `external` binding can never be complete.
@@ -820,6 +876,11 @@ lists as `source?`. R5's amendment sentence must correct
 step 5).
 
 ### R6 — Must `canonical_key` and `derive_glade_id` be fixed before the publish?
+
+**RULED (Gianni 2026-09-23): (a), with the hardening.** Both publish labelled
+DEFERRED; `README.md:47` gains the v1 status line `:48-50` already carries;
+`OpenNotes.md` N4 names the version they are deferred past; `canonical_key` gets
+a named owner, whom this ruling does not name (§3's note above).
 
 **The question.** Both are documented signatures with no implementation in any
 language and no golden vectors (`OpenNotes.md` N4 defers them). `GladeIdManifest`
@@ -859,6 +920,11 @@ to make.
 
 ### R7 — Which unexercised elements ship in the frozen v1?
 
+**RULED (Gianni 2026-09-23): (b).** `AdvertisementRecord` is held out of v1, its
+name reserved, until GDL-029 ratifies. Its two vectors leave the corpus and are
+declared to the gate: `build.py --compat --deleted AdvertisementRecord,edge/advert`
+(§4.7 row 2).
+
 **The question.** `AdvertisementRecord` (3 fields) cites GDL-029, which the root
 DecisionLog still lists **open**. Freezing a record format for an open decision
 is the failure mode L1-09 exists to catch. *(Re-grounded — CON-P3-1: revision 1
@@ -883,6 +949,11 @@ citation must be corrected — a contract that cites an open decision as if
 ratified is a precedence defect, not a typo.
 
 ### R8 — Does the contract cover the whole `.glade` file form, or only bindings?
+
+**RULED (Gianni 2026-09-23): (b), amending the ratified text.** `glade-decl`
+stays the tap/binding vocabulary; `ServiceDefinition` and the ACL seeds stay node
+`sysdata`. `dev-docs/glade/GladeDeclSurface.md` gains the amendment sentence
+saying so, and the repository copy becomes a banner-marked mirror (§4.7 row 21).
 
 **The question.** GDL-037 (ratified) assigns three record kinds to this surface's
 file form — `BindingDecl`s, `ServiceDefinition`s and ACL seeds
@@ -912,6 +983,16 @@ explicit amendment sentence in `GladeDeclSurface.md`, not a silent omission.
 Related and separate: GDL-038's `glade-sys.glade` does not exist (A6).
 
 ### R9 — What does a changed or deleted binding line do to an already-registered declaration?
+
+**RULED (Gianni 2026-09-23): (b2) + (a); (s) not taken.** App files keep their
+spellings and `parse()` normalises `from-cursor` to `from_cursor` on the way into
+`sysdata::BindingDecl`, so the store and the contract speak one vocabulary.
+`dir.bindings` is folded by `glade_id`, newest wins, with a `BindingRetraction`
+record scoped per `(app, glade_id)`; under b2 that fold is required, not
+optional. Durable cost on the first boot, by the derivation below under R2(a):
+**2 + 13 = 15** appends over the census's 28 lines (a single store sees its own
+files' share — SAF-P3-13). Deleting a `service` or `workspace` line still
+retracts nothing, and the page says so.
 
 *(New — SAF-P1-2 merged with SUR-P2-5.)*
 
@@ -1074,6 +1155,11 @@ is migrated**, because the migration is the first mass exercise of it
 
 ### R10 — Does the app-file version header advance to `glade-app v1`?
 
+**RULED (Gianni 2026-09-23): (a).** `glade-app v1` names the validated grammar;
+`v0` files still load, with a warning. A node accepting both headers lands first
+(§4.4 step 0) and the headers move last (step 4), both twins of
+`grazel-app.glade` in one commit.
+
 *(New — SUR-P2-2.)*
 
 **The question.** Validation shrinks the set of accepted programs while the
@@ -1102,6 +1188,12 @@ has one token to carry rather than two — but the header hazard is unchanged,
 because it is the header and not the token that an old node refuses.
 
 ### R11 — Does the binding line get a keyword tail?
+
+**RULED (Gianni 2026-09-23): (a).** The binding line gains a `key=value` tail
+after its five positional tokens — `ttl=<duration>` and
+`shape-profile=<profile>` — and an unknown key is refused by name with a line
+number. It follows from R2(a) keeping `ttl`. The published grammar and the three
+in-file grammar comments show the tail (§4.7 row 19).
 
 *(New — SUR-P2-3 + SUR-P2-4; subordinate to R2 and R4.)*
 
@@ -1192,6 +1284,26 @@ R2's sub-choice (iii) decline to turn on, row 14 says in its own cell that it is
 not a gate, and row 16 has no green/red state. Under R4(a) the precondition was
 unsatisfiable for ever; under row 14 it was self-contradictory on its face.
 Corrected — CON-P2-6.)*
+
+**Under the answers recorded in §3 (2026-09-23).** The condition of every
+§4.7(b) row arises, so all nine join (a) and the publish waits on each; nothing
+in §4 is left to branch on.
+
+| Where | Resolves to |
+| --- | --- |
+| §4.7 row 2 | the "deletions only" case: green only as `build.py --compat --deleted AdvertisementRecord,edge/advert` (R7(b)); R1(a), R2(a), R3(a), R4(b), R5(b) and R6(a) move no byte |
+| §4.7 row 7 | both tokens, as warnings for one release (31b (ii), 18b (ii)): an unknown zone, and `windowed` naming `from-cursor`. No `from-cursor` diagnostic, because under R9(b2) the file keeps the hyphen |
+| §4.7 row 9 | `appended` = **15** under {R2(a), R9(b2)}, in the census's tree-wide units (SAF-P3-13 rides the amendment) |
+| §4.7 row 10 | R9(a)'s three scoped-retraction tests |
+| §4.7 row 13 | R1(a): the demo resolves with no edit |
+| §4.7 row 17 | R10(a): the pre-amendment `parse()` refuses a `v1` header |
+| §4.7 row 18 | R2(a): `latest`, `from_cursor` and `ttl` glossed, in the file's spelling, which §3's first note leaves open |
+| §4.7 row 19 | R10(a) and R11(a): `v1` at `GladeGrazelAttachNotes.md:30`; the tail at `:32` and in the three in-file comments |
+| §4.7 row 21 | R8(b): the amendment sentence in the root `GladeDeclSurface.md`, and the mirror banner |
+| §4.1 | item 2 adds `ShapeProfileDecl`; item 5 removes `AdvertisementRecord`, its name reserved (item 8) |
+| §4.4 | steps 0–4 all land (R10(a)); bullet 2 lands branch (ii) for both tokens; bullet 5 owes the fold and retraction rules for 15 surfaces; bullet 6 is 0 edits for the 13 `from-cursor` lines and 2 for `windowed`; bullet 7's message names `from-cursor` |
+| §4.5 | glial looks the profile up (R4(b)) rather than reading a field |
+| Does not arise | "Under R4(a), row 2 is replaced" below; R9(c)'s same-commit fold rule; R10(b)'s redefinition of `v0`; R9's option (s), so the row CON-P3-11 found missing would gate nothing under these answers (the finding stays open until the Consistency reviewer closes it) |
 
 **Under R4(a), row 2 is replaced, not left red.** The substitute is the
 compatibility artefact §4.2 already names in the taut-shape idiom

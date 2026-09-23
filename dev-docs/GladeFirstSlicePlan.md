@@ -196,6 +196,11 @@ amendment reads it.
   the graph would mean editing the base graph for choices it does not ask.
 - Done when: eleven RULED lines exist and §4.0's landing table needs no option
   branches.
+- **Done, 2026-09-23.** Every recommendation, and b2 within R9(b), recorded as
+  RULED lines in the document's §3, with §4.0 stating how every conditional step
+  and §4.7(b) gate resolves. Two questions the answers do not reach are noted in
+  §3: the spelling of `from_cursor` an app file may write (due before 2.3) and
+  who owns `canonical_key` (due at 2.1).
 
 Phase 1 exit: accepted status plus eleven rulings. Nothing in glade-decl, the
 renderings, the node or the app files has changed.
@@ -678,7 +683,8 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.6 and
 
 1. Reviewer tier for 1.2, 2.6 and 5.1: Opus by the quota instruction, or the
    strongest tier the process rule asks for at a freeze.
-2. R1–R11 (Step 1.4).
+2. R1–R11 (Step 1.4) — ruled 2026-09-23, recorded in
+   `glade/GladeDeclReconciliation.md` §3.
 3. The two machines for 4.5's crossing (dabeest and which other), and whether
    the owner's own machine may be one of them.
 4. Whether `NodeId = sha256(key)` stays through the slice (4.1 keeps it).
