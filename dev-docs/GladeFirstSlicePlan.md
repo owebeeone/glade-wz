@@ -308,6 +308,8 @@ which is the amendment commit the renderings pin.
   `glade-decl-rs/src/vectors.rs` when it runs; 2.2 commits that file.
 - Depends on 1.4.
 
+- **Done, 2026-09-23.** glade-decl `7d18cd3` (the amendment commit), `784840a` (writes replace files: pnpm hard-links `glade-decl-ts` into consumers, and 2.1's write had changed seven installs, since restored); root `112d30a`, `b75a953`. Row 2 green; row 1 green but for the three pins, which 2.2 set; 23 unit tests.
+
 ### Step 2.2 — The three renderings
 
 Goal: Rust, TypeScript and Python regenerated into their `src/` from the 2.1
@@ -328,6 +330,8 @@ commit, in lockstep with it.
   in `GladeHandoff-260710.md:163`.
 - Depends on 2.1.
 
+- **Done, 2026-09-23.** Renderings `9507c12` (rs), `37d9b7d` (ts), `433215a` (py), pinned to `7d18cd3`; root `8f161dc`. Rows 1, 3, 4, 5, 11 green; Python row 5 from the built wheel.
+
 ### Step 2.3 — A node that accepts both headers (landing step 0)
 
 Goal: the one node change that must come before any header moves, and the
@@ -346,6 +350,8 @@ warning channel that validation will use.
   both-headers tests pass, and row 17's evidence is recorded beside them as the
   regression that pins this step ahead of 2.7.
 - Depends on 1.4 only.
+
+- **Done, 2026-09-23.** glade `4258c62`, root `b55914c`. Row 17 evidence at 559cb2c: "line 16: expected `glade-app v0` header, got `glade-app v1`". Rows 6, 8 and the fixture repos green.
 
 ### Step 2.4 — The format page and the app-file tokens (landing step 1)
 
@@ -383,6 +389,8 @@ and the app files carry the migrated token.
   node stores the new token raw), row 18 is green in the file's spelling, and
   row 20 is green.
 - Depends on 2.3 by the landing order; the page can be drafted from 1.4.
+
+- **Done, 2026-09-23.** glade `7bd5f9d`, grazel `05553b4`, root `fe48ca3`. Census 15 `from-cursor`, 13 `latest`, 0 `windowed`; rows 6, 8, 18, 20 and the fixture repos green.
 
 ### Step 2.5 — The node's vocabulary and the binding fold (landing step 2)
 
@@ -463,6 +471,8 @@ behaviour under the new types.
   (row 16).
 - Done when: rows 12, 13 and 15 are green and rows 14 and 16 are recorded.
 - Depends on 2.2.
+
+- **Done, 2026-09-23.** glial `4c6e856`, glade `3a17b8e` (row 13's test), root `d35d62e`; glial and grip-core reinstalled with frozen lockfiles (no lockfile change), the demo reinstalled likewise to clear a stale v0 copy. Rows 12, 13 and binding-api green; gryth-ui (row 15) green after gryth-wz's `glade-decl-ts` and `glial` were fast-forwarded to `37d9b7d` and `4c6e856` at the owner's word: 61 files, 938 tests, `pnpm build:gyld` built. Row 14 recorded: a glial mount of a `private` surface neither produces a `self:` key nor throws (the mount never reads `decl.zone`; `instance.ts:40-42`, `session.ts:53-58`). Row 16 is the owner's manual check.
 
 ### Step 2.9 — Acceptance review and publish
 
