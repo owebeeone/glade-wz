@@ -591,7 +591,7 @@ contracts workspace, framework-free.
   dependency injected into any contract crate.
 - Depends on nothing; can start today, beside Phase 1.
 
-- **Done, 2026-09-23.** glade `831eded`, root `05b2025`. Four framework-free contract crates (`glade-carrier-api`, `-clock-api`, `-grant-api`, `-signer-api`), no dependencies, each with a conformance suite and wrong-fixture tests; `check.sh` 86 tests green; the Shaku bridge form proven by doctests, the E0310 form `compile_fail`; `arch002-fixture.sh` refuses an injected `shaku` in all 10 contract crates. `SignerPort` is local: discovery's `Signer`/`Verifier` take a `SignedOp` and are not dyn-safe. About 1,590 lines against the ~500 budget. Owner, 2026-09-23 ("all recommended"): carrier frames stay opaque bytes (the session owns the codec; no glade-wire in the crate); no budget port for the slice. The node's own grants are open at 4.3.
+- **Done, 2026-09-23.** glade `831eded`, root `05b2025`. Four framework-free contract crates (`glade-carrier-api`, `-clock-api`, `-grant-api`, `-signer-api`), no dependencies, each with a conformance suite and wrong-fixture tests; `check.sh` 86 tests green; the Shaku bridge form proven by doctests, the E0310 form `compile_fail`; `arch002-fixture.sh` refuses an injected `shaku` in all 10 contract crates. `SignerPort` is local: discovery's `Signer`/`Verifier` take a `SignedOp` and are not dyn-safe. About 1,590 lines against the ~500 budget. Owner, 2026-09-23 ("all recommended"): carrier frames stay opaque bytes (the session owns the codec; no glade-wire in the crate); no budget port for the slice. The node's own grants: ruled at 4.3.
 
 ### Step 3.2 — The assembly
 
@@ -759,15 +759,14 @@ Goal: `metadata_exposure` built.
   `service <name>` and a seed's `<share>` refer to, and the verb and principal vocabulary;
   the shipped `seed` lines follow that definition (corrected together with the revocation
   route, so the old grants can be withdrawn); and the node warns on a seed whose share no
-  loaded `workspace` declares. **Owner question, open:** is a seed's share the workspace
-  share (gyld-app's convention) or a share named after the app (grazel-app's)?
-  Recommended: the workspace share. The format page's own example (`seed owner ws-notes
-  notes.*`) and gyld-app's comment both say so, and no file declares a share named after
-  an app.
-- **Owner question, open (from 3.1):** how a node's own grants are recorded, since a node
-  does not inherit its operator's grants. Recommended: an ordinary grant record whose
-  principal is the node id, so there is no new record kind and `GrantPort::check` stays one
-  path over one fold.
+  loaded `workspace` declares. **RULED (Gianni 2026-09-23): a seed's share is the workspace
+  share** (gyld-app's convention), not a share named after the app. The format page's own
+  example (`seed owner ws-notes notes.*`) and gyld-app's comment say so, and no file
+  declares a share named after an app; grazel-app's `seed owner grazel …` is corrected with
+  the revocation route.
+- **RULED (Gianni 2026-09-23), from 3.1:** a node's own grant is an ordinary grant record
+  whose principal is the node id (a node does not inherit its operator's grants). No new
+  record kind; `GrantPort::check` stays one path over one fold.
 
 ### Step 4.4 — Durable-local acceptance and restart
 
