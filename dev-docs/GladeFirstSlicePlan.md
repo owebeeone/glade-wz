@@ -4,7 +4,9 @@ Status: **DRAFT plan**, 2026-09-22. Lane: glade-wz. Written against glade-wz roo
 `9d19ee6`, glade `559cb2c`, glade-decl `d671f10`, glade-decl-rs `21eefa1`,
 glade-discover `fd94a1f`; rulings stream `rulings@1`, snapshot `d25aa2058723`.
 Nothing here is implemented by this document; every "today" statement below was
-read in the tree at those revisions on 2026-09-22.
+read in the tree at those revisions on 2026-09-22. Phase 2 was refreshed on
+2026-09-23 against the accepted reconciliation (revision 4, `3b60234`) and the
+rulings recorded at `a0e6ce4` and `972d4d0`; its statements were read then.
 
 ## 0. What this plan delivers, and why now
 
@@ -208,118 +210,280 @@ renderings, the node or the app files has changed.
 
 ## Phase 2 — The contract pinned (build entry step 1)
 
-Milestone: the amendment landed as one edit across the contract repositories,
-every row of the document's §4.7 green on a settled tree, the acceptance review
-passed, the publish recorded; and the discovery-side slice profile pinned with
-executable consumer tests.
+Milestone: the amendment landed across the contract repositories, the node and
+the app files; every gate row of the document's §4.7 green on a settled tree —
+the (a) rows and the nine (b) rows the recorded answers make gates (its §4.0) —
+with §4.7(c) recorded; the acceptance review passed; the publish recorded; and
+the discovery-side slice profile pinned with executable consumer tests.
 
-Landing order is the one revision 2 fixed under SAF-P2-3: app files first, in all
-four repositories, node validation last, because an old node accepts any spelling
-and a new node refuses the old one.
+*(Refreshed 2026-09-23 against the accepted revision 4 (`3b60234`) and the
+rulings recorded at `a0e6ce4` and `972d4d0`. The version of 2026-09-22 was
+written against revision 2: it predated the header-order correction (SAF-P2-9),
+the declared deletion list (SAF-P2-10) and the rulings, so its Step 2.1 ran the
+compatibility gate with no deletion list, its 2.3 moved the headers against a
+node that refuses them, and its 2.4 asked for a diagnostic on `from-cursor`,
+which R9(b2) keeps. Its 2.1–2.4 are replaced by 2.1–2.7 below; its 2.5–2.7 are
+now 2.8–2.10.)*
 
-### Step 2.1 — Schema and corpus
+**Two lanes.** The contract (2.1, 2.2, then its consumers in 2.8) and the node
+with its app files (2.3–2.7) share no build dependency — among the Rust crates
+of `glade`, `grazel`, `glade-gyld` and `glade-gwz`, only
+`glade/contracts/binding-api` depends on a `glade-decl` rendering — so the two
+lanes run in parallel after Phase 1 and meet at the acceptance
+review (2.9). Each step commits its members through gwz, then the root lock;
+the lock after 2.1 has §4.7 row 1 red by construction (the renderings are
+regenerated in 2.2), and no review or publish reads an intermediate lock.
 
-Goal: `glade-decl/ir/glade_decl.taut.py` edited per R1–R8; `corpus/decl.v1.json`
-replacing `decl.v0.json`; `build.py --compat` in place.
+**The node lane's order is the document's §4.4 landing order** (SAF-P2-9),
+because a token and a header have opposite safe orders: an old node stores a
+new token raw, and refuses a new header before it reads a token
+(`appdecl.rs:89-95`). So: a node that accepts both headers (2.3); the app
+files' tokens (2.4); the node's vocabulary and the binding fold (2.5);
+validation (2.6); the headers last (2.7). Each is its own commit, and after
+every one of them `cargo test -p glade-node` and `cargo test -p grazel` (§4.7
+rows 6 and 8) are green, as are the integration tests of `glade-gyld` and
+`glade-gwz`, which spawn the node binary on their own fixtures
+(`glade-gyld/Cargo.toml:29`, `glade-gwz/Cargo.toml:22`). That last gate is this
+plan's addition: §4.7 names only the first two, and the fixture headers move in
+2.7 like the rest.
 
-- §4.1 schema edits; §4.2 corpus, with every `decl.v0` reference retargeted (20
-  hits, CON-P2-3, the first being `glade-decl-py/pyproject.toml:20`);
-  `build.py --compat` asserting `v1[n].cbor == v0[n].cbor` for every `n` in v0 —
-  or, under R4(a), failing by design with no superset claim left in any text
-  (SAF-P1-1); the `--check` artefact list extended from three (`build.py:219-221`)
-  to the four rendering copies (SAF-P2-5); an `atom` curated vector and the
-  assertion that every `Shape` member has one (SAF-P3-8); any delete reserves its
-  tag and name and sets `next_id` (SAF-P3-6). taut `optional` is nullable and
-  always emitted (`GladeDeclReconciliation.md:103-117`): no field is free.
-- Done when: §4.7 rows 1 and 2 are green and `git grep 'decl\.v0'` over the four
-  contract repositories and root `dev-docs` is empty.
+**Two constraints the recorded answers imply**, stated once here:
+
+- *No new field on `sysdata.BindingDecl` in this amendment.* taut's optional
+  fields are always emitted, so a new field changes the bytes of every stored
+  binding record (`sysdata.rs:128-137`; the document's R4(a) node cell), and the
+  first boot would append all 28, not the 15 that §4.7 row 9 asserts. A tail key
+  that must reach a consumer takes a record kind of its own, keyed by glade id —
+  R4(b)'s shape — which moves no stored byte and can be added later. None needs
+  to in this phase: no app file declares a `crdt` binding, and nothing enforces
+  retention (GC-4).
+- *The file's spelling is the hyphen* (the document's §3, 2026-09-23). Pages and
+  in-file comments gloss `from-cursor`; `from_cursor` is the stored and published
+  spelling.
+
+### Step 2.1 — Schema, corpus and the contract's gates
+
+Goal: `glade-decl` carries the contract half of the amendment in one commit,
+which is the amendment commit the renderings pin.
+
+- §4.1 under the recorded answers: `atom=8`, with `message` and `window` kept
+  with their numbers and the enum comment rewritten (item 1);
+  `ShapeProfileDecl{glade_id, profile}` added and `BindingDecl` untouched
+  (item 2); the `RetentionPolicy` and `ChangeEvent.base_seq` comments (items 3,
+  4); `AdvertisementRecord` removed (item 5), its retired name recorded in the
+  module docstring and `dev-docs/OpenNotes.md`, because taut has no
+  message-name reservation (item 8); the deferrals in the docstring and OpenNotes
+  N3/N4, naming `canonical_key`'s owner (Gianni) and the version both functions
+  are deferred past (item 6, R6(a)); N7, N8 and N9, with `private` scoped in
+  `ZoneKind`'s comment and `README.md:39-41` (items 6, 7).
+- `corpus/build.py`: the curated `atom` vector, and an assertion that every
+  `Shape` member has one (SAF-P3-8); `--compat` over `v0 ∩ v1` with a declared
+  deletion list, v0 read from `git show bbce73d:corpus/decl.v0.json`, red on an
+  undeclared absence and on a declared name still present (§4.2); the `--check`
+  artefact list extended to the four rendering copies (SAF-P2-5);
+  `CONTRACT_VERSION` made checkable (A1, §4.3). The two recognition-case vectors
+  keep their keys (§4.1 item 1), so the deletion list is exactly
+  `AdvertisementRecord,edge/advert`.
+- `corpus/decl.v1.json` replaces `decl.v0.json` in the same commit, and
+  glade-decl's own `decl.v0` references move (§4.2 items 2 and 5). No
+  "superset" sentence anywhere unless it names the subset and the gate (§4.2).
+- The front page gains a members table per enum with a gloss each, the
+  `Retention` members included, and says whether an app-file glade id is
+  authored or derived (§4.2 step 6). `dev-docs/DeclSurface.md` becomes a
+  banner-marked mirror of the root `dev-docs/glade/GladeDeclSurface.md`, with a
+  drift check in `--check` (§4.2 step 5, A12).
+- The root page, in this step's root commit, because §4.4 bullet 15 makes these
+  one edit and the mirror must match it: A12's `:27`, `:30` (with `source`, R5),
+  `:32` and `:58`; R8's record-kinds sentence; the `Retention` row (bullet 15);
+  the zone sentence at `:29-30` (SUR-P2-1). The root `decl.v0` references move
+  with it (§4.2 item 8).
+- Done when: `python3 corpus/build.py --compat --deleted AdvertisementRecord,edge/advert`
+  is green, and red without the declaration (§4.7 row 2); `git -C glade-decl
+  grep 'decl\.v0'` is empty. Row 1 is not a gate of this step: it compares the
+  rendering copies and `vectors.rs`, which 2.2 regenerates. `build.py` rewrites
+  `glade-decl-rs/src/vectors.rs` when it runs; 2.2 commits that file.
 - Depends on 1.4.
 
 ### Step 2.2 — The three renderings
 
-Goal: Rust, TypeScript and Python regenerated into their `src/`, gates green.
+Goal: Rust, TypeScript and Python regenerated into their `src/` from the 2.1
+commit, in lockstep with it.
 
-- The rendering READMEs' form (CON-P2-2): generate to scratch, copy each
-  language's files into `src/`, then the ir and corpus copies for ts and py, then
-  `build.py`. `CONTRACT_VERSION` (`glade-decl-rs/src/lib.rs:38`, today
-  `99a04e0…`) advances to the amended commit. `pnpm test` in glade-decl-ts (its
-  npm lockfile is left alone; the migration is raised at extraction step 1.2, not
-  done — document §4.8), `cargo test` in glade-decl-rs, `pytest` from a built
-  wheel in glade-decl-py; the `atom` grep in all three generated APIs; no
-  `typescript/`, `rust/` or `python/` path in `git status`.
-- Done when: §4.7 rows 3, 4, 5 and 11 are green.
+- §4.3's procedure (the rendering READMEs' form, CON-P2-2): generate to scratch,
+  copy into each `src/`, `cargo fmt` in glade-decl-rs, then the IR and
+  `decl.v1.json` copies for ts and py with their `decl.v0.json` copies removed
+  (§4.2 item 4), then `build.py`. `CONTRACT_VERSION` in all three pins the 2.1
+  commit (A1). The remaining `decl.v0` references move: the two gate reads
+  (§4.2 item 3), `glade-decl-py/pyproject.toml:20` (item 1), and the text in the
+  three repositories, the READMEs' copy commands included (items 6, 7).
+  `glade-decl-ts/README.md:21-22`'s `npm` commands become `pnpm` ones — a command
+  change, not a lockfile migration (§4.8).
+- Done when: §4.7 rows 1, 3, 4, 5 and 11 are green, and §4.2's enumerating
+  command, with this plan also excluded (`':!dev-docs/GladeFirstSlicePlan.md'`),
+  returns nothing.
 - Depends on 2.1.
 
-### Step 2.3 — App files and the format page
+### Step 2.3 — A node that accepts both headers (landing step 0)
 
-Goal: every `.glade` file migrated and headed per R10, with the page an author
-needs written before any validation exists.
+Goal: the one node change that must come before any header moves, and the
+warning channel that validation will use.
 
-- Five app files in four repositories (`grazel/apps`, `glade/apps`,
-  `glade-gyld/tests/fixtures`, `glade-gwz/tests/fixtures`) rewritten per R2, R9
-  and R11. The format page states the meaning of `commons` and `private`, the
-  rule for choosing, the behaviour when the token is absent, whether a mount
-  overrides an authored zone (SUR-P2-1), what a changed and a deleted line do
-  (R9), a members table with a gloss per enum value (SUR-P3-1), and whether an
-  app-file glade id is authored or derived (SUR-P3-5). `GladeGrazelAttachNotes.md:49`
-  and `:98` corrected.
-- Done when: `cargo test -p grazel` boots on the shipped files (§4.7 row 8)
-  against the pre-amendment node.
-- Depends on 1.4 only; runs beside 2.1 and 2.2.
+- §4.4 step 0 and bullet 3 under R10(a): `appdecl.rs:89-95` accepts
+  `glade-app v0` and `glade-app v1`, and any other header is still refused with
+  a line number; `parse()` gains a non-fatal channel — a `Vec<String>` of
+  warnings on `AppDecl`, or an `eprintln!` in `load` — which touches
+  `glade-node.rs:88` and grazel's integration path. No token validation, and no
+  warning on `v0` yet: `v0` is warned once `v1` is the validated grammar (2.6).
+- §4.7 row 17's evidence is taken first, against today's parser: a `v1` header
+  refused with `:91`'s diagnostic. The step's tests then assert that both
+  headers load and any other is refused.
+- Done when: rows 6 and 8 are green with the fixture repositories' tests, the
+  both-headers tests pass, and row 17's evidence is recorded beside them as the
+  regression that pins this step ahead of 2.7.
+- Depends on 1.4 only.
 
-### Step 2.4 — Node validation and the binding fold
+### Step 2.4 — The format page and the app-file tokens (landing step 1)
 
-Goal: `appdecl.rs` refuses with line-numbered diagnostics that name replacements;
-`dir.bindings` gets R9's rule.
+Goal: the page an author reads exists before anything it describes is enforced,
+and the app files carry the migrated token.
 
-- Zone and retention validation under R1(31b) and R2(18b), with the
-  hard-error-or-warn sub-choice; diagnostics for `from-cursor`, `windowed` and an
-  unknown zone in the shape of `appdecl.rs:121` (SUR-P3-2); the arity diagnostic
-  at `appdecl.rs:113` updated for the sixth token (SUR-P2-4); the R9
-  fold/supersede/retract for `dir.bindings`, with the test that registers the
-  pre-amendment parse and then the post-amendment parse and asserts the intended
-  `Registered{appended, unchanged}` and the resulting `dir.bindings` (§4.7 row 9),
-  and the deleted-line test (row 10). `appdecl.rs`'s seven tests (`:292-418`)
-  stay green.
-- Done when: §4.7 rows 6, 7, 9 and 10 are green.
-- Depends on 2.1 and 2.3; lands last by the landing order.
+- The format page, `glade/docs/AppFileFormat.md`: new, and the user-facing page
+  the Surface axis has asked for in every round (the standing residual);
+  `glade/docs/` is the repository's home for "Public support contracts and
+  user-facing documentation" (`glade/README.md:23`). It carries the grammar as
+  the parser accepts it now, `workspace <share> <name>` included with the clause
+  that it makes a declared surface routable (bullet 12, SUR-P3-10); the hyphen
+  convention (bullet 13); which `.glade` dialect this is (bullet 14); token 4 —
+  `commons`, `private` with row 16's caveat, the rule for choosing, absence as an
+  arity refusal, a mount not overriding an authored zone; token 5 — `latest`,
+  `from-cursor` and `ttl`, which to write per `BINDING_SHAPES` member, `crdt`'s
+  answer and the warning against `latest` for it; and what a changed or deleted
+  line does under R9 — the fold, the scoped retraction, a file not loaded
+  retracting nothing, a deleted `service` or `workspace` line retracting nothing
+  (bullet 5, which must be written before any file is migrated).
+- `GladeGrazelAttachNotes.md`: its grammar block (`:29-36`) points to the page;
+  `:49-51` (the zone sentence, SUR-P2-1), `:56-61` (R9's rule) and `:98`
+  (bullet 8) are corrected. The eleven `dev-docs/examples/*.glade` files get a
+  banner naming their language (bullet 14).
+- The files: `term.log`'s `windowed` becomes `from-cursor` in both homes of
+  `grazel-app.glade`, with their `:21` zone sentence rewritten (SUR-P2-1). The 13
+  `from-cursor` lines stay (R9(b2)), and every header stays `v0`. The two
+  fixtures gain the grammar comment, or the page says the in-file grammar is a
+  3-of-5 property (bullet 12).
+- Not yet: the tail, and `v1` in any grammar. Each would describe a line today's
+  node refuses; they land with the parser in 2.5 and with the headers in 2.7
+  (§4.7 row 19). Until 2.5 the page says that `ttl`'s duration cannot yet be
+  written.
+- Done when: rows 6 and 8 are green with the fixture repositories' tests (an old
+  node stores the new token raw), row 18 is green in the file's spelling, and
+  row 20 is green.
+- Depends on 2.3 by the landing order; the page can be drafted from 1.4.
 
-### Step 2.5 — Consumers
+### Step 2.5 — The node's vocabulary and the binding fold (landing step 2)
 
-Goal: glial, grip-share with the demo, and gryth-ui unchanged in behaviour under
-the new types.
+Goal: `appdecl.rs` knows the v1 vocabulary and the tail, and `dir.bindings`
+gets R9's rule, with nothing validated yet.
 
-- The document's §4.5 order. `Surface extends BindingDecl` still compiles in
-  glial and the compile wall still errors on an undefined key (row 12);
-  `manifestScope` still yields `share="account:<user>"` and `key=utf8("self:<user>")`
-  (row 13); the glial `zone: "private"` test is filed as the pre-freeze item it is
-  (row 14); 60 vitest suites and `pnpm build:gyld` in gryth-ui (row 15); the
-  running demo untouched (row 16, manual). `glade/contracts/binding-api`, the one
-  crate in `glade` that depends on the rendering (its `Cargo.toml` path
-  dependency on `glade-decl-rs`), runs its `public_contract` tests (BI-001..003).
-- Done when: rows 12, 13, 15 and 16 are green and row 14 is filed.
+- §4.4 bullets 1, 4, 7, 9, 10 and 11: `crdt` and `atom` in `KNOWN_SHAPES`,
+  `crdt` in `BINDING_SHAPES`, and a reserved note for `atom`, `message` and
+  `window` (bullet 1); the keyword tail under R11(a) — `ttl=<duration>` and
+  `shape-profile=<profile>`, an unknown key refused by name with a line number,
+  the arity check a minimum and `:113`'s template showing the tail, the
+  profile's legal values and per-shape omission rule enforced at parse
+  (bullet 4), with no new `sysdata.BindingDecl` field; the recognised-but-refused
+  table and its messages — `windowed` and a file's `from_cursor`, both naming
+  `from-cursor` — which 2.6 switches on (bullet 7); `sysdata.taut.py`'s comment
+  on `app ≡ package` (bullet 9); `glade/decl/*` bannered (bullet 10); and
+  `session.rs:27`'s error text (bullet 11).
+- R9 under the recorded answers: `parse()` normalises `from-cursor` to
+  `from_cursor` on the way into `sysdata::BindingDecl` (b2); a `bindings_of()`
+  fold by `glade_id`, newest wins, beside `grants_for`; `exchange.rs:62-78` folds
+  instead of calling `any()`; a `BindingRetraction` record kind with its
+  `Record::Retract` arm; `register` diffs the parsed file against the fold per
+  `(app, glade_id)`, the scope R9(a) states; `sysdata.rs` regenerated with
+  `--legacy-codec`. The normalisation and the fold land in one commit, because
+  b2's appends are adjudicated by nothing else.
+- The published grammar and the three in-file comments gain the tail, with the
+  sentence on how an author learns it exists (bullet 12; R11(a)'s Docs cell),
+  and the format page gains `ttl`'s duration.
+- Done when: rows 6 and 8 are green with the fixture repositories' tests; row 9
+  asserts `appended` = 15 over the census, its tree-wide units named in the test
+  (SAF-P3-13); row 10's three tests pass; and row 19's tail half is green.
+- Depends on 2.4.
+
+### Step 2.6 — Validation (landing step 3)
+
+Goal: the shrinkage switched on, as warnings for one release.
+
+- §4.4 bullet 2, branch (ii) for both tokens, in the binding arm that R10(a)
+  branches by header. In a `v1` file the zone is checked against
+  `{commons, private}` and the retention against `{latest, from-cursor, ttl}`, in
+  the file's spelling, each a line-numbered warning through 2.3's channel for one
+  release and a hard error at the next, with `windowed` and a file's
+  `from_cursor` warned by 2.5's messages. A `v0` file loads as it does today,
+  warned that its header names the old language and, for each token v1
+  changes, given the replacement and the version it changed in (R10(a)'s
+  third-party cell).
+- Done when: rows 6, 7 and 8 are green with the fixture repositories' tests,
+  and every shipped file loads with no warning except the `v0` header's.
+- Depends on 2.5.
+
+### Step 2.7 — The headers (landing step 4)
+
+Goal: each file declares the validated language.
+
+- All five files to `glade-app v1`, the two `grazel-app.glade` twins in one
+  commit (§4.4 step 4); `GladeGrazelAttachNotes.md:30` and the format page's
+  grammar to `v1` (row 19's header half).
+- Done when: rows 6, 8 and 19 are green with the fixture repositories' tests,
+  and every shipped file loads with no warning.
+- Depends on 2.6.
+
+### Step 2.8 — Consumers
+
+Goal: glial, grip-core, grip-share with the demo, and gryth-ui unchanged in
+behaviour under the new types.
+
+- The document's §4.5 order. glial reads the profile by lookup under R4(b),
+  ahead of `config.crdtProfile`, which stays for back-compat; `Surface extends
+  BindingDecl` still compiles in glial and the compile wall still errors on an
+  undefined key (row 12); `manifestScope` still yields `share="account:<user>"`
+  and `key=utf8("self:<user>")` with no edit (row 13, R1(a)); 61 vitest suites
+  and `pnpm build:gyld` in gryth-ui (row 15); `glade/contracts/binding-api`, the
+  one crate in `glade` that depends on the rendering (its `Cargo.toml` path
+  dependency on `glade-decl-rs`), runs its `public_contract` tests
+  (BI-001..003). grip-core's `0.3.0` republish waits for 2.9.
+- Recorded as evidence, not gates (§4.7(c)): the glial `zone: "private"`
+  observation (row 14) and the running demo reaching its published-builds line
+  (row 16).
+- Done when: rows 12, 13 and 15 are green and rows 14 and 16 are recorded.
 - Depends on 2.2.
 
-### Step 2.6 — Acceptance review and publish
+### Step 2.9 — Acceptance review and publish
 
 Goal: the freeze.
 
-- Acceptance review on the settled tuple: the dual axes (Code, State) that an
-  interface freeze makes mandatory, plus Surface because `<app>.glade` is a file
-  format people edit (`GladeDeclReconciliation.md:1294-1312`). Strongest tier by
-  the process rule unless the owner keeps Opus. Reports filed as
-  `GladeDeclAmendment-Review<Axis>.md`. Then
-  [PackageExtractionPlan.md](PackageExtractionPlan.md) step 1.1 — "Decide and
-  record the GDL-041 catalogue question" (`:155`) — is closed by the amendment
-  itself, and step 1.2 — "Make it a real package" (`:156`) — is the publish;
-  `@owebeeone/glade-decl` and `@owebeeone/grip-core` republish per the
-  document's §5.
-- Nothing is published until every row of §4.7 is green on a settled tree (the
-  Safety residual, §4.0).
+- Acceptance review on the settled tuple, the lock after 2.7 and 2.8: the dual
+  axes (Code, State) that an interface freeze makes mandatory, plus Surface,
+  because `<app>.glade` is a file format people edit (the document's §5;
+  `AgentProcessRules.md` L1-18 and its D7 amendment). Tier per §4 item 1.
+  Reports filed as `GladeDeclAmendment-Review<Axis>.md`. The object includes the
+  three riders the reconciliation's acceptance sent to this commit: SAF-P3-13
+  (row 9's units, answered in 2.5's test), CON-P3-11 (R9's option (s), declined,
+  has no row; its closure is the Consistency reviewer's) and the Surface
+  residual, which 2.4's page answers.
+- Then [PackageExtractionPlan.md](PackageExtractionPlan.md) step 1.1 — "Decide
+  and record the GDL-041 catalogue question" (`:155`) — is closed by the
+  amendment itself, and step 1.2 — "Make it a real package" (`:156`) — is the
+  publish: `@owebeeone/glade-decl`, and `@owebeeone/grip-core` at `0.3.0`
+  (`:157`).
+- Nothing is published until every row of §4.7(a) and the nine §4.7(b) rows the
+  recorded answers make gates are green on the settled tree (the document's
+  §4.0: its publish ordering and its resolution table); §4.7(c) is evidence.
 - Done when: the publish is recorded with the tuple and the three GO files.
-- Depends on 2.1–2.5.
+- Depends on 2.1–2.8.
 
-### Step 2.7 — The discovery-side slice profile and its consumer tests
+### Step 2.10 — The discovery-side slice profile and its consumer tests
 
 Goal: the rest of build entry step 1 (`:47-51`) — the canonical records, the
 trust and namespace proof profile, the clock inputs and the local-acceptance
@@ -352,7 +516,7 @@ executable test.
   is not weakened (`GladeBuildEntry.md:50-51`).
 - Done when: the profile document exists, its tests are green in the pure loop,
   and `check-contracts.sh` passes.
-- Depends on nothing in 2.1–2.6; runs beside them from the start of the phase.
+- Depends on nothing in 2.1–2.9; runs beside them from the start of the phase.
 
 Phase 2 exit: a published contract at a recorded tuple; a slice profile with
 green consumer tests.
@@ -461,7 +625,7 @@ deterministic providers, contract-faithful.
   acknowledgement; (ii) renewal, expiry, wrong scope, unknown or denied
   authority, partial lookup. The fake clock drives renewal and expiry
   (`claims.rs` leases); the fake carrier injects loss and duplicate delivery; the
-  denied-authority journey is the first consumer of `GrantPort` and, once 2.4
+  denied-authority journey is the first consumer of `GrantPort` and, once 2.5
   lands, of the R9 fold. AR-05 is the criterion: publish, renew and expiry with a
   fixed authorized locator, a foreign namespace or referral rejected
   (`RuntimeAndAssurance.md:123`).
@@ -493,7 +657,7 @@ Goal: one script no step of Phases 3–4 can pass without.
 
 Phase 3 exit: assembly, lifecycle, eight journeys and the gate, all deterministic.
 This phase depends on Phases 1–2 in one place only: 3.4's denied-authority journey
-reads the R9 fold, and that one test waits for 2.4.
+reads the R9 fold, and that one test waits for 2.5.
 
 ## Phase 4 — Real adapters, then the route (build entry step 3)
 
@@ -512,7 +676,7 @@ under the node chain.
   over the domain-separated digest (`peer.rs:76-81`) with the claimed node's key;
   `verify_origin_sig` (`peer.rs:143-145`) real; `sysdir.rs:263` real. `NodeId`
   stays `sha256(key)` unless the owner rules otherwise (§4); this plan does not
-  change identity derivation. The proof profile from 2.7 names the encoding, so
+  change identity derivation. The proof profile from 2.10 names the encoding, so
   an incompatibility with the discovery `Signer`/`Verifier` types is an explicit
   blocker to this adapter, not a fixture.
 - Key custody: `node.key` at 0600 stays; recovery material is minted at first
@@ -645,15 +809,16 @@ Goal: the build entry's acceptance sentence, verbatim, as one script.
 
 Foundational first: Phase 1 (a document and the owner's word) and Steps 3.1 and
 3.5 (ports and the gate) can start today, in parallel, by different agents.
-Phase 2's 2.1–2.6 wait on 1.4; 2.3 and 2.7 run beside 2.1 and 2.2. Phase 3's
+Phase 2 has two lanes after 1.4 — the contract (2.1 → 2.2 → 2.8) and the node
+with its app files (2.3 → 2.4 → 2.5 → 2.6 → 2.7, the document's landing order) —
+which meet at 2.9; 2.10 runs beside both from the start. Phase 3's
 3.2–3.4 are one lane in sequence. Phase 4's 4.1→4.2, 4.3 (independent of 4.2
 with a stated key), 4.4 (after 3.4), 4.5 (after 4.2), 4.6 last.
 
 ```
-1.1 → 1.2 → 1.3 → 1.4 → 2.1 → 2.2 → 2.5 → 2.6
-                         2.3 ─┘  ↑
-                         2.4 (after 2.1 and 2.3)
-                    2.7 ─────────────────────────→ (feeds 3.4, 4.6)
+1.1 → 1.2 → 1.3 → 1.4 → 2.1 → 2.2 ──────────────→ 2.8 → 2.9
+                     └→ 2.3 → 2.4 → 2.5 → 2.6 → 2.7 ─────┘
+                    2.10 ────────────────────────────────→ (feeds 3.4, 4.6)
 3.1 → 3.2 → 3.3 → 3.4 → 4.4
  └→ 3.5              4.1 → 4.2 → 4.5 → 4.6
                      4.3 ───────────┘
@@ -662,7 +827,7 @@ with a stated key), 4.4 (after 3.4), 4.5 (after 4.2), 4.6 last.
 
 Each step is one agent on Opus with one brief that names the files it may touch,
 the gate it must run, the commit-message shape and no push; the lane owner
-verifies before the next step, as in the witness. Reviews happen at 1.2, 2.6 and
+verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 5.1 only; interior steps are gated by their tests and the gate.
 
 ## 3. What this plan does not do
@@ -682,7 +847,7 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.6 and
 
 ## 4. Open decisions for the owner
 
-1. Reviewer tier for 1.2, 2.6 and 5.1: Opus by the quota instruction, or the
+1. Reviewer tier for 1.2, 2.9 and 5.1: Opus by the quota instruction, or the
    strongest tier the process rule asks for at a freeze.
 2. R1–R11 (Step 1.4) — ruled 2026-09-23, recorded in
    `glade/GladeDeclReconciliation.md` §3.
