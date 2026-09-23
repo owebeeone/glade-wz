@@ -324,7 +324,8 @@ commit, in lockstep with it.
   change, not a lockfile migration (§4.8).
 - Done when: §4.7 rows 1, 3, 4, 5 and 11 are green, and §4.2's enumerating
   command, with this plan also excluded (`':!dev-docs/GladeFirstSlicePlan.md'`),
-  returns only `--compat`'s source in `corpus/build.py`.
+  returns only `--compat`'s source in `corpus/build.py` and the historical note
+  in `GladeHandoff-260710.md:163`.
 - Depends on 2.1.
 
 ### Step 2.3 — A node that accepts both headers (landing step 0)
