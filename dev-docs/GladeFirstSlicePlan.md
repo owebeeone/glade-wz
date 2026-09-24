@@ -741,6 +741,8 @@ under the node chain.
   at ingest; the signature-api conformance suite passes on the adapter.
 - Depends on 3.1 (`SignerPort`).
 
+- **Decision note, 2026-09-24,** glade `18b8524`: `glade/dev-docs/GladeNodeSigning.md` sets out D1–D11, each with a recommendation and an open ruling line: Ed25519 through `ed25519-dalek =3.0.0` (stable, already cached, no new crate); NodeId becomes the node key's public key, so every id changes once; a signed envelope inside `home` records, with no wire change; HELLO bound to the connection's TLS session, ALPN `glade/node/2`; unsigned directory records set aside once at 4.1b's first boot; 4.1 split into 4.1a (key, identity, HELLO), 4.1b (directory records signed, after 4.4) and 4.1c (custody). Its findings: the iroh endpoint key is new on every start, and 4.2 needs a stable one; any websocket client could write `home` (closed by 4.3's part 1), and the handshake checks no `Origin`; `prev` is not required after seq 0 (B5 requires it); boot verification grows with renewals, about 8,640 records a day per served share.
+
 ### Step 4.2 — The binding record and the door
 
 Goal: `transport_key_binding` built — a node's iroh key bound to its Glade
@@ -797,6 +799,8 @@ Goal: `metadata_exposure` built.
   declares a share named after an app; grazel-app's `seed owner grazel …` is corrected with
   the revocation route.
 - **RULED (Gianni 2026-09-23), from 3.1:** a node's own grant is an ordinary grant record
+
+- **Stopped at its tripwires, 2026-09-24,** glade `d838bd0` (a design note, no code): no route revokes a seeded grant; verbs and principals are undecided; and enforcing would refuse every client flow outside `home`, since the desk presents a principal per tab, the suites none and the suppliers `grazel`, while every seed grants `owner`. Eight owner questions, each with a recommendation, are in `glade/dev-docs/GladeNodeAssembly.md`, "Grant check at the serve hop (plan Step 4.3)". **Part 1, 2026-09-24,** glade `e0100dc`: a client's op on `home` is refused (`Unauthorized`) and never stored (ruling H-R3); no shipped client writes `home`; peers can until 4.1b. Gate 8/8, 207 tests on both paths; the grazel, glade-gwz and glade-gyld suites at baseline.
   whose principal is the node id (a node does not inherit its operator's grants). No new
   record kind; `GrantPort::check` stays one path over one fold.
 
