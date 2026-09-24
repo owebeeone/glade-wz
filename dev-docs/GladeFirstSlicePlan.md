@@ -708,9 +708,16 @@ two nodes on different networks completing a home sync round through n0's
 relays. Every adapter runs its contract's conformance suite (LBT-009). These
 tests stay out of the pure loop (`:60`).
 
-- **Owner, 2026-09-24: "start phase 4 when 3.4 lands."** The steps run one at a time in
-  this plan's order, from 4.1: they share the glade-node checkout and its gate, so
-  parallel agents would see each other's unfinished edits.
+- **Owner, 2026-09-24: "start phase 4 when 3.4 lands."** The steps run one at a time:
+  they share the glade-node checkout and its gate, so parallel agents would see each
+  other's unfinished edits. 4.4 goes first, because 4.1 cannot start until the owner rules
+  on what the slice profile leaves open (`glade/GladeFirstSliceProfile.md` SP-P3, SP-P4,
+  §8 items 5 and 6). Among those: a verifier cannot get a node's public key from today's
+  `sha256(node.key)` id; the wire `Op` has no field 11 for a signature, and adding one
+  changes the wire IR, which §3 excludes; and clients send fully formed ops under their own
+  origins (`server.rs:262-282`), so the node key alone cannot sign every op. While 4.4 runs,
+  a read-only design note for 4.1 sets out those choices, each with a recommendation, for
+  the owner to rule on.
 
 ### Step 4.1 — Genuine signing and the key
 
