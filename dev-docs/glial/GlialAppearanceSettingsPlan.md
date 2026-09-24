@@ -326,6 +326,13 @@ none exists. Question 8.
    add `desktop.appearance`, a line in both copies of `grazel-app.glade`, and one call in
    its composition.
 
+**Ruled, owner, 2026-09-25 ("all recommended"):** 1 the surface lives on `ws-razel`; 2 the principal defaults to
+`owner`; 3 it reaches the page through grazel's `/bootstrap.json`, with `?principal=` as the override; 4 on gyld-ui
+desks the 2026-07-11 ruling's "each tab is a participant" half is superseded and its "each tab has its own origin"
+half stands; 5 one value holds all five appearance settings, the last writer winning; 6 the migration subscribes
+twice until client-writes 3.4 lands; 7 Phase 3 goes ahead now; 8 the node keeps each user's private zone to that
+user; 9 the full desktop is wired later. Who lands the gryth-wz steps is still open.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
