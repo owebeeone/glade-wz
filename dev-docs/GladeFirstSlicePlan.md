@@ -776,6 +776,7 @@ identity by a record, checked at HELLO and at accept.
 - **4.2b done, 2026-09-25,** glade `004a7d1`: the door, as ruled. A booted node refuses at accept, in iroh's `after_handshake`, every endpoint key that no binding record it holds names and no `--peer` entry configures; HELLO, both ways, refuses a node not bound to its connection's key, save a configured key on first contact; a revocation that lands closes the revoking node's live link on that key. `--peer <endpoint-id>` configures a key and dials nothing, and a one-sided `--peer` no longer links. The refusing node prints `peer refused: endpoint <id>: <reason>`; the dialer learns no reason. `CarrierLink::remote_id`, with conformance probe CA-005, and the contracts' policy requires it (for the owner's review). Gate 8/8, 256 tests on both paths; the six downstream suites at baseline, grazel now 29 + 3. The desk sees nothing new at its next restart: grazel passes no `--peer`. **Open for the owner:** a first-contact link that a later record contradicts stays up until it closes, and the next connection is refused (recommend: leave it for the slice); a node must start once before its peer can name its endpoint id (recommend: 4.5's configuration prints it without serving).
 - **Owner, 2026-09-25 ("all recommended"), on 4.2b:** `remote_id` in the contracts' policy is accepted; a first-contact link that a later record contradicts is left for the slice (it stays up until it closes, and the next connection is refused); 4.5's configuration prints a node's endpoint id without serving.
 - **4.2c done, 2026-09-25,** glade `cc3f158`: `IrohCarrier`, the iroh `CarrierPort` adapter, in place of `PendingIrohAdapter` as the peer role's provider. Each link is a QUIC connection on the adapter's own ALPN, `glade/carrier/1`, opened by the word `gcl1`; `remote_id` is the id the TLS session proved; closing the port ends every tracked link and frees its UDP port. It passes CA-001..005 on real iroh over loopback. Neither root lends it a key yet, so it refuses to bind: the mesh stays on `PeerEndpoint`, and the desk sees nothing new. Gate 8/8, 265 tests on both paths, rustfmt's baseline down to 317; the six downstream suites at baseline. **Open for the owner:** when the mesh moves onto the port (recommend a step of its own after 4.5: it needs HELLO's exporter bytes through the port, the door on the adapter's endpoint, the sync driver on link frames, and 4.5's bind address and relay); keep the adapter's own ALPN and first word (recommend yes); bound the wait for the first word when the adapter first faces other machines (recommend yes, at the mesh's move or 4.5). Named gap outside the gate: the async witness's `Cargo.lock` lacks glade-node's `ed25519-dalek` and `getrandom` entries since 4.1a, so `--locked` refuses it.
+- **Owner, 2026-09-25 ("all recommended"), on 4.2c:** the mesh moves onto the carrier port in a step of its own after 4.5, Step 4.5b; the adapter keeps its own ALPN, `glade/carrier/1`, and its first word, `gcl1`; the wait for the first word gets a bound when the adapter first faces other machines, which is 4.5b.
 
 ### Step 4.3 — The grant check at the serve hop
 
@@ -866,6 +867,22 @@ Goal: `relay_posture` built and measured.
 - **4.2b on both machines, 2026-09-25** (glade `63a5799`, pulled from GitHub): the node suite runs in 38 s on dabeest and in 133 s on the Pi. On both, every suite passes, 4.2b's door tests among them (`assembled_path` 7, `lifecycle` 4, and the mesh's over real iroh in the library), except `binding_census` and `shipped_app_files`, which need the sibling repos. `stop_signal` has no tests on Windows; the Pi passes its 4.
 - **Owner, 2026-09-24:** hold off on firewall and NAT traversal checks. Hole punching is iroh's function, not glade's, and nodes that find each other have most likely punched through anyway. 4.5 runs on the two named machines on the owner's LAN, with n0's relays configured; the path iroh picks is noted, not measured. The full end-to-end check across two different networks comes later, outside Phase 4.
 
+### Step 4.5b — The mesh on the carrier port
+
+Goal: the node's peer mesh runs on `IrohCarrier`, 4.2c's `CarrierPort` adapter, in place of
+`PeerEndpoint`. Ruled a step of its own after 4.5 (owner, 2026-09-25); placed before 4.6 so that 4.6's
+journeys run over the carrier the node keeps.
+
+- What it needs (`glade/dev-docs/GladeNodeAssembly.md`, 4.2c's question 1): HELLO's exporter
+  bytes (D6) through the port, or a session-level replacement for them; the door's hook on the
+  adapter's endpoint; the sync driver on a link's frames; 4.5's bind address and relay mode; both
+  roots lending the adapter the node's endpoint key.
+- A bound on the acceptor's wait for the first word, `gcl1` (ruled with 4.2c); the adapter keeps
+  its ALPN, `glade/carrier/1`.
+- Design first, in `GladeNodeAssembly.md`, with any owner questions, as for 4.2.
+- Done when: the mesh's tests, the door's and 4.5's crossing pass with the mesh on the port.
+- Depends on 4.2c and 4.5.
+
 ### Step 4.6 — The fixed-peer route end to end
 
 Goal: the build entry's acceptance sentence, verbatim, as one script.
@@ -941,7 +958,7 @@ the gate it must run, the commit-message shape and no push; the lane owner
 verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 5.1 only; interior steps are gated by their tests and the gate.
 
-**Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout): hardening (landed, `1501a67`), 4.1a, the client-writes plan's Phase 2 (the node's answers, ruled to precede 4.3's websocket enforcement), 4.2 with a stable endpoint key first, the client plan's Phase 3 (both clients), 4.3's enforcement, 4.1b, the pull-on-gap step, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, and 4.6. Beside them: the client plan's 1.1 at once (a document), glade-gwz's run ids right after 4.1a, and the client plan's Phase 4 in the supplier repositories once its client steps land. The cross-node writes plan (ruled 2026-09-24) writes its rules (X1.1) now, and its node steps follow 4.6.
+**Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout, save the client plan's Phase 3, whose client-rs and client-ts lanes run side by side from 2026-09-25: their directories and gates are disjoint): hardening (landed, `1501a67`), 4.1a, the client-writes plan's Phase 2 (the node's answers, ruled to precede 4.3's websocket enforcement), 4.2 with a stable endpoint key first, the client plan's Phase 3 (both clients), 4.3's enforcement, 4.1b, the pull-on-gap step, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, 4.5b (the mesh onto the carrier port, ruled 2026-09-25), and 4.6. Beside them: the client plan's 1.1 at once (a document), glade-gwz's run ids right after 4.1a, and the client plan's Phase 4 in the supplier repositories once its client steps land. The cross-node writes plan (ruled 2026-09-24) writes its rules (X1.1) now, and its node steps follow 4.6.
 
 ## 3. What this plan does not do
 
