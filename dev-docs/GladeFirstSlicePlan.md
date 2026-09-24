@@ -742,6 +742,7 @@ under the node chain.
 - Depends on 3.1 (`SignerPort`).
 
 - **Decision note, 2026-09-24,** glade `18b8524`: `glade/dev-docs/GladeNodeSigning.md` sets out D1–D11, each with a recommendation and an open ruling line: Ed25519 through `ed25519-dalek =3.0.0` (stable, already cached, no new crate); NodeId becomes the node key's public key, so every id changes once; a signed envelope inside `home` records, with no wire change; HELLO bound to the connection's TLS session, ALPN `glade/node/2`; unsigned directory records set aside once at 4.1b's first boot; 4.1 split into 4.1a (key, identity, HELLO), 4.1b (directory records signed, after 4.4) and 4.1c (custody). Its findings: the iroh endpoint key is new on every start, and 4.2 needs a stable one; any websocket client could write `home` (closed by 4.3's part 1), and the handshake checks no `Origin`; `prev` is not required after seq 0 (B5 requires it); boot verification grows with renewals, about 8,640 records a day per served share.
+- **Owner, 2026-09-24 ("all recommended"):** D1–D11 as the note recommends. 4.1 becomes 4.1a (the key, the identity and HELLO), 4.1b (`home` records signed, after 4.4) and 4.1c (custody and the local overlay's check). The id becomes the node key's Ed25519 public key (§4 item 4). `ed25519-dalek =3.0.0` joins the node policy with 4.1a, reported for the owner's review as shaku and sdax were.
 
 ### Step 4.2 — The binding record and the door
 
@@ -767,6 +768,7 @@ identity by a record, checked at HELLO and at accept.
 - Done when: an unknown endpoint key cannot complete HELLO; a bound one can; a
   revoked binding is refused once the fold has seen the revocation.
 - Depends on 4.1.
+- **From the 2026-09-24 rulings:** a stable iroh endpoint key comes first (the signing note's F1): `bind_endpoint` mints a new one on every start, and the binding record, 4.5's `--peer` targets and the relay crossing all need it to last. It depends on 4.1a, not all of 4.1.
 
 ### Step 4.3 — The grant check at the serve hop
 
@@ -803,6 +805,7 @@ Goal: `metadata_exposure` built.
   record kind; `GrantPort::check` stays one path over one fold.
 
 - **Stopped at its tripwires, 2026-09-24,** glade `d838bd0` (a design note, no code): no route revokes a seeded grant; verbs and principals are undecided; and enforcing would refuse every client flow outside `home`, since the desk presents a principal per tab, the suites none and the suppliers `grazel`, while every seed grants `owner`. Eight owner questions, each with a recommendation, are in `glade/dev-docs/GladeNodeAssembly.md`, "Grant check at the serve hop (plan Step 4.3)". **Part 1, 2026-09-24,** glade `e0100dc`: a client's op on `home` is refused (`Unauthorized`) and never stored (ruling H-R3); no shipped client writes `home`; peers can until 4.1b. Gate 8/8, 207 tests on both paths; the grazel, glade-gwz and glade-gyld suites at baseline.
+- **Owner, 2026-09-24 ("all recommended"):** revocation by an app-file line `revoke <principal> <share>`; a read asks `read.subscribe`, an exchange its own glade id, and a stored `p.*` admits every verb that begins `p.` (a sentence and a pattern probe in `grant-api`); a principal of 64 hex digits names a node and no session may claim one, a session with no principal holds nothing, and `owner` is the owner; the peer paths are enforced by default and the websocket path behind a switch that is off by default, until the `Origin` check lands and the desk presents a granted principal; a refusal is an empty `Heads` and then `Error{Unauthorized}`; the `Origin` check accepts no `Origin` or a loopback one and refuses the rest; 4.3 goes before 4.1b.
 
 ### Step 4.4 — Durable-local acceptance and restart
 
@@ -822,6 +825,7 @@ and retry honest.
 - Depends on 3.4.
 
 - **Done, 2026-09-24,** glade `f5d055f`. Durable-local acceptance (SP-L1): the node's own directory writes go through `Registry::accept`, which saves a staged copy to records.json, file and directory synced, before it becomes the fold, so nothing unsaved is read, published or pushed. `claims.rs`'s serve, renewal and principal mints and the assembly's record host all use it, and a failed save leaves nothing behind for its retry. The served store writes each record in one write and cuts a torn tail at open; before, the next append made such a log unreadable. **Owner, 2026-09-24:** a byte-identical re-delivery is a duplicate, taken as held (`Ingested::Duplicate`), where it was `Equivocation`, and boot no longer quarantines the rest of a chain that holds a repeat. `restart_mid_round` and `retry_after_a_failed_save` join the journeys; `tests/durable` runs all ten over records.json in temp directories, with three adapter tests, outside the fast loop (15 tests, 0.4 s). Fast loop: 37 tests, 0.14-0.15 s warm. Gate 8/8, 205 tests on both paths, the fmt baseline down to 337; the grazel, glade-gwz and glade-gyld suites pass against the rebuilt binary. Default-path changes (the design note lists five): records.json saves are synced, 3-10 ms each, one per renewal tick among others; a mint whose save fails is neither kept nor published; a torn log tail is repaired. Production code grows 147 lines net; tests add about 800 (150 moved). The design is `glade/dev-docs/GladeNodeAssembly.md`, "Durable store and restart (plan Step 4.4)". **Not done, for the owner:** PS-001..008 on the real store needs `glade-persistence-api` as a dependency and a revision stored with the bytes (recommended: an optional revision field in `SystemSnapshot`, as its own step); the operation-store suite is blocked by SP-P3 (a), (b); the served store as record host is its own piece of work, about 400-650 lines, deferred by the lane owner. **Named gaps:** a crash leaves `instance.lock` behind and boot then refuses; `claims.rs` publishes after releasing its lock, so two mints on one chain can reach the served store out of order and stall that chain there until the next boot (this predates the step); there is no outbox, so a lost push waits for the next pull; off Unix the rename is not synced. The witness period's two findings are on the WebSocket client path (an accepted append gets no answer and a refusal no correlation id; `subscribe()` drops the heads ack); they affect no journey and are recorded, not fixed.
+- **Owner, 2026-09-24 ("all recommended"):** PS-001..008 run on records.json with an optional revision field in `SystemSnapshot` (today's files read as revision 1), as a step of its own; `instance.lock` becomes an OS lock (`File::try_lock`); `claims.rs` publishes under its lock, with a test that forces the race; a lost push waits for the next pull; the client libraries' two gaps (no answer to an append, the heads ack dropped) get a plan of their own.
 
 ### Step 4.5 — Relay configuration and the first crossing
 
@@ -877,6 +881,7 @@ Goal: the build entry's acceptance sentence, verbatim, as one script.
   a settled tuple: Code and State (durable state and wire behaviour are both
   touched), plus Surface if 4.5's configuration file is a format people edit.
   Reports filed as `GladeFirstSlice-Review<Axis>.md`.
+- Gaps added 2026-09-24 by the signing note: app ops stay unsigned; no account-root certification of the node key; boot verification grows with lease renewals (AZ-12's checkpoints are the remedy); bare `#[cfg]` attributes on four functions in `sysdir.rs` await migration.
 - Done when: GO on every axis is filed.
 
 ### Step 5.2 — Record the trigger
@@ -918,6 +923,8 @@ the gate it must run, the commit-message shape and no push; the lane owner
 verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 5.1 only; interior steps are gated by their tests and the gate.
 
+**Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout): hardening (the `Origin` check, the OS instance lock, publishing under the lock), then 4.1a, 4.2 with a stable endpoint key first, 4.3's enforcement, 4.1b, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, and 4.6. The client libraries' plan is written beside them.
+
 ## 3. What this plan does not do
 
 - It does not change the wire IR, the demo, or the composition path the demo
@@ -940,8 +947,10 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 2. R1–R11 (Step 1.4) — ruled 2026-09-23, recorded in
    `glade/GladeDeclReconciliation.md` §3.
 3. The two machines for 4.5's crossing (dabeest and which other), and whether
-   the owner's own machine may be one of them.
-4. Whether `NodeId = sha256(key)` stays through the slice (4.1 keeps it).
+   the owner's own machine may be one of them. Ruled 2026-09-24: a Raspberry Pi on the owner's
+   LAN, which the code reaches through GitHub, and dabeest (Windows 11; its ssh shell is MinGW bash).
+4. Whether `NodeId = sha256(key)` stays through the slice (4.1 keeps it). Ruled 2026-09-24: it becomes the
+   node key's Ed25519 public key (`glade/dev-docs/GladeNodeSigning.md` D2); every id changes once.
 5. Whether the assembled composition root is a second binary or a path in
    `glade-node` (3.2; either satisfies "alongside the demo"). Ruled 2026-09-24:
    a path in `glade-node`, off by default (Step 3.2).

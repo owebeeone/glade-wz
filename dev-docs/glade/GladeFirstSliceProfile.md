@@ -380,3 +380,11 @@ passes on MSRV 1.85.0. These are observations, not budgets.
     `Transport` the carrier implements (§6 row 1).
 12. The namespace-authority proof schema, and the single namespace itself, which is the build
     entry's slice definition, not a ruling (SP-N1).
+
+**Decided 2026-09-24** (owner, "all recommended", on `glade/dev-docs/GladeNodeSigning.md`), for the node's side:
+item 5: a `home` record's signature rides in a signed envelope inside its payload, with no wire change, and HELLO
+signs a transcript bound to the connection's TLS session (SP-P3 (d)); item 6: Ed25519 through `ed25519-dalek =3.0.0`,
+the node key's public key as the node id, `node.key` as the signing key, and the tags `glade/v1/peer-hello`,
+`glade/v1/origin-op` and `glade/v1/local-overlay`, which discovery's side uses too (SP-P4); item 7: an op whose
+signer is unknown is withheld, retried next round and reported as deferred (SP-P5). SP-P3 (a) still blocks
+app-op signatures and `SignedOp` interop.
