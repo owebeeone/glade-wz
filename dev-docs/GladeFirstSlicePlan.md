@@ -933,6 +933,7 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 
 ## 3. What this plan does not do
 
+- It does not carry a client's write to a share another node serves: today the write stays on the node the client reached, since the forward only reads and a node pushes only its own `home` records. The owner added cross-node writes as a planned item on 2026-09-24; its plan is `glade/dev-docs/GladeCrossNodeWritesPlan.md`, and the end-to-end app that gates any publish will likely need it.
 - It does not change the wire IR, the demo, or the composition path the demo
   runs on; retiring the hand-written path is a later decision.
 - It does not build address lookup, gossip, bulk transfer, the policy zone split
