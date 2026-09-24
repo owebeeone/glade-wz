@@ -457,6 +457,13 @@ the surface is declared.
 - **Gate:** grazel. **Done when:** the gate is green.
 - **Size:** ~10 lines. **Depends on:** nothing. It shares its repository with 1.1: one
   agent at a time, or a worktree.
+- **Correction, 2026-09-25:** this step touches the glade checkout too. The node's
+  census test counts `gyld-app.glade`'s binding lines (`glade/node/tests/binding_census.rs`:
+  gyld's 7 bindings, 14 live over grazel's two files, and the registration counts built on
+  them), so the new line moves those counts by one. The step updates that test in the
+  same change, runs the node gate as well as grazel's, and lands after the node lane's
+  step in flight (4.2b) leaves the glade checkout: a glade commit and a grazel commit,
+  locked together at the root.
 
 ### Phase 2 — Appearance follows the user
 
@@ -645,8 +652,9 @@ private under grants.
 - **At once:** 1.1 in grazel; 1.2, 1.3, 2.1 and 2.2 in gryth-ui, which share no file, so
   agents in their own worktrees can take them together; 1.4 after 1.1. The critical path
   is 1.3, 2.3, 2.4.
-- **No step before 4.3 touches the glade checkout,** so none contends with the node lane.
-  Phases 1 to 3 wait on no other plan.
+- **Only 1.4 touches the glade checkout before 4.3,** to move the node's census counts
+  (corrected 2026-09-25). It takes its turn after the node lane's step in flight; no
+  other step contends with the node lane. Phases 1 to 3 depend on no other plan.
 - **Phase 4 waits** on CW 3.3 and on slice 4.3's switch. X3 carries the zone across nodes
   with no step here.
 
