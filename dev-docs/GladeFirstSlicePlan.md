@@ -847,6 +847,7 @@ Goal: `relay_posture` built and measured.
   what n0 could see (endpoint ids, IP addresses, timing, volume; nothing else).
 - Depends on 4.2 — or, if run before it, on a private endpoint id and a note
   that says so.
+- **First run on dabeest, 2026-09-24** (glade `39b8b25`, pulled from GitHub; Rust 1.98.1, MSVC): the node builds in 54 s. `sysdir.rs`'s `random_key` reads `/dev/urandom`, so no node can make its key on Windows: 15 unit tests, `assembled_path` and, by all signs, `lifecycle` fail on it. `binding_census` and `shipped_app_files` read the sibling repos' app files, which dabeest has not got. Every other suite passes, the journeys and the durable target among them. 4.1a makes key generation portable. Both machines are on the owner's LAN, so a two-network crossing needs one of them elsewhere, a phone hotspot say; 4.5 records which path is taken either way.
 
 ### Step 4.6 — The fixed-peer route end to end
 
