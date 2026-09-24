@@ -464,6 +464,12 @@ the surface is declared.
   same change, runs the node gate as well as grazel's, and lands after the node lane's
   step in flight (4.2b) leaves the glade checkout: a glade commit and a grazel commit,
   locked together at the root.
+- **Done, 2026-09-25,** grazel `c9f9c7f` and glade `63a5799`: `binding gyld.appearance value
+  share private latest` beside the Gyld surfaces, with the comment on `self:<principal>`.
+  Seen red first: with the shape misspelt `valeu`, the node refused line 59 and grazel's
+  composition test failed; with the old counts, all five census tests failed. grazel
+  29 + 3; node gate 8/8, 256 tests on both paths. The desk's node registers the line
+  at its next restart.
 
 ### Phase 2 — Appearance follows the user
 
