@@ -1,0 +1,10 @@
+# macOS only: every link goes through tools/macos-link-sign.sh, which signs the
+# linked binary with codesign (ad-hoc unless GLADE_CODESIGN_IDENTITY names an
+# identity), so the firewall can keep its decision about binaries that listen
+# or connect. Applies to cargo run from anywhere under this workspace; the path
+# is relative to the workspace root.
+[target.aarch64-apple-darwin]
+linker = "tools/macos-link-sign.sh"
+
+[target.x86_64-apple-darwin]
+linker = "tools/macos-link-sign.sh"
