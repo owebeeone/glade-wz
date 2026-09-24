@@ -931,7 +931,7 @@ the gate it must run, the commit-message shape and no push; the lane owner
 verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 5.1 only; interior steps are gated by their tests and the gate.
 
-**Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout): hardening (landed, `1501a67`), 4.1a, the client-writes plan's Phase 2 (the node's answers, ruled to precede 4.3's websocket enforcement), 4.2 with a stable endpoint key first, the client plan's Phase 3 (both clients), 4.3's enforcement, 4.1b, the pull-on-gap step, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, and 4.6. Beside them: the client plan's 1.1 at once (a document), glade-gwz's run ids right after 4.1a, and the client plan's Phase 4 in the supplier repositories once its client steps land.
+**Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout): hardening (landed, `1501a67`), 4.1a, the client-writes plan's Phase 2 (the node's answers, ruled to precede 4.3's websocket enforcement), 4.2 with a stable endpoint key first, the client plan's Phase 3 (both clients), 4.3's enforcement, 4.1b, the pull-on-gap step, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, and 4.6. Beside them: the client plan's 1.1 at once (a document), glade-gwz's run ids right after 4.1a, and the client plan's Phase 4 in the supplier repositories once its client steps land. The cross-node writes plan (ruled 2026-09-24) writes its rules (X1.1) now, and its node steps follow 4.6.
 
 ## 3. What this plan does not do
 
