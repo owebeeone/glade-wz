@@ -509,6 +509,7 @@ Goal: the freeze.
 - **Owner, 2026-09-24 ("all recommended"):** package now, as local commits (PackageExtractionPlan 1.2 and 1.3); `@owebeeone/glade-decl` publishes first as `0.1.0`; glade-decl-ts moves from `package-lock.json` to `pnpm-lock.yaml` in 1.2 (grip-core's two lockfiles are left as they are); the owner publishes by pushing and cutting GitHub releases, and the publish workflows copied from `taut-shape-ts` publish with the repo-secret token. No agent pushes or publishes. The round-2 P3s are fixed now, in a small glade follow-up.
 - **Round-2 P3s fixed, 2026-09-24,** glade `d922f8a`, grazel `e343b06`. SUR-P3-9 = STA-P3-4: the page says retiring an app withdraws its `binding` declarations only, and the retirement test now holds that a `service` record stays. SUR-P3-10: a `--app` path the node cannot read is refused naming the path. SUR-P3-11: a refused start prints its message, `<file>: line N: …`, not a Debug dump, and exits 1 (`node/tests/start_refusals.rs`, both tests red on the old code). COD-P3-7: `flip_decided` fails a flip made at or before the warnings' release. The page also states the seed ruling (a seed names the workspace share), and both `grazel-app.glade` copies carry a comment that their `seed owner grazel` lines are corrected at Step 4.3.
 - **Packaged, 2026-09-24, local and unpublished:** glade-decl-ts `a393ecb` (`@owebeeone/glade-decl` 0.1.0) and grip-core `9889655` (0.3.0), PackageExtractionPlan 1.2 and 1.3; their notes are under that plan's Phase 1 table. What remains is the owner's: add an `NPM_TOKEN` repository secret to both repos (a new package cannot publish first through npm trusted publishing), push both, cut the glade-decl-ts release `v0.1.0` and let its workflow finish, then cut the grip-core release `v0.3.0` (its workflow installs glade-decl `^0.1.0` from npm).
+- **Owner, 2026-09-24: "no publish until we have built a full end-to-end app using grip/glial/glade."** The two packages stay local commits, and the secrets, pushes and releases above wait for that app, so this step stays open. Nothing in Phases 3–5 waits on the publish. Until it happens, a fresh (non-frozen) install in grip-react, glial or ggg-viz cannot resolve `@owebeeone/glade-decl` `^0.1.0`, which only grip-core's own `pnpm.overrides` maps to the checkout; frozen installs are unaffected.
 
 ### Step 2.10 — The discovery-side slice profile and its consumer tests
 
@@ -706,6 +707,10 @@ fault evidence a fixture cannot supply (`GladeBuildEntry.md:57-60`); ends with
 two nodes on different networks completing a home sync round through n0's
 relays. Every adapter runs its contract's conformance suite (LBT-009). These
 tests stay out of the pure loop (`:60`).
+
+- **Owner, 2026-09-24: "start phase 4 when 3.4 lands."** The steps run one at a time in
+  this plan's order, from 4.1: they share the glade-node checkout and its gate, so
+  parallel agents would see each other's unfinished edits.
 
 ### Step 4.1 — Genuine signing and the key
 
