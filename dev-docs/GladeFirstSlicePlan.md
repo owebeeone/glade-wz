@@ -624,6 +624,7 @@ resolves from a module.
   `get_service<T>()`, string bag or constructor fallback to real I/O exists
   (`RuntimeAndAssurance.md:73-76`).
 - Depends on 3.1.
+- **Owner, 2026-09-24 (§4 item 5):** the assembled composition root is a path in `glade-node`, switched by the environment variable `GLADE_NODE_ASSEMBLED=1` and off by default, so the demo and grazel keep the hand-written path; the existing node tests run once each way, unchanged.
 
 ### Step 3.3 — Lifecycle
 
@@ -917,7 +918,8 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
    the owner's own machine may be one of them.
 4. Whether `NodeId = sha256(key)` stays through the slice (4.1 keeps it).
 5. Whether the assembled composition root is a second binary or a path in
-   `glade-node` (3.2; either satisfies "alongside the demo").
+   `glade-node` (3.2; either satisfies "alongside the demo"). Ruled 2026-09-24:
+   a path in `glade-node`, off by default (Step 3.2).
 
 ## Appendix — where the facts came from
 
