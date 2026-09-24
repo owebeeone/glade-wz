@@ -34,7 +34,7 @@ specifics) → Ratified (GDL flipped, frozen-unless-thawed) → Built (code, gat
 | Dynamic grip-context sharing (headless AI) | Deferred by design | GDL-037 note; GDL-004/030 | after E2E |
 | grazel + gryth suppliers (GLP-0006) | **ACTIVE — P3.S1 vertical slice Built 2026-08-29** (exact SWMR node/clients/Glial adapter, `ws.files` migration, live generation-safe demo) | `plan-docs/plans/GLP-0006-grazel-gryth-suppliers/` + `glade/dev-docs/GladeSwmrAdapter.md` | finish P3.S1 path/viewport/backfill, then blob strategy + glade-files; P2 enforcement remains gated on WD-1/AZ-1/2/3 |
 | glade-dev repo extraction | **Decided: YES** (2026-07-07) | glial-runtime home = new repo `glial-runtime`, member path `glial` (old `owebeeone/glial` = glial-dev's remote, untouched) | create member + seed |
-| Cross-node writes (a client's write to a share another node serves reaches that node) | **Planned** (owner, 2026-09-24): today the write stays on the node the client reached | `glade/dev-docs/GladeCrossNodeWritesPlan.md` (being drafted) | rule its questions; the end-to-end grip/glial/glade app that gates any publish likely needs it |
+| Cross-node writes (a client's write to a share another node serves reaches that node) | **Planned** (owner, 2026-09-24): today the write stays on the node the client reached | `glade/dev-docs/GladeCrossNodeWritesPlan.md` (drafted 2026-09-24: through the claim holder, no wire change; 11 steps) | rule its eight questions; the end-to-end grip/glial/glade app that gates any publish likely needs it |
 
 ## Decision queue (Gianni)
 
