@@ -799,10 +799,10 @@ Goal: `metadata_exposure` built.
   declares a share named after an app; grazel-app's `seed owner grazel …` is corrected with
   the revocation route.
 - **RULED (Gianni 2026-09-23), from 3.1:** a node's own grant is an ordinary grant record
-
-- **Stopped at its tripwires, 2026-09-24,** glade `d838bd0` (a design note, no code): no route revokes a seeded grant; verbs and principals are undecided; and enforcing would refuse every client flow outside `home`, since the desk presents a principal per tab, the suites none and the suppliers `grazel`, while every seed grants `owner`. Eight owner questions, each with a recommendation, are in `glade/dev-docs/GladeNodeAssembly.md`, "Grant check at the serve hop (plan Step 4.3)". **Part 1, 2026-09-24,** glade `e0100dc`: a client's op on `home` is refused (`Unauthorized`) and never stored (ruling H-R3); no shipped client writes `home`; peers can until 4.1b. Gate 8/8, 207 tests on both paths; the grazel, glade-gwz and glade-gyld suites at baseline.
   whose principal is the node id (a node does not inherit its operator's grants). No new
   record kind; `GrantPort::check` stays one path over one fold.
+
+- **Stopped at its tripwires, 2026-09-24,** glade `d838bd0` (a design note, no code): no route revokes a seeded grant; verbs and principals are undecided; and enforcing would refuse every client flow outside `home`, since the desk presents a principal per tab, the suites none and the suppliers `grazel`, while every seed grants `owner`. Eight owner questions, each with a recommendation, are in `glade/dev-docs/GladeNodeAssembly.md`, "Grant check at the serve hop (plan Step 4.3)". **Part 1, 2026-09-24,** glade `e0100dc`: a client's op on `home` is refused (`Unauthorized`) and never stored (ruling H-R3); no shipped client writes `home`; peers can until 4.1b. Gate 8/8, 207 tests on both paths; the grazel, glade-gwz and glade-gyld suites at baseline.
 
 ### Step 4.4 — Durable-local acceptance and restart
 
