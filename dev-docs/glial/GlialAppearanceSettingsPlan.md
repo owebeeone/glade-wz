@@ -387,6 +387,12 @@ the surface is declared.
 - **Gate:** grazel. **Done when:** the gate is green, and the body carries the principal
   given and no field otherwise.
 - **Size:** ~50 production, ~70 test. **Depends on:** nothing.
+- **Done, 2026-09-25,** grazel `5fc2598`: `--principal` is optional with no default in
+  grazel, and holds names to 1 to 63 of `A-Z a-z 0-9 . _ -`, each refusal naming its rule.
+  `/bootstrap.json` carries `"principal"` only when given and is byte-identical
+  otherwise. grazel 29 + 3 (was 26 + 3), clippy at its baseline of one warning, in the
+  generated crate. No CORS header: the page's fetch stays same-origin, through gryth-ui's
+  Vite proxy in dev (`gryth-ui/vite.config.ts:295-298`).
 
 **Step 1.2 — gyld-ui names, records and passes the principal**
 
