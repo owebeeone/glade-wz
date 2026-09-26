@@ -241,6 +241,17 @@ and each spawn's entry turns `permanent` rather than going.
 - **Pays:** turns 2 spawn entries permanent.
 - **Size:** ~60 production, ~100 test.
 - **Depends on:** 2.2.
+- **Done, 2026-09-26,** glade-gyld `752ca0a`:
+  - `Environment::apply_to` clears a command's environment and applies the snapshot. Both
+    spawns use it; the Python host then gets its two variables set on top.
+  - Both spawn entries are now permanent. `gh` is found on the snapshot's `PATH`.
+  - An inline search key is an `InlineKey` whose `Debug` prints `<set>`, and the raw
+    config file type has no `Debug`.
+  - 244 tests (1 ignored) pass, plus 1, 35 and 1; clippy 0; fmt clean.
+  - The desk's glade-gyld is rebuilt from it (inode 404910059).
+  - Follow-up, not in this plan: a timed-out host's own children outlive it, holding its
+    output pipes. This is older. Run each host in its own process group and kill the
+    group on timeout.
 
 **Step 3.2: glade-gwz's gwz runs.**
 - `main` captures the environment once. `exec` and the streamed verb in `supplier`
@@ -287,6 +298,18 @@ Milestone: every allowlist holds only permanent entries.
   carries no counter.
 - **Pays:** 1.
 - **Size:** ~50 production, ~60 test.
+- **Done, 2026-09-26,** glade `a1f97ee`:
+  - The real providers report to a `Constructions` binding. Production binds
+    `Unobserved`, which keeps nothing, and each test binds its own recorder.
+  - The positive control asserts the eager four in order, and each lazy provider at its
+    first use.
+  - `release_order.rs` now checks that no plan step ran.
+  - The three compile-fail doctests carry the new binding. Built by hand, each still
+    fails with its intended error.
+  - The counter is gone, so glade's allowlist holds no debt.
+  - Gate 9/9, 318 tests on each path. The rebuilt node (inode 404917081) passes glade's
+    suites, and passes the supplier suites on clean exports.
+  - The desk replay prints the same lines.
 
 **Step 4.2: grazel's shutdown.**
 - Today a C signal handler, installed with `libc::signal` for SIGINT and SIGTERM,
