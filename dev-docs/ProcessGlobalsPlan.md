@@ -124,6 +124,10 @@ Each allowlist carries the reason for each entry.
   left behind, and the step is done when the checker passes with the entries gone.
 - A step that changes a binary the owner's desk runs (glade-node, grazel, glade-gwz,
   glade-gyld) replays the desk's start on a stand-in before it lands.
+- A step that moves a read to a program's entry point records it there as a
+  `permanent` entry (question 2). That is the only kind of new entry a step may add.
+- A snapshot of the environment holds secrets, such as API keys. Its type never prints
+  values, including in `Debug`, and tests use made-up variables.
 
 ### Phase 1: the ratchet in every repository
 
@@ -164,13 +168,14 @@ Milestone: no library reads the environment.
 **Step 2.1: glade-node's instance root and store directory.**
 - **The change:** `sysdir::glade_home()` stops reading `GLADE_HOME` and `HOME`. Both
   composition roots read them once and pass the instance root into `boot`.
-- **The legacy form** (`glade-node <port> [store_dir]`): per question 3, either it
-  requires its store directory, and the temp-directory default in `glade-node.rs` and
-  `lifecycle.rs` goes, or the root reads `temp_dir` once and passes the default down.
+- **The legacy form** (`glade-node <port> [store_dir]`) requires its store directory,
+  as ruled (question 3). The temp-directory default in `glade-node.rs` and
+  `lifecycle.rs` goes; a start without the directory is refused with a usage line and
+  writes nothing.
 - **The tests** set the root explicitly rather than through the environment. Many
   already give both `GLADE_HOME` and `HOME`.
-- **Pays:** 3 entries, 4 occurrences. If the legacy form keeps its default (question
-  3), one `temp_dir` read at the entry point takes their place as a permanent entry.
+- **Pays:** 3 entries, 4 occurrences. The reads of `GLADE_HOME` and `HOME` at the
+  entry point are recorded as permanent.
 - **Size:** ~120 production, ~100 test.
 
 **Step 2.2: glade-gyld's environment snapshot.**
@@ -323,3 +328,15 @@ Phase 1 (landed)
    to change often.
 6. **Agents' instructions.** Recommend adding the rule to each repository's agent
    instructions (`AGENTS.md` or `CLAUDE.md`), so every brief carries it.
+
+**Ruled, owner, 2026-09-26 ("go with the reccos"):**
+1. Programs are roots.
+2. A read at a program's entry point is permanent.
+3. The legacy form requires its store directory.
+4. Steps 2.1 and 4.1 run in the node lane before 4.1c resumes. The supplier
+   repositories' steps start at once.
+5. The checker stays vendored in each repository, with its source commit recorded.
+6. The rule goes into each repository's `AGENTS.md`, with a section in the workspace's.
+   Done the same day: glade `c50926d`, and a new `AGENTS.md` in grazel `3297f68`,
+   glade-gwz `4783d32`, glade-gyld `4057999`, taut-shape-rs `c50a65c` and glade-decl-rs
+   `b97fd17`.

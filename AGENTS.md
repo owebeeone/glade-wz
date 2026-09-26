@@ -40,6 +40,17 @@ whole-workspace test run for the normal minor-edit loop, or omit affected-consum
 checks when changing a contract. Other repositories need explicit gate adoption;
 do not claim they are already covered.
 
+## No process globals
+
+Production Rust code keeps no process-global mutable state: statics with interior
+mutability, thread-locals, environment reads where they are used, process-wide hooks,
+or child processes that inherit the live environment. Each Rust repository's
+`AGENTS.md` states the rule and how its check runs: `scripts/checks/check_process_globals.py`
+against that repository's allowlist. Agents MUST NOT add or loosen an allowlist entry to
+make the check pass; a new entry needs the owner's approval, except a read at a
+program's entry point, which is `permanent` (owner, 2026-09-26).
+`dev-docs/ProcessGlobalsPlan.md` pays down the debt.
+
 ## Definition Of Done
 - Tests added/updated and passing.
 - Existing relevant tests still passing.
