@@ -29,7 +29,7 @@ remove every global that can go.
   glade-decl-rs has none, and glade's wire crate, contracts and client have none.
 - **What stays.** Arguments read at a program's entry point, the node's
   composition-root switch, and one temp-name counter.
-- **The plan.** Phases 2 to 4 pay the 18 debts in 9 steps, each small, and
+- **The plan.** Phases 2 to 4 pay the 18 debts in 8 steps, each small, and
   repository by repository, so separate agents can take them at once.
 
 ## 1. What the checker sees
@@ -164,13 +164,13 @@ Milestone: no library reads the environment.
 **Step 2.1: glade-node's instance root and store directory.**
 - **The change:** `sysdir::glade_home()` stops reading `GLADE_HOME` and `HOME`. Both
   composition roots read them once and pass the instance root into `boot`.
-- **The legacy form:** its temp-directory default store (`glade-node.rs` and
-  `lifecycle.rs`) comes from the settings the root builds, where the root reads
-  `temp_dir` once (question 3).
+- **The legacy form** (`glade-node <port> [store_dir]`): per question 3, either it
+  requires its store directory, and the temp-directory default in `glade-node.rs` and
+  `lifecycle.rs` goes, or the root reads `temp_dir` once and passes the default down.
 - **The tests** set the root explicitly rather than through the environment. Many
   already give both `GLADE_HOME` and `HOME`.
-- **Pays:** 4 entries (1 moves to the entry point as permanent, or goes, per
-  question 3).
+- **Pays:** 3 entries, 4 occurrences. If the legacy form keeps its default (question
+  3), one `temp_dir` read at the entry point takes their place as a permanent entry.
 - **Size:** ~120 production, ~100 test.
 
 **Step 2.2: glade-gyld's environment snapshot.**
@@ -210,7 +210,7 @@ that a variable set after start no longer leaks.
 - The node and the composed suppliers spawn with `env_clear()` plus grazel's
   start-up environment, with `GLADE_HOME` set as today.
 - The integration tests' full-stack start is the check, plus the desk replay.
-- **Pays:** 2.
+- **Pays:** 1 entry, 2 occurrences.
 - **Size:** ~60 production, ~80 test.
 
 ### Phase 4: statics and hooks
@@ -233,7 +233,8 @@ Milestone: every allowlist holds only permanent entries.
   the handler and the statics.
 - **Tests:** SIGTERM to grazel stops the node and both suppliers, and leaves no child
   behind; today's integration shutdown test is the red.
-- **Pays:** 4 entries (the handler counted twice, and three statics).
+- **Pays:** 4 entries: the signal handler (one entry, two occurrences) and three
+  statics.
 - **Size:** ~100 production, ~80 test.
 
 **Step 4.3: glade-gyld's cached token.**
@@ -299,9 +300,20 @@ Phase 1 (landed)
    reason that grazel's globals would otherwise be missed. The fallback scans them.)
 2. **A read at an entry point is permanent.** Recommend yes: it is the capture point
    the rule asks for.
-3. **glade-node's legacy temp-directory store:** read `temp_dir` once at the entry
-   point, which keeps today's behaviour, or drop the default and require a store
-   directory. Recommend reading it once at the entry point.
+3. **glade-node's legacy temp-directory store.** Started in its legacy form with no
+   store directory (`glade-node <port>`), the node stores into `$TMPDIR/glade-node-bin`.
+   Either read `temp_dir` once at the entry point, which keeps that default, or drop
+   the default and require the directory. Recommend requiring it, for two reasons:
+   - Every caller found passes a directory: client-rs's and client-ts's integration
+     tests, grip-share's helpers, and both copies of the demo (glade-wz's and
+     glial-dev's). The desk uses the booted form.
+   - The default is shared and unlocked. The legacy form deliberately takes no lock,
+     so concurrent test nodes can run, each on its own directory. Two nodes started
+     with only a port would write into one store.
+
+   The cost is a change to the form's documented contract, which the binary's header
+   calls byte-for-byte. (Revised 2026-09-26: this first recommended reading it once,
+   to keep today's behaviour.)
 4. **Where the node steps fall.** Recommend 2.1 and 4.1 in the node lane before
    parked 4.1c resumes: they are small, and 4.1c adds a boot path that would
    otherwise read the environment where it is used too. The supplier repositories'
