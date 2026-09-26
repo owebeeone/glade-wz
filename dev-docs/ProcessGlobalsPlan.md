@@ -30,7 +30,9 @@ remove every global that can go.
 - **What stays.** Arguments read at a program's entry point, the node's
   composition-root switch, and one temp-name counter.
 - **The plan.** Phases 2 to 4 pay the 18 debts in 8 steps, each small, and
-  repository by repository, so separate agents can take them at once.
+  repository by repository, so separate agents can take them at once. Five of the
+  debts are spawns: once a spawn clears the environment it stays listed, as permanent
+  (Phase 3).
 
 ## 1. What the checker sees
 
@@ -122,6 +124,10 @@ Each allowlist carries the reason for each entry.
   trailer.
 - The step deletes the allowlist entries it pays. The checker then fails if one is
   left behind, and the step is done when the checker passes with the entries gone.
+  A spawn is the exception. The checker lists every `Command::new`, whether or not the
+  environment is cleared, so a spawn that now clears it stays listed, turned
+  `permanent`, as gwz-core records its own clean spawn (`https_auth.rs`). Lane owner,
+  2026-09-26, following gwz-core's convention.
 - A step that changes a binary the owner's desk runs (glade-node, grazel, glade-gwz,
   glade-gyld) replays the desk's start on a stand-in before it lands.
 - A step that moves a read to a program's entry point records it there as a
@@ -160,6 +166,10 @@ Milestone: no process-global state lands unseen.
   - A static injected into a copy of glade-decl-rs fails with `NEW static INJECTED`.
   - Through `cargo test`, glade-decl-rs's test fails on a stale entry and passes once it is
     removed.
+- **Fixed, 2026-09-26:** the six `process_globals` test files were not rustfmt-clean (one
+  hunk each), so they broke glade-gyld's clean `fmt --check`. Formatted in glade `b86de12`,
+  grazel `fc246ba`, glade-gwz `07a624a`, glade-gyld `369e78a`, taut-shape-rs `f8fc9bd`
+  and glade-decl-rs `5130524`.
 
 ### Phase 2: the environment read once, at the entry point
 
@@ -177,29 +187,58 @@ Milestone: no library reads the environment.
 - **Pays:** 3 entries, 4 occurrences. The reads of `GLADE_HOME` and `HOME` at the
   entry point are recorded as permanent.
 - **Size:** ~120 production, ~100 test.
+- **Done, 2026-09-26,** glade `4f3220e`:
+  - `sysdir::instance_root(glade_home, home)` keeps the rule and reads nothing. `boot`
+    and `instance_dir` take the root.
+  - Each composition root reads `GLADE_HOME` and `HOME` once as it starts, a permanent
+    `env::var` entry with count 2, and passes the root into `boot` or
+    `Settings.instance_root`.
+  - The legacy form refuses a start without its store directory, on both roots, and
+    writes nothing.
+  - Paid: the `sysdir` read and both temp-directory reads. glade's allowlist now holds
+    1 debt (`REAL_PROVIDERS`, Step 4.1) and 3 permanent entries.
+  - Gate 9/9, 318 tests on each path, rustfmt baseline lowered to 296.
+  - client-rs, client-ts and grip-share pass against the rebuilt node (inode
+    404710421). grazel's, glade-gwz's and glade-gyld's suites pass against it on clean
+    exports of their committed code.
+  - The desk replay prints the same lines.
+  - An unknown `--profile` value, which reads as no profile, now also needs a store
+    directory.
+  - Stale docs: `glade/dev-docs/GladeSystemDataSeamNotes.md:69` (Step 4.1 fixes it) and
+    `GladeNodeAssembly.md:350` (after 4.1c's stash returns).
 
 **Step 2.2: glade-gyld's environment snapshot.**
-- **The change:** `main` captures the variables the supplier reads, the agent
-  overrides and the token and key variables, into an `Environment` passed through
-  `GyldConfig`. `AgentOverrides::from_env` becomes `from_vars` over the snapshot, as
+- **The change:** `main` captures the whole start-up environment once, into an
+  `Environment` passed through `GyldConfig`, and the supplier reads its variables (the
+  agent overrides, the token and key variables) from it. `AgentOverrides::from_env` becomes `from_vars` over the snapshot, as
   its tests already call it. `github::discover`, `model::discover_key` and the
   supplier's key check read the snapshot.
 - **Pays:** 4 entries.
 - **Size:** ~150 production, ~120 test.
+- **Done, 2026-09-26,** glade-gyld `03e8721`:
+  - `main` captures the whole environment once (`env::vars_os`, a permanent entry) into
+    `GyldConfig.env`. The agent overrides, the GitHub token and both key checks read the
+    snapshot.
+  - `Environment`'s `Debug` prints names only.
+  - The four `env::var` entries are gone. 240 tests (1 ignored), 35 and 1 pass; clippy 0;
+    fmt clean.
+  - The desk's glade-gyld is rebuilt from it (inode 404706543).
+  - Gap: `AgentOverrides` derives `Debug` and can hold `search_key`; Step 3.1 takes it.
 
 ### Phase 3: child processes with an explicit environment
 
 Milestone: no child inherits the live environment. Each child gets
-`env_clear()` plus an environment its parent captured at start: the variables it
-needs, or the whole start-up environment made explicit. Behaviour is unchanged except
-that a variable set after start no longer leaks.
+`env_clear()` plus the whole start-up environment its parent captured, made
+explicit. Behaviour is unchanged except that a variable set after start no longer
+leaks. The checker cannot see `env_clear()`, so each step's tests are its only guard,
+and each spawn's entry turns `permanent` rather than going.
 
 **Step 3.1: glade-gyld's Python and `gh`.**
 - `exec` and `github`'s `gh auth token` spawn with `env_clear()` plus the snapshot
   from 2.2.
 - **Tests:** a child that prints its environment sees only the snapshot, and a
   variable set after start is not seen.
-- **Pays:** 2.
+- **Pays:** turns 2 spawn entries permanent.
 - **Size:** ~60 production, ~100 test.
 - **Depends on:** 2.2.
 
@@ -208,15 +247,33 @@ that a variable set after start no longer leaks.
   spawn gwz with `env_clear()` plus it.
 - gwz needs `PATH`, `HOME` and, for SSH remotes, `SSH_AUTH_SOCK`. The snapshot keeps
   them.
-- **Pays:** 2.
+- **Pays:** turns the spawn entries permanent.
 - **Size:** ~80 production, ~100 test.
+- **Done, 2026-09-26,** glade-gwz `1596139`:
+  - `main` captures the whole environment once, a permanent entry.
+  - `exec::command` is the one builder for both runners (the streamed verb converts it
+    to tokio's). It clears the environment and applies the snapshot.
+  - The `supplier.rs` spawn entry is gone and `exec.rs`'s is permanent. 0 debt.
+  - 10, 10 and 1 tests pass; clippy 0; fmt 38, none added.
+  - The desk's glade-gwz is rebuilt from it (inode 404700662).
+  - Gap: gwz still inherits the supplier's working directory. It is given `--root`;
+    gwz-core's own clean spawn also sets `current_dir("/")`.
 
 **Step 3.3: grazel's node and suppliers.**
 - The node and the composed suppliers spawn with `env_clear()` plus grazel's
   start-up environment, with `GLADE_HOME` set as today.
 - The integration tests' full-stack start is the check, plus the desk replay.
-- **Pays:** 1 entry, 2 occurrences.
+- **Pays:** turns 1 spawn entry (2 occurrences) permanent.
 - **Size:** ~60 production, ~80 test.
+- **Done, 2026-09-26,** grazel `61bf564`:
+  - `main` captures the environment once, a permanent entry.
+  - `child_command` is the one place grazel builds a child. It clears the environment and
+    applies the snapshot, with `GLADE_HOME` added for the node. Its entry is permanent,
+    count 1; the two spawn sites merged.
+  - 30, 2, 3 and 1 tests pass.
+  - Desk replay: the same 26 start-up lines. A group SIGTERM exits 130 in 0.3 s and
+    leaves no child.
+  - The desk's grazel is rebuilt with the node step.
 
 ### Phase 4: statics and hooks
 
@@ -274,6 +331,10 @@ Phase 1 (landed)
   anything else runs.
 - **glade-gyld's `NEXT`:** a temp-name counter, only ever incremented, with no shared
   state.
+- **Captures at an entry point:** the environment each program reads once as it
+  starts, and glade-node's `GLADE_HOME` and `HOME` (Phases 2 and 3).
+- **Spawns that clear the environment:** each child spawned with `env_clear()` plus the
+  start-up environment (Phase 3).
 
 ## 6. What the ratchet does not see
 
