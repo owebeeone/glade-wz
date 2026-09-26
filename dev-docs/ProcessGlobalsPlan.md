@@ -29,6 +29,10 @@ remove every global that can go.
   glade-decl-rs has none, and glade's wire crate, contracts and client have none.
 - **What stays.** Arguments read at a program's entry point, the node's
   composition-root switch, and one temp-name counter.
+- **Done, 2026-09-26:** all 18 debts are paid, and every allowlist holds only
+  permanent entries. The tidy-up that followed made each allowlist's `rule` and
+  each `AGENTS.md` say that a spawn which clears the environment stays listed, as
+  permanent.
 - **The plan.** Phases 2 to 4 pay the 18 debts in 8 steps, each small, and
   repository by repository, so separate agents can take them at once. Five of the
   debts are spawns: once a spawn clears the environment it stays listed, as permanent
@@ -352,6 +356,14 @@ Milestone: every allowlist holds only permanent entries.
 - **Pays:** 1.
 - **Size:** ~60 production, ~60 test.
 - **Depends on:** 2.2, 3.1.
+- **Done, 2026-09-26,** glade-gyld `2bb5f25`:
+  - `HELD` and `discovered()` are gone. `serve` discovers the token once, from the
+    snapshot and then `gh`, and passes it through `serve_with` to the ask path.
+  - Tests: a question uses the held token, and the binary passes on the token it found
+    at start. Each test uses a made-up token that no output shows.
+  - glade-gyld's allowlist holds 0 debt. 245 tests pass (1 ignored), plus 1, 37 and 1;
+    clippy 0; fmt clean.
+  - The desk's glade-gyld is rebuilt from it (inode 404977533).
 
 ## 4. Order and parallelism
 

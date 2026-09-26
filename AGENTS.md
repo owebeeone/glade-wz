@@ -48,7 +48,9 @@ or child processes that inherit the live environment. Each Rust repository's
 `AGENTS.md` states the rule and how its check runs: `scripts/checks/check_process_globals.py`
 against that repository's allowlist. Agents MUST NOT add or loosen an allowlist entry to
 make the check pass; a new entry needs the owner's approval, except a read at a
-program's entry point, which is `permanent` (owner, 2026-09-26).
+program's entry point, which is `permanent` (owner, 2026-09-26). A child spawned with
+`env_clear()` plus an explicit environment stays listed, as `permanent`: the checker lists every
+spawn, whether or not it clears the environment.
 `dev-docs/ProcessGlobalsPlan.md` pays down the debt.
 
 ## Definition Of Done
