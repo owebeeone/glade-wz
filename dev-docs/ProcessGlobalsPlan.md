@@ -291,13 +291,36 @@ Milestone: every allowlist holds only permanent entries.
 **Step 4.2: grazel's shutdown.**
 - Today a C signal handler, installed with `libc::signal` for SIGINT and SIGTERM,
   kills the children through three PID statics.
-- A signal task (`tokio::signal`) in `main` that owns the `Child` handles replaces
-  the handler and the statics.
+- `main` owns the `Child` handles, and a thread that waits for SIGINT and SIGTERM
+  replaces the handler and the statics.
 - **Tests:** SIGTERM to grazel stops the node and both suppliers, and leaves no child
   behind; today's integration shutdown test is the red.
 - **Pays:** 4 entries: the signal handler (one entry, two occurrences) and three
   statics.
 - **Size:** ~100 production, ~80 test.
+- **Done, 2026-09-26,** grazel `bf950be`:
+  - `main` blocks SIGINT and SIGTERM before any thread or child exists, and one thread
+    takes them with `sigwait`, so no handler is installed.
+  - `main` owns every child handle. On a signal it sends SIGTERM to each child not yet
+    reaped, then exits 130, as the C handler did.
+  - Rust's std keeps the parent's signal mask for a child, and does not reset it. So
+    `child_command` unblocks both signals in the child before exec (`pre_exec`, one
+    async-signal-safe `sigprocmask`); the test caught it. tokio's signal support would
+    have added a production dependency and a lockfile package; the lane owner kept the
+    unblock.
+  - Paid: `libc::signal` and the three PID statics. grazel's allowlist now holds only
+    permanent entries.
+  - 30, 3, 5 and 1 tests pass. The new tests send SIGTERM and SIGINT to grazel alone in its
+    own process group; each ends with the node and both suppliers gone and exit 130.
+  - The launcher-style replay, a group SIGTERM, exits 130 within 0.3 s with nothing left
+    behind.
+  - The desk's grazel is rebuilt from it (inode 404880492). The rebuild also brings Step
+    3.3 and appearance Step 1.1 (`--principal`), which the Sep 21 binary predated.
+  - Follow-ups, not built:
+    - an HTTP bind failure still exits 2 and leaves the children running, which is older;
+      a small change now that `main` owns them;
+    - grazel exits right after sending SIGTERM, as before. A child that ignored SIGTERM
+      would outlive it, and the launcher would send no SIGKILL.
 
 **Step 4.3: glade-gyld's cached token.**
 - `github::discovered()` caches the token process-wide in `HELD`.
@@ -342,8 +365,13 @@ Phase 1 (landed)
   rustls's crypto provider. They are not scanned.
 - **Process-wide effects the checker has no pattern for:**
   - writes to stdout and stderr, and `process::exit`;
-  - `tokio::signal`, which Step 4.2 introduces in grazel. That is a binary owning its
-    process's signals, the same boundary as its arguments.
+  - grazel's blocked signal mask (Step 4.2): `pthread_sigmask`, `sigprocmask`, `sigwait`
+    and `pre_exec` are not in the checker's list. The mask is set once at the entry
+    point, before any thread or child exists: a binary owning its process's signals,
+    the same boundary as its arguments. A child inherits the mask unless it is reset,
+    because std keeps the parent's.
+  - `env_clear()`: the checker lists a spawn whether or not it clears the environment,
+    so each spawning step's tests are the only guard that it does.
 - **What a lexical scan cannot see:** an aliased import (`use std::env as e`), a
   global reached through a re-export or a macro from another crate.
 - **Outside the scan:** glade-discover, which holds someone else's uncommitted work,
