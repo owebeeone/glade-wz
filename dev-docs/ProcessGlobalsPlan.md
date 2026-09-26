@@ -36,7 +36,9 @@ remove every global that can go.
 
 The checker is a lexical scan, not a compiler pass. It strips comments and literals.
 It follows `mod` and `#[path]` from the crate roots an allowlist names, and it reads
-every platform branch without compiling any of them.
+every platform branch without compiling any of them. It also scans, as production,
+every other `.rs` file under a root's directory that no `mod` line reaches, and prints
+a note that the file was not reached from a crate root. This is its fallback.
 
 | Kind | What |
 | --- | --- |
@@ -52,10 +54,31 @@ every platform branch without compiling any of them.
 `conformance`, the contracts' probe feature. Test directories (`tests/`) are outside
 the crate roots and never scanned.
 
-**One difference from gwz-core: binaries are roots.** gwz-core scans libraries only;
-its command line lives elsewhere. Here each composition root is a binary, and grazel's
-process state (its signal handler and child PIDs) lives only in `main.rs`. So binaries
-are scanned. An argument read at an entry point is recorded as *permanent*.
+**One difference from gwz-core: programs are roots too.** A root is a file the walk
+starts from. It is either a library (`src/lib.rs`) or a program (`src/main.rs`,
+`src/bin/<name>.rs`). gwz-core names only libraries, which is all it has: its `src/bin`
+is empty and every crate has a library. Here each allowlist also names the programs.
+
+The fallback would still find most program files with library-only roots.
+glade-node's, grazel's, glade-gwz's and glade-gyld's programs sit under their
+library's `src/`. On 2026-09-26 each allowlist was rerun with library-only roots, and
+those four repositories gave exactly the same items. Naming the programs still does
+three things:
+
+- **No note on every run.** With library-only roots, the checker reports each of those
+  four programs on every run as "not reached from a crate root". With programs as
+  roots, no repository prints a note.
+- **Test-only module files stay exempt.** The fallback cannot see a `#[cfg(test)]` on
+  the `mod` line that declares a file, so it would count that file as production. None
+  of those four programs declares a module file today. taut-shape-tool declares 18, and
+  one of them is test-only (`#[cfg(test)] mod snapshot_delta_json;`). The walk from its
+  root exempts that one.
+- **taut-shape-tool is checked at all.** It is a program with no library, so no library
+  root points at its directory. With library-only roots, its 19 files go unscanned and
+  its one allowlist entry goes stale.
+
+The cost is that each program's read of its command-line arguments becomes an item,
+recorded as *permanent* (question 2).
 
 ## 2. The inventory
 
@@ -266,8 +289,14 @@ Phase 1 (landed)
 
 ## 7. Questions for the owner
 
-1. **Binaries as crate roots,** unlike gwz-core. Recommend yes: grazel's globals live
-   only in its binary.
+1. **Programs as roots,** unlike gwz-core (§1). Recommend yes. Each program is then
+   walked like a library: no run prints a "not reached" note, a program's test-only
+   module files stay exempt, and taut-shape-tool, a program with no library, is
+   checked at all. The other programs' files would be scanned either way, through the
+   checker's fallback. No means matching gwz-core exactly: a note on every run for
+   four programs, a program's test-only module files counted as production, and
+   taut-shape-tool unchecked. (Corrected 2026-09-26: this question first gave the
+   reason that grazel's globals would otherwise be missed. The fallback scans them.)
 2. **A read at an entry point is permanent.** Recommend yes: it is the capture point
    the rule asks for.
 3. **glade-node's legacy temp-directory store:** read `temp_dir` once at the entry
