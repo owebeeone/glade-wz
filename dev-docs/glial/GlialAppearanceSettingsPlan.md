@@ -340,6 +340,12 @@ and commits it there. The owner's gryth-wz, which his live desk runs from, is ne
 when he merges the lane, for example once per phase: `gwz --root ~/limbo/gryth-wz --target @all merge --remote
 appearance`.
 
+**In the lane, 2026-09-27:** Step 1.2 (gryth-ui `9ac71aa`) and Step 1.3 (`f1c18c4`) are committed; Phase 1 is built. **Ruled, owner,
+2026-09-27 ("all recommended"):** Step 1.3's 1.5 s one-shot timer lives in the loader, outside a tap, since it runs before any grip graph
+exists; the runtime refuses to load without a resolved identity; the wider comment and doc sweep stays; `scripts/gyld_ui_test.py`'s
+data-path test checks only the part below HOME, so the py gate is green under a HOME in `/tmp`. Next in the lane: the dev-mode live
+check of Phase 1, then Phase 2.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
