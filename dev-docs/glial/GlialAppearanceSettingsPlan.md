@@ -369,6 +369,15 @@ buttons take the codec's bounds in a later step); 2.2's extra exports, kept; 2.3
 owner runs** `pnpm install --offline` in his gryth-ui (the two new edges, and his client-ts copy refreshed), then `gyld-ui.py restart`, then
 reloads any open desk tab.
 
+**Step 2.4 in the lane, 2026-09-27; Phase 2 built** (gryth-ui `90075ac`): `migrate.ts` keeps a per-user browser record,
+`gryth.appearance.last.v1.<entry>.<principal>` `{value, seeded}`, adopted from the blob once, the placeholder until the zone holds a value, and
+following every value the zone takes; once the zone's replay is in (the barrier is `subscribe()` itself, since CW 3.4; the boot
+subscriptions move into `packages/glade/src/replay.ts`, one at a time), an empty zone gets the record's value once. Checked live: a browser
+with nothing stored leaves the zone empty; a stored appearance moves into an empty zone as exactly one op; the blob is not read again; a
+second browser with another stored appearance takes the zone's and does not overwrite it. ui gate 69 files, 1011 tests. **Open for the
+owner:** after a node purge a browser re-seeds the new zone from its record, kept; a second browser paints its own old appearance before its
+replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owner until he answers the duplicated-tab question.**
+
 ## 6. Phases and steps
 
 **Rules for every step.**
