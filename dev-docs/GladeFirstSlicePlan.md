@@ -907,6 +907,7 @@ journeys run over the carrier the node keeps.
 - Design first, in `GladeNodeAssembly.md`, with any owner questions, as for 4.2.
 - Done when: the mesh's tests, the door's and 4.5's crossing pass with the mesh on the port.
 - Depends on 4.2c and 4.5.
+- **Design, 2026-09-27,** glade `883ad4c` (a design note, no code): `GladeNodeAssembly.md`, "The mesh on the carrier port (plan Step 4.5b)". One carrier link per peer, HELLO its first frame each way, then each exchange a conversation on the link under a 5-byte header, one writer and one reader per link; HELLO's binding through a new contract method `CarrierLink::channel_binding(label)` with a probe CA-006, so D6's transcript is unchanged; `glade/node/3` retires and `PROTOCOL` stays 3, HELLO's number the only version gate, an older node failing at the TLS handshake; the door in the adapter's accept hook; 10 s for the first word and 10 s for HELLO, out of the accept loop; frames at most 16 MiB, served in chunks of 64 ops or 1 MiB. Four parts, about 270, 280, +350/-330 and +20/-330 production lines, then 4.5's crossing again; parts 1, 2 and 4 change nothing a running node does. Found for 4.6: the assembly's record transport is not the mesh's push, so "4.4's journeys over the real carrier" must say which it means; a lost link is not dialed again, so a restarted acceptor stays unlinked until its dialer restarts. **Open for the owner:** ten questions in the note.
 
 ### Step 4.5c — Signed checkpoints: the directory stops growing
 
