@@ -939,6 +939,7 @@ and lands on its own through gwz.
 - **F7, client-rs:** a `ShareController` surface whose chain a refusal stopped
   resubscribes (question 8).
 - **F8, glade-gwz:** a format-only commit, then `fmt --check` in its gate (question 17).
+  **Done, 2026-09-27,** glade-gwz `3f88ee7` (`cargo fmt` alone, 38 hunks to 0; each file equals rustfmt's output of its HEAD) and `35b38ba` (`tests/fmt.rs` runs `cargo fmt --check` through `env!("CARGO")`, seen red on one restored hunk). 22 tests, clippy 0. No behaviour change, so the desk's binary stays as built.
 
 ### Step 4.6 — The fixed-peer route end to end
 
