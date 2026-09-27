@@ -354,6 +354,21 @@ The data-path test fix is gryth-ui `068b8ee`. **Phase 1 is ready for the owner t
 Phase 2 can make two tabs' appearance writes collide; recommended, the loader claims its origin with an exclusive Web Lock (injected,
 testable with a fake) and mints a fresh one when another live tab holds it, before Step 2.3's live check.
 
+**Phase 2 in the lane, 2026-09-27:** Step 2.1 (gryth-ui `244aba0`), the pure surface: its manifest, `self:<principal>`, the versioned
+document with its defaults and clamps, and the five handles (whole-value writes from the zone's latest value; the wallpaper settles after
+400 ms). Step 2.2 (`a708a6c`): `DesktopSetup.persistAppearance`, default as today, and `readLegacyAppearance` for 2.4. Step 2.3
+(`df626db`, with the settings package's two workspace edges in `pnpm-lock.yaml`): a named user's five settings are one `gyld.appearance`
+value under `self:<principal>`, and the desk keeps them out of its blob. Checked live on a scratch dev desk: the five settings as one value
+(27 typed characters made one op), a second tab of `owner` following a change live, `?principal=alice` keeping her own, a reload and a
+restart keeping the value; ui gate 67 files, 992 tests, both builds. **2.3 and 2.4 reach the owner together:** with 2.3 alone a browser's
+first boot writes its blob back without appearance, and its old values are gone for good. **A duplicated tab, as the code stands:** same
+origin and principal, its own session; writes a round trip apart continue one chain, but two within one round trip claim one seq, the node
+refuses the second, and that tab shows a value nobody else has, its later writes refused too, until a reload. The Web Lock is recommended
+before Phase 2 reaches the owner's desk. **Open for the owner:** 2.1's two answers (an older tab reads a newer version as defaults; the
+buttons take the codec's bounds in a later step); 2.2's extra exports, kept; 2.3's two-tab test harness, kept. **After merging Phase 2 the
+owner runs** `pnpm install --offline` in his gryth-ui (the two new edges, and his client-ts copy refreshed), then `gyld-ui.py restart`, then
+reloads any open desk tab.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
