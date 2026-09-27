@@ -388,6 +388,8 @@ replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owne
 
 **Ruled, owner, 2026-09-28:** gyld-ui records the agent endpoint and model at `start` and replays them at `restart`, warning when the restarting environment differs, since a restart from another environment (a Claude shell sets `ANTHROPIC_BASE_URL` to Anthropic's API) silently sent `ask` away from the owner's Ollama on dabeest. Built in the appearance lane; the owner merges.
 
+**Built, 2026-09-28** (gryth-ui `b93ebe3`, lane root `9ee9965`): the instance record gains `agent`, holding `ANTHROPIC_BASE_URL` and `GYLD_AGENT_MODEL` (null when unset or blank; keys never read into it). `start` records them; `restart` hands grazel the recorded ones, drops one recorded unset, records them again, and prints one warning line per variable its shell says otherwise ("to change it, stop, then start from the environment you want", also in `--help`); status checks the endpoint grazel was given. A record from before, or a restart after `stop`, passes the shell through and records nothing. py gate 98 tests (+8), ruff clean. **Open for the owner (recommended, accept):** a restart after `stop` records nothing, so a Claude shell cannot lock its endpoint in; keys still come from the restarting shell, so a shell holding a real Anthropic key would send it to the recorded endpoint.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
