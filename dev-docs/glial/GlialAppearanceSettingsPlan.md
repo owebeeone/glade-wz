@@ -386,6 +386,8 @@ replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owne
 
 **Ruled, owner, 2026-09-28 ("yes to all"):** Step 3.1's three and the Web Lock's two as built. At the owner's word the lane owner merged the lane into the owner's gryth-wz (gryth-ui `d07d4a6`), ran `pnpm install --offline` and `gyld-ui.py restart`; every check ok.
 
+**Ruled, owner, 2026-09-28:** gyld-ui records the agent endpoint and model at `start` and replays them at `restart`, warning when the restarting environment differs, since a restart from another environment (a Claude shell sets `ANTHROPIC_BASE_URL` to Anthropic's API) silently sent `ask` away from the owner's Ollama on dabeest. Built in the appearance lane; the owner merges.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
