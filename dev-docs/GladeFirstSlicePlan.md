@@ -911,7 +911,8 @@ checkpoints, the checkpoint head also appended to the `home` share, so the lease
 node keeps forever stop growing its records.json and its boot's signature checks. Scheduled
 by the owner on 2026-09-27 (question 32 (c)); F1's longer lease is the stopgap until it lands.
 
-- Design first, in `GladeNodeAssembly.md`, with any owner questions: what a checkpoint
+- Design first, in its own note, `glade/dev-docs/GladeDirectoryCheckpoints.md` (begun
+  2026-09-27 beside 4.5 part 1, a document only), with any owner questions: what a checkpoint
   covers (the renewals only, or a chain's whole prefix), who may fold one, how a peer that
   holds the prefix verifies and drops it, and what a boot then checks.
 - Done when: a node that has renewed for a simulated week boots in bounded time and
@@ -1022,7 +1023,7 @@ verifies before the next step, as in the witness. Reviews happen at 1.2, 2.9 and
 
 **Order after the rulings of 2026-09-24** (the lane owner's; one agent at a time in the glade checkout, save the client plan's Phase 3, whose client-rs and client-ts lanes run side by side from 2026-09-25: their directories and gates are disjoint): hardening (landed, `1501a67`), 4.1a, the client-writes plan's Phase 2 (the node's answers, ruled to precede 4.3's websocket enforcement), 4.2 with a stable endpoint key first, the client plan's Phase 3 (both clients), 4.3's enforcement, 4.1b, the pull-on-gap step, the persistence suite with its revision field, 4.1c, 4.5 on the Pi and dabeest, 4.5b (the mesh onto the carrier port, ruled 2026-09-25), and 4.6. Beside them: the client plan's 1.1 at once (a document), glade-gwz's run ids right after 4.1a, and the client plan's Phase 4 in the supplier repositories once its client steps land. The cross-node writes plan (ruled 2026-09-24) writes its rules (X1.1) now, and its node steps follow 4.6.
 
-**Order after the rulings of 2026-09-27** (the lane owner's): the node lane runs F1, 4.5 part 1, part 2 and the crossing, then F2-F5, 4.5b, 4.5c and 4.6, one agent at a time in the glade checkout. Beside it: F6 and F7 in glade's client directories, whose gates are disjoint from the node's, and F8 in glade-gwz.
+**Order after the rulings of 2026-09-27** (the lane owner's): the node lane runs F1, 4.5 part 1, part 2 and the crossing, then F2-F5, 4.5b, 4.5c and 4.6, one agent at a time in the glade checkout. Beside it: F6 and F7 in glade's client directories, whose gates are disjoint from the node's, and F8 in glade-gwz. 4.5c's design, a document only, runs beside 4.5 part 1; its build takes the node lane after F2-F5.
 
 ## 3. What this plan does not do
 
