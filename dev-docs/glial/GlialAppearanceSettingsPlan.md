@@ -384,6 +384,8 @@ replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owne
 
 **Step 3.1, 2026-09-27** (gryth-ui `d07d4a6`, lane root `78e1240`): `packages/plugins/settings/src/store.ts` opens glial's `IndexedDbStoreEngine` as its own database, `gryth.appearance`, from the Gyld loader beside the identity; memory if it fails or has not opened within 1 s (the ruled second loader timer). `live.ts` gives the appearance zone its own `GlialBinder` over it; the runtime's shared binder stays memory. A reloaded tab's stored ops replay as it attaches, so its first write takes its origin's next seq; the stored value paints before any node op; a write with no socket ships at the next boot. The full desktop has no glial appearance instance and opens nothing. ui gate 70 files, 1027 tests (+10), both builds. Checked live on a scratch page with no node: a write stored as seq 0, a reload kept the origin and painted it, the next write seq 1. **Open for the owner (recommended, accept):** the Gyld loader imports the store module up front (a 34.8 kB chunk; `src/boot.test.ts` allows it and checks it imports only glial); a database that opens after the 1 s fallback stays open unused until unload (glial's engine has no close); over plain http duplicates share an origin and their same-seq rows overwrite, the fork the node already refuses (with the Web Lock's open item).
 
+**Ruled, owner, 2026-09-28 ("yes to all"):** Step 3.1's three and the Web Lock's two as built. At the owner's word the lane owner merged the lane into the owner's gryth-wz (gryth-ui `d07d4a6`), ran `pnpm install --offline` and `gyld-ui.py restart`; every check ok.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
