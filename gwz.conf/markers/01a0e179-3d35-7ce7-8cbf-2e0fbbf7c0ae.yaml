@@ -1,6 +1,18 @@
-schema: gwz.lock/v0
+schema: gwz.marker/v0
+gwz_commit_id: 01a0e179-3d35-7ce7-8cbf-2e0fbbf7c0ae
 workspace_id: ws_default
-manifest_schema: gwz.workspace/v0
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1790489214387
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: a32a5cb281a5c1d65a70d6acc4837dad8c91d5a7
+  branch: main
+selected_targets:
+- '@root'
+committed_targets:
+- '@root'
 members:
   mem_ggg_viz:
     path: ggg-viz
@@ -90,7 +102,7 @@ members:
     commit: 2c0a9b3dcbe4459c22a283290dbd19858358f26e
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glial:
     path: glial
