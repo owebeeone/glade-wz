@@ -422,6 +422,7 @@ a supplier declares a bulk profile. Not a second delivery fold.
 - Relay and DNS: self-host both binaries (Docker images exist) for the first
   real-route slice; authenticated relays admit only nodes of accepted operators
   (a deployment control, mirrored from, never replacing, `replica.hold`).
+  The ruling of 2026-09-22 governs the first slice: n0's relays, no lookup service.
 - Metrics and path events feed `node.status` through ordinary bindings
   (GDL-038); nothing in Glade reads iroh types outside the adapter.
 

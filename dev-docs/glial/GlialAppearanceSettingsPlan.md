@@ -331,7 +331,14 @@ none exists. Question 8.
 desks the 2026-07-11 ruling's "each tab is a participant" half is superseded and its "each tab has its own origin"
 half stands; 5 one value holds all five appearance settings, the last writer winning; 6 the migration subscribes
 twice until client-writes 3.4 lands; 7 Phase 3 goes ahead now; 8 the node keeps each user's private zone to that
-user; 9 the full desktop is wired later. Who lands the gryth-wz steps is still open.
+user; 9 the full desktop is wired later.
+
+**Ruled, owner, 2026-09-27 ("all recommended"), who lands the gryth-wz steps:** agents build them in a separate
+copy, the gwz local lane `appearance` (`/Users/owebeeone/limbo/gryth-wz-appearance`, a `gwz local clone` of gryth-wz
+made that day at its locked commits, with gryth-ui on `glp-0006-p1s4-gryth-panels`). The lane owner verifies each step
+and commits it there. The owner's gryth-wz, which his live desk runs from, is never written; his desk changes only
+when he merges the lane, for example once per phase: `gwz --root ~/limbo/gryth-wz --target @all merge --remote
+appearance`.
 
 ## 6. Phases and steps
 
@@ -340,7 +347,8 @@ user; 9 the full desktop is wired later. Who lands the gryth-wz steps is still o
 - A failing test first (glade-wz `AGENTS.md`, rule 0). Braced control-flow bodies in the
   code a step writes or changes.
 - glade-wz steps land through gwz, the member first and then the root lock, with no
-  attribution trailer. gryth-wz steps are the owner's to land.
+  attribution trailer. gryth-wz steps are built and committed in the `appearance` lane, and reach the owner's
+  gryth-wz only when he merges it (ruled 2026-09-27).
 - In gryth-ui, no React state and timers only in taps (`gryth-ui/dev-docs/CodingRules.md:6-25`),
   and no enums or string tags for a concept (`gryth-ui/AGENTS.md:45-49`): the identity is
   an object.

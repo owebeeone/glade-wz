@@ -197,6 +197,7 @@ Therefore:
 
 - **v1 = flat** (small p2p mesh + the public iroh relay); iroh already gives
   transport-layer locality (lowest-RTT path selection, hole-punching).
+  The ruling of 2026-09-22 governs: the relay is n0's, a configuration value.
 - **Multi-level rendezvous rides ON TOP of the same fold, with no data-model
   change:** generalize the home-node role to **locality-aware rendezvous
   clusters** — a node picks its primary rendezvous by proximity (external-IP
