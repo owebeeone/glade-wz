@@ -926,6 +926,7 @@ and lands on its own through gwz.
 - **F1, node:** the lease and the renewal interval become the node's settings, taken from
   the entry point, defaults a 5-minute lease renewed every 100 s; tests keep short values
   (question 32 (a)). First in the node lane.
+  **Done, 2026-09-27,** glade `befa93c`: `claims::Leases {lease_ms, renew_ms}`, by default 300,000 and 100,000 ms; `start()` builds them and hands them to both roots (`boot` and `adopt_boot_tuned` in `run`, `Settings.leases` in `run_assembled`), and a first boot's `home` claim carries the node's lease where `sysdir` had its own 30 s. No flag, file line or environment read; the allowlist is unchanged. Gate 9/9, 329 tests on each path, rustfmt 294 (the baseline lowered); the desk's replay prints the same lines before, after, twice and on a downgrade; client-ts 48, grip-share 19, client-rs 27 + 11 + 1 and the three supplier suites pass against the rebuilt binary (inode 405329410). At the new defaults the desk mints 1,728 renewal records a day (about 0.5 MB, from 17,280 and 5 MB); after a week a save rewrites about 3.5 MB once every 100 s, and boot's checks take about 1.1 s. A lost push now heals at the next renewal, up to 100 s later. **Open for the owner, as built:** the first boot's claim carries the node's lease; `adopt_boot` is kept for tests; a stopped node's claims stay live up to 5 minutes, so 4.6's expiry check is a question for 4.6's design.
 - **F2, node:** persistence part 2: the dependency on `glade-persistence-api`, and
   PS-001..008 through a fixture that wraps their bytes as one record (question 31 (a)).
 - **F3, node:** the node refuses `stream`-shaped client ops (question 13).
@@ -936,8 +937,10 @@ and lands on its own through gwz.
 - **F6, both clients:** neither client sends past an unplaced op of its chain, and a gap
   refusal after one is "not placed" too (question 4, `GladeCrossNodeWritesPlan.md` (a));
   client-ts skips an op whose resend still waits, as client-rs does (question 6).
+  **client-rs done, 2026-09-27,** glade `4a976de`: `Answers::to_send` holds an op behind an unplaced op of its chain not yet sent again, answers it `NotPlaced` at once, and sends it after that op, in order; a `Protocol` answer past an unplaced op of the same chain is `NotPlaced`, and answer 4 applies only once the earlier op is placed. client-rs 27 + 11 + 1 (was 25 + 10 + 1), clippy 3 as before, rustfmt 123 to 121; grazel, glade-gwz and glade-gyld at baseline. The desk sees nothing: no node answers `UnknownShare` before X3.2. `send_ops(vec![])` sends no empty frame. **Open for the owner, as built:** a held op is `NotPlaced` at once, with no node answer; both cases reach `on_unplaced` as `UnknownShare`, the node's or the client's reason with it. The client-ts half follows.
 - **F7, client-rs:** a `ShareController` surface whose chain a refusal stopped
   resubscribes (question 8).
+  **Done, 2026-09-27,** glade `4a976de`, with F6's client-rs half: before each write a `ShareController` whose chain a refusal stopped subscribes its surface again (a `pub(crate)` check, no API change). No supplier uses `ShareController` today, so the desk's supplier binaries are not rebuilt. **Open for the owner, as built:** it resubscribes at the next write, not when the refusal arrives; a refusal that lands between the check and the append still fails that one write.
 - **F8, glade-gwz:** a format-only commit, then `fmt --check` in its gate (question 17).
   **Done, 2026-09-27,** glade-gwz `3f88ee7` (`cargo fmt` alone, 38 hunks to 0; each file equals rustfmt's output of its HEAD) and `35b38ba` (`tests/fmt.rs` runs `cargo fmt --check` through `env!("CARGO")`, seen red on one restored hunk). 22 tests, clippy 0. No behaviour change, so the desk's binary stays as built.
 
