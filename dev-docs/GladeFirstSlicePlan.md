@@ -919,6 +919,7 @@ by the owner on 2026-09-27 (question 32 (c)); F1's longer lease is the stopgap u
 - Done when: a node that has renewed for a simulated week boots in bounded time and
   rewrites a records.json of bounded size, and a peer accepts the checkpointed chain.
 - Depends on 4.1b and 4.4; independent of 4.5 and 4.5b; runs before 4.6.
+- **Design, 2026-09-27,** glade `1aba4b9` (a design note, no code): `glade/dev-docs/GladeDirectoryCheckpoints.md`. A new `home` record, `ChainCheckpoint {node, stream, seq, hash}`, on a stream `dir.checkpoints` in the origin's own chain, sealed like every `home` record and so its own anchor in `home`. It folds a chain's whole prefix: the origin re-appends above the base every claim no later claim of the same share dominates, then drops the prefix; only `dir.claims` is compacted, grants and revocations stay whole. The origin makes one inside a renewal tick once 1,000 of its claims are superseded (about 14 hours on the desk), a threshold in `Leases`. records.json then stays near 300 KB and boot checks about 1,000 records per store (about 0.1 s), where a year would be about 180 MB and 58 s. Found: `Registry::accept` saves only when the fold grows longer, and 4.1b's set-aside at open would set aside a rewritten journal; each gets a red test. `PROTOCOL` moves to 4. Three parts, about 250-330, 200-280 and 130-200 production lines; nothing a running node does changes until part 3. **Open for the owner:** ten questions in the note.
 
 ### Follow-ups ruled 2026-09-27
 
