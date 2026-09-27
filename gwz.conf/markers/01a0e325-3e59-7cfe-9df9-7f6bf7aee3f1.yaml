@@ -1,6 +1,18 @@
-schema: gwz.lock/v0
+schema: gwz.marker/v0
+gwz_commit_id: 01a0e325-3e59-7cfe-9df9-7f6bf7aee3f1
 workspace_id: ws_default
-manifest_schema: gwz.workspace/v0
+origin_url_hash: sha256:776ac928964868e6d414648169db32b806a5e9202c68db59761a6f57ed775d8d
+created_at: unix-ms:1790517264093
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: 6a7b38bdb9940e180ccd5795ad2a642dcef9f6bb
+  branch: main
+selected_targets:
+- '@root'
+committed_targets:
+- '@root'
 members:
   mem_ggg_viz:
     path: ggg-viz
@@ -18,7 +30,7 @@ members:
     commit: e94f08eaeb241a110c5e7059673e0ea3b1fdc38b
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_chat:
     path: glade-chat
