@@ -346,6 +346,14 @@ exists; the runtime refuses to load without a resolved identity; the wider comme
 data-path test checks only the part below HOME, so the py gate is green under a HOME in `/tmp`. Next in the lane: the dev-mode live
 check of Phase 1, then Phase 2.
 
+**Phase 1 checked live in dev mode, 2026-09-27** (a scratch desk from the lane at `f1c18c4`, scratch HOME, OS-picked ports): Vite's
+`/bootstrap.json` proxy served `principal: owner`; a bare tab, a hand-opened tab and a reload each presented `owner` (the reload kept its
+origin), `?principal=alice` presented `alice`, one `/bootstrap.json` fetch per load; the node recorded `owner` and `alice` and no tab id.
+The data-path test fix is gryth-ui `068b8ee`. **Phase 1 is ready for the owner to merge**, then `python3 gyld-ui.py stop` and `start`.
+**Open for the owner:** a duplicated tab (or a window opened by script) copies session storage and so shares its origin, which from
+Phase 2 can make two tabs' appearance writes collide; recommended, the loader claims its origin with an exclusive Web Lock (injected,
+testable with a fake) and mints a fresh one when another live tab holds it, before Step 2.3's live check.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
