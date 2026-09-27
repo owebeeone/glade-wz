@@ -378,6 +378,8 @@ second browser with another stored appearance takes the zone's and does not over
 owner:** after a node purge a browser re-seeds the new zone from its record, kept; a second browser paints its own old appearance before its
 replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owner until he answers the duplicated-tab question.**
 
+**Ruled, owner, 2026-09-27, late ("all"):** the Web Lock first: the loader claims its origin with an exclusive Web Lock (injected, testable with a fake) and mints a fresh one when another live tab holds it. Then Step 3.1 trimmed to what a reload needs: a reloaded tab's writes before its replay lands re-mint op 0 and the node refuses them, so the tab's write counter persists in IndexedDB, with a second one-shot timer in the loader, outside a tap, as Step 1.3's. Phase 2's open answers stand as built: 2.1's two, 2.2's exports, 2.3's harness, the re-seed after a purge, a second browser's one early paint. Phase 2 is offered to the owner once the Web Lock is in.
+
 ## 6. Phases and steps
 
 **Rules for every step.**
