@@ -390,7 +390,7 @@ replay lands, once, accepted until Phase 3. **Phase 2 is not offered to the owne
 
 **Built, 2026-09-28** (gryth-ui `b93ebe3`, lane root `9ee9965`): the instance record gains `agent`, holding `ANTHROPIC_BASE_URL` and `GYLD_AGENT_MODEL` (null when unset or blank; keys never read into it). `start` records them; `restart` hands grazel the recorded ones, drops one recorded unset, records them again, and prints one warning line per variable its shell says otherwise ("to change it, stop, then start from the environment you want", also in `--help`); status checks the endpoint grazel was given. A record from before, or a restart after `stop`, passes the shell through and records nothing. py gate 98 tests (+8), ruff clean. **Open for the owner (recommended, accept):** a restart after `stop` records nothing, so a Claude shell cannot lock its endpoint in; keys still come from the restarting shell, so a shell holding a real Anthropic key would send it to the recorded endpoint.
 
-**Merged, 2026-09-28,** by the lane owner at the owner's word ("go ahead and do the merges"): gryth-ui fast-forwarded to `b93ebe3`, and the gryth-wz root merged (`e5b8b48`, gwz's record `09f7cdf`). It takes effect at the owner's next `stop` and `start`, run from his own terminal so that `start` records his environment.
+**Merged, 2026-09-28,** by the lane owner at the owner's word ("go ahead and do the merges"): gryth-ui fast-forwarded to `b93ebe3`, and the gryth-wz root merged (`e5b8b48`, gwz's record `09f7cdf`). It takes effect at the owner's next `stop` and `start`, run from the owner's own terminal so that `start` records that environment.
 
 ## 6. Phases and steps
 
