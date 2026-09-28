@@ -1036,6 +1036,7 @@ Goal: the build entry's acceptance sentence, verbatim, as one script.
   scope, or both. **Owner question** from the same review (SUR-P3-5, classified
   architectural): whether a later format gives `service` and `workspace` lines a retract
   half, R9's option (s), declined for v1.
+- **Design, 2026-09-28,** glade `2e86bbb` (a design note, no code): `glade/dev-docs/GladeFixedPeerRoute.md`. Node A registers, serves and dials (assembled root); B reads, admits only A and enforces client grants (hand-written root); C holds a key nothing binds. Two placements: `local` (one machine, loopback, relays off) and `crossing` (A and C on the Pi, B on dabeest, relay n0). One script, `glade/scripts/route/route.py`, with a client-rs probe, runs 13 checks mapped to the acceptance sentence and ends its stamped log with `ROUTE: PASS|FAIL`; expiry through a new `--lease-ms` flag. STA-P3-1: the origin in a retraction's scope, the fold keyed `(app, glade_id, origin)`. SUR-P3-5: v1's decline stands. Found: a forward that ends goes silent to its subscribers (`mesh.rs:777-779`). Six parts, about 1,300 lines with tests, then the runs. **Eight questions for the owner,** each with a recommendation, in the note's last section.
 
 ## Phase 5 — The slice passes and the graph moves
 
