@@ -1,6 +1,7 @@
 # Glade Raft qualification evidence
 
-Date: 2026-10-03. Status: **Q1a tests GREEN; Code/State acceptance pending**.
+Date: 2026-10-03. Status: **initial Q1a memory proof accepted at root
+`31bbea0cf1da3c6ae437cf482cb744d561693c08` after Code/State GO/GO**.
 Q0 draft/consumer acceptance is recorded in [the review ledger](GladeRaftQualification-ReviewCycle.md).
 The [plan](GladeRaftQualificationPlan.md) and
 [contract](GladeRaftAdoptionContract.md) control claims. Exact reviewed source
@@ -145,5 +146,7 @@ Private complete-envelope conflicting-replay checks are unchanged.
 Lane-owner rerun: **22 tests pass** (2 API, 2 codec, 1 actual-driver/public-interface
 replay regression, 17 qualification cases). Clippy and local architecture/source/
 process-global/format gates pass. Signatures, dependencies, readiness verification,
-Ready ordering and all unqualified profiles are unchanged. Reviewer closure remains
-pending until focused re-verdicts return on the revised exact tuple.
+Ready ordering and all unqualified profiles are unchanged. The [Code re-verdict](GladeRaftQ1a-ReviewCode-1.md) independently closes the
+counterexample and [State re-verdict](GladeRaftQ1a-ReviewState-1.md) verifies the
+same revised tuple. The [ledger](GladeRaftQualification-ReviewCycle.md) records
+bounded acceptance and the open production gates.
