@@ -42,3 +42,14 @@ loss; contiguous application/noop/exact replay/gap/conflicting replay.
 These are intended assertions pending implementation, not passing results. The
 full plan retains unqualified bootstrap, crypto, metadata witnesses, separate
 BeginMove/Activate, capacity, disk and production integration obligations.
+
+## Q0 remediation evidence
+
+The two independent reviews at root `581ef60a65bfebda8b39645aeb122f12c23828ee`
+converged on one namespace-fixture collision. Remediation1 changes only the
+qualification test source: Create sequence1 is reserved, namespace mutations
+use sequence2 with explicit identity assertions, and an intentional Create-ID
+reuse test requires conflict while retaining the original receipt.
+The corrected specifications compile; API remains **2 passed** and the refusing
+qualification provider remains behavioral RED: **0 passed, 12 assertion failures**.
+Formatting passes. This is a test repair, not implementation or reviewer closure.

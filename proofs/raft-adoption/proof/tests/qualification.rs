@@ -133,17 +133,46 @@ fn ra004_lost_reply_exact_retry_after_failover_recovers_original_receipt() {
 
 #[test]
 fn ra004_changed_retry_conflicts_and_principal_namespace_does_not_alias() {
+    let setup = create(1);
+    let user_command = mutate(2, 23);
+    let changed_command = mutate(2, 24);
+    let mut admin_command = mutate(2, 25);
+    admin_command.request.principal = 1;
+    assert_eq!(user_command.request, changed_command.request);
+    assert_ne!(user_command.request, admin_command.request);
+    assert_eq!(
+        admin_command.request,
+        RequestId {
+            principal: 1,
+            ..user_command.request
+        }
+    );
+    assert_ne!(user_command.request, setup.request);
+    assert_ne!(admin_command.request, setup.request);
     let mut cluster = cluster();
-    accepted(committed(&mut cluster, 1, create(1)));
-    let original = committed(&mut cluster, 1, mutate(1, 23));
+    accepted(committed(&mut cluster, 1, setup));
+    let original = committed(&mut cluster, 1, user_command);
     accepted(original);
-    let changed = committed(&mut cluster, 1, mutate(1, 24));
+    let changed = committed(&mut cluster, 1, changed_command);
     assert_eq!(changed.outcome, Outcome::Rejected(Rejection::RetryConflict));
     assert_eq!(cluster.outcome(1, original.request), Some(original));
-    let mut admin = mutate(1, 25);
-    admin.request.principal = 1;
-    accepted(committed(&mut cluster, 1, admin));
+    accepted(committed(&mut cluster, 1, admin_command));
     assert_eq!(cluster.resource(1, 100).unwrap().payload, 25);
+}
+
+#[test]
+fn ra004_reusing_create_identity_for_mutation_conflicts_without_overwriting_history() {
+    let setup = create(1);
+    let mut collision = mutate(1, 99);
+    collision.request.principal = 1;
+    assert_eq!(collision.request, setup.request);
+    let mut cluster = cluster();
+    let original = committed(&mut cluster, 1, setup);
+    accepted(original);
+    let refused = committed(&mut cluster, 1, collision);
+    assert_eq!(refused.outcome, Outcome::Rejected(Rejection::RetryConflict));
+    assert_eq!(cluster.resource(1, 100).unwrap().payload, 11);
+    assert_eq!(cluster.outcome(1, setup.request), Some(original));
 }
 
 #[test]
