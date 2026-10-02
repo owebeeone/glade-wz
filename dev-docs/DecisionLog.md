@@ -70,6 +70,18 @@ G* design work.
 
 ## Notes
 
+GDL-052 — Owner direction, 2026-10-03: proceed with the recommended **Raft
+adoption contract and bounded executable qualification** after the mechanism
+comparison. [Contract](GladeRaftAdoptionContract.md),
+[plan](GladeRaftQualificationPlan.md), and
+[implementation evaluation](GladeRaftImplementationEvaluation.md) specify the
+M3-D protected application-history direction. Three logical data-bearing voters
+and raft-rs 0.7.0 are experiment choices, not production deployment/library rulings.
+Exact canonical amendments, durable failure domains, cryptographic integration,
+configuration/snapshot recovery, external sinks and legacy activation remain
+review/qualification gates. This authorizes draft contracts, consumer tests,
+review and the isolated proof; existing production contracts remain in force.
+
 GDL-051 — Owner clarification and direction, 2026-10-03: the Chubby-like
 coordination question remains open. GDL-050 authorized development of the H1
 candidate and multiwriter evaluation; it did not accept home-dependent outage

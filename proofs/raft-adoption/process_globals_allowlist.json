@@ -1,0 +1,5 @@
+{
+  "rule": "Qualification-owned Rust keeps injected instance state, no process-global mutable state. No exceptions; this scan does not certify third-party dependencies.",
+  "roots": ["api/src/lib.rs", "proof/src/lib.rs"],
+  "entries": []
+}

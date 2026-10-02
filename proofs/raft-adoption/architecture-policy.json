@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "packages": {
+    "glade-raft-adoption-api": {
+      "role": "contract",
+      "dependencies": [],
+      "traits": {"CommittedMachine": ["apply", "lookup"]},
+      "conformance_tests": ["public_contract"]
+    },
+    "glade-raft-adoption-proof": {
+      "role": "harness",
+      "reason": "Owner: Glade qualification lane. Standalone controlled experiment, excluded from production dependency paths. Retire or re-review this classification before exposing a production service, adding disk/network adapters or reusing its private fixture codec.",
+      "dependencies": ["normal:glade-raft-adoption-api", "normal:raft", "normal:protobuf", "normal:slog"],
+      "conformance_tests": ["qualification"]
+    }
+  }
+}
