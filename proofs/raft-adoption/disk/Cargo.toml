@@ -1,0 +1,12 @@
+[package]
+name = "glade-raft-disk"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+glade-raft-durability-api = { path = "../durability-api" }
+
+[lints]
+workspace = true

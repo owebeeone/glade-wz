@@ -4,14 +4,60 @@
     "glade-raft-adoption-api": {
       "role": "contract",
       "dependencies": [],
-      "traits": {"CommittedMachine": ["apply", "lookup"]},
-      "conformance_tests": ["public_contract"]
+      "traits": {
+        "CommittedMachine": [
+          "apply",
+          "lookup"
+        ]
+      },
+      "conformance_tests": [
+        "public_contract"
+      ]
     },
     "glade-raft-adoption-proof": {
       "role": "harness",
-      "reason": "Owner: Glade qualification lane. Standalone controlled experiment, excluded from production dependency paths. Retire or re-review this classification before exposing a production service, adding disk/network adapters or reusing its private fixture codec.",
-      "dependencies": ["normal:glade-raft-adoption-api", "normal:raft", "normal:protobuf", "normal:slog"],
-      "conformance_tests": ["qualification"]
+      "reason": "Proposed Q2 re-review: controlled experiment outside production dependency paths. Host injects the std-only durability contract; disk composition occurs only in dev targets. Memory qualification remains separate from local I/O/restart faults. No production service, network adapter or private codec reuse is authorized.",
+      "dependencies": [
+        "normal:glade-raft-adoption-api",
+        "normal:raft",
+        "normal:protobuf",
+        "normal:slog",
+        "normal:glade-raft-durability-api",
+        "dev:glade-raft-disk"
+      ],
+      "conformance_tests": [
+        "qualification",
+        "recovery"
+      ]
+    },
+    "glade-raft-durability-api": {
+      "role": "contract",
+      "dependencies": [],
+      "traits": {
+        "DurableStore": [
+          "load",
+          "persist"
+        ]
+      },
+      "conformance_tests": [
+        "public_contract"
+      ]
+    },
+    "glade-raft-disk": {
+      "role": "implementation",
+      "dependencies": [
+        "normal:glade-raft-durability-api"
+      ],
+      "implements": [
+        {
+          "package": "glade-raft-durability-api",
+          "trait": "DurableStore",
+          "type": "DiskStore"
+        }
+      ],
+      "conformance_tests": [
+        "conformance"
+      ]
     }
   }
 }

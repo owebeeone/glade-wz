@@ -164,6 +164,18 @@ pub struct Cluster {
 }
 
 impl Cluster {
+    /// Q2 constructor specification; real recovery follows boundary acceptance.
+    pub fn recover(
+        _voters: &[u64],
+        _stores: BTreeMap<u64, Box<dyn glade_raft_durability_api::DurableStore>>,
+    ) -> Result<Self, glade_raft_durability_api::StoreError> {
+        Err(glade_raft_durability_api::StoreError::NotQualified)
+    }
+
+    pub fn failure(&self, _voter: u64) -> Option<glade_raft_durability_api::StoreError> {
+        None
+    }
+
     pub fn new(voters: &[u64]) -> Self {
         assert!(
             matches!(voters, [1, 2] | [1, 2, 3]),

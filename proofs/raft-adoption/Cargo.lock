@@ -90,10 +90,23 @@ name = "glade-raft-adoption-proof"
 version = "0.0.0"
 dependencies = [
  "glade-raft-adoption-api",
+ "glade-raft-disk",
+ "glade-raft-durability-api",
  "protobuf",
  "raft",
  "slog",
 ]
+
+[[package]]
+name = "glade-raft-disk"
+version = "0.0.0"
+dependencies = [
+ "glade-raft-durability-api",
+]
+
+[[package]]
+name = "glade-raft-durability-api"
+version = "0.0.0"
 
 [[package]]
 name = "libc"

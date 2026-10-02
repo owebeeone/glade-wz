@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted; Q2–Q4 remain open**.
+Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted; Q2 contract/RED review underway; Q2–Q4 remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -148,3 +148,8 @@ gate because it introduces ordered retry/retirement transitions. These do not
 freeze a user-facing interface or file format; the private fixture API/codec
 has no production compatibility promise. A future production freeze needs its
 own applicable review tier and consumer tests.
+
+Q2 is bound by [GladeRaftPersistenceContract.md](GladeRaftPersistenceContract.md):
+a dual Consistency/Safety gate on compiling RED boundary specifications precedes
+implementation, and a dual Code/State gate follows real disk/host/fault/process-kill
+evidence. This is a private experiment; no user-facing production format is frozen.

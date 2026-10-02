@@ -150,3 +150,23 @@ Ready ordering and all unqualified profiles are unchanged. The [Code re-verdict]
 counterexample and [State re-verdict](GladeRaftQ1a-ReviewState-1.md) verifies the
 same revised tuple. The [ledger](GladeRaftQualification-ReviewCycle.md) records
 bounded acceptance and the open production gates.
+
+## Q2 contract checkpoint — behavioral RED
+
+The proposed [persistence boundary](GladeRaftPersistenceContract.md) adds std-only
+contract and disk implementation crates. Before adapter/integration implementation,
+the reusable contract model passes one semantic test. The concrete disk scaffold
+returns `NotQualified`: **8 compiling tests fail behaviorally**. The actual-driver
+recovery target compiles: **1 negative passes, 6 positive/fault/reopen tests fail**;
+the negative is initially vacuous against the refusing constructor and does not
+prove quarantine. Existing 22 memory tests still pass.
+
+The separate process-crash worker compiles. Its runner exits with the expected
+failure before the acknowledged cut because `DiskStore::create_new` returns
+`NotQualified`; no actual kill/recovery PASS is claimed at this checkpoint.
+Commands use the README PROTOC, `-p glade-raft-disk --test conformance`,
+`-p glade-raft-adoption-proof --test recovery`, and `--test process_crash --no-run`
+plus `process-crash.py --worker <reported executable>`. Build naming errors were
+corrected before behavioral RED and do not count as tests failing on semantics.
+The structural architecture/process-global/source/format gates pass with no new
+exception entries. Implementation awaits dual contract acceptance.
