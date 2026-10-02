@@ -80,3 +80,19 @@ The small API/model loop is `cargo test --locked --offline --manifest-path proof
 Q3 snapshots/membership and Q4 production library/environment/randomness/bootstrap/legacy writer exclusion remain open. Q2 cannot select physical production failure domains or promise production power-loss durability by implication.
 
 Primary Rust API references: [File::try_lock](https://doc.rust-lang.org/std/fs/struct.File.html#method.try_lock) (available since Rust 1.89; OS-handle lifetime and advisory/platform limits) and [File::sync_all](https://doc.rust-lang.org/std/fs/struct.File.html#method.sync_all). These API contracts do not certify this experiment's power-loss behavior.
+
+
+## Q2 crash-oracle amendment (Safety P2-1)
+
+The process witness MUST retain the complete original acknowledged receipt in the
+parent outside the killed worker. The private stdout record contains all five
+request namespace fields, original index, an explicit Accepted/Rejected tag, and
+all Resource fields or rejection code. The fresh worker emits both recovered
+lookup and exact retry records; the parent MUST compare each complete record with
+the retained pre-kill receipt. At the before-apply cut, no receipt exists yet, so
+the parent uses the independently specified complete expected mutation receipt.
+Comparing two newly recovered receipts to one another is insufficient. Same
+request/index/materialized payload with changed home/generation or changed outcome
+MUST fail the oracle. `python3 proofs/raft-adoption/process-crash.py --self-test`
+contains adversarial regressions for both cases and strict record parsing. The
+worker stdout format is a private test oracle, not a production protocol.

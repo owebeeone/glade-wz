@@ -133,9 +133,8 @@ fn loaded_stores() -> BTreeMap<u64, Box<dyn DurableStore>> {
 
 #[test]
 fn q2_injected_consumer_recovers_fixed_empty_genesis() {
-    let mut cluster = Cluster::recover(&[1, 2, 3], loaded_stores())
-        .ok()
-        .expect("reviewed port accepts valid genesis");
+    let mut cluster =
+        Cluster::recover(&[1, 2, 3], loaded_stores()).expect("reviewed port accepts valid genesis");
     cluster.campaign(1);
     cluster.drain();
     assert!(matches!(
@@ -177,7 +176,7 @@ fn q2_recovery_refuses_bad_bytes_binding_and_incomplete_history() {
 #[test]
 fn q2_disk_replay_recovers_receipts_move_fences_and_changed_retry() {
     let dir = Directory::new("move");
-    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).ok().unwrap();
+    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).unwrap();
     cluster.campaign(1);
     cluster.drain();
     apply(&mut cluster, 1, create());
@@ -187,9 +186,7 @@ fn q2_disk_replay_recovers_receipts_move_fences_and_changed_retry() {
     let movement = apply(&mut cluster, 1, moved);
     assert!(matches!(movement.outcome, Outcome::Accepted(resource) if resource.generation == 2));
     drop(cluster);
-    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false))
-        .ok()
-        .unwrap();
+    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false)).unwrap();
     for voter in 1..=3 {
         assert_eq!(recovered.outcome(voter, original.request), Some(original));
         assert_eq!(recovered.outcome(voter, moved.request), Some(movement));
@@ -215,7 +212,7 @@ fn q2_disk_replay_recovers_receipts_move_fences_and_changed_retry() {
 #[test]
 fn q2_disk_replay_recovers_policy_tombstone_and_exact_create_outcome() {
     let dir = Directory::new("policy-retire");
-    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).ok().unwrap();
+    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).unwrap();
     cluster.campaign(1);
     cluster.drain();
     let original_create = apply(&mut cluster, 1, create());
@@ -240,9 +237,7 @@ fn q2_disk_replay_recovers_policy_tombstone_and_exact_create_outcome() {
     };
     apply(&mut cluster, 1, retire);
     drop(cluster);
-    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false))
-        .ok()
-        .unwrap();
+    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false)).unwrap();
     assert!(recovered.resource(2, 100).unwrap().retired);
     assert!(recovered.outcome(2, original.request).is_none());
     recovered.campaign(2);
@@ -263,7 +258,7 @@ fn q2_disk_replay_recovers_policy_tombstone_and_exact_create_outcome() {
 #[test]
 fn q2_disk_reopen_preserves_uncommitted_suffix_until_real_raft_overwrite() {
     let dir = Directory::new("suffix");
-    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).ok().unwrap();
+    let mut cluster = Cluster::recover(&[1, 2, 3], dir.stores(true)).unwrap();
     cluster.campaign(1);
     cluster.drain();
     apply(&mut cluster, 1, create());
@@ -273,9 +268,7 @@ fn q2_disk_reopen_preserves_uncommitted_suffix_until_real_raft_overwrite() {
     cluster.drain();
     assert!(cluster.outcome(1, old.request).is_none());
     drop(cluster);
-    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false))
-        .ok()
-        .unwrap();
+    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false)).unwrap();
     recovered.isolate(1);
     recovered.campaign(2);
     recovered.drain();
@@ -325,7 +318,7 @@ fn q2_leader_storage_failure_releases_no_new_application_or_message() {
             poisoned: false,
         }),
     );
-    let mut cluster = Cluster::recover(&[1, 2, 3], stores).ok().unwrap();
+    let mut cluster = Cluster::recover(&[1, 2, 3], stores).unwrap();
     cluster.campaign(1);
     cluster.drain();
     apply(&mut cluster, 1, create());
@@ -359,7 +352,7 @@ fn q2_follower_storage_failure_cannot_supply_a_data_quorum_ack() {
             poisoned: false,
         }),
     );
-    let mut cluster = Cluster::recover(&[1, 2, 3], stores).ok().unwrap();
+    let mut cluster = Cluster::recover(&[1, 2, 3], stores).unwrap();
     cluster.campaign(1);
     cluster.drain();
     apply(&mut cluster, 1, create());

@@ -102,3 +102,15 @@ integration/legacy exclusion. Automatic elections require the explicit clock/
 randomness dependency treatment already recorded. Production failure domains,
 post-failure receipt guarantees, real readiness/crypto and external sinks need
 profile decisions/evidence. The first proof cannot substitute for these gates.
+
+## Q2 contract initial gate
+
+Source root `0d2649369b91e21ddb8ed557b28032c89334fa9a`, unchanged member/Gyld
+pins: fresh Consistency GO with P3-1; Safety NO-GO with P2-1 and P3-1. Reports
+are [Consistency](GladeRaftQ2Contract-ReviewConsistency.md) and
+[Safety](GladeRaftQ2Contract-ReviewSafety.md), verbatim. Combined gate NO-GO.
+Both axes independently found the same lint/diagnostic issue (one distinct P3).
+Safety additionally found the crash oracle could accept a changed recovered
+receipt (one distinct P2). [Remediation1](GladeRaftQ2Contract-RemPlan-1.md)
+corrects both in one specification patch before disk/integration implementation.
+Storage interfaces, authority, roles and persistence design remain unchanged.

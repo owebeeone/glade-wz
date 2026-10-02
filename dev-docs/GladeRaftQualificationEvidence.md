@@ -170,3 +170,18 @@ plus `process-crash.py --worker <reported executable>`. Build naming errors were
 corrected before behavioral RED and do not count as tests failing on semantics.
 The structural architecture/process-global/source/format gates pass with no new
 exception entries. Implementation awaits dual contract acceptance.
+
+## Q2 contract remediation 1 — oracle RED/GREEN
+
+Safety's crash-receipt counterexample was reproduced before correcting the oracle:
+three Python oracle tests ran, two failed because the old index/payload/post-restart
+agreement check admitted altered accepted home/generation and accepted-to-rejected
+substitution. The corrected runner retains a complete canonical numeric original
+receipt in the parent before SIGKILL and compares fresh-process lookup and retry
+against it. The before-apply cut instead uses a separately defined complete expected
+fixture receipt. **Four oracle/parser tests now pass** with `process-crash.py --self-test`.
+
+Recovery Result diagnostics are retained directly. Warnings-denied all-target
+Clippy and structural gates pass. Behavioral scaffold RED remains: disk 8 failures,
+recovery 1 negative pass/6 failures on NotQualified, process worker refusal before
+the kill cut. This corrects specification/oracle fidelity, not implementation.
