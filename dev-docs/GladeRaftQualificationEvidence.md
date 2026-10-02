@@ -1,6 +1,7 @@
 # Glade Raft qualification evidence
 
-Date: 2026-10-03. Status: **Q0 draft checkpoint; implementation not yet reviewed**.
+Date: 2026-10-03. Status: **Q1a tests GREEN; Code/State acceptance pending**.
+Q0 draft/consumer acceptance is recorded in [the review ledger](GladeRaftQualification-ReviewCycle.md).
 The [plan](GladeRaftQualificationPlan.md) and
 [contract](GladeRaftAdoptionContract.md) control claims. Exact reviewed source
 revisions and reports will be recorded in the review-cycle ledger.
@@ -53,3 +54,75 @@ reuse test requires conflict while retaining the original receipt.
 The corrected specifications compile; API remains **2 passed** and the refusing
 qualification provider remains behavioral RED: **0 passed, 12 assertion failures**.
 Formatting passes. This is a test repair, not implementation or reviewer closure.
+
+## Q1a executable results
+
+The actual `raft 0.7.0` RawNode carrier now drives fixed voters1/2/3 (and the
+negative two-voter fixture). Ready persists complete entries/hard state to the
+named memory store before releasing messages; committed entries/noops are applied
+in order. LightReady updates only hard-state commit, applies further entries and
+advances application. No automatic ticks, sockets, sleeps, snapshots or real disk.
+
+The deterministic Application implements the trusted CommittedMachine order/retry
+contract. Movement additionally consumes a **private fixture readiness envelope**
+inside the driver/application harness: the public numeric field cannot mint it,
+exact command bytes remain unchanged, and the witness must match the preceding
+application cut. Public apply without that witness refuses Move. This is not a
+production movement port or proof of signed readiness; its boundary and call path
+are in scope for the Code review.
+
+The implementer added five readiness/validation/counterexample specifications and
+observed **17 behavioral assertion failures** against the refusing application
+before implementation. Two private codec tests also observed assertion RED against
+an empty refusing codec. They now pass. Lane-owner rerun confirms **21 passing
+tests**: 2 API consumer/type witnesses, 2 private-codec tests, 17 behavioral tests.
+
+| Qualified slice | Concrete assertions |
+| --- | --- |
+| RA-002 partial | Competing known-scope creates produce one name binding/conflict; leader change preserves home, generation and payload. |
+| RA-003/004 partial | Memory quorum/application before receipt; isolated minority no outcome; dropped reply plus failover/exact retry returns original receipt/index; changed bytes and deliberate Create-ID reuse refuse without overwriting history; principal namespaces independent. |
+| RA-005 partial | Majority move increments generation; delayed old-generation command refuses; pre-cut exact retry preserves outcome; missing successor suffix refuses then real catch-up permits; forged future/current cut cannot mint readiness; queued intervening write invalidates captured readiness. |
+| RA-006 partial | Ordered fixture revocation denies delayed new mutation, permits authorized historical disclosure, then withholds reply/outcome after disclosure revocation. Wrong scope, incarnation, generation, home, policy frontier and unauthorized fixture commands refuse. |
+| RA-008/009 partial | Opaque external effect refuses; retirement fences new Create/Mutate/Move, retaining exact historical Create outcome. No real sink or durable tombstone claim. |
+| RA-010/011 partial | Two voters cannot progress after either isolation; application handles noops/exact replay and rejects gaps/conflicting replay. This is not restart/disk/configuration qualification. |
+| Counterexample | Executable check-then-local-append mutant admits old-generation work after a move; the real ordered path rejects the analogous delayed work. It is a test-only mutant, not a runtime mutation mode. |
+| Private codec | Complete commands/readiness round-trip; truncated, trailing, unknown-version/action and invalid boolean frames refuse decode. Invalid committed fixture bytes stop the harness, not recovery/quarantine qualification. |
+
+No full RA requirement is closed by these partial witnesses. Still unqualified:
+authenticated bootstrap/conflicting mapping/private scope; metadata-only witnesses;
+remote revocation freshness; bounded retention; separate BeginMove/Activate;
+actual disk/restart/power loss; automatic elections and dependency RNG compliance;
+learners/joint membership/snapshot/compaction; linearizable reads; genuine Glade
+crypto/receipts, source/effect sinks and legacy activation/rollback.
+
+## Verification and measured feedback
+
+Commands from workspace root (PROTOC as in README):
+
+```sh
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml
+proofs/raft-adoption/check.sh
+cargo clippy --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml --all-targets -- -D warnings
+```
+
+All pass in the lane-owner run. The local architecture check covers two classified
+libraries, declared manifest edges/traits/targets; the process-global check scans
+5 owned Rust sources with **0 allowlist entries**; token checking/formatting pass.
+No dependency allowlist, classification or process-global exception was loosened.
+These checks do not certify transitive dependency code; the documented raft RNG
+issue remains open. No unrelated member suite was required for this independent
+proof with no production consumer edits.
+
+Measured on Apple M3 Pro arm64, macOS26.6.2, Rust1.96.0
+`ac68faa20 2026-05-25`; monotonic Python perf_counter around subprocesses:
+
+| Measurement | Wall seconds | Profile |
+| --- | ---: | --- |
+| Cold target build plus tests | 9.349 | New empty CARGO_TARGET_DIR; existing downloaded registry and OS caches; locked/offline. Not a clean-machine/network measurement. |
+| Warm Cargo build plus tests | 0.181 | Existing proof target, same test command. |
+| Prebuilt test execution | 0.011 | Four executable test targets, sequential `--quiet`, including zero-test API unit target; no compilation/doc-test build. |
+
+The cold command adds CARGO_TARGET_DIR pointing to a fresh temporary directory;
+prebuilt paths were obtained via the same Cargo test command with
+`--no-run --message-format=json`. These are single measurements of the bounded
+fixture, not production latency/throughput or a feedback budget guarantee.

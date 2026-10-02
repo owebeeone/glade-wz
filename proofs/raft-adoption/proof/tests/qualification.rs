@@ -352,9 +352,13 @@ fn ra010_two_voters_cannot_progress_after_either_loss() {
 #[test]
 fn ra003_ra011_application_orders_noops_replay_and_rejects_gaps() {
     let mut application = Application::new();
-    assert_eq!(application.apply(1, None), Ok(None));
+    committed_machine_ordering(&mut application);
+}
+
+fn committed_machine_ordering(machine: &mut dyn CommittedMachine) {
+    assert_eq!(machine.apply(1, None), Ok(None));
     let command = create(1);
-    let original = application.apply(2, Some(command));
+    let original = machine.apply(2, Some(command));
     assert!(matches!(
         original,
         Ok(Some(Receipt {
@@ -362,11 +366,11 @@ fn ra003_ra011_application_orders_noops_replay_and_rejects_gaps() {
             ..
         }))
     ));
-    assert_eq!(application.apply(2, Some(command)), original);
-    assert_eq!(application.lookup(command.request), original.unwrap());
-    assert_eq!(application.apply(3, None), Ok(None));
+    assert_eq!(machine.apply(2, Some(command)), original);
+    assert_eq!(machine.lookup(command.request), original.unwrap());
+    assert_eq!(machine.apply(3, None), Ok(None));
     assert_eq!(
-        application.apply(5, None),
+        machine.apply(5, None),
         Err(ApplyError::IndexGap {
             expected: 4,
             received: 5
@@ -379,7 +383,214 @@ fn ra003_ra011_application_orders_noops_replay_and_rejects_gaps() {
         payload: 12,
     };
     assert_eq!(
-        application.apply(2, Some(different)),
+        machine.apply(2, Some(different)),
         Err(ApplyError::ConflictingReplay { index: 2 })
+    );
+}
+
+#[test]
+fn ra005_public_move_frontier_cannot_forge_verified_readiness() {
+    let mut cluster = cluster();
+    accepted(committed(&mut cluster, 1, create(1)));
+    let forged = Command {
+        request: request(1, 2),
+        generation: 1,
+        home: 1,
+        policy_frontier: 0,
+        action: Action::Move {
+            home: 2,
+            successor_applied: Some(u64::MAX),
+        },
+    };
+    assert_eq!(
+        committed(&mut cluster, 1, forged).outcome,
+        Outcome::Rejected(Rejection::IncompleteSuccessor)
+    );
+    assert_eq!(cluster.resource(1, 100).unwrap().home, 1);
+    // A direct trusted-log caller also cannot manufacture the private witness.
+    let mut application = Application::new();
+    assert!(matches!(
+        application.apply(1, Some(create(1))),
+        Ok(Some(Receipt {
+            outcome: Outcome::Accepted(_),
+            ..
+        }))
+    ));
+    assert!(matches!(
+        application.apply(2, Some(forged)),
+        Ok(Some(Receipt {
+            outcome: Outcome::Rejected(Rejection::IncompleteSuccessor),
+            ..
+        }))
+    ));
+}
+
+#[test]
+fn ra005_readiness_is_revalidated_at_cut_after_queued_intervening_mutation() {
+    let mut cluster = cluster();
+    accepted(committed(&mut cluster, 1, create(1)));
+    let stale = cluster.move_command(request(1, 2), 1, 1, 2);
+    let intervening = mutate(1, 23);
+    cluster.propose(1, intervening);
+    cluster.propose(1, stale);
+    cluster.drain();
+    accepted(cluster.reply(1, intervening).unwrap());
+    assert_eq!(
+        cluster.reply(1, stale).unwrap().outcome,
+        Outcome::Rejected(Rejection::IncompleteSuccessor)
+    );
+    assert_eq!(
+        (
+            cluster.resource(1, 100).unwrap().home,
+            cluster.resource(1, 100).unwrap().payload
+        ),
+        (1, 23)
+    );
+}
+
+#[test]
+fn ra005_lagging_successor_cannot_be_activated_by_guessing_the_current_cut() {
+    let mut cluster = cluster();
+    accepted(committed(&mut cluster, 1, create(1)));
+    cluster.isolate(3);
+    accepted(committed(&mut cluster, 1, mutate(1, 23)));
+    assert!(cluster.applied(3) < cluster.applied(1));
+    let forged = Command {
+        request: request(1, 2),
+        generation: 1,
+        home: 1,
+        policy_frontier: 0,
+        action: Action::Move {
+            home: 3,
+            successor_applied: Some(cluster.applied(1)),
+        },
+    };
+    assert_eq!(
+        committed(&mut cluster, 1, forged).outcome,
+        Outcome::Rejected(Rejection::IncompleteSuccessor)
+    );
+    assert_eq!(cluster.resource(1, 100).unwrap().home, 1);
+}
+
+#[test]
+fn ra005_ra006_application_validates_identity_generation_home_policy_and_authority() {
+    let base = mutate(2, 99);
+    let mut incarnation = base;
+    incarnation.request.incarnation = 2;
+    let mut missing = base;
+    missing.request.resource = 999;
+    let denied_create = Command {
+        request: RequestId {
+            resource: 200,
+            ..base.request
+        },
+        generation: 0,
+        home: 0,
+        action: Action::Create {
+            name: 50,
+            home: 1,
+            payload: 99,
+        },
+        ..base
+    };
+    let cases = [
+        (
+            Command {
+                generation: 2,
+                ..base
+            },
+            Rejection::StaleGeneration,
+        ),
+        (Command { home: 2, ..base }, Rejection::WrongHome),
+        (
+            Command {
+                policy_frontier: 99,
+                ..base
+            },
+            Rejection::PolicyFrontier,
+        ),
+        (incarnation, Rejection::IncarnationConflict),
+        (missing, Rejection::UnknownResource),
+        (denied_create, Rejection::Unauthorized),
+        (
+            Command {
+                action: Action::SetPermission {
+                    principal: 10,
+                    write: true,
+                    disclose: true,
+                },
+                ..base
+            },
+            Rejection::Unauthorized,
+        ),
+    ];
+    for (command, reason) in cases {
+        let mut application = Application::new();
+        let original = application.apply(1, Some(create(1))).unwrap().unwrap();
+        accepted(original);
+        assert_eq!(
+            application
+                .apply(2, Some(command))
+                .unwrap()
+                .unwrap()
+                .outcome,
+            Outcome::Rejected(reason)
+        );
+        assert_eq!(application.lookup(original.request), Some(original));
+        assert_eq!(
+            application
+                .apply(3, Some(mutate(3, 12)))
+                .unwrap()
+                .unwrap()
+                .outcome,
+            Outcome::Accepted(glade_raft_adoption_api::Resource {
+                id: 100,
+                name: 40,
+                incarnation: 1,
+                generation: 1,
+                home: 1,
+                payload: 12,
+                retired: false
+            })
+        );
+    }
+}
+
+#[test]
+fn ra005_check_then_local_append_mutant_violates_the_ordered_fence() {
+    // Test-only mutant: cache admission, move, then append without revalidation.
+    let delayed = mutate(1, 99);
+    let mut unsafe_resource = glade_raft_adoption_api::Resource {
+        id: 100,
+        name: 40,
+        incarnation: 1,
+        generation: 1,
+        home: 1,
+        payload: 11,
+        retired: false,
+    };
+    let admitted =
+        delayed.home == unsafe_resource.home && delayed.generation == unsafe_resource.generation;
+    unsafe_resource.home = 2;
+    unsafe_resource.generation = 2;
+    if admitted {
+        unsafe_resource.payload = 99;
+    }
+    assert_eq!(
+        unsafe_resource.payload, 99,
+        "mutant counterexample must exercise the unsafe append"
+    );
+    let mut cluster = cluster();
+    accepted(committed(&mut cluster, 1, create(1)));
+    let moved = cluster.move_command(request(1, 2), 1, 1, 2);
+    accepted(committed(&mut cluster, 1, moved));
+    assert_eq!(
+        committed(&mut cluster, 1, delayed).outcome,
+        Outcome::Rejected(Rejection::StaleGeneration)
+    );
+    assert_eq!(cluster.resource(1, 100).unwrap().payload, 11);
+    assert_ne!(
+        unsafe_resource.payload,
+        cluster.resource(1, 100).unwrap().payload
     );
 }

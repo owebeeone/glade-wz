@@ -31,3 +31,10 @@ rejects all conditional attributes in this fixture; rustfmt parses braced Rust
 control flow. Disabled branches are inspected without compiling each platform.
 Dependency source compliance is separately audited: raft-rs's timeout RNG remains
 an open production gate. No upstream or legacy cfg migration is claimed.
+
+Results: [qualification evidence](../../dev-docs/GladeRaftQualificationEvidence.md)
+and [review ledger](../../dev-docs/GladeRaftQualification-ReviewCycle.md).
+Movement readiness is a private trusted fixture envelope retained in the log;
+public apply without it refuses movement. Production ports/certificates remain
+unqualified. The public resource observer is trusted test inspection, not a client
+read endpoint; local reply/outcome accessors enforce fixture disclosure permission.

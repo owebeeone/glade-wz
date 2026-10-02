@@ -1,6 +1,7 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **staged qualification plan; no passing results asserted**.
+Date: 2026-10-03. Status: **Q0 accepted; Q1a implementation pending Code/State acceptance**.
+Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
 Raft is the selected qualification direction; production library, availability,
