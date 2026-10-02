@@ -70,6 +70,17 @@ G* design work.
 
 ## Notes
 
+GDL-051 — Owner clarification and direction, 2026-10-03: the Chubby-like
+coordination question remains open. GDL-050 authorized development of the H1
+candidate and multiwriter evaluation; it did not accept home-dependent outage
+behavior or select H1 for production. Proceed with the documented
+[ownership-mechanism evaluation plan](GladeOwnershipMechanismEvaluationPlan.md)
+and equal comparison of stable binding, cooperative transfer, consensus-ordered
+operations, consensus-granted leases and common resource arbitration. Required
+availability, independent authority/data domains, effect enforcement and
+acknowledgement guarantees remain selection inputs. Review GO accepts decision
+evidence only; implementation and canonical amendments require a selected profile.
+
 GDL-050 — Owner direction, 2026-10-03: proceed with the recommended **H1 stable-home
 design** and the suggested **multiwriter settings evaluation**, following the
 [two-agent comparison](GladeResourceHomeComparison.md). The
