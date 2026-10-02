@@ -14,6 +14,83 @@ pub enum Proposal {
     Unknown,
 }
 
+mod tests {
+    #[test]
+    fn public_replay_of_driver_attested_move_recovers_original_receipt() {
+        use super::Cluster;
+        use glade_raft_adoption_api::{
+            Action, ApplyError, Command, CommittedMachine, Outcome, Rejection, RequestId,
+        };
+
+        let request = |sequence| RequestId {
+            scope: 7,
+            resource: 100,
+            incarnation: 1,
+            principal: 1,
+            sequence,
+        };
+        let mut cluster = Cluster::new(&[1, 2, 3]);
+        cluster.campaign(1);
+        cluster.drain();
+        let create = Command {
+            request: request(1),
+            generation: 0,
+            home: 0,
+            policy_frontier: 0,
+            action: Action::Create {
+                name: 40,
+                home: 1,
+                payload: 11,
+            },
+        };
+        cluster.propose(1, create);
+        cluster.drain();
+        let moved = cluster.move_command(request(2), 1, 1, 2);
+        cluster.propose(1, moved);
+        cluster.drain();
+        let original = cluster.reply(1, moved).unwrap();
+        assert!(
+            matches!(original.outcome, Outcome::Accepted(resource) if resource.home == 2 && resource.generation == 2)
+        );
+
+        let machine: &mut dyn CommittedMachine =
+            &mut cluster.voters.get_mut(&1).unwrap().application;
+        assert_eq!(
+            machine.apply(original.index, Some(moved)),
+            Ok(Some(original))
+        );
+        let changed = Command {
+            action: Action::Mutate { payload: 99 },
+            ..moved
+        };
+        assert_eq!(
+            machine.apply(original.index, Some(changed)),
+            Err(ApplyError::ConflictingReplay {
+                index: original.index
+            })
+        );
+        let unwitnessed = Command {
+            request: request(3),
+            generation: 2,
+            home: 2,
+            policy_frontier: 0,
+            action: Action::Move {
+                home: 3,
+                successor_applied: Some(original.index),
+            },
+        };
+        let refused = machine
+            .apply(original.index + 1, Some(unwitnessed))
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            refused.outcome,
+            Outcome::Rejected(Rejection::IncompleteSuccessor)
+        );
+        assert_eq!(machine.lookup(moved.request), Some(original));
+    }
+}
+
 struct Voter {
     raft: RawNode<MemStorage>,
     application: Application,

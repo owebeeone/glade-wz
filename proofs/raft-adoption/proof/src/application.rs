@@ -294,6 +294,15 @@ impl CommittedMachine for Application {
         index: u64,
         command: Option<Command>,
     ) -> Result<Option<Receipt>, ApplyError> {
+        // The public boundary replays canonical commands, without the driver's
+        // private envelope. Already applied evidence is retained in history;
+        // replay neither remints nor needs to resupply readiness.
+        if let Some(previous) = self.history.get(&index) {
+            if previous.command != command {
+                return Err(ApplyError::ConflictingReplay { index });
+            }
+            return Ok(previous.receipt);
+        }
         self.apply_committed(index, command, None)
     }
 

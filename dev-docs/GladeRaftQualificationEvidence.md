@@ -67,7 +67,7 @@ The deterministic Application implements the trusted CommittedMachine order/retr
 contract. Movement additionally consumes a **private fixture readiness envelope**
 inside the driver/application harness: the public numeric field cannot mint it,
 exact command bytes remain unchanged, and the witness must match the preceding
-application cut. Public apply without that witness refuses Move. This is not a
+application cut. First-time public apply without that witness refuses Move. This is not a
 production movement port or proof of signed readiness; its boundary and call path
 are in scope for the Code review.
 
@@ -124,5 +124,26 @@ Measured on Apple M3 Pro arm64, macOS26.6.2, Rust1.96.0
 
 The cold command adds CARGO_TARGET_DIR pointing to a fresh temporary directory;
 prebuilt paths were obtained via the same Cargo test command with
-`--no-run --message-format=json`. These are single measurements of the bounded
+`--no-run --message-format=json`. These are single measurements at the pre-remediation 21-test revision
+`5e81483f80b23a64c7914986fc4d31e1c3d9fd4f` of the bounded
 fixture, not production latency/throughput or a feedback budget guarantee.
+
+## Q1a remediation evidence
+
+At root `5e81483f80b23a64c7914986fc4d31e1c3d9fd4f`, Code found P2-1:
+public replay of a driver-attested Move compared absent private readiness against
+the retained envelope, causing ConflictingReplay for an exact public command.
+State independently returned GO; combined gate remained NO-GO.
+
+The new `cluster::tests::public_replay_of_driver_attested_move_recovers_original_receipt`
+first failed with `Err(ConflictingReplay { index: 3 })` versus the original accepted
+Move receipt. The minimal public adapter now recovers existing-index canonical
+command replay from retained history. It still rejects changed commands; new
+indexes still use the witness-free public path and refuse unwitnessed Move.
+Private complete-envelope conflicting-replay checks are unchanged.
+
+Lane-owner rerun: **22 tests pass** (2 API, 2 codec, 1 actual-driver/public-interface
+replay regression, 17 qualification cases). Clippy and local architecture/source/
+process-global/format gates pass. Signatures, dependencies, readiness verification,
+Ready ordering and all unqualified profiles are unchanged. Reviewer closure remains
+pending until focused re-verdicts return on the revised exact tuple.

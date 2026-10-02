@@ -39,3 +39,22 @@ specifications, meaningful additional failure/counterexample witnesses and the
 local lint/architecture/process-global gates. A fresh peer-blind Code/State gate
 will review an exact implementation checkpoint. Memory persistence and trusted
 numeric evidence remain explicit; Q2–Q4 remain open.
+
+## Q1a initial implementation review
+
+Source root `5e81483f80b23a64c7914986fc4d31e1c3d9fd4f`, same member/Gyld
+pins: fresh [Code](GladeRaftQ1a-ReviewCode.md) returned NO-GO with one P2;
+[State](GladeRaftQ1a-ReviewState.md) independently returned GO. Code alone found
+an exact public replay mismatch after driver-attested movement. The existing
+21-test GREEN did not cover that interface composition. Combined gate was NO-GO.
+
+[Remediation1](GladeRaftQ1a-RemPlan-1.md) adds an observed-RED actual-driver/dyn-trait
+regression and restores retained canonical replay without weakening new-movement
+readiness. Final suite is 22 tests; review closure is still pending. No shared
+interface, authority or persistence boundary changed; both original reviewers will
+return focused verdicts on the same revised tuple. One remediation round is used.
+
+Standing user control-flow/cfg instructions supplemented both implementation
+review prompts verbatim, before verdicts; the source tuple did not move. They
+require compound control-flow bodies and explicit conditional compilation boundaries,
+including disabled branches. No broader upstream/legacy migration is claimed.
