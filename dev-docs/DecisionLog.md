@@ -70,6 +70,18 @@ G* design work.
 
 ## Notes
 
+GDL-050 — Owner direction, 2026-10-03: proceed with the recommended **H1 stable-home
+design** and the suggested **multiwriter settings evaluation**, following the
+[two-agent comparison](GladeResourceHomeComparison.md). The
+[H1 design](GladeStableHomeDesign.md) specifies dynamic share creation, identity,
+serialized naming/retry and admission under its declared home-outage profile;
+the [multiwriter evaluation](GladeMultiwriterSettingsEvaluation.md) investigates
+mergeable preferences separately from grants, SWMR and effects. This authorizes
+design/evaluation and their review, not production implementation, H2/H3 adoption,
+wire/API ratification, canonical-contract replacement or deployment. Metadata
+durability, migration/activation, concrete authorization/schema mappings and the
+preference merge/receipt profile remain design/contract gates.
+
 GDL-049 — Owner direction, 2026-09-12: use **sdax-rs** as Glade's async orchestration
 manager. sdax-rs is the owner's Rust declarative async lifecycle library (crates `sdax`
 std-only core, `sdax-tokio` runtime adapter, `sdax-testkit`; stages 0–3 landed with
