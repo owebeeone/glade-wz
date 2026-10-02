@@ -44,7 +44,7 @@ sources below use these exact commits. Working-tree changes are out of scope.
 | [GladeWorkspaceDirectory.md §4 and WD-8](glade/GladeWorkspaceDirectory.md) | A physical working copy is fenced by its local lock; claims route traffic. Home-node availability is a role. The historical mechanism is not general multi-machine mutual exclusion. |
 | [GladeDiscoveryModel.md §0/§3](glade/GladeDiscoveryModel.md) and [GladeBuyBuildMatrix.md D-06/R7/R9/R16](GladeBuyBuildMatrix.md) | Discovery is a local fold of replicated records; consensus discovery was excluded. Some design prose is historical; existing code is not inferred from it. |
 | [GladeSubstrateV1.md §6](../glade/dev-docs/GladeSubstrateV1.md), Glade `90dc1a60981185fa26ae5bfafbbb5377c12a413b` | Holder-directed client writes and the limited meaning of `Ok`; no automatic data-transfer guarantee. |
-| [GladeCrossNodeWritesPlan.md](../glade/dev-docs/GladeCrossNodeWritesPlan.md), same Glade commit | Equal-epoch claim ranking converges on one routing answer once records meet; it is not partition-safe acquisition or data repair. |
+| [GladeCrossNodeWritesPlan.md](../glade/dev-docs/GladeCrossNodeWritesPlan.md), same Glade commit | Equal-epoch ranking agrees for the same eligible live claims at a common evaluation time. Lease filtering remains reader-relative, so identical replicated records can yield different routing answers; ranking is not partition-safe acquisition or data repair. |
 | [RegistryContractDraft.md](../glade-discover/dev-docs/RegistryContractDraft.md), discovery `52ea2d118f45d9e7c3d9a789310dd5d669958851` | Local acceptance, exact retry, partial local resolution; candidate placement is not leadership or fencing. These are draft contracts, not proof of a production adapter. |
 | [LibraryBoundaryAndTestingPolicy.md](LibraryBoundaryAndTestingPolicy.md) and [GladePackageArchitecture.md](GladePackageArchitecture.md) | Meaningful replaceable boundaries, pure protocol/state roles, TDD, deterministic fast tests and affected consumers. |
 
@@ -191,8 +191,9 @@ No consensus library or service is selected by this packet.
 
 H1/H2 are only eligible if a subsequent design proves their named serialization
 and enforcement points. H3 is only eligible if quorum ownership and data safety
-are separately specified. An eventually convergent claim fold is a routing
-baseline, not a fourth exclusive-ownership protocol.
+are separately specified. A deterministic claim fold over the same eligible
+live records is a routing baseline, not a fourth exclusive-ownership protocol;
+different lease-expiry evaluations can still yield different answers.
 
 ## 6. Shared adversarial journeys and future closure tests
 
