@@ -371,3 +371,27 @@ All six current P2 IDs remain open pending independent Code/State re-verdicts on
 the exact same tuple. This is remediation round2, with one architectural root
 retained. No successful kernel work, push or activation is accepted. During
 review only generated prompts and verbatim report outputs may be added.
+
+#### Remediation 2 review: prior six closed, one validator blocker remains
+
+Exact tuple: root `fb6d69ff5153865266782f0b5c11d7a00086552c`, Glade
+`c6c4239beecb129aa0585fe74006cc287dff3b87`, unchanged other members.
+Code returned GO, State returned NO-GO. Both independently closed all their
+Code-2/State-2 findings and confirmed that unchanged boundaries justify originating
+context retention. State found distinct Committed attempts at one application
+revision accepted by recovery. This is one new **non-architectural** validator
+root; architectural count remains one. No blind convergence on that finding.
+
+| Evidence | SHA256 |
+| --- | --- |
+| [Code prompt3](GladeIndependentCrdtStorageAttemptContract-PromptCode-3.md) | `4d26e6c75af2ec5f218c59cc1ec725737dc619c173f28f8664bf21919ae54e04` |
+| [State prompt3](GladeIndependentCrdtStorageAttemptContract-PromptState-3.md) | `2232e54f0317f15eec0411b1b680be71146a6cfff024afa7ea1123eecd1fe415` |
+| [Code re-verdict3](GladeIndependentCrdtStorageAttemptContract-ReviewCode-3.md) | `69d6cbed024f041edcfb7f1a88fb94767c7ae193a9211f1159b077d3ae815f1e` |
+| [State re-verdict3](GladeIndependentCrdtStorageAttemptContract-ReviewState-3.md) | `b3a7aa9d3ee42ea0e046129393943d8364c52d15b1d25657557e1afeae0bd7a3` |
+
+[RemPlan3](GladeIndependentCrdtStorageAttemptContract-RemPlan-3.md) confines the
+third correction to that non-architectural validator root under the skill's
+explicit exception. The cap is not reset; any architectural root in the third
+round MUST stop. State P2-1 remains open, Code GO is prior evidence only until
+both axes attest the final same tuple. Kernel remains refusing; no push or
+activation accepted.
