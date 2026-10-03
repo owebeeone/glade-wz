@@ -1,6 +1,11 @@
 # Glade Raft first production profile — decisions for the owner
 
 Date: 2026-10-03. Status: **proposal; no owner ratification or activation**.
+Proposal reviewed at root `4702e283e1adac5863c5d542e57a9ceea9454541`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, with
+[Consistency](GladeRaftProductionProfileDecisions-ReviewConsistency.md)/
+[Safety](GladeRaftProductionProfileDecisions-ReviewSafety.md) GO/GO, no findings.
+This accepts fitness for owner selection, not the recommended choices themselves.
 This packet makes the remaining decisions in [Q4](GladeRaftProductionIntegrationPlan.md)
 concrete. Raft is already the algorithm direction. Carrier selection follows the
 separate comparison; these recommendations do not select a crate.
@@ -71,4 +76,3 @@ comparison contracts/experiments. Neither activates or changes the desk.
 - [Authorization model](glade/GladeAuthzModel.md), §§3a/3b/4a/7a/7b: creation roots, ancestry, authenticated private self, operator placement and session strength.
 - [Boundary audit](GladeRaftQ4-BoundaryAudit.md), canonical settings, actual writers, existing authentication and receipt gaps. This is a fact map with declared live-source limitations, not acceptance evidence.
 - [Carrier audit](GladeRaftQ4-CarrierAudit.md), unqualified instance entropy/time seams and application-owned outcomes.
-

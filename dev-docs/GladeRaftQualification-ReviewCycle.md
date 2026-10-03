@@ -542,3 +542,18 @@ escaped-defect claim. No baseline/policy/allowlist was relaxed. The accepted cod
 was already committed in the local clone; this acceptance filing records the
 verdicts without changing source. It does not merge/push, seal live storage,
 rebuild the desk or alter the two-node development launcher.
+
+## Q4 semantic production-profile proposal reviewed
+
+Object [production-profile decisions](GladeRaftProductionProfileDecisions.md),
+root `4702e283e1adac5863c5d542e57a9ceea9454541`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, unchanged discovery/external Gyld
+pins from Q4-A, received fresh peer-blind
+[Consistency GO](GladeRaftProductionProfileDecisions-ReviewConsistency.md)/
+[Safety GO](GladeRaftProductionProfileDecisions-ReviewSafety.md), no P0–P3 findings,
+zero remediation rounds. Reports are filed verbatim. This accepts the proposal's
+fitness for owner selection only; no semantic choice, canonical amendment,
+production library, deployment, custody, retention budget, baseline or activation
+is ratified. Q4-C needs owner selection and then exact amendment/allocation and
+compiling consumer gates before implementation. B0 private source/election
+contract drafting continues independently, with no engine selected.
