@@ -92,6 +92,17 @@ The following concrete supplements to draft §3 are proposed for review:
   No production identity/bootstrap authority follows from numeric group 7/voters
   1–3 or the fixture authorization flag. This API supplies no executable validator.
 
+A live current caller MUST be able to select Timeout/Cancel for its exact issued
+pending RPC independently of whether the stored remote peer is live. That action
+removes only its local pending ownership and settles the response with TimedOut
+or Cancelled; a saved wake marks eligibility, with no inline future execution.
+Foreign, forged, stale-caller and terminal RPC controls MUST refuse unchanged.
+Respond/Resolve and message delivery MUST still validate live remote scope,
+incarnation and issued correlation; local termination grants no stale delivery
+rights. A request's delivery state (held/consumed/dropped) does not transfer RPC
+termination ownership to the peer. These lifecycle rules are the remediation 2
+clarification of the supplied pending-future boundary, not new public signatures.
+
 Tokens bind carrier/session/group/node/incarnation/domain and sequence. Public
 values are **inputs**, not unforgeable capabilities; future drivers/endpoints MUST
 check their live issued registries. Foreign/stale/consumed controls MUST refuse
@@ -269,7 +280,7 @@ cost are still absent. No B0/B1/B2/B3 exit is closed.
 The [merged plan](GladeRaftB0-RemPlan-1.md) maps all seven findings in
 [Consistency](GladeRaftB0-ReviewConsistency.md) and
 [Safety](GladeRaftB0-ReviewSafety.md) to four root causes. Three converged blindly.
-This one patch enforces the existing public lifecycle contract; **no public API,
+This first patch intended to enforce the existing lifecycle contract; **no public API,
 library role, dependency edge, engine, source adaptation or production code changed**.
 The architecture proposal only adds the two focused conformance targets. No
 allowlist entry or classification was relaxed. Original finders MUST independently
@@ -278,7 +289,7 @@ verify their counterexamples on a settled revision; this drafter closes no findi
 | Original IDs | Correction and executable coverage |
 | --- | --- |
 | Consistency P2-1; Safety P2-1 | B0-02/03 use a caller-owned access/state oracle. OpenRaft MUST retain constructor-only entropy access; post-constructor poison remains healthy with no attempted draw. A source/work-only once-sampling witness passes and an extra-runtime-draw mutant is rejected. raft-rs isolates the actual established leader and withholds inbound quorum activity to reach `tick_heartbeat`/MsgCheckQuorum -> `become_follower` -> `reset` (raft.rs 1095, 1126, 986), rather than assuming a follower pre-campaign resets. Both constructors retain exact entropy/clock/register failures. Runtime clock/task faults target actual owned advance/poll. Runtime Register failures are required only at an observed registration attempt; no attempt MUST mean unchanged footprint and healthy state. A once-registered persistent-future witness covers no artificial registrations; an attempted-registration/no-failure mutant is rejected. Unknown runtime errors and inventory failures are asserted, never ignored. |
-| Consistency P2-2; Safety P2-2 | One network-owned current-scope/stopped registry governs all separately obtained endpoints. Emit/request/take/ordinary controls/respond/Resolve/Timeout/Cancel validate live issuer and destination plus actual registered message/RPC ownership before sequence/queue/RPC mutation. Stop is shared and terminal; replacement invalidates old handles/tokens. Seven endpoint tests cover no-mutation refusals, no burned sequence, stopped peers/callers, stale RPC ownership and valid replacement participation; four existing correlation tests stay GREEN. |
+| Consistency P2-2; Safety P2-2 | One network-owned current-scope/stopped registry governs all separately obtained endpoints. Emit/request/take/ordinary controls/respond/Resolve validate live issuer and destination plus actual registered message/RPC ownership before sequence/queue/RPC mutation. The first patch wrongly applied remote liveness to Timeout/Cancel too; remediation 2 below restores caller-owned local termination. Stop is shared and terminal; replacement invalidates old handles/tokens. Seven endpoint tests cover no-mutation refusals, no burned sequence, stopped peers/callers, stale RPC ownership and valid replacement participation; four existing correlation tests stay GREEN. |
 | Safety P2-3 | Selected future metadata remains scheduler-visible. A stop or cancellation during poll is reconciled before reinsertion, leaves terminal inventory and drops the selected future once. A saved wake cannot revive it. |
 | Consistency P2-3; Safety P2-4 | Cancel/stop detach owned futures and establish terminal state under the scheduler borrow; arbitrary future Drop runs after release. Register binds the owned future before its borrow so wrong-domain/sequence-overflow rejection releases it first. Reentrant parent/child cleanup, exact-once drops, rejected registrations and completed-future cleanup are executable. RPC mutation/state settlement also releases both borrows before saved wake; existing RPC tests cover this scoped refactor. |
 
@@ -293,7 +304,7 @@ RED evidence. Original logs and `files.sha256` remain unchanged. GREEN logs and
 [`rem1-final-measurements.json`](../proofs/raft-carrier-comparison/evidence/rem1-final-measurements.json)
 record the current commands, machine/toolchain and observed status.
 
-Current result: **31 spec/unit/fixture/oracle tests GREEN plus 4 API/provider
+Remediation 1 result: **31 spec/unit/fixture/oracle tests GREEN plus 4 API/provider
 compiler tests GREEN = 35 total; all 20 ordinary B0 provider tests remain RED,
 zero ignored/filtered**. The evidence gate verifies the precise 20-test failure
 summary, preventing compiler failure or a changed selection from masquerading as
@@ -318,10 +329,84 @@ filed the reports/plan at documentary root
 this drafter. This uses one architectural remediation round; no B0/B1/B2/B3,
 source adaptation, canonical profile or production exit is accepted.
 
-Final remediation measurements on macOS 26.6.2/arm64, Rust/Cargo 1.96.0:
+Remediation 1 measurements on macOS 26.6.2/arm64, Rust/Cargo 1.96.0:
 B0 execution-only **0.013763 s**, warm build-plus-RED **0.033829 s**, fresh-target
 B0 test build **1.018200 s**, structural gate **1.480033 s**, all-target denied-warning
 Clippy **0.296296 s**. All are observations of this std-only scaffold, not engine
 performance, accepted budgets or qualification. The source gate inspected all
 **23 Rust files**; the global guard inspected **13 normal-source files**, with
 **zero allowlisted items**. All five architecture negative fixtures were rejected.
+
+
+## Remediation 2: caller-owned RPC termination, acceptance pending
+
+The originating [Consistency](GladeRaftB0-ReviewConsistency-1.md) and
+[Safety](GladeRaftB0-ReviewSafety-1.md) reviewers closed all initial findings at
+root `256be2dd0fd652b34dfffa753fcba481f5fb842b`, then independently found the
+same new architectural root cause: the first patch conflated remote delivery
+validity with local RPC termination ownership. **Consistency P2-4 and Safety
+P2-5 remain open for finder verification**, controlled by
+[remediation plan 2](GladeRaftB0-RemPlan-2.md). This is the second bounded
+architectural remediation; no third architectural patch is authorized. Fresh
+peer-blind full Consistency/Safety review is required in addition to original-
+finder counterexample closure. This drafter grants no acceptance or self-closure.
+
+The minimal fixture correction separates `Network::owned_rpc` (exact issued
+pending registry, caller identity, original request linkage and terminal state)
+from `Network::rpc` (that ownership plus live remote-token validity). Timeout/Cancel
+use the former after verifying the endpoint is current/live and RpcId belongs to
+it. Respond/Resolve retain the latter; ordinary token controls/take retain the
+same strict checks. The stored peer identity and immutable request bytes remain
+unchanged. Settlement still removes local ownership and releases all borrows
+before saved wake. No consensus/source behavior, public API, library classification,
+dependency allowlist, package manifest, lockfile, provider or B0 case label changes.
+The comparison contract already requires explicit pending RPC/timeout resolution;
+its text needed no change. The two prior tests asserting peer-liveness refusal
+were corrected rather than retained as a policy.
+
+| Required closure surface | Executable evidence |
+| --- | --- |
+| Held/consumed request × peer stop/replacement × Timeout/Cancel | Eight ordinary unit tests in `spec/src/fixture/transport/termination.rs`, visible in the normal spec `--lib` command. Each actual response is polled Pending before the fault and local control. Only the selected RPC leaves caller inventory; unrelated caller and peer ownership remain unchanged. |
+| Wake and terminal result | Control leaves the observing future unexecuted, marks work Runnable, then the next selected poll returns Complete and records precisely TimedOut/Cancelled once. |
+| Immutable protocol and remote state | Read-only private byte snapshots compare every original issued message before/after lifecycle and local control. Peer/replacement message, pending RPC and work inventories are unchanged by local control. The caller continues valid traffic to another live endpoint. |
+| Negative ownership and late reply | Foreign and forged controls, a replaced caller with an actual Pending future, repeated terminal controls, stale remote replies, and a still-live peer's late reply all refuse without consuming queues or settling unrelated RPCs. |
+| Exact defect mutant | `check-termination-mutant.py` copies the std-only fixture under ignored target, changes only Timeout/Cancel back to `network.rpc`, and verifies all eight matrix assertions fail after compilation while six other unit checks pass, zero ignored/filtered. No engine mutation is claimed. |
+
+[`rem2-red.log`](../proofs/raft-carrier-comparison/evidence/rem2-red.log) records
+compilation followed by **10 behavioral failures and 10 passes**, zero ignored/
+filtered, before the validator correction: all eight matrix cells and the two
+corrected prior expectations fail. The Pending assertion executes before each
+matrix failure. The initial
+[`rem2-green.log`](../proofs/raft-carrier-comparison/evidence/rem2-green.log)
+records **20 passing focused tests** after correction. Two additional GREEN
+edge witnesses (replaced-caller Pending future and live-peer late reply) are not
+claimed as observed RED. Original/remediation-1 logs and inventories are preserved.
+
+Current result: **41 spec/unit/compiler/fixture/oracle tests GREEN plus 4 API/
+provider compiler witnesses = 45 GREEN total**. The ten unchanged cases for each
+refusing provider remain **20 ordinary behavioral RED assertions**, zero passing,
+ignored or filtered; no refusal is reinterpreted as qualification. Architecture,
+source scope, empty global allowlist, five architecture negative fixtures,
+formatting and all-target Clippy with denied warnings PASS. The source scan covers
+**24 Rust files**; the globals guard covers **14 normal-source files**, with
+**zero allowlisted items**. `measure.py --prefix <fresh-label>` replays these gates
+and the exact eight-cell mutant rejection without overwriting older checkpoint
+names. This remains a std-only fixture/compiler/consumer object, with no engine,
+source-adaptation, runtime, profile, production or B0/B1/B2/B3 exit acceptance.
+
+Current commands, logs and actual machine/toolchain are in
+[`rem2-final-measurements.json`](../proofs/raft-carrier-comparison/evidence/rem2-final-measurements.json).
+On macOS 26.6.2/arm64 with Rust/Cargo 1.96.0: B0 execution-only **0.014054 s**,
+warm build-plus-RED **0.039291 s**, fresh-target test build **0.848734 s**,
+structural **1.644862 s**, denied-warning Clippy **0.360469 s**, and isolated
+mutant build/run/check **1.226936 s**. These are observed scaffold timings,
+not accepted budgets or engine performance.
+
+The exact root-relative packet is
+[`rem2-files.sha256`](../proofs/raft-carrier-comparison/evidence/rem2-files.sha256),
+with changes from the preserved remediation-1 inventory named in `rem2-changes.json`.
+`rem2-context.json` labels original implementation-review root
+`256be2dd0fd652b34dfffa753fcba481f5fb842b` separately from owner documentary root
+`fe8b25bc736c1366be9c1aeecd0ca883d8e208e1`; member/external pins remain unchanged.
+Read-only reports/plans are context, not patch writes. No Git/GWZ operation was
+performed by this drafter.

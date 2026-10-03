@@ -1,0 +1,36 @@
+{
+  "baseline": "Preserved rem1-files.sha256 plus that manifest itself; root owner confirmed no subtree/allocation edits since review root256be2.",
+  "modified": [
+    "dev-docs/GladeRaftB0Allocation.md",
+    "proofs/raft-carrier-comparison/README.md",
+    "proofs/raft-carrier-comparison/measure.py",
+    "proofs/raft-carrier-comparison/spec/src/fixture/transport.rs",
+    "proofs/raft-carrier-comparison/spec/tests/endpoint_lifecycle.rs"
+  ],
+  "added": [
+    "proofs/raft-carrier-comparison/check-termination-mutant.py",
+    "proofs/raft-carrier-comparison/evidence/rem2-changes.json",
+    "proofs/raft-carrier-comparison/evidence/rem2-context.json",
+    "proofs/raft-carrier-comparison/evidence/rem2-files.sha256",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-api-witness.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-behavior-red-execution.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-behavior-red-warm.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-behavior-red.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-clippy.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-cold-test-build.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-execution-artifacts.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-measurements.json",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-provider-witness.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-spec-witness.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-structural.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-final-termination-mutant.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-green.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-mutant.log",
+    "proofs/raft-carrier-comparison/evidence/rem2-red.log",
+    "proofs/raft-carrier-comparison/spec/src/fixture/transport/termination.rs"
+  ],
+  "public_api_changed": false,
+  "library_roles_or_dependencies_changed": false,
+  "providers_or_case_labels_changed": false,
+  "finding_closure_claimed": false
+}

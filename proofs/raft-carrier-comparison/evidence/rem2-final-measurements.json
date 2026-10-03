@@ -1,0 +1,210 @@
+{
+  "context": {
+    "machine": "Darwin Giannis-MacBook-Pro.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:16:36 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6030 arm64",
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2",
+    "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+    "python": "Python 3.14.3"
+  },
+  "records": [
+    {
+      "label": "api-witness",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-api",
+        "--test",
+        "public_contract"
+      ],
+      "seconds": 0.02408,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "provider-witness",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-raft-rs",
+        "-p",
+        "glade-carrier-openraft",
+        "--test",
+        "compiler_contract"
+      ],
+      "seconds": 0.026295,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "spec-witness",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-spec",
+        "--lib",
+        "--test",
+        "fixture_plumbing",
+        "--test",
+        "oracle",
+        "--test",
+        "constructor_contract",
+        "--test",
+        "rpc_reply",
+        "--test",
+        "endpoint_lifecycle",
+        "--test",
+        "scheduler_lifecycle"
+      ],
+      "seconds": 3.339854,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "termination-mutant",
+      "command": [
+        "python3",
+        "-B",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/check-termination-mutant.py"
+      ],
+      "seconds": 1.226936,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "behavior-red",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-spec",
+        "--test",
+        "b0_election"
+      ],
+      "seconds": 0.623282,
+      "exit_code": 101,
+      "expected_exit_code": 101
+    },
+    {
+      "label": "behavior-red-warm",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-spec",
+        "--test",
+        "b0_election"
+      ],
+      "seconds": 0.039291,
+      "exit_code": 101,
+      "expected_exit_code": 101
+    },
+    {
+      "label": "execution-artifacts",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-spec",
+        "--test",
+        "b0_election",
+        "--no-run",
+        "--message-format=json"
+      ],
+      "seconds": 0.02163,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "behavior-red-execution",
+      "command": [
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/debug/deps/b0_election-9e7236b17a94f0c3"
+      ],
+      "seconds": 0.014054,
+      "exit_code": 101,
+      "expected_exit_code": 101
+    },
+    {
+      "label": "cold-test-build",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-spec",
+        "--test",
+        "b0_election",
+        "--no-run",
+        "--target-dir",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/cold-checkpoint-02tymevn"
+      ],
+      "seconds": 0.848734,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "structural",
+      "command": [
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/check.sh"
+      ],
+      "seconds": 1.644862,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/Cargo.toml",
+        "-p",
+        "glade-carrier-api",
+        "-p",
+        "glade-carrier-spec",
+        "-p",
+        "glade-carrier-raft-rs",
+        "-p",
+        "glade-carrier-openraft",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "seconds": 0.360469,
+      "exit_code": 0,
+      "expected_exit_code": 0
+    }
+  ]
+}

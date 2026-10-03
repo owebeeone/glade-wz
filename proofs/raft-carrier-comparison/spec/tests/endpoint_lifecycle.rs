@@ -101,7 +101,7 @@ fn take_refuses_replaced_issuer_and_destination_without_consuming() {
     }
 }
 #[test]
-fn timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership() {
+fn live_caller_timeout_and_cancel_remove_ownership_after_peer_replacement() {
     for cancel in [false, true] {
         let fixture = Fixture::new(Carrier::OpenRaft, 86 + u64::from(cancel));
         let mut caller = fixture.endpoint(fixture.scope(1, 1));
@@ -115,13 +115,16 @@ fn timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership() {
         } else {
             TransportAction::Timeout(rpc.id)
         };
-        assert_eq!(caller.control(action), Err(DriverError::InvalidToken));
-        assert_eq!(caller.pending_rpcs(), vec![rpc.id]);
+        assert_eq!(
+            caller.control(action),
+            Ok(vec![Event::RpcResolved { rpc: rpc.id }])
+        );
+        assert!(caller.pending_rpcs().is_empty());
         assert_eq!(fixture.messages(), before);
     }
 }
 #[test]
-fn stopped_peer_and_caller_reject_all_rpc_and_queue_mutations() {
+fn stopped_peer_refuses_delivery_but_live_caller_keeps_local_termination() {
     for stop_node in [1, 2] {
         let fixture = Fixture::new(Carrier::OpenRaft, 88 + stop_node);
         let mut caller = fixture.endpoint(fixture.scope(1, 1));
@@ -148,15 +151,12 @@ fn stopped_peer_and_caller_reject_all_rpc_and_queue_mutations() {
         } else {
             DriverError::InvalidToken
         };
-        for action in [
-            TransportAction::Resolve { rpc: rpc.id, reply },
-            TransportAction::Timeout(rpc.id),
-            TransportAction::Cancel(rpc.id),
-        ] {
-            assert_eq!(caller.control(action), Err(caller_error));
-            assert_eq!(caller.pending_rpcs(), pending);
-            assert_eq!(fixture.messages(), before);
-        }
+        assert_eq!(
+            caller.control(TransportAction::Resolve { rpc: rpc.id, reply }),
+            Err(caller_error)
+        );
+        assert_eq!(caller.pending_rpcs(), pending);
+        assert_eq!(fixture.messages(), before);
         let peer_error = if stop_node == 2 {
             DriverError::Stopped
         } else {
@@ -174,7 +174,26 @@ fn stopped_peer_and_caller_reject_all_rpc_and_queue_mutations() {
             matches!(caller.request(fixture.scope(2, 1).node, ProtocolKind::VoteRequest, bytes()), Err(error) if error == caller_error)
         );
         assert_eq!(fixture.messages(), before);
-        // Local stop still owns and cancels its RPC even if the peer is terminal.
+        if stop_node == 2 {
+            assert_eq!(
+                caller.control(TransportAction::Timeout(rpc.id)),
+                Ok(vec![Event::RpcResolved { rpc: rpc.id }])
+            );
+            assert_eq!(
+                caller.control(TransportAction::Cancel(rpc.id)),
+                Err(DriverError::InvalidToken)
+            );
+        } else {
+            assert_eq!(
+                caller.control(TransportAction::Timeout(rpc.id)),
+                Err(DriverError::Stopped)
+            );
+            assert_eq!(
+                caller.control(TransportAction::Cancel(rpc.id)),
+                Err(DriverError::Stopped)
+            );
+        }
+        assert_eq!(fixture.messages(), before);
         caller.stop().unwrap();
         assert!(caller.pending_rpcs().is_empty());
     }

@@ -36,6 +36,7 @@ def run(label, command, expected):
 run("api-witness", base + ["-p", "glade-carrier-api", "--test", "public_contract"], 0)
 run("provider-witness", base + ["-p", "glade-carrier-raft-rs", "-p", "glade-carrier-openraft", "--test", "compiler_contract"], 0)
 run("spec-witness", base + ["-p", "glade-carrier-spec", "--lib", "--test", "fixture_plumbing", "--test", "oracle", "--test", "constructor_contract", "--test", "rpc_reply", "--test", "endpoint_lifecycle", "--test", "scheduler_lifecycle"], 0)
+run("termination-mutant", ["python3", "-B", str(root / "check-termination-mutant.py")], 0)
 run("behavior-red", base + ["-p", "glade-carrier-spec", "--test", "b0_election"], 101)
 run("behavior-red-warm", base + ["-p", "glade-carrier-spec", "--test", "b0_election"], 101)
 artifacts = run("execution-artifacts", base + ["-p", "glade-carrier-spec", "--test", "b0_election", "--no-run", "--message-format=json"], 0)

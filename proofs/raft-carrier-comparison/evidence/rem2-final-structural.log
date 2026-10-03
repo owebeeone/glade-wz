@@ -1,0 +1,8 @@
+Architecture boundaries: PASS (workspace libraries, declared dependencies, traits and conformance targets)
+process-global state guard: 14 files, 0 allowlisted items (0 debt, 0 permanent); nothing new
+Explicit source boundaries: PASS (24 Rust files, all paths, no conditional attributes; Rust syntax requires braces)
+Architecture negative: PASS (unknown library rejected as ARCH-001)
+Architecture negative: PASS (normal forbidden real-name edge rejected as ARCH-002)
+Architecture negative: PASS (build forbidden real-name edge rejected as ARCH-002)
+Architecture negative: PASS (dev forbidden real-name edge rejected as ARCH-002)
+Architecture negative: PASS (optional-target-renamed forbidden real-name edge rejected as ARCH-002)

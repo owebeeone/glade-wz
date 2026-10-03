@@ -1,4 +1,5 @@
 //! Pure controlled queue/RPC scaffolding; opaque bytes are never interpreted.
+mod termination;
 use glade_carrier_api::*;
 use std::{
     cell::RefCell,
@@ -60,13 +61,14 @@ impl Network {
         }
         Ok(())
     }
-    fn rpc(&self, rpc: RpcId) -> Result<(), DriverError> {
+    // Local pending ownership is independent of remote delivery eligibility.
+    // The control entry point checks this caller is current/live and owns RpcId.
+    fn owned_rpc(&self, rpc: RpcId) -> Result<(), DriverError> {
         let state = self
             .rpcs
             .get(&rpc)
             .ok_or(DriverError::InvalidToken)?
             .borrow();
-        self.token(state.request)?;
         if state.request.issuer != rpc.scope
             || state.expected_peer != state.request.destination
             || self
@@ -78,6 +80,16 @@ impl Network {
             return Err(DriverError::InvalidToken);
         }
         Ok(())
+    }
+    fn rpc(&self, rpc: RpcId) -> Result<(), DriverError> {
+        self.owned_rpc(rpc)?;
+        let request = self
+            .rpcs
+            .get(&rpc)
+            .ok_or(DriverError::InvalidToken)?
+            .borrow()
+            .request;
+        self.token(request)
     }
 }
 // Complete mutations before invoking a saved wake, which may run caller code.
@@ -341,7 +353,7 @@ impl TransportEndpoint for Endpoint {
                 if rpc.scope != self.scope {
                     return Err(DriverError::InvalidToken);
                 }
-                network.rpc(rpc)?;
+                network.owned_rpc(rpc)?;
                 let state = network.rpcs.remove(&rpc).ok_or(DriverError::InvalidToken)?;
                 drop(network);
                 settle(

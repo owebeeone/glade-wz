@@ -13,7 +13,7 @@ allocation must preserve the common consumers while moving real composition out
 before installing engines. Source, future scheduling and queued-RPC modules here
 are pure controlled test scaffolding, not claimed implementation providers.
 
-From the adopting workspace root, compiler/fixture/oracle witnesses (35 passing: 31 spec and 4 API/provider):
+From the adopting workspace root, compiler/fixture/oracle witnesses (45 passing: 41 spec and 4 API/provider):
 
 ```sh
 cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-api --test public_contract
@@ -56,7 +56,7 @@ regression before corrections. The separate
 [authoring compile log](evidence/rem1-authoring-compile.log) is not behavioral RED.
 [Initial GREEN](evidence/rem1-green.log) and
 [expanded GREEN](evidence/rem1-green-expanded.log) retain fixture verification.
-Current [measurements](evidence/rem1-final-measurements.json) and
+Remediation 1 [measurements](evidence/rem1-final-measurements.json) and
 [inventory](evidence/rem1-files.sha256) describe the final scoped packet.
 
 The footprint witnesses exercise only supplied source/work mechanics and an
@@ -80,3 +80,39 @@ python3 -B proofs/raft-carrier-comparison/measure.py --prefix review-next
 
 The evidence gate requires exactly 20 ordinary compiled B0 failures, zero ignored
 or filtered cases, as well as passing independent GREEN and structural/lint gates.
+
+Remediation 2 restores live caller-owned Timeout/Cancel independently of remote
+peer liveness. Respond/Resolve and message delivery retain strict remote scope
+checks. The [compiling RED](evidence/rem2-red.log) contains eight failed matrix
+cells plus two corrected prior tests; the [first GREEN](evidence/rem2-green.log)
+then passes those paths. The final packet has
+[41 spec GREEN witnesses](evidence/rem2-final-spec-witness.log) plus 4 separate
+API/provider compiler tests (45 total), with the unchanged
+[20 ordinary provider RED cases](evidence/rem2-final-behavior-red.log).
+The [mutant check](evidence/rem2-final-termination-mutant.log) restores the exact
+peer-liveness defect in an isolated copied fixture and rejects all eight cells.
+It also passes six unrelated/negative unit checks, with none ignored or filtered.
+
+The eight cases cover held/consumed request × stopped/replaced peer × Timeout/Cancel.
+They first poll the actual response Pending, check only the selected caller-owned
+RPC is removed, require a wake without inline future execution, and verify the
+correct typed error at the next selected poll. Read-only private inspection
+verifies every originally issued byte remains identical; peer/replacement messages,
+RPC and work inventories stay unchanged. The caller continues traffic. Foreign,
+forged, replaced-caller and repeated terminal controls, as well as stale and live-
+peer late replies, refuse unchanged. These are controlled fixture results only.
+
+Current [measurements](evidence/rem2-final-measurements.json),
+[exact changes](evidence/rem2-changes.json), and
+[root-relative inventory](evidence/rem2-files.sha256) retain the new checkpoint
+separately from all earlier evidence. The ownership clarification is in the
+allocation; no public signatures, dependencies, providers, case labels or
+comparison-contract text changed. This is the second architectural remediation
+round. Original finders and fresh peer-blind full reviewers MUST verify the settled
+object; no self-closure or third architectural patch is authorized.
+
+Focused standalone mutant reproduction:
+
+```sh
+python3 -B proofs/raft-carrier-comparison/check-termination-mutant.py
+```
