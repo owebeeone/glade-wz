@@ -278,3 +278,21 @@ This new typed object has no review verdict or remediation round yet. The failed
 original typed object's three-root stop and owner-authorized redesign remain
 recorded. No successful admission kernel, physical restart/fencing, crypto,
 automatic duplex transfer, deployment, push or live activation is accepted here.
+
+#### Typed checkpoint review 1: NO-GO, remediation 1 authorized
+
+Exact reviewed root `a696f0eef38614fe0cfe2a6b053c352470e800b3`, member pins
+as above. Both fresh Code/State reviewers returned NO-GO. Prompts were generated
+from the canonical template with Code/State roles; SHA256 Code
+`429644a61123e5926e5d9feeec3faf260e7fdb9fd2ed4793a0fc4b3689b22c38`, State
+`492ff98ff7aea7fa975ef4c473608a15174e96b048ec5f4b4b060fa7fe031b28`.
+Verbatim reports and hashes are recorded in the
+[merged remediation plan](GladeIndependentCrdtStorageAttemptContract-RemPlan-1.md).
+
+Five P2 IDs describe four distinct roots; blind convergence on producer policy
+composition is recorded. State classifies lost invocation-cardinality recovery
+as architectural; the three fixture roots are non-architectural. All remain open.
+One merged, test-first correction is authorized under remediation round 1, with
+the admission kernel still refusing. Originating verification and fresh full
+Code/State review follow because Recovery's internal interface changes. Original
+failed-object history is retained; no activation or successful kernel acceptance.
