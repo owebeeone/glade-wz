@@ -1,0 +1,353 @@
+schema: gwz.marker/v0
+gwz_commit_id: 01a100bf-18fb-7a08-aea0-8e44a6fe06a3
+workspace_id: ws_default
+created_at: '1791013884492'
+created_by:
+  actor_id: unknown
+root:
+  path: .
+  before_commit: 28734c0efc2a9ff03f5afd51478ec31a23ae624e
+  branch: main
+selected_targets:
+- mem_glade_decl
+- mem_glade_decl_ts
+- mem_glade_decl_rs
+- mem_glade_decl_py
+- mem_ggg_viz
+- mem_glade
+- mem_grip_core
+- mem_grip_react
+- mem_taut
+- mem_taut_shape
+- mem_glial
+- mem_grip_react_demo
+- mem_taut_shape_rs
+- mem_taut_shape_ts
+- mem_grazel
+- mem_glade_chat
+- mem_glade_gwz
+- mem_glade_discover
+- mem_glade_gyld
+- '@root'
+committed_targets:
+- mem_glade
+- '@root'
+members:
+  mem_ggg_viz:
+    path: ggg-viz
+    source_id: src_ggg_viz
+    source_kind: git
+    commit: cd19c601a02e68226f0bda47b043ad502485de64
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade:
+    path: glade
+    source_id: src_glade
+    source_kind: git
+    commit: c65a6e87f0c257c15de8db080c29d365a883af85
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_chat:
+    path: glade-chat
+    source_id: src_glade_chat
+    source_kind: git
+    commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl:
+    path: glade-decl
+    source_id: src_glade_decl
+    source_kind: git
+    commit: 3d109177a222d23ebbf904d6329e186d1134d32c
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_py:
+    path: glade-decl-py
+    source_id: src_glade_decl_py
+    source_kind: git
+    commit: ee2f9602b2c1cfeeae340c9a67e699fb2f33eb78
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_rs:
+    path: glade-decl-rs
+    source_id: src_glade_decl_rs
+    source_kind: git
+    commit: b85044e1f6631114dbb290c02298e644f8363055
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_decl_ts:
+    path: glade-decl-ts
+    source_id: src_glade_decl_ts
+    source_kind: git
+    commit: a393ecb4cff3c4d66ce9a545193c2167b08e82a6
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_discover:
+    path: glade-discover
+    source_id: src_glade_discover
+    source_kind: git
+    commit: 1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_gwz:
+    path: glade-gwz
+    source_id: src_glade_gwz
+    source_kind: git
+    commit: 35b38ba0845a7cb7034a4af3609975ea1bd48741
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glade_gyld:
+    path: glade-gyld
+    source_id: src_glade_gyld
+    source_kind: git
+    commit: 327d62c0033db0fae145d002a00663a3826b6d53
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_glial:
+    path: glial
+    source_id: src_glial
+    source_kind: git
+    commit: 4c6e8561c1740de78b7634d9205a521183919d83
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grazel:
+    path: grazel
+    source_id: src_grazel
+    source_kind: git
+    commit: c839fe87c9d18ebb6e995964d2e79aef7cbd380e
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_core:
+    path: grip-core
+    source_id: src_grip_core
+    source_kind: git
+    commit: 9889655217649d15f1797f29a9bfb795f04691a8
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_react:
+    path: grip-react
+    source_id: src_grip_react
+    source_kind: git
+    commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_grip_react_demo:
+    path: grip-react-demo
+    source_id: src_grip_react_demo
+    source_kind: git
+    commit: c1bf60df3d4f56fc1c5faa2bb5c8c6692e98816d
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut:
+    path: taut
+    source_id: src_taut
+    source_kind: git
+    commit: 3c6d07ecb4cdb2496dd1a7524e270f8cc11a7640
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape:
+    path: taut-shape
+    source_id: src_taut_shape
+    source_kind: git
+    commit: 5779c9676d29750528e256714adb4dd24373e09a
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_rs:
+    path: taut-shape-rs
+    source_id: src_taut_shape_rs
+    source_kind: git
+    commit: 502671593f453f4b2e5915fe90e4c34b863e9b50
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+  mem_taut_shape_ts:
+    path: taut-shape-ts
+    source_id: src_taut_shape_ts
+    source_kind: git
+    commit: 1f2d6c4a9f7049afb7c0b183338cbf82d2618db3
+    branch: main
+    detached: false
+    dirty: false
+    materialized: true
+merge:
+  merge_id: merge_op_1459_1791013884116_0001
+  operation_id: op_1459_1791013884116
+  source_ref: refs/gwz/local-imports/xfer_afd7ef863bb40c6f50fa0393c24be23a
+  selected_targets:
+  - mem_glade_decl
+  - mem_glade_decl_ts
+  - mem_glade_decl_rs
+  - mem_glade_decl_py
+  - mem_ggg_viz
+  - mem_glade
+  - mem_grip_core
+  - mem_grip_react
+  - mem_taut
+  - mem_taut_shape
+  - mem_glial
+  - mem_grip_react_demo
+  - mem_taut_shape_rs
+  - mem_taut_shape_ts
+  - mem_grazel
+  - mem_glade_chat
+  - mem_glade_gwz
+  - mem_glade_discover
+  - mem_glade_gyld
+  - '@root'
+  participants:
+    '@root':
+      target_kind: root
+      target_branch: main
+      before_commit: 0f38e983ab336b5b3ce6bf27fb2f84f03bce046a
+      source_commit: 55f7b67c15c90813c5b134f67eb172ab7b2fda17
+      resulting_commit: 28734c0efc2a9ff03f5afd51478ec31a23ae624e
+    mem_ggg_viz:
+      target_kind: member
+      target_branch: main
+      before_commit: cd19c601a02e68226f0bda47b043ad502485de64
+      source_commit: cd19c601a02e68226f0bda47b043ad502485de64
+      resulting_commit: cd19c601a02e68226f0bda47b043ad502485de64
+    mem_glade:
+      target_kind: member
+      target_branch: main
+      before_commit: dd1973ef2809f52111f7939f1b4b0679b18efb90
+      source_commit: c8c0613f645dd4b6aaf546f586d77cfdb76a0c87
+      resulting_commit: c65a6e87f0c257c15de8db080c29d365a883af85
+    mem_glade_chat:
+      target_kind: member
+      target_branch: main
+      before_commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
+      source_commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
+      resulting_commit: 9238d21f6a36597e0e72a2cd8aa9fab9597ad73e
+    mem_glade_decl:
+      target_kind: member
+      target_branch: main
+      before_commit: 3d109177a222d23ebbf904d6329e186d1134d32c
+      source_commit: 3d109177a222d23ebbf904d6329e186d1134d32c
+      resulting_commit: 3d109177a222d23ebbf904d6329e186d1134d32c
+    mem_glade_decl_py:
+      target_kind: member
+      target_branch: main
+      before_commit: ee2f9602b2c1cfeeae340c9a67e699fb2f33eb78
+      source_commit: ee2f9602b2c1cfeeae340c9a67e699fb2f33eb78
+      resulting_commit: ee2f9602b2c1cfeeae340c9a67e699fb2f33eb78
+    mem_glade_decl_rs:
+      target_kind: member
+      target_branch: main
+      before_commit: b85044e1f6631114dbb290c02298e644f8363055
+      source_commit: b85044e1f6631114dbb290c02298e644f8363055
+      resulting_commit: b85044e1f6631114dbb290c02298e644f8363055
+    mem_glade_decl_ts:
+      target_kind: member
+      target_branch: main
+      before_commit: a393ecb4cff3c4d66ce9a545193c2167b08e82a6
+      source_commit: a393ecb4cff3c4d66ce9a545193c2167b08e82a6
+      resulting_commit: a393ecb4cff3c4d66ce9a545193c2167b08e82a6
+    mem_glade_discover:
+      target_kind: member
+      target_branch: main
+      before_commit: 1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69
+      source_commit: 52ea2d118f45d9e7c3d9a789310dd5d669958851
+      resulting_commit: 1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69
+    mem_glade_gwz:
+      target_kind: member
+      target_branch: main
+      before_commit: 35b38ba0845a7cb7034a4af3609975ea1bd48741
+      source_commit: 35b38ba0845a7cb7034a4af3609975ea1bd48741
+      resulting_commit: 35b38ba0845a7cb7034a4af3609975ea1bd48741
+    mem_glade_gyld:
+      target_kind: member
+      target_branch: main
+      before_commit: 327d62c0033db0fae145d002a00663a3826b6d53
+      source_commit: 327d62c0033db0fae145d002a00663a3826b6d53
+      resulting_commit: 327d62c0033db0fae145d002a00663a3826b6d53
+    mem_glial:
+      target_kind: member
+      target_branch: main
+      before_commit: 4c6e8561c1740de78b7634d9205a521183919d83
+      source_commit: 4c6e8561c1740de78b7634d9205a521183919d83
+      resulting_commit: 4c6e8561c1740de78b7634d9205a521183919d83
+    mem_grazel:
+      target_kind: member
+      target_branch: main
+      before_commit: c839fe87c9d18ebb6e995964d2e79aef7cbd380e
+      source_commit: c839fe87c9d18ebb6e995964d2e79aef7cbd380e
+      resulting_commit: c839fe87c9d18ebb6e995964d2e79aef7cbd380e
+    mem_grip_core:
+      target_kind: member
+      target_branch: main
+      before_commit: 9889655217649d15f1797f29a9bfb795f04691a8
+      source_commit: 9889655217649d15f1797f29a9bfb795f04691a8
+      resulting_commit: 9889655217649d15f1797f29a9bfb795f04691a8
+    mem_grip_react:
+      target_kind: member
+      target_branch: main
+      before_commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
+      source_commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
+      resulting_commit: c13b8a75e88e33cd8dcaf5222a06c76d4370d010
+    mem_grip_react_demo:
+      target_kind: member
+      target_branch: main
+      before_commit: c1bf60df3d4f56fc1c5faa2bb5c8c6692e98816d
+      source_commit: c1bf60df3d4f56fc1c5faa2bb5c8c6692e98816d
+      resulting_commit: c1bf60df3d4f56fc1c5faa2bb5c8c6692e98816d
+    mem_taut:
+      target_kind: member
+      target_branch: main
+      before_commit: 3c6d07ecb4cdb2496dd1a7524e270f8cc11a7640
+      source_commit: 3c6d07ecb4cdb2496dd1a7524e270f8cc11a7640
+      resulting_commit: 3c6d07ecb4cdb2496dd1a7524e270f8cc11a7640
+    mem_taut_shape:
+      target_kind: member
+      target_branch: main
+      before_commit: 5779c9676d29750528e256714adb4dd24373e09a
+      source_commit: 5779c9676d29750528e256714adb4dd24373e09a
+      resulting_commit: 5779c9676d29750528e256714adb4dd24373e09a
+    mem_taut_shape_rs:
+      target_kind: member
+      target_branch: main
+      before_commit: 502671593f453f4b2e5915fe90e4c34b863e9b50
+      source_commit: 502671593f453f4b2e5915fe90e4c34b863e9b50
+      resulting_commit: 502671593f453f4b2e5915fe90e4c34b863e9b50
+    mem_taut_shape_ts:
+      target_kind: member
+      target_branch: main
+      before_commit: 1f2d6c4a9f7049afb7c0b183338cbf82d2618db3
+      source_commit: 1f2d6c4a9f7049afb7c0b183338cbf82d2618db3
+      resulting_commit: 1f2d6c4a9f7049afb7c0b183338cbf82d2618db3
+  root_merge_commit: 28734c0efc2a9ff03f5afd51478ec31a23ae624e
