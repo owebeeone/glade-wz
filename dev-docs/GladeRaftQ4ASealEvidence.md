@@ -63,3 +63,56 @@ and a clean 22/22 repeat. Existing fixed-name Store fixtures permit interference
 between concurrent test processes. Those initial failures remain in testimony;
 no unrelated fixture rewrite was performed. Subsequent Store/gate commands MUST
 be serialized between owner and reviewers. The new seal fixtures use process IDs.
+
+## Owner implementation verification — awaiting independent acceptance
+
+The original Consistency reviewer [closed P3-1](GladeRaftQ4ASealContract-ClosureConsistency.md)
+at root `3bf731994c8f18e4e27ed568e123bed099dca2f0`, Glade
+`638cca4b2784cc3e51c1e47b1fea47d026b57734`. Both contract gates remained GO
+before implementation. Marker creation and sync are isolated in the existing
+Store's private `legacy_seal` module; no dependency/policy/allowlist changed.
+Open retains its guard before all replay/repair; append retains its guard through
+classification, proof writes, journal append and checkpoint rewrite. Seal syncs
+the existing/new marker and root directory under the same stable lock.
+
+Owner targeted GREEN: eight integration consumers passed, 0 failures/ignores;
+four boundary tests passed, 0 failures, one explicitly ignored subprocess worker.
+The parent test separately observed actual SIGKILL signal 9 at all four distinct
+cuts: BeforeCreate, AfterCreate, AfterFileSync, AfterDirectorySync. Each checked
+journal bytes, presence/absence, next admission and idempotent resync. The first
+parent run exposed a libtest stdout-prefix handling error (cut signal could appear
+after the test name); the parent matcher was corrected against that failing case
+before all four cuts passed. This was a test-driver error, not a recovered success.
+Targeted final runs: integration build-plus-run 0.70 seconds, execution 0.02 seconds;
+boundary build-plus-run 1.98 seconds, execution 0.08 seconds. Logs are
+`/tmp/glade-q4-seal-green.log`, `/tmp/glade-q4-seal-boundary-green.log`.
+
+Full live-tree `sh glade/node/check.sh` passed all nine components, including
+architecture/negative fixtures/all-target confinement, both roots, contracts,
+process-global ratchet, fmt and Clippy dispositions. Each root ran **510 passing
+cases across 20 test binaries**. Existing fmt debt remains node252/wire1 hunks;
+Clippy debt remains node9/wire7 warnings. An initial gate run passed eight
+components but failed the Clippy ratchet on one new unused test import; that
+import was removed and the complete gate then passed. No baseline was relaxed.
+Logs: `/tmp/glade-q4-node-gate.log`, `/tmp/glade-q4-node-gate-final.log`.
+These live-tree runs include inherited cold-join dirt. They are compatibility
+observations, not qualification of that unrelated diff. An exact committed-source
+fixture check is still required before implementation acceptance.
+
+Process-global ratchet inspected 79 production files: three permanent existing
+entries, zero debt, nothing new. New module and integration target are rustfmt
+clean. A temporary development-only raw `syn2.0.118` AST audit parsed all three
+scoped Rust files without evaluating cfg, rejected conditional attributes outside
+modules, and passed including disabled non-Unix branches; an explicit bare
+`#[cfg(windows)] use ...` negative fixture was rejected. Commands/source/logs:
+`/tmp/glade-q4-syntax-audit`, `/tmp/glade-q4-scopes.log`,
+`/tmp/glade-q4-scopes-negative.log`. This audit is not macro expansion or CI adoption;
+Rust grammar supplies braced control-flow syntax. Broader source/dependency
+migration is not claimed. Actual non-Unix execution remains open.
+
+Machine: macOS arm64, rustc1.96.0, APFS source volume `projects` and APFS Data volume
+backing `/private/var` temporary fixtures. Physical process interruption is
+qualified separately from modeled injected errors; power-loss/media certification,
+independent machines, authenticated authority, Raft crate selection and complete
+old-binary/Registry/effect/rollback exclusion remain unqualified. No seal was
+installed outside disposable test roots; no running desk was rebuilt or changed.
