@@ -1,11 +1,11 @@
 # Glade Raft qualification evidence
 
-Date: 2026-10-03. Status: **initial Q1a memory proof accepted at root
-`31bbea0cf1da3c6ae437cf482cb744d561693c08` after Code/State GO/GO**.
+Date: 2026-10-03. Status: **Q2 private disk/process-crash proof accepted at root
+`c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO/GO; Q0/Q1a remain accepted**.
 Q0 draft/consumer acceptance is recorded in [the review ledger](GladeRaftQualification-ReviewCycle.md).
 The [plan](GladeRaftQualificationPlan.md) and
 [contract](GladeRaftAdoptionContract.md) control claims. Exact reviewed source
-revisions and reports will be recorded in the review-cycle ledger.
+revisions and reports are recorded in the review-cycle ledger.
 
 ## TDD and build evidence
 
@@ -169,7 +169,8 @@ Commands use the README PROTOC, `-p glade-raft-disk --test conformance`,
 plus `process-crash.py --worker <reported executable>`. Build naming errors were
 corrected before behavioral RED and do not count as tests failing on semantics.
 The structural architecture/process-global/source/format gates pass with no new
-exception entries. Implementation awaits dual contract acceptance.
+exception entries. At this scaffold checkpoint, implementation awaited dual
+contract acceptance.
 
 ## Q2 contract remediation 1 — oracle RED/GREEN
 
@@ -189,7 +190,7 @@ the kill cut. This corrects specification/oracle fidelity, not implementation.
 ## Q2 implementation — real disk, replay and controlled crash evidence
 
 The corrected contract is accepted at `db2db3bba1bdbd931468949fffbd81d444044a3a`
-after Consistency/Safety GO/GO. Implementation source awaits a fresh Code/State
+after Consistency/Safety GO/GO. The initial implementation checkpoint required a fresh Code/State
 settled-tree gate; no production adoption follows from GREEN.
 
 The disk adapter observed **12 behavioral RED tests before implementation**:
@@ -346,3 +347,15 @@ The earlier cold/warm samples remain attributed to the initial checkpoint and
 were not remeasured for this remediation. The revised acceptance counts and
 ordering/crash evidence above supersede the unsupported historical LightReady
 claim. Named machine/filesystem and process-crash limits remain unchanged.
+
+### Q2 accepted-through result
+
+The originating [Code](GladeRaftQ2Implementation-ReviewCode-1.md) and
+[State](GladeRaftQ2Implementation-ReviewState-1.md) reviewers independently returned
+**GO** at root `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5`, with unchanged member/Gyld pins.
+Both original P2 counterexamples are closed; zero open implementation findings.
+The revised 51-Rust/4-oracle/2-process-cycle results were independently rerun by
+both reviewers. One merged implementation remediation round was used. The final
+filing changes review/status documents only; implementation bytes remain at that
+accepted revision. This closes Q2 on the named private APFS/process-crash profile.
+Q3/Q4 and production selection, profile ratification and activation remain open.

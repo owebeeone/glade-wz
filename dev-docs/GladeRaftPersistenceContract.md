@@ -1,6 +1,6 @@
 # Glade Raft Q2 persistence and recovery contract
 
-Date: 2026-10-03. Status: **experimental boundary accepted at root `db2db3bba1bdbd931468949fffbd81d444044a3a` after Consistency/Safety GO; implementation awaits Code/State acceptance**.
+Date: 2026-10-03. Status: **experimental boundary accepted at root `db2db3bba1bdbd931468949fffbd81d444044a3a` after Consistency/Safety GO; implementation accepted at root `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after [Code](GladeRaftQ2Implementation-ReviewCode-1.md)/[State](GladeRaftQ2Implementation-ReviewState-1.md) GO**.
 
 This document refines Q2 in [GladeRaftQualificationPlan.md](GladeRaftQualificationPlan.md), principally RA-003/004/005/006/010/011 in [GladeRaftAdoptionContract.md](GladeRaftAdoptionContract.md). Q1a's accepted memory proof does not qualify persistence. This is a controlled local-disk/process-crash profile, not production adoption of raft-rs or a ratified production durability promise. Q2 MUST include the actual RawNode persistence/replay path and a process-kill witness; closing only the file adapter is insufficient.
 

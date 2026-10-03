@@ -1,6 +1,6 @@
 # Glade Raft qualification — review ledger
 
-Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO**.
 
 Q1a accepted at root `31bbea0cf1da3c6ae437cf482cb744d561693c08`, with the
 unchanged member/Gyld tuple below, after
@@ -94,7 +94,7 @@ Q0 used one remediation round; Q1a used one. Zero open acceptance findings.
 This is not closure of unqualified production requirements. No push was made;
 unrelated member/handoff/research/scratch changes were preserved.
 
-## Next qualification work
+## Historical next qualification work after Q1a
 
 Proceed next with a separately reviewed Q2 disk/persistence contract and fault
 witnesses, then Q3 authenticated group/configuration/snapshot work and Q4 Glade
@@ -150,3 +150,53 @@ Originating reviewers re-verdict their own counterexamples on the new settled
 checkpoint before any acceptance. Q2 contract and implementation round counts
 are separate; implementation is in remediation round 1, with both findings open
 until their reviewers verify closure.
+
+
+## Q2 implementation accepted-through
+
+| Gate | Source root | Verdict | Disposition |
+| --- | --- | --- | --- |
+| Q2 implementation initial | `ac69bbcc325c0946bbf215309bcce5edd3210db6` | Code NO-GO / State NO-GO | Two distinct P2 defects: unsupported LightReady witness lifecycle and reserved-term live/restart disagreement. |
+| Q2 implementation remediation 1 | `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` | Code GO / State GO | Originating reviewers independently verify their own regression and close both findings on the same settled tuple. |
+
+Accepted-through tuple: root `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5`; Glade
+`90dc1a60981185fa26ae5bfafbbb5377c12a413b`; Glade-discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`; external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`.
+Re-verdicts are [Code](GladeRaftQ2Implementation-ReviewCode-1.md) and
+[State](GladeRaftQ2Implementation-ReviewState-1.md), filed verbatim. Focused
+prompts were generated from the same canonical template, role and revised tuple:
+[Code](GladeRaftQ2Implementation-PromptCode-1.md),
+[State](GladeRaftQ2Implementation-PromptState-1.md). The merged plan was a legitimate
+shared remediation input; neither reviewer read the peer current-round report.
+
+No public interface, authority, journal, architecture, dependency or ordinary
+host call graph changed. The test-only async schedule was corrected, and the
+already reserved terminal term was fenced before live publication. Same reviewers
+therefore performed focused closure with their contexts intact. One merged
+implementation remediation round was used; zero open P0–P3 findings. The Q2
+contract object's separate count is also one round. Final filing changes only
+review/status documents; accepted implementation bytes are those at the tuple above.
+
+Final independently verified evidence: **49 default Rust tests + 2 explicit disk
+unit cases = 51**, **4 Python oracle tests**, **2 actual SIGKILL/fresh-process
+cycles**; architecture/source/format/process-global and all-target Clippy pass.
+Original historical LightReady execution/measurement is explicitly disqualified
+as ordering evidence. [QualificationEvidence](GladeRaftQualificationEvidence.md)
+records the supported schedule, RED/GREEN closure and exact profile limits.
+
+| Discovery phase | Distinct defects | Final outcome |
+| --- | ---: | --- |
+| Q2 contract review | 1 P2, 1 P3 | Oracle fidelity and diagnostic/Clippy defects closed before implementation. |
+| Q2 implementation review | 2 P2 | Term/restart boundary and test lifecycle defects closed after RED → GREEN. No blind convergence. |
+| Production escape | 0 observed | No production integration/activation occurred. |
+
+Q2 acceptance is the private APFS/process-crash experiment only. Next is a
+separately reviewed **Q3 configuration/snapshot contract**, compiling consumers
+and RED witnesses for authorized learner catch-up/joint transitions, lost
+configuration replies, snapshot installation/compaction and complete retained
+retry/policy/retirement replay. Q4 remains the production crypto/bootstrap,
+transport, failure-domain and legacy/effect exclusion gate. Automatic-election
+randomness and power-loss claims still require their recorded profile decisions
+and evidence. No push or desktop rebuild is part of this landing; unrelated
+member, handoff, research and scratch work was preserved.

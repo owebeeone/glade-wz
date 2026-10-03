@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted; Q2 boundary accepted, real-disk implementation awaiting Code/State review; Q3–Q4 remain open**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3–Q4 remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -117,10 +117,12 @@ durations, not an invented budget or “fast” claim. Q2 disk faults and Q3/Q4 
 assurance stay explicit tiers outside the pure-library edit loop. Whole-workspace
 tests MUST NOT substitute for affected-package/consumer verification.
 
-Q2's first concrete witness MAY retain a disk checkpoint containing entries,
-hard state and configuration, reopen it and replay application outcomes. That
-proves only its exercised file/reopen path. Power-kill, torn writes, fsync/storage
-ordering and certified snapshot recovery remain explicit further Q2/Q3 gates.
+A disk checkpoint/reopen witness alone MUST NOT close Q2. The accepted Q2
+profile now covers actual disk history, ordered sync publication, torn/corrupt
+quarantine, full application/outcome replay, and the two named actual SIGKILL
+cuts recorded in the evidence. This closes only that APFS/process-crash profile.
+Physical power-loss/storage certification remains a separate profile gate;
+snapshot/configuration recovery remains Q3, and production integration remains Q4.
 
 Evidence MUST distinguish modeled storage from real disk, controlled delivery
 from real transport, supplied trust decisions from cryptography, logical voters
