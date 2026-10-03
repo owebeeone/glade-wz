@@ -74,43 +74,43 @@ lookup/exact retry at the acknowledged and durable-before-apply cuts. Measuremen
 and exact reviewed source belong in the evidence/ledger, not inferred budgets.
 
 
-Q3 is now a **DRAFT contract-review package**, not an implementation. See
-[configuration/snapshot contract](../../dev-docs/GladeRaftConfigurationSnapshotContract.md)
-and [compilation/RED evidence](../../dev-docs/GladeRaftQ3ContractEvidence.md).
-The new API's dyn consumer and exact Create fixture regression are GREEN; the spec scaffold intentionally returns
-`NotQualified`, so all 19 `configuration_snapshot` behaviors are RED. No fake
-model is presented as a working membership or snapshot adapter. The default
-whole-workspace test command therefore intentionally fails Q3 during this gate;
-no `default-members` or hidden exclusions are used. Select existing Q2 packages
-explicitly when checking their unaffected regression tier.
+Q3a/Q3b private membership and snapshot implementation is **accepted at root
+`468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO**. See the
+[implementation evidence](../../dev-docs/GladeRaftQ3ImplementationEvidence.md) and
+[exact tuple/review ledger](../../dev-docs/GladeRaftQualification-ReviewCycle.md).
+Actual V2 stores and RawNodes implement the reviewed injected contracts; all
+nineteen original configuration/snapshot consumer cases are GREEN and remain
+selected. The default workspace run passes 121 tests and explicitly ignores
+only two Q2 tier cases plus the two externally supervised process workers.
+The [contract evidence](../../dev-docs/GladeRaftQ3ContractEvidence.md) preserves
+historical compiling RED scaffold results; refusing scaffold types are not the
+current concrete test providers. Q2 format is never silently upgraded.
 
 ```sh
-# Carrier-free contract compiler witness.
+# Carrier-free contract compiler/fixture witnesses.
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-q3-api
-# Compiles successfully, then deliberately fails behaviorally at NotQualified.
+# Actual injected V2/RawNode consumers; all nineteen pass.
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-q3-spec --test configuration_snapshot
-# Existing accepted packages, with compatible PROTOC supplied as above.
-cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-api -p glade-raft-durability-api -p glade-raft-disk -p glade-raft-adoption-proof
-```
-
-The expanded architecture inventory and source roots are **proposals for this
-Q3 review**; dependency allowlists/roles of existing packages and the empty
-process-global exception list are unchanged. Physical V2 journal, actual
-ConfChangeV2/RawNode snapshot lifecycle and SIGKILL matrix remain implementation
-exit witnesses. Q2 format is never silently upgraded or described as dynamic.
-
-
-Q3 contract remediation 1 adds a proposed **dev-only** proof-to-q3-api edge for
-fixture compatibility. The existing Application is unchanged: corrected Create
-uses generation/home zero, full Accepted resources are asserted, and nonzero
-preconditions keep their original refusals. This compatibility test is GREEN;
-the 19 real Q3 scaffold behaviors remain intentionally RED. Original-index
-replay now has distinct application/configuration/noop result variants; missing
-history is an error. Joint exit rechecks live homes at the actual ordered cut,
-retains refusal through restart/retry and allows a new exit after movement or
-retirement. Fresh contract review is required for this interface amendment.
-
-```sh
-# Requires compatible PROTOC supplied above; existing application compatibility.
+# Owning membership, recovery, snapshot, semantic and fault cases.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib q3
+# Existing Application/shared fixture compatibility.
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test q3_fixture_compatibility
+# Q3 actual SIGKILL: use the exact executable Cargo reports.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test q3_process_crash --no-run
+python3 proofs/raft-adoption/process-crash-q3.py --self-test
+python3 proofs/raft-adoption/process-crash-q3.py --worker "$q3_worker_path"
 ```
+
+Supply the compatible PROTOC above for carrier commands and set `q3_worker_path`
+to the Cargo-reported executable. The runner performs ACK, joint-before-apply
+and snapshot-before-apply SIGKILL cuts and compares fresh recovery with complete
+parent-held APP/CONFIG/ENTRY originals. The worker alone is not a durability test.
+
+Accepted allocations, normal/dev edges and the empty process-global exception
+list remain reviewed and enforced by `check.sh`. The profile retains full
+original application history and append-only physical journals, a 16 MiB refusal
+boundary and rollback detection requiring an independent trusted floor. Manual
+campaigns and process-crash evidence do not certify automatic elections, power
+loss, independent physical failure domains or production authority/transport.
+Q4 Glade integration, legacy/effect exclusion, production selection and
+activation remain open.

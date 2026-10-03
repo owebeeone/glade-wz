@@ -1,6 +1,6 @@
 # Q3 implementation remediation 1
 
-Date: 2026-10-03. Status: **one merged correction implemented; all findings open pending originating closure and fresh Code/State renewal; Q3 acceptance pending**.
+Date: 2026-10-03. Status: **all five original findings independently closed at `ce0876423e921cdd066106af9190ae7c6ec5d781`; subsequent renewal finding and final acceptance are recorded in RemPlan-2/the ledger**.
 Reviewed implementation source: `b61197602e5594bdf89770bda069ce7d30fdb222`.
 Unchanged Glade `90dc1a60981185fa26ae5bfafbbb5377c12a413b`, Glade-discover
 `52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
@@ -83,3 +83,14 @@ Owner pre-freeze independent matrix: 120 default PASS, two explicit Q2 PASS,
 both oracle self-tests PASS, two Q2 plus three Q3 actual SIGKILL cuts PASS,
 strict gates PASS, 49 owned Rust sources and zero exceptions. Findings remain
 open. The exact ensuing commit is supplied in all four canonical review prompts.
+
+## Final disposition
+
+Original [Code closure](GladeRaftQ3ImplementationClosure-ReviewCode-1.md) and
+[State closure](GladeRaftQ3ImplementationClosure-ReviewState-1.md) independently
+verified every original counterexample at `ce0876423e921cdd066106af9190ae7c6ec5d781`.
+Fresh renewal then found one additional bounded candidate-domain defect,
+handled in [RemPlan-2](GladeRaftQ3Implementation-RemPlan-2.md). Final [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md)
+both GO at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`; all original closures preserved and no
+open findings remain. Earlier pending language records pre-review obligations,
+not current acceptance status.

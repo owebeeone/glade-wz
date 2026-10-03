@@ -1,6 +1,6 @@
 # Q3 implementation remediation 2
 
-Date: 2026-10-03. Status: **bounded correction implemented and independently verified; renewal Code P2-1 open pending Code/State re-verdicts; Q3 acceptance pending**.
+Date: 2026-10-03. Status: **renewal Code P2-1 independently closed at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`; Code/State GO/GO, Q3 private implementation accepted**.
 Reviewed root `ce0876423e921cdd066106af9190ae7c6ec5d781`; unchanged Glade
 `90dc1a60981185fa26ae5bfafbbb5377c12a413b`, glade-discover
 `52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
@@ -83,3 +83,19 @@ self-tests, all five actual SIGKILL cuts and strict gates. All pass; 49 owned
 Rust files, zero exceptions. The ensuing frozen commit is supplied in the two
 canonical re-verdict prompts. Finding closure remains the originating Code
 reviewer's responsibility; Q3 acceptance remains conditional on both verdicts.
+
+## Originating closure and owner verdict merge
+
+[Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) both GO on `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`. Code independently
+executes the exact original physical-reopen counterexample, full unknown-entry
+reconciliation and original retry/replay; State independently verifies voter-union
+authority, both joint-majority loss fixtures and preserved prior GO. Both report
+zero open/new P0–P3 or new architectural causes, unchanged public boundary/call
+graph/platform and clean source/tuple checks at start/end. Reports are verbatim.
+
+All six implementation findings (five initial plus renewal Code P2-1) are closed
+by their respective originating reviewers, with final preservation checks.
+Two bounded implementation remediation rounds were used. No production escape
+or third architectural remediation occurred. The private Q3 profile is accepted;
+Q4/production activation remains separate. Earlier pending clauses are historical
+pre-review obligations. Current acceptance is in the review ledger.

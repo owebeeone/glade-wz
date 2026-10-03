@@ -2,6 +2,8 @@
 
 Date: 2026-10-03. Status: **contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after fresh Consistency/Safety GO and originating Safety closure; member/Gyld tuple and reports in [the review ledger](GladeRaftQualification-ReviewCycle.md). This accepts the private Q3 contract, reviewed roles/edges and compiling specifications only; no Q3 implementation or production ratification**.
 
+Current implementation disposition: Q3a/Q3b accepted separately at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) GO/GO; see [implementation evidence](GladeRaftQ3ImplementationEvidence.md) and [the exact tuple ledger](GladeRaftQualification-ReviewCycle.md). The historical contract/allocation gate above retains its original scope; production ratification remains open.
+
 This refines Q3 in [the qualification plan](GladeRaftQualificationPlan.md), RA-004/005/006/009/010/011 in [the adoption contract](GladeRaftAdoptionContract.md), and retains the accepted [Q2 profile](GladeRaftPersistenceContract.md). The two gates are contract Consistency/Safety before implementation, then Code/State on actual carrier/disk/crash evidence. Q2's fixed-configuration journal MUST NOT be described as supporting membership or snapshots. [Q3 contract evidence](GladeRaftQ3ContractEvidence.md) distinguishes compiler success from intended behavioral failures.
 
 ## 1. Allocation and bounded profile

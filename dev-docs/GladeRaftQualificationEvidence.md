@@ -358,4 +358,21 @@ The revised 51-Rust/4-oracle/2-process-cycle results were independently rerun by
 both reviewers. One merged implementation remediation round was used. The final
 filing changes review/status documents only; implementation bytes remain at that
 accepted revision. This closes Q2 on the named private APFS/process-crash profile.
-Q3/Q4 and production selection, profile ratification and activation remain open.
+At this Q2 checkpoint, Q3/Q4 and production selection, profile ratification and activation remained open. Subsequent Q3 disposition is below.
+
+## Q3 accepted-through result
+
+Q3a/Q3b private membership and snapshot implementation is accepted at root
+`468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) GO/GO, zero open findings.
+[Complete implementation evidence](GladeRaftQ3ImplementationEvidence.md) records
+actual V2/RawNode providers, full original-history snapshot/replay, authorized
+joint recovery, all required matrix rows and TDD corrections. The
+[review ledger](GladeRaftQualification-ReviewCycle.md) records the exact four-repo
+tuple, initial findings/closures, fresh renewal and two remediation rounds.
+
+Owner and both final reviewers ran 121 default tests plus two explicit Q2 cases,
+both oracle self-tests and all two Q2/three Q3 actual SIGKILL cuts; strict gates
+pass (49 owned Rust files, zero exceptions). Original nineteen concrete Q3
+consumers remain enabled. Q1a/Q2 results are preserved. This qualifies only the
+private APFS/process-crash profile; Q4/production selection, authority/transport,
+failure domains, automatic elections and legacy/effect activation remain open.

@@ -1,6 +1,6 @@
 # Q3 implementation evidence — 2026-10-03
 
-Status: **remediation 2 implemented and verified by the drafter; renewal Code P2-1 remains open pending independent re-verdict**. All five original findings were independently closed on `ce0876423e921cdd066106af9190ae7c6ec5d781`; fresh renewal Code found the bounded outgoing-only candidate defect and State renewal was GO. The corrected round-2 object has not been accepted. This document records the implementation drafter's evidence; it is not a review verdict or production approval. The owner MUST pin the settled implementation source tuple and file the independent reviews in [GladeRaftQualification-ReviewCycle.md](GladeRaftQualification-ReviewCycle.md). No commit, push, desktop rebuild or production activation was performed by the drafter.
+Status: **Q3a/Q3b private implementation accepted at root `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) GO/GO; zero open findings**. The five initial findings were closed by their originating reviewers on `ce0876423e921cdd066106af9190ae7c6ec5d781`; the later outgoing-only candidate defect was closed by its originating Code reviewer and independently checked by State on the accepted tuple. The [review ledger](GladeRaftQualification-ReviewCycle.md) records all four repository pins, two implementation remediation rounds and verbatim reports. This accepts the bounded private APFS/process-crash harness only; Q4 integration, production library/profile and activation remain open. The evidence below preserves historical executions and pending statuses at their original checkpoints; this owner disposition is current. No push, desktop rebuild or production activation is included.
 
 ## Accepted scope and concrete providers
 
@@ -263,3 +263,24 @@ q3-oracle,q2-crash,q3-crash}.log`; command times are in
 0.262/0.883 s; observations only. This is verification, not review acceptance.
 The owner freezes code/test/evidence plus RemPlan-2 together; all unrelated work
 is excluded. Exact source tuple is supplied in both continued reviewer prompts.
+
+## Owner accepted-through disposition
+
+Accepted source root `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`, unchanged Glade
+`90dc1a60981185fa26ae5bfafbbb5377c12a413b`, glade-discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`. Final [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) both GO,
+zero open/new P0–P3 findings; both verified the exact tuple and clean scoped bytes
+at both boundaries. Reports are filed verbatim. Originating initial finding
+closures are preserved; Code-2 independently verifies its exact outgoing-only
+counterexample, and State-2 checks authority/restart and prior GO preservation.
+
+Owner and both final reviewers independently executed **121 default Rust cases,
+two explicit Q2 cases, both oracle self-tests and all five actual SIGKILL cuts**;
+strict gates pass, 49 owned Rust files and zero exceptions. The original nineteen
+consumers remain selected. Q3a authorized membership/joint recovery and Q3b full
+checkpoint/snapshot/suffix recovery close on this private profile. This does not
+close all RA requirements or certify power loss, crypto, independent machines,
+automatic elections, transport, physical history reclamation or legacy/effects.
+Q4 is the next gate. This acceptance filing changes documentation only; accepted
+algorithm/test bytes remain fixed at the source above.

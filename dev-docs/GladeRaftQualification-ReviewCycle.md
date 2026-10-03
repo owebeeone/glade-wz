@@ -441,3 +441,50 @@ independently converge on it; no production escape occurred.
 [Remediation 2](GladeRaftQ3Implementation-RemPlan-2.md) accepts the counterexample
 and authorizes one TDD correction with continued independent re-verdicts.
 Q3 acceptance and Q4 production gates remain open.
+
+## Q3 implementation accepted-through — remediation 2
+
+**Accepted algorithm/test source:** root `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`; unchanged Glade
+`90dc1a60981185fa26ae5bfafbbb5377c12a413b`, glade-discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`. Final peer-blind
+[Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) both **GO**, zero open/new P0–P3 and no mandatory witness gap.
+Canonical continued-review prompts: [Code](GladeRaftQ3Implementation-PromptCode-2.md),
+[State](GladeRaftQ3Implementation-PromptState-2.md). Completed reports are filed
+verbatim from the reviewers' exact final Markdown. Both verified all four HEADs
+and clean scoped source/controller bytes at start/end. No current peer report
+was shared. This final filing is documentation only; algorithm/test bytes stay
+at the accepted source.
+
+Code-2 closes its original outgoing-only candidate counterexample through the
+exact actual-file Drop-before-live-Reconnect sequence. State-2 independently
+checks the correction, both-majority authority and original closures/prior GO.
+The five initial findings were previously closed by originating Code/State on
+`ce087642`; final re-verdicts preserve those closures. **Six total implementation
+findings closed; two bounded remediation rounds; zero open findings**. No new
+architectural cause or third architectural round was identified. Initial axes
+found distinct defects; the renewed outgoing-only defect was Code-only, without
+blind convergence. All were caught during qualification before production escape.
+
+The three-line enumeration correction uses the deduplicated incoming/outgoing
+union before unchanged filters, real-log ranking and legal campaign. No interface,
+call graph, publication/mutation boundary, platform, dependency, role, allowlist
+or test-selection relaxation was added. Continued intact reviewers were therefore
+appropriate; fresh renewal had already covered the prior shared failure/routing
+changes. The object was committed and independently verified before dispatch.
+
+Owner and both final reviewers executed **121 default Rust PASS, zero failures,
+four explicit tier ignores, zero default filtering**; two explicit Q2 cases PASS;
+both parent-oracle self-tests PASS; **two Q2 and three Q3 actual SIGKILL cuts PASS**.
+Original nineteen concrete Q3 consumers remain default-selected. Strict Clippy,
+architecture, formatting, token/source and process-global gates pass: **49 owned
+Rust files, zero exceptions/debt/permanent entries**. Evidence and observations
+are recorded in [implementation evidence](GladeRaftQ3ImplementationEvidence.md).
+
+This accepts **Q3a authorized membership/joint recovery and Q3b full-history
+checkpoint/snapshot/suffix recovery in the private APFS/process-crash harness**.
+Q0/Q1a/Q2 remain accepted. Q4 is next: reviewed Glade production integration,
+canonical authority/transport, deployment/failure domains, automatic-election
+compliance and complete legacy writer/effect exclusion. Production crate/profile
+selection and activation remain open; no power-loss or physical-reclamation
+claim follows. No push or desktop rebuild is included in this landing.

@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3 implementation and Q4 remain open**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3a/Q3b private implementation accepted at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO; Q4 remains open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -167,3 +167,17 @@ verify actual RawNode configuration/snapshot behavior, real V2 storage, crash
 publication/compaction/restart and complete retained application/configuration
 outcomes. Q2 acceptance does not confer dynamic-membership or snapshot support.
 Q3 has no user-facing production surface or wire/file compatibility freeze.
+
+## Q3 implementation accepted-through
+
+The accepted algorithm/test source is `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after final
+[Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) GO/GO, zero open findings. See
+[implementation evidence](GladeRaftQ3ImplementationEvidence.md) and
+[exact review/tuple ledger](GladeRaftQualification-ReviewCycle.md).
+The private process-crash profile passed 121 default cases, two explicit Q2
+cases, both oracle self-tests and five actual SIGKILL cuts. Two bounded
+implementation remediation rounds closed all originating counterexamples.
+Q3a membership and Q3b snapshots are qualified within this profile only. Q4
+requires reviewed canonical/production amendments, real authority and transport,
+failure domains, automatic-election randomness/compliance and legacy/effect
+exclusion before production activation. Production crate selection is separate.

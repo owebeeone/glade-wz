@@ -2,6 +2,8 @@
 
 Date: 2026-10-03. Status: **allocation/lifecycle accepted at root `ccab267c6b23bfec7471923098944048a7959563`, with learner-bootstrap clarification accepted at `d4589feb02ad86b92f58686da35c8a216c370c44` after fresh [Consistency](GladeRaftQ3Bootstrap-ReviewConsistency.md)/[Safety](GladeRaftQ3Bootstrap-ReviewSafety.md) GO; unchanged member/Gyld tuple in the review ledger. This accepts exact allocation/lifecycle/bootstrap declarations only, not Q3 algorithms**.
 
+Current implementation disposition: Q3a/Q3b accepted separately at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after [Code](GladeRaftQ3Implementation-ReviewCode-2.md)/[State](GladeRaftQ3Implementation-ReviewState-2.md) GO/GO; see [implementation evidence](GladeRaftQ3ImplementationEvidence.md) and [the exact tuple ledger](GladeRaftQualification-ReviewCycle.md). The historical contract/allocation gate above retains its original scope; production ratification remains open.
+
 This supplements the accepted [Q3 configuration/snapshot contract](GladeRaftConfigurationSnapshotContract.md), source `ed243db983c485e46a27aa870ec745de16a56d7a`, filed at root `e1c260f6cf992f5d890c2ca454e2323b0d8e78b1`. It proposes the concrete provider allocation and a small injected store-lifecycle contract that the accepted declaration deliberately left for implementation allocation. It MUST pass the new contract gate before any V2 journal, membership or snapshot algorithm is implemented. It does not reopen Q1a/Q2 guarantees or claim Q3 qualification.
 
 ## 1. Bounded package allocation
