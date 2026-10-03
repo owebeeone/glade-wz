@@ -582,3 +582,20 @@ is a separate DRAFT, not accepted by this gate. It inventories additional
 runtime/error/logging/macro/codec/global seams and requires runner extraction,
 compiling contracts and review before actual adapted sources. B1/B2/full B3
 comparison, canonical owner profile and Q4-D/Q4-E remain mandatory.
+
+## Q4-B0 remediation 1 verdict and second correction
+
+At root `256be2dd0fd652b34dfffa753fcba481f5fb842b`, unchanged member/Gyld
+pins, both [Consistency](GladeRaftB0-ReviewConsistency-1.md) and
+[Safety](GladeRaftB0-ReviewSafety-1.md) verified closure of every initial finding.
+They independently found a NEW ARCHITECTURAL ROOT CAUSE: live caller Timeout/
+Cancel was made dependent on remote peer incarnation liveness. Existing new
+GREEN tests endorsed that restriction. Combined gate remains NO-GO despite
+35 compiler/harness tests GREEN and 20 ordinary provider tests RED.
+[Remediation 2](GladeRaftB0-RemPlan-2.md) restores caller-owned terminal cleanup
+and preserves strict stale traffic/reply checks. Two architectural remediation
+rounds are now used. Original-finder closure and a fresh full peer-blind
+Consistency/Safety gate are mandatory. A third new architectural root cause
+stops this object for owner redesign-or-accept; no further architectural patch
+is authorized. This accounting does not reopen accepted Q4-A or grant B0 runtime
+or production acceptance.
