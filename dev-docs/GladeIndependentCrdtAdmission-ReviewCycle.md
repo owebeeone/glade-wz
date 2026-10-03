@@ -1,7 +1,7 @@
 # Independent CRDT admission — review and delivery ledger
 
 Date: 2026-10-04. Status: **semantic design accepted; original typed contract
-stopped; owner-authorized storage-attempt redesign in review; no admission
+stopped; owner-authorized storage-attempt design accepted, new typed gate pending; no admission
 implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
@@ -214,3 +214,29 @@ in generated prompts, with unchanged member pins. That gate accepts lifecycle
 design only. A new typed boundary/allocation/conformance RED gate MUST precede
 successful kernel or host implementation. All production activation inputs and
 IC-3/4 integration/fault checks remain required.
+
+### Storage-attempt lifecycle design accepted
+
+Accepted tuple: root `d19235fb14af7f20dbdbf0b32c0c69fdba33c2c6`; unchanged
+members Glade `6a0cc5a78da38a023615f6adc5fc354bba4af0b4`, Glial
+`348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`64666e8b1caadde8922b9d42163afbab90655c65`.
+
+Both fresh axes reported GO with zero P0–P3 findings and no new architectural
+root. They independently retraced the original late-write interleaving. No
+remediation occurred on this owner-authorized redesign object. The failed IC-1
+object's history and stop remain recorded; this is not retrospective acceptance.
+
+| Evidence | SHA256 |
+| --- | --- |
+| [Consistency prompt](GladeIndependentCrdtStorageAttemptDesign-PromptConsistency.md) | `a234d1711f45decc70ef987f81b3d15e2209802d2f6457e8b8def54fa3fd11cd` |
+| [Safety prompt](GladeIndependentCrdtStorageAttemptDesign-PromptSafety.md) | `6cd8450ddaa4560835c5625723df903f46d650f66b95aa37a41b0eda41e3d160` |
+| [Consistency report](GladeIndependentCrdtStorageAttemptDesign-ReviewConsistency.md) | `859f8d028c868f3e38c97d8d0f3ac6f76648937a097766d8569793b5a6a3e7af` |
+| [Safety report](GladeIndependentCrdtStorageAttemptDesign-ReviewSafety.md) | `617a0cad1684802463f6fb141f4aa1cc005abf17e6b9142f2bac9082e26906c2` |
+
+Reports are filed verbatim. This acceptance covers
+the lifecycle design, scoped future supersession and requirement/test map only.
+Typed operations/classification/allocation and executable conformance must pass
+their next contract/RED review. Actual storage, restart, crypto, live transfer,
+Surface and activation remain unqualified. No push or live operation occurred.

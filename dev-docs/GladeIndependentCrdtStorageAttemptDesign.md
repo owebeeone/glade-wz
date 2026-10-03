@@ -1,7 +1,11 @@
 # Independent CRDT storage-attempt lifecycle
 
-Date: 2026-10-04. Status: **DRAFT, new owner-authorized redesign object; no
-contract, successful kernel, physical provider or activation is accepted.** The
+Date: 2026-10-04. Status: **lifecycle design accepted at root
+`d19235fb14af7f20dbdbf0b32c0c69fdba33c2c6` after fresh
+[Consistency](GladeIndependentCrdtStorageAttemptDesign-ReviewConsistency.md) and
+[Safety](GladeIndependentCrdtStorageAttemptDesign-ReviewSafety.md) reported GO
+with zero findings; no typed contract, successful kernel, physical provider or
+activation is accepted.** This is the new owner-authorized redesign object. The
 owner chose redesign after the [IC-1 architectural stop](GladeIndependentCrdtAdmissionContract-Escalation.md).
 The failed object's reports, three-root accounting and remediation cap remain
 intact. This document is a new design for its storage-attempt boundary, not a

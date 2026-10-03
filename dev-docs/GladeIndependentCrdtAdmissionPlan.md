@@ -2,7 +2,7 @@
 
 Date: 2026-10-04. Status: **owner authorized design, review and gated implementation;
 semantic design accepted; original contract stopped, owner authorized storage-attempt
-redesign; new contract/RED and implementation gates remain open**. The
+redesign, lifecycle design accepted; new contract/RED and implementation gates remain open**. The
 [attempt-lifecycle redesign](GladeIndependentCrdtStorageAttemptDesign.md) follows
 GDL-058 without erasing the stopped object's review history. After the sequencing recommendation,
 the owner directed a dedicated design, review and implementation, then said go.
