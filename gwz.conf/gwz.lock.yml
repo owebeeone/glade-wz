@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: 90dc1a60981185fa26ae5bfafbbb5377c12a413b
+    commit: dd1973ef2809f52111f7939f1b4b0679b18efb90
     branch: main
     detached: false
     dirty: false
@@ -69,10 +69,10 @@ members:
     path: glade-discover
     source_id: src_glade_discover
     source_kind: git
-    commit: 52ea2d118f45d9e7c3d9a789310dd5d669958851
+    commit: 1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69
     branch: main
     detached: false
-    dirty: true
+    dirty: false
     materialized: true
   mem_glade_gwz:
     path: glade-gwz
