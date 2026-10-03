@@ -1,6 +1,13 @@
 # Glade independent CRDT admission design
 
-Date: 2026-10-04. Status: **DRAFT — semantic design for Consistency/Safety review; unimplemented, not a wire/API freeze or runtime activation**.
+Date: 2026-10-04. Status: **semantic design accepted at root
+`dcc8bd02e9eb3bf5a1ba982add9c405c2adc34e9`, Glade
+`c65a6e87f0c257c15de8db080c29d365a883af85`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`, after fresh
+[Consistency](GladeIndependentCrdtAdmissionDesign-ReviewConsistency-2.md) and
+[Safety](GladeIndependentCrdtAdmissionDesign-ReviewSafety-2.md) reported GO;
+this accepts semantics only, not implementation, a wire/API freeze or activation**.
 
 GDL-054–057 authorize the resource-specific requirement and the sequence: design,
 review, implementation ahead of first Raft production integration. Authorized

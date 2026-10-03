@@ -1,7 +1,8 @@
 # Independent CRDT admission design — remediation 1
 
-Date: 2026-10-04. Status: **correction planned; findings remain open until reviewer
-verification**. Initial reviewed root `bba04ad27311db50e3e6aedddb4d91780e4e4483`,
+Date: 2026-10-04. Status: **all three findings closed at semantic scope by their
+originating reviewers on `dcc8bd02e9eb3bf5a1ba982add9c405c2adc34e9`; fresh full
+Consistency/Safety reviews also GO**. Initial reviewed root `bba04ad27311db50e3e6aedddb4d91780e4e4483`,
 Glade `c65a6e87f0c257c15de8db080c29d365a883af85`, discovery
 `1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
 `ca04499a360d910fbf8ee2540ed446facd051b35`.
@@ -29,3 +30,10 @@ canonical identity, use fresh peer-blind Consistency/Safety reviewers for the
 full revised gate as well; stale broad proofs are not reused. This is the first
 architectural remediation round on this object. The two-round cap remains.
 No finding is self-closed by the drafter or lane owner.
+
+Closure testimony: [Consistency](GladeIndependentCrdtAdmissionDesign-ClosureConsistency-1.md)
+and [Safety](GladeIndependentCrdtAdmissionDesign-ClosureSafety-1.md). Fresh full
+reviews: [Consistency](GladeIndependentCrdtAdmissionDesign-ReviewConsistency-2.md)
+and [Safety](GladeIndependentCrdtAdmissionDesign-ReviewSafety-2.md). The future
+executable `AD`/`AB` regressions remain required; semantic source retraces are
+not implementation evidence.

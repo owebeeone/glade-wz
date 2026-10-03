@@ -1,7 +1,7 @@
 # Independent CRDT admission — review and delivery ledger
 
-Date: 2026-10-04. Status: **semantic design remediation 1 pending; no implementation or
-activation accepted**. GDL-057 authorizes design, review and implementation in
+Date: 2026-10-04. Status: **semantic design accepted; typed contract/allocation/RED
+is next; no implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
 is the controlling draft. Existing Raft and legacy writer contracts remain.
@@ -63,3 +63,29 @@ The [merged remediation plan](GladeIndependentCrdtAdmissionDesign-RemPlan-1.md)
 defines one correction, originating-reviewer closure and fresh full axes because
 security eligibility and canonical identity are refined. Remediation count: first
 architectural round in progress; no implementation escape or adapter evidence.
+
+## Semantic acceptance after remediation 1
+
+Accepted tuple: root `dcc8bd02e9eb3bf5a1ba982add9c405c2adc34e9`; Glade,
+discovery and external Gyld remain at the starting pins above. This accepts
+design §§2–8, the scoped canonical amendment obligations, bounded offline
+permit historical-validity/trusted-admitter-time model, local custody/provisional
+projection separation, full-history quotas and unique canonical origins. It
+does not change legacy contracts for unactivated instances or select deployment
+values. No wire/API, crypto, storage, live sync or activation is accepted.
+
+| Evidence | SHA-256 / result |
+| --- | --- |
+| [Originating Consistency closure](GladeIndependentCrdtAdmissionDesign-ClosureConsistency-1.md) | `f05c55cf79f7300cf3151f957128f162637651d442410f2433122b1a42c3c342`; GO, P2-1 closed |
+| [Originating Safety closure](GladeIndependentCrdtAdmissionDesign-ClosureSafety-1.md) | `648430ca90384eaa4fc0dc3dd4776209616f6b3a8b928e5f52a69d7fd5519f4f`; GO, P2-1/P2-2 closed |
+| [Fresh Consistency prompt](GladeIndependentCrdtAdmissionDesign-PromptConsistency-2.md) | `5c4876ef83431b1853564c2451cd1bce2cf5b2e57008d763796b1d68a5aa2737` |
+| [Fresh Consistency report](GladeIndependentCrdtAdmissionDesign-ReviewConsistency-2.md) | `ba578da033b334bee3133fb89258a5799a2d4c07ef8f344d82ac05ee43a18627`; GO, zero P0–P3 |
+| [Fresh Safety prompt](GladeIndependentCrdtAdmissionDesign-PromptSafety-2.md) | `d9daf1c6aebe8563eeae26278dec770e27646f780c65888da18139a425500c66` |
+| [Fresh Safety report](GladeIndependentCrdtAdmissionDesign-ReviewSafety-2.md) | `dcf6b27353f92224b9a2443c6f58fbb43af8c8ee47162ce476e537c4ae49d35a`; GO, zero P0–P3 |
+
+One architectural remediation round completed; three finding IDs/two root causes
+closed. No new architectural root cause or implementation escape found. Required
+executable `AD`/`AB` witnesses remain future contract regressions. Next: sole
+drafter prepares the internal event/effect contract, reviewed Pure package role,
+Gyld source/allocation update and compiling behavioral RED consumers. Kernel
+success behavior MUST wait for that checkpoint's review.
