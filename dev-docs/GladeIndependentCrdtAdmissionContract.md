@@ -8,7 +8,8 @@ at root `4d735893c8db0a9ac9b4de9cde01600873b20ce3`, reviewing `dcc8bd02e9eb3bf5a
 `1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69` and Gyld
 `ca04499a360d910fbf8ee2540ed446facd051b35` unchanged. Full review pins are in the
 [semantic design](GladeIndependentCrdtAdmissionDesign.md) and DecisionLog GDL-054–057.
-This document applies its remediation1 without changing the accepted semantics.
+This document applies the semantic design's remediation1 without changing its accepted semantics.
+The internal contract now carries **IC-1 remediation1, pending originating verification and fresh full review**; its findings are not self-closed. See the [merged correction](GladeIndependentCrdtAdmissionContract-RemPlan-1.md) and [new evidence](GladeIndependentCrdtAdmissionContract-Remediation1-Evidence.md).
 
 This is an **internal Rust event/effect contract**, not a user-facing protocol/API
 freeze. Existing generated `glade_wire::Op` is consumed unchanged. No root, node,
@@ -59,6 +60,7 @@ verification or authority to consume a peer DTO as trusted state.
 | `Candidate` | Instance plus immutable operation and evidence; no authority follows from its arrival or caller claims. |
 | `Slot` | Instance + canonical origin + strict Glade zero-base sequence. It is not a display identity. |
 | `Receipt` | Exact instance/op/admission/stable retry identity and explicitly achieved storage class. `VolatileTest` is a fixture claim only; `LocalProcessRestart` requires a qualified physical provider. |
+| `BatchCommitted` | Exact atomic batch digest, actual revision/storage class and the complete original staged admission receipts. Retention-only work requires no invented admission receipt. |
 
 Descriptor/certificate fields intentionally remain typed snapshots while their
 canonical remote encodings are unresolved. The verifier MUST validate that the
@@ -85,8 +87,7 @@ serializing trusted `Facts` booleans and reading them back is insufficient.
 `State` owns separate `InstanceState` maps, outstanding verification continuations,
 staged commits, uncertain commits, outstanding lookups and a checked monotonically
 allocated effect ID. No process-global namespace/cache/counter is involved. IDs MUST
-NOT wrap or be reused while a callback can still arrive. Rehydration MUST preserve
-or safely invalidate outstanding identities. Any future internal persisted encoding
+NOT wrap or be reused while a callback can still arrive. Rehydration MUST preserve the validated identity high-water mark and reserved plans. A restored transport continuation MAY be invalidated, but its ID MUST remain retired; a new lookup receives a fresh checked ID above that high-water mark. Resetting the counter or merely clearing the lookup map is insufficient when old callbacks can arrive. A host lacking trusted high-water restoration MUST refuse recovery until old callbacks are independently excluded; this fixture does not establish disk restoration. Any future internal persisted encoding
 MUST bind the complete staged values and version; this gate does not select a disk
 format or make the generated wire API change.
 
@@ -103,7 +104,7 @@ custody, never used to recursively define historical qualification.
 | `OfferReplica(Candidate)` | Verify historical admission/evidence, retain qualified records/proof closure using recovery capacity, request missing ancestors, derive eligibility; current revocation does not erase a historically valid admission. No source invocation or metadata-only substitute. |
 | `EvidenceResolved(EvidenceReply)` | Match an outstanding query in all fields before consuming facts/seal; invalid/mismatched/unavailable results cannot admit. Retain continuation until resolved or explicitly abandoned without success. |
 | `CommitResolved(CommitReply)` | Match exact outstanding plan/instance/batch/revision and promised storage class. Apply only after a complete atomic committed barrier; known failure and unknown outcome are distinct. |
-| `LookupResolved(LookupReply)` | Match exact outstanding lookup and retained uncertain plan, including expected revision/op/batch and returned receipt. Recover original committed batch/receipt, release only a proven absent batch, or retain unknown reservations. |
+| `LookupResolved(LookupReply)` | Match exact outstanding lookup and retained uncertain plan, including fresh lookup invocation ID, immutable plan ID, expected revision, optional retry target and complete atomic batch result. Recover original committed batch/receipts, release only a proven absent batch, or retain unknown reservations. |
 | `ObservePolicy` | Explicit trusted policy/time input; reject malformed intervals/regression below the retained floor. New-intent queries pin this cut and entire conservative interval; a stale verification reply cannot seal or stage a new commit; commit-start ordering is specified below. Historical replay uses the recorded admission cut. |
 | `ObserveFrontier` | Bounded peer inventory hint only: validate numeric bounds, request missing records, and offer local missing records. Advertised heads do not become qualified custody, unique fork heads, authorization or complete history. |
 | `OfferFork` | Pair of candidates, not proof of conviction. Reuse already qualified retained records; separately verify missing rival admission/proof closure. Convict only after both independently qualify historically. |
@@ -125,8 +126,8 @@ same query/candidate, verified facts and original verified query through the sea
 phase. `AdmissionSeal` queries additionally bind those exact verified facts and
 `validated_under`, the original Local policy/time or Historical validation mode.
 Verify requests have no validated_under; a seal cannot recursively claim
-AdmissionSeal as its original validation mode. A delayed, foreign, duplicate or changed query response
-MUST yield `CallbackMismatch` without consuming a valid continuation/reservation.
+AdmissionSeal as its original validation mode. A retired, foreign, duplicate or changed query response
+MUST yield `CallbackMismatch` without consuming a valid continuation/reservation. Elapsed delay alone does not retire an identity: a delayed exactly matching reply remains valid, subject to the local policy checks and physical-start ordering below.
 The same rule applies to commit and lookup callbacks. No arbitrary event may
 supply trusted facts outside its matching outstanding query.
 
@@ -170,8 +171,7 @@ validation/projection belongs to the existing profile/provider/Taut code.
 Epoch recovery MUST issue a fresh canonical origin throughout certs, chain keys,
 refs, quarantine, retries and Taut actor IDs. The test deliberately retains old
 `writer-e0:0` inserting atom A, then uses `writer-e1:0`/epoch1 referencing the old
-A and inserting atom B after A: released text MUST be **AB** in both arrival
-orders. Repeated display names do not permit same-canonical-origin seq0 reset.
+A and inserting atom B after A: released text MUST be **AB** after two historically qualifying E0 seq1 rivals have established quarantine floor1. Both rival delivery orders MUST retain all old receipts, exact retries, the E0 seq0 common prefix and the fresh E1 receipt; reusing E0 for E1 MUST refuse. Separate B-before-A replay rows retain missing-history/buffering coverage. Repeated display names do not permit same-canonical-origin seq0 reset.
 
 ## 5. Forks, read cuts and identity sets
 
@@ -204,7 +204,7 @@ instance X may authorize instance Y, even with identical display actors.
 ## 6. Atomic staging, unknown outcome and reserved recovery
 
 `CommitPlan` binds ID, instance, expected local revision, immutable batch bytes,
-commit kind, all retained candidates, complete `StagedAcceptance` continuations and
+commit kind, all retained candidates, explicit qualified fork pairs, complete `StagedAcceptance` continuations and
 capacity charges and optional `LocalPrecondition` (exact policy/time cut for new intent). Each staged acceptance carries immutable operation/evidence,
 verified query/facts, optional seal query, exact admission bytes and its stable
 receipt preview. Thus a matching committed/lookup callback can reconstruct the
@@ -240,21 +240,66 @@ actual policy/clock serialization with physical commit and cancellation cuts is
 an IC-3/ICD-014 adapter gate, not established by a volatile reply.
 
 Only `Committed { revision: expected_revision + 1, storage: promised_class }`
-installs custody/head/outcome/projection and yields success. `KnownNotCommitted`
+permits atomic installation according to CommitKind below. Retention-only installation MUST NOT advance an admission head or yield application admission. `KnownNotCommitted`
 releases that exact staged reservation and reports no success or partial visible
 accepted tail. `OutcomeUnknown` retains the entire plan, facts/seal/receipt identity
-and reservation; it yields uncertainty and exact lookup/recovery. It MUST NOT
+and reservation; it yields uncertainty and exact lookup/recovery. `OutcomeUnknown` carries the immutable batch digest, including for retention-only work that has no application receipt. It MUST NOT
 re-authorize, create a replacement operation or advance its ambiguous origin.
 
 The minimal host serializes commit barriers per instance. An uncertain instance
 MAY pause all new commits in that instance until exact revision/outcome recovery;
 it MUST NOT stall independent instances. Reservations count exactly once across
 staged/unknown maps. This permits strict CAS/revision recovery without an unexplained
-arrival-selected revision. Lookup replies bind plan, instance, expected revision,
-operation and batch; a committed lookup includes actual revision and exact stored
-receipt. Mismatch/stale/unknown cannot release reservations. A proven absent batch
-may be rescheduled only as the original intent after applicable new-intent checks,
-never with a reminted canonical identity while its outcome remains uncertain.
+arrival-selected revision. `LookupRequest.lookup_id` is a fresh checked invocation ID, distinct from
+`plan_id`. `State.lookups` is keyed by lookup_id; the immutable reserved plan stays
+keyed by plan_id. At most one lookup invocation per plan is outstanding. Request
+and reply MUST match lookup ID, plan ID, instance, expected revision, optional
+operation retry target and batch digest exactly. A generic retention lookup uses
+`operation=None`; a `Some` target MUST name a staged admission operation, never a
+synthetic retention operation. Counter exhaustion returns Capacity without wrap,
+lookup issuance or reservation loss.
+
+Every fully matched, valid lookup answer retires that invocation. Unknown retains the exact
+plan/reservation and produces no committed or absent inference; ResumeRecovery or
+retry allocates a fresh invocation. A duplicate answer for retired L1 MUST produce
+CallbackMismatch and leave outstanding L2 and its reservation unchanged, even when
+both invocations refer to the same plan. Foreign or mismatched replies MUST NOT
+retire a valid invocation.
+
+`LookupResult::Committed { batch: BatchCommitted }` attests the entire original
+atomic batch for **all four CommitKinds**. Its inner digest MUST equal the retained
+batch, revision MUST be expected_revision+1, storage MUST equal the promised class,
+and receipts MUST equal the complete staged original receipt list, including exact
+instance/op/admission/stable identity/storage. No placeholder receipt is permitted.
+Apply the same atomic installation path as a matching direct Committed barrier;
+release the one reserved plan and add its charges exactly once. A delayed matching
+committed result is legal under the physical-start rule above. Duplicate committed
+answers cannot charge or install twice.
+
+| Kind | Atomic committed installation and outcome |
+| --- | --- |
+| AcceptedBatch | Install all staged accepted records/facts/original receipts, origins and derived cuts; committed lookup recovers ExactRetry for the original admission target(s), without Verify, Seal or Commit. |
+| Candidate | Retain exact unresolved candidates and derived missing slots, with no admission receipts or accepted/head advancement; report BatchRetained. |
+| SecurityEvidence | Retain exact security records, including a bare rival with no admission, with no admission receipts, accepted record or conviction; report BatchRetained. |
+| QualifiedFork | Retain explicit independently qualified rival pairs and any complete historical StagedAcceptance needed for new rival custody; derive quarantine/common prefix only from qualified records. Receipts, if any, are genuine original historical admissions. Report BatchRetained, never AcceptedLocal for fork retention. |
+
+Candidate and SecurityEvidence plans MUST have empty acceptances and receipts.
+QualifiedFork plans MUST NOT invent admissions for their pair: supporting records
+must already be qualified or be installed with complete historical continuations
+in the same atomic batch. Records are installed/deduplicated by exact identity;
+accepted records supporting fork evidence remain accepted custody after quarantine.
+BatchRetained reports instance/kind/batch/revision/storage, **not** application
+admission or projection eligibility. All retained stage values and explicit fork
+pairs MUST be bound into the later internal batch encoding.
+
+KnownAbsent retires the lookup and releases only that reserved plan; it MUST NOT
+delete existing accepted/candidate/security/fork custody or committed charges.
+No success receipt is reported. Any later rescheduling uses the original intent
+and applicable checks, never a replacement canonical identity while uncertainty
+remains. Unknown retains all reservations and leaves custody, common prefix and
+admission receipts unchanged. Independent instances MUST remain operational for
+all three lookup outcomes; uncertainty cannot be resolved by borrowing another
+instance's callback, receipt or capacity.
 
 Committed byte charges and staged/unknown reservations are separate. Admission
 MUST reserve enough bounded space for operation, evidence, outcome and required
@@ -275,7 +320,7 @@ values/`step`, not private helpers. Its host follows emitted Verify/Seal/Commit
 results with explicitly injected facts and **VolatileTest** barriers. Its bounded
 32-event driver refuses unavailable unknown evidence. Preloaded accepted and staged
 state is labelled trusted model state. No crypto, real Records implementation,
-fsync, restart or network result follows from it. Behavior assertions deliberately
+fsync, restart or network result follows from it. The additional [recovery consumer](../glade/contracts/crdt-admission-core/tests/recovery_contract.rs) covers the merged lookup/batch/post-fork counterexamples. Behavior assertions deliberately
 fail on the refusing scaffold; compilation/missing symbols are not the RED evidence.
 
 [`text_admission_trace.rs`](../glade/contracts/crdt-admission-core/examples/text_admission_trace.rs)
@@ -287,8 +332,8 @@ feeds these immutable bytes into **released `@owebeeone/taut-shape` 0.9.1** and 
 its real `CrdtNode`/`projectText`, with checked zero-base coordinate mapping.
 No new text merge or JS admission implementation is introduced.
 
-Exactly eight rows MUST exist; omission, duplicates or empty traces fail:
-AB/AD/qualified-fork A in both orders, ABC and independent-instance isolation.
+Exactly ten rows MUST exist; omission, duplicates or empty traces fail:
+post-fork AB, buffering AB-buffer, AD and qualified-fork A in both orders, ABC and independent-instance isolation. Post-fork AB MUST include the prior kernel cut projecting A, two retained qualifying E0 seq1 rivals, persistent floor1 quarantine, preserved old receipts/exact retries, rejected reused E0 certification and a fresh local E1 receipt.
 ABC preloads the existing `concurrent_siblings` A, then requires both isolated local
 receipts for B/C and opposite-direction app-record offers, exactly `{a:0,b:0,c:0}`
 and **ABC** both ways. Instance X remains A while authorized Y projects Y and a
@@ -305,8 +350,8 @@ fixture payloads use the same supported codec without inventing a numerical surr
 | 001/003/015 | Explicit descriptor/mode/profile refusal; legacy/strong remain unsupported in this pure lane. | Authenticated canonical genesis/capabilities, mixed binaries, root and whole-store seal enforcement. |
 | 002/004/005 | Isolated receipt, two instances, foreign cert rejection, exact candidate/evidence/descriptor/mode callback matching. | Actual authenticated requester/writer/admitter crypto and node/client integration. |
 | 006 | Entire finite window/uncertainty, current revocation versus historically valid replay, stale validation, delayed prior-cut commit/unknown recovery, and unadmitted/unauthorized/expired rivals either order retain AD. | Real historical cuts, clocks, revocation/custody trust and security evidence durability. |
-| 007/008/009 | Fresh origin AB; reused ID, numeric/ref/zero-base failures; predecessor requests; two qualified rivals and dependent quarantine/common-prefix; historical dependent custody versus local refusal. | Canonical certificate issuance/antirollback, broader profile corpora, adversarial delivery/state bounds. |
-| 010/011 | Stable retry, bound commit/lookup callbacks, known failure/unknown reservation, original receipt recovery, explicit read cuts. | Restart/sole-copy loss/declared physical receipt qualification. |
+| 007/008/009 | Genuine qualified E0 fork followed by fresh-origin local AB in both orders, old receipts/retries retained and reused E0 refused; buffering AB; reused ID, numeric/ref/zero-base failures; predecessor requests; two qualified rivals and dependent quarantine/common-prefix; historical dependent custody versus local refusal. | Canonical certificate issuance/antirollback, broader profile corpora, adversarial delivery/state bounds. |
+| 010/011 | Stable retry; independently identified lookup invocations; all four atomic kinds committed/absent/unknown recovery with exact batch/storage/receipt binding and no false retention admission; counter exhaustion and restoration high-water assumptions; explicit read cuts. | Restart/sole-copy loss/declared physical receipt qualification. |
 | 012/013 | Actual app operations in deterministic opposite-direction offers; edit/recovery budgets/exhaustion. | Automatic real-node duplex operation transfer, bounded production ledger/cursors/enrollment. |
 | 014/016/017 | Staged typed custody, real released text consumer, classified package/tooling/source guards. | Physical interruption atomicity, tombstone/cursor/editor/Glial lifecycle integration, live adapter conformance. |
 

@@ -1,7 +1,7 @@
 # Independent CRDT admission — review and delivery ledger
 
 Date: 2026-10-04. Status: **semantic design accepted; typed contract/allocation/RED
-draft is committed for review; no admission implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
+remediation 1 is required; no admission implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
 is the controlling draft. Existing Raft and legacy writer contracts remain.
@@ -124,3 +124,39 @@ later. Successful kernel behavior MUST NOT begin before this gate. Fixture facts
 volatile commit replies and delivered sync events do not qualify real signatures,
 physical restart receipts or automatic duplex app synchronization. IC-3/4 remain
 required before the complete live feature and any separate activation.
+
+### Initial IC-1 review — NO-GO
+
+Reviewed root `7c5ac428a92c4087cf0ed1fff9e399d6f06c5850`, member tuple above.
+
+| Axis | Prompt SHA-256 | Report SHA-256 / result |
+| --- | --- | --- |
+| [Consistency](GladeIndependentCrdtAdmissionContract-ReviewConsistency.md) | `d8e686ecae732fd13f6bbb21962a9ae73e106f07e3ea8913cb922b3aebc2d2a1` | `9cea2abf9d2698bb0ea7dcdd44f7099623839c4b290bb5bda9b70503e9b0e890`; NO-GO, two P2 and one P3 |
+| [Safety](GladeIndependentCrdtAdmissionContract-ReviewSafety.md) | `627a18df3cfc52ab1227fea8de52db80e48ad5235d8e6d1289fa93065e9c3061` | `ffbe0aace9804eefff5ea0e06d05eb8b496bd37afb0089e9de20310642f33442`; NO-GO, one P2 |
+
+Three distinct blocking roots: lookup-invocation ambiguity, incomplete recovery
+grammar for retention-only commits, and missing combined post-fork fresh-origin
+text witness. No blind convergence in this round. Safety explicitly labels its
+recovery-interface root architectural. One bounded
+[merged remediation](GladeIndependentCrdtAdmissionContract-RemPlan-1.md) corrects
+all findings, including delayed-callback wording. All findings remain open pending
+originating verification; fresh full axes also required after the typed interface
+change. First remediation round for the IC-1 object; no successful kernel started.
+
+### IC-1 remediation 1 checkpoint
+
+The one merged correction is committed at Glade
+`6a0cc5a78da38a023615f6adc5fc354bba4af0b4` and Glial
+`348eed97cd1ee4f677ea2866dfabe5a81cbebee1`. Discovery and external Gyld
+remain at the IC-1 pins above. The root revision will be recorded in generated
+review prompts. [Remediation evidence](GladeIndependentCrdtAdmissionContract-Remediation1-Evidence.md)
+records 27 compiling behavioral RED tests and ten released-Taut RED rows;
+the implementation still refuses every event. All findings remain open.
+
+The original reviewer processes were unavailable after the session interruption.
+Their roles MUST be restored from their own verbatim filed reports and original
+prompts, with the interruption disclosed in the closure reports. This is restored
+context, not a claim that the original live processes survived. Each restored role
+MUST verify its original counterexamples; neither the drafter nor lane owner may
+self-close them. Two additional fresh peer-blind full reviews MUST independently
+review the changed interface. Acceptance MUST identify this process discontinuity.
