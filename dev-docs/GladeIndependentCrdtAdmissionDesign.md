@@ -89,6 +89,20 @@ MUST NOT join histories across roots or incarnations. Canonical serialization
 and hashing MUST have Rust/TS/Python vectors before remote use; private in-memory
 values are insufficient evidence of canonical bytes.
 
+Every certified origin epoch MUST have a fresh, immutable canonical `Op.origin`
+within its instance, never reused by another epoch. The epoch distinction MUST
+already be embodied in that identifier before the inner op is signed or hashed;
+an epoch field in an outer certificate cannot disambiguate identical inner
+`Op.origin` values. Certification MUST bind the exact canonical origin, epoch,
+instance and writer key. A certificate proposing a new epoch with an already
+bound canonical origin MUST refuse before admission or store mutation. Display
+names MAY repeat; they are not canonical writer identities. All refs/frontiers,
+chain slots, retry identities, quarantine keys and text element `actor_id`s MUST
+use this same canonical origin. The unchanged GCA mapping remains
+`CrdtOp.origin = Op.origin`; no extra epoch field or replica-local remapping is
+added to the canonical engine. Histories and refs from old epochs keep their
+original identities permanently.
+
 Each initial origin chain MUST start at Glade seq 0, with no predecessor, and
 use positive Taut seq `Glade seq + 1`. Later ops MUST carry exactly the prior
 canonical op hash; refs are sorted unique per-origin frontiers in this instance.
@@ -130,8 +144,13 @@ Proposed application proof data MUST preserve the canonical operation unchanged:
 
 1. A certified writer key/origin certificate binds the origin ID, requester B3
    principal/attenuation ancestry, instance descriptor, origin epoch and key.
-   Tabs sharing a principal have distinct origins. A node may be a writer only
-   through its own authorized principal/origin; it cannot borrow a caller name.
+   It MUST bind the fresh canonical `Op.origin` specified in §2, not merely a
+   display label plus epoch. Tabs sharing a principal have distinct canonical
+   origins; a newly certified recovery epoch also has a distinct canonical
+   origin even when its display label or writer key repeats. A node may be a
+   writer only through its own authorized principal/origin; it cannot borrow
+   a caller name. Permits, admission records and signed causal refs MUST bind
+   that same certified canonical origin.
 2. The writer signs the exact canonical app op and descriptor hash under a
    separately specified application-op domain. Scope, seq/prev, refs, shape,
    payload, permit reference and requester ancestry are covered by the proof.
@@ -203,6 +222,14 @@ receive the accepted receipt. A locally refused edit is not laundered by replay;
 obtaining another valid admission requires that other node's independent valid
 permit and checks, and changes no existing receipt identity.
 
+A writer signature alone, including a signature made after revocation or permit
+expiry, is attribution rather than qualifying historical admission. A rival
+without the qualifying admission evidence defined in §5 MUST NOT revoke or
+quarantine a previously valid operation or its dependents. Retain the rival as
+bounded attributable security evidence and preserve the valid projection in
+either arrival order. Conversely, a genuine earlier qualifying admission is
+not disqualified merely because its writer or permit is now revoked/expired.
+
 **Review-significant amendment:** Authz §4's forward-only revocation does not
 already specify historical write eligibility. This proposal separates historical
 admission validity from current serve/admit rights. The permit is not a proof of
@@ -238,7 +265,7 @@ bind the exact descriptor and immutable bytes, not confer forever-valid policy.
 | `OutcomeUnknown` | Commit/reply boundary uncertain; exact lookup/retry only. The node MUST NOT issue a fresh equivalent operation. |
 | `MissingHistory` / `PolicyPending` / `IdentityPending` | No admitted local edit. Preserve intent and canonical bytes; request missing evidence. A retained peer candidate is explicitly provisional, not `AcceptedLocal`. |
 | `Denied` / `Invalid` / `Unsupported` / `Capacity` | Known no-commit result for local intent; keep intent for explicit correction, renewal or authorized resubmission. Existing independently accepted records MUST NOT be silently dropped by this result. |
-| `IntegrityConflict` | Signed same-slot fork or incompatible identity evidence; retain evidence and expose degraded projection. It is not an arrival-order winner. |
+| `IntegrityConflict` | Same-slot fork with two historically qualifying admission records (§5), or proven incompatible identity evidence; retain evidence and expose degraded projection. A bare signed nonqualifying rival is security evidence and MUST NOT degrade legitimate projection. It is not an arrival-order winner. |
 | `ReplicaRetained` | Named peer attests its actual retained record and storage class. It is additional custody evidence, not a consensus decision or proof of independent failure domains. |
 
 The proposed first storage class is `local-process-restart/v1`: successful local
@@ -294,17 +321,52 @@ invalid. Malformed or proven invalid ancestors quarantine dependent candidates.
 The sender's original local receipt remains custody evidence; the receiving node
 must report unresolved transfer, never claim convergence while excluding it.
 
-For a proven writer-signed same-slot fork, the proposed containment policy is:
-quarantine the forked instance-origin chain from the earliest fork seq onward,
-both competing operations and every transitive causal dependent. A valid common
-prefix before that seq stays eligible. Proof is canonical unordered pair of
-distinct signed operations with identical instance/origin/epoch/seq; pair order
-cannot affect validity. A missing predecessor is not a fork proof. An unsigned
-contradictory op cannot convict a writer. A later discovered earlier fork moves
-the quarantine floor backward monotonically. Both branches, prior receipts and
-dependent records remain retained as evidence; no arbitrary hash/arrival choice
-returns one branch to eligible history. Reconstruct the projection from the
-eligible closure, notifying consumers of the integrity change.
+Before deriving fork quarantine, each rival MUST independently establish a
+**historically qualifying admission record**. Qualification requires the exact
+authenticated descriptor/profile and valid payload; the unique certified
+canonical origin/epoch and narrowing requester chain; the writer signature over
+the bound immutable operation; a valid signed admission record from a node
+authorized to admit that instance under the issued permit; the finite permit's
+scope/sequence/time bounds and recorded trusted acceptance-time evidence; and
+the recorded local policy evidence allowing that admission at that cut, with
+strict predecessor/hash and causal proof closure. Current revocation or permit
+expiry is not a retrospective qualification veto. Missing proof/key/closure
+leaves qualification pending; a proven invalid proof, payload or admission makes
+the rival nonqualifying.
+
+This historical proof predicate MUST be evaluated over finite acyclic structural
+and authorization evidence, independently of the subsequently derived projection
+quarantine. Its supporting predecessor/dependency records must themselves have
+qualifying historical evidence, but need not survive derived fork exclusion.
+At a disputed cross-origin ref slot, the required historical support is a
+qualifying record at that canonical origin/seq, not an arrival-selected projected
+winner. Own predecessor hashes still bind the exact predecessor bytes. Neither
+"currently projection-eligible" nor the absence of a derived fork may be an
+input to qualification. Thus two fully qualifying branches remain capable of
+proving their conflict after both have been excluded; invalidating one through
+that exclusion cannot undo the proof or create a circular verdict.
+
+Only two distinct operations with independently qualifying admission records
+at identical `(instance, canonical Op.origin, seq)` convict a projection-affecting
+fork. Their certificates necessarily bind the same epoch; a purported other
+epoch reusing the canonical origin is an invalid certificate, not another valid
+slot. Proof is a canonical unordered pair of the operations plus qualifying
+admission evidence; pair order cannot affect validity. A bare signed unauthorized,
+expired-without-prior-admission, malformed or unknown-admission rival MUST NOT
+convict or invalidate legitimate history. Retain it as bounded attributable
+security evidence (or a pending candidate when qualification is unresolved),
+without advancing the accepted head or feeding that rival to Taut. A missing
+predecessor is not a fork proof, and an unsigned rival cannot convict either.
+
+For a qualifying same-slot fork, quarantine the canonical instance-origin chain
+from its earliest fork seq onward, both competing operations and every transitive
+causal dependent. A valid common prefix before that seq stays eligible. A later
+discovered earlier qualifying fork moves the quarantine floor backward
+monotonically. Both branches, prior receipts and dependent records remain
+retained as evidence; no arbitrary hash/arrival choice returns one branch to
+eligible history. Reconstruct the projection from the eligible closure, notifying
+consumers of the integrity change. Unresolved qualification alone MUST NOT remove
+the established valid projection or manufacture a complete-convergence claim.
 
 This is an admission/security eligibility rule, not a new CRDT merge algorithm.
 Released Taut's own equivocation behavior/corpus remains unchanged; this adapter
@@ -313,7 +375,34 @@ It MUST test prefix/dependency filtering against opposite fork-delivery orders
 and complete set convergence. A same key used concurrently/rolled back cannot
 be made safe by deterministic text conflict resolution. Continuing after a
 fork requires a separately authorized fresh origin epoch and explicit intent
-recovery; old quarantined bytes MUST NOT be automatically recast as new edits.
+recovery with a fresh canonical `Op.origin` under §2; old quarantined bytes MUST
+NOT be automatically recast as new edits. The valid old prefix remains under
+its old canonical origin, and a new-origin edit can causally reference it.
+
+Exact future text witnesses for ICD-T06/T07/T09:
+
+- Origin E0's canonical ID `writer-e0`, Glade seq0/Taut seq1, validly admits an
+  insertion with atom ID `atom-a` and text `A`. A different valid origin then
+  admits an insertion `atom-d` containing `D` after `atom-a`, causally referencing
+  `(writer-e0, 0)` in Glade coordinates. After E0's writer is revoked and its
+  permit expires, it signs a different seq0 rival inserting `X` but supplies
+  no qualifying admission. Both evidence orders MUST retain the rival as
+  security evidence, keep the exact two legitimate operation identities
+  eligible and project exactly `AD` through released `CrdtNode`/`text_crdt`.
+  The invalid rival MUST NOT enter the engine or degrade those legitimate
+  receipts. Use the same outcome for a rival with proven invalid payload or
+  permit; unresolved evidence remains pending without conviction.
+- Separately, retain E0's valid `A` prefix and two genuinely qualifying rival
+  admissions at E0 seq1. Both orders MUST quarantine those two rivals and their
+  causal descendants while preserving E0 seq0. Authority certifies E1 with
+  canonical ID `writer-e1` (the same display name is permitted). Its initial
+  Glade seq0/Taut seq1 insertion `atom-b` containing `B` after `atom-a` references
+  `(writer-e0, 0)` and uses text `actor_id = writer-e1`. Both orders of prefix/
+  recovery delivery, buffering the dependency when necessary, MUST keep the
+  eligible set exactly `{(writer-e0,0),(writer-e1,0)}` in Glade coordinates,
+  map it to distinct Taut identities, and project exactly `AB`. E0 receipts/
+  retries retain E0 identities; E1's counters start only under `writer-e1`.
+  A proposed E1 certificate naming `writer-e0` MUST fail before mutation.
 
 ## 6. Bidirectional application synchronization and bounds
 
@@ -371,14 +460,21 @@ Finite quotas mean sufficiently long disconnection can stop new admissions.
 
 ## 7. Restart, origin custody and physical storage
 
-Client origin recovery MUST retain certified origin epoch, next seq, prev hash,
+Client origin recovery MUST retain certified canonical origin/epoch, next seq, prev hash,
 lamport watermark, observed causal frontier and exact outstanding intent/op/receipt
 bytes together. Restore must recover maxima before appending, and exact retry
 must reuse bytes. Parallel holders of one writable origin MUST be excluded by
 actual origin custody or contained as forks. A tab label, saved clock or mutex
 in another process does not prove custody. If a restored backup lacks a trusted
 antirollback floor, its old origin becomes read-only/recovery-pending; establish
-a fresh certified origin epoch through authority before new edits. Offline
+a fresh certified origin epoch with a new never-reused canonical `Op.origin`
+through authority before new edits. Resetting seq0 under the old canonical
+origin is forbidden even with a new certificate/epoch. Old history, refs, text
+actor identities and exact retry/outcome keys remain bound to the old origin;
+new edits/counters use the new origin and may reference the eligible old prefix.
+Custody must retain enough origin-issuance evidence to refuse canonical ID reuse;
+missing or contradictory issuance evidence leaves recovery pending, not a
+new certificate inferred from a repeated label. Offline
 creation of fresh writer keys is allowed only when already covered by reviewed
 certificate/delegation issuance authority, not merely because data is CRDT.
 
@@ -540,10 +636,10 @@ not merely equal length or absence of crashes.
 | ICD-003 | MUST reuse exact supported canonical engine/payload profile. | T03 actual concurrent text insert/delete permutations converge in op set and projection through released engine; unknown profile/wrong shape/malformed text fails before mutation. Reject a mutant returning empty state or routing CRDT to value. |
 | ICD-004 | MUST preserve instance isolation across identity, proof, history and policy. | T04 two same-profile instances with overlapping display origins and different policies partition/heal independently; foreign cursor/permit/refs/private-self fail and bytes never cross. |
 | ICD-005 | MUST authenticate original requester and writer end-to-end. | T05 certified principal succeeds across two hops; forged Hello/op, forwarded node-ID substitution, changed scope/payload and unknown device defer/refuse appropriately. Real cryptographic corpus separately. |
-| ICD-006 | MUST apply finite offline authorization and explicit revocation eligibility. | T06 isolated permitted B admits; A observes revoke and denies; B's earlier valid admission remains eligible after heal; expiry/clock rollback/unknown policy yield no acceptance. Current serve denial still applies. Test every evidence order. |
-| ICD-007 | MUST retain strict origin chain/causal/logical custody. | T07 seq0 and linked successor succeed; missing prev, numeric overflow, reused origin/rollback fail; restore/retry preserves exact bytes and appends after recovered watermark. Actual concurrent-handle custody test. |
+| ICD-006 | MUST apply finite offline authorization and qualifying historical admission, separately from current revocation/serving. | T06 isolated permitted B admits; A observes revoke and denies; B's earlier valid admission remains eligible after heal; expiry/clock rollback/unknown policy yield no acceptance. A later bare signed revoked/expired rival has no conviction power: both orders retain security evidence and legitimate dependent text `AD` (§5). Current serve denial still applies. |
+| ICD-007 | MUST retain strict origin chain/causal/logical custody with a unique canonical origin per certified epoch. | T07 seq0 and linked successor succeed; missing prev, numeric overflow and rollback fail; safe restore/retry preserves exact old bytes. Fresh E1 with repeated display name MUST use a new canonical origin; retained E0 `A` plus E1 `B` after it projects exactly `AB` in both orders (§5). E1 reusing E0's canonical origin fails before mutation. Actual concurrent-handle custody test. |
 | ICD-008 | MUST recover gaps with bounded provisional state. | T08 successor-before-predecessor requests exact missing bytes and later projects; invalid ancestor excludes descendants; queue full never advances a false head or drops sender custody. |
-| ICD-009 | MUST converge on fork/dependency quarantine without arrival-order winners. | T09 opposite signed fork orders give equal eligible prefix/quarantine/dependents and text; unsigned rival cannot convict; earlier later-discovered fork moves floor backward; retained prior receipt becomes degraded, not deleted. |
+| ICD-009 | MUST derive fork/dependency quarantine only from two independently historically qualifying rival admissions, without circular qualification or arrival-order winners. | T09 two qualifying rivals give equal prefix/quarantine/dependents and degraded retained receipts; earlier qualifying fork moves floor backward. Bare signed unauthorized/expired/invalid rival preserves legitimate text `AD` and receipts, retaining security evidence in either order. Distinct canonical E1 recovery after E0 fork preserves exact eligible identities and text `AB` (§5); unsigned/unknown-admission rival cannot convict. |
 | ICD-010 | MUST make exact retry/outcome lookup stable across interruption. | T10 commit/reply loss/retry yields one original op/receipt; changed bytes same identity conflicts; quota/restart/expiry cannot remint. Physical interruption proof distinct from copied fixture state. |
 | ICD-011 | MUST state achieved custody and read completeness precisely. | T11 local receipt survives declared process restart; no peer copy/global-current claim; complete local empty cut differs from missing history; permanent sole-copy loss produces loss/unavailable, no fabricated recovery. |
 | ICD-012 | MUST reconcile actual app operations in both directions automatically. | T12 isolate/edit each real node/reconnect with no browser resubscribe/manual ferry; exact signed text ops and proof closure converge; holder's erased tail is offered from follower; home-only mutant fails. |

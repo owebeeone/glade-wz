@@ -1,6 +1,6 @@
 # Independent CRDT admission — review and delivery ledger
 
-Date: 2026-10-04. Status: **semantic design gate pending; no implementation or
+Date: 2026-10-04. Status: **semantic design remediation 1 pending; no implementation or
 activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
@@ -43,6 +43,23 @@ This is existing text merge evidence only. No independent-node acceptance,
 signed app operation, physical commit or app anti-entropy claim follows.
 
 The design has seventeen future ICD requirements. Their test/adapter obligations,
-IC-1–4 milestones and production parameter choices remain open. Semantic review
-will bind the commit containing the draft and this ledger; no review has yet
-returned a verdict and no finding is considered closed.
+IC-1–4 milestones and production parameter choices remain open.
+
+## Initial semantic review
+
+Reviewed root `bba04ad27311db50e3e6aedddb4d91780e4e4483`; all member pins above
+unchanged. One drafter produced the design; fresh peer-blind Consistency/Safety
+reviewers verified the tuple at start and end and performed inspection only.
+
+| Axis | Prompt SHA-256 | Report SHA-256 / verdict |
+| --- | --- | --- |
+| [Consistency](GladeIndependentCrdtAdmissionDesign-ReviewConsistency.md) | [Prompt](GladeIndependentCrdtAdmissionDesign-PromptConsistency.md): `1a3e1d52c366b194e3bdbbad2495e65a917306019c7f197a4bc85fa9218c35e1` | `4c3a51f41a463eb18588b2dac96fcda5ae78ee503f275e044bc29e6ad8e03d0c`; NO-GO, one P2 |
+| [Safety](GladeIndependentCrdtAdmissionDesign-ReviewSafety.md) | [Prompt](GladeIndependentCrdtAdmissionDesign-PromptSafety.md): `a087cad0576072976503f36be6264f57f72673d7787120207794cbdaf2bee16a` | `7302d84baa63b1375fe3c1dac65c8f40214e8d8013b4f475c781dd18673cf863`; NO-GO, two P2 |
+
+Three finding IDs identify two root causes. Both axes independently found the
+canonical origin/epoch collision. Safety additionally found that an unauthorized
+signed rival could quarantine legitimate admitted history. No finding is closed.
+The [merged remediation plan](GladeIndependentCrdtAdmissionDesign-RemPlan-1.md)
+defines one correction, originating-reviewer closure and fresh full axes because
+security eligibility and canonical identity are refined. Remediation count: first
+architectural round in progress; no implementation escape or adapter evidence.
