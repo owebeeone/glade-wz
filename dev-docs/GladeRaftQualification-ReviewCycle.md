@@ -652,3 +652,20 @@ Q4-C/D/E remain open. SourceAdaptationPlan remains unadopted. No allowance,
 classification, test-selection or governing promise was relaxed. This documentary
 filing does not move the accepted source pin or include inherited dirt, merge,
 push, live seal installation, enrollment, launcher changes or desktop rebuild.
+
+## Variable-cardinality bootstrap and growth semantic design
+
+The owner subsequently required one/two/three/more-node operation, disconnected
+first starts and unstable networks, and authorized design. GDL-053 records the
+scope; three voters remain a resilience recommendation. The
+[bootstrap/growth proposal](GladeRaftBootstrapGrowthDesign.md), root
+`761f691a17d65a5b450bf5e8d502a3121e104bc1`, Glade
+`c65a6e87f0c257c15de8db080c29d365a883af85`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`, received fresh peer-blind
+[Consistency GO](GladeRaftBootstrapGrowth-ReviewConsistency.md)/
+[Safety GO](GladeRaftBootstrapGrowth-ReviewSafety.md), zero findings and zero
+remediation rounds. [Exact review record](GladeRaftBootstrapGrowth-ReviewCycle.md)
+binds the four-file semantic object, generated prompts, evidence limits and next
+contract gate. BG-001–014 remain future tests. This review does not expand Q3
+numeric evidence, select production options, implement bootstrap or close Q4-C/D/E.

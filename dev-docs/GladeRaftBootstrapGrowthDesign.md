@@ -1,6 +1,9 @@
 # Glade Raft bootstrap, growth and unstable networks
 
-Date: 2026-10-03. Status: **DRAFT recommendation for Consistency/Safety review**.
+Date: 2026-10-03. Status: **semantic proposal reviewed at root `761f691a17d65a5b450bf5e8d502a3121e104bc1` after Consistency/Safety GO/GO; recommendations remain provisional, no production ratification or implementation**.
+The [review record](GladeRaftBootstrapGrowth-ReviewCycle.md) binds the complete
+tuple, verbatim reports and scope. Fourteen test obligations below remain future
+work; analytical design review is not executed qualification.
 The owner requires Glade to operate with one, two, three or more nodes, including
 participants that start disconnected and later discover each other. Three is a
 resilience recommendation, not a minimum. This selects the cardinality objective,
