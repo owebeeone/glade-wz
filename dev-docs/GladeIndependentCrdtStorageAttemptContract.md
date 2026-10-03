@@ -1,9 +1,20 @@
 # Independent CRDT storage-attempt typed contract
 
-Date: 2026-10-04. Status: **DRAFT — new typed contract, package/allocation and
-compiling RED checkpoint. Successful kernel behavior, a physical storage host,
-wire/API freeze and activation are not accepted by this object.** The unchanged
+Date: 2026-10-04. Status: **accepted internal typed/model/compiling RED checkpoint
+at root `fac445d74025f00c3d59574b2bbea1ebe14c665a` after independent
+[Code-4 GO](GladeIndependentCrdtStorageAttemptContract-ReviewCode-4.md) and
+[State-4 GO](GladeIndependentCrdtStorageAttemptContract-ReviewState-4.md).
+Successful kernel behavior, a physical storage host, user-facing wire/API freeze
+and activation are not accepted by this object.** The unchanged
 admission `step` still returns unchanged state and `Report(Unavailable)`.
+
+Accepted member tuple: Glade `52fcbe5043d8178a917677d6c9461d771d3543e4`,
+Glial `348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`95a426595bba8e248a5f484272e483a070c73918`. Baseline inspection pins below
+are historical; this exact tuple controls acceptance. API34 and core fixture/
+representation/source12 pass; all43 kernel tests and ten actual-Taut rows remain
+compiling assertion RED. No successful admission or physical qualification follows.
 
 This implements the next gate of the owner-authorized [accepted lifecycle
 design](GladeIndependentCrdtStorageAttemptDesign.md), reviewed at root
@@ -28,7 +39,7 @@ limitations are recorded in [new evidence](GladeIndependentCrdtStorageAttemptCon
 
 ## 1. Exact supersession and preserved authority
 
-This DRAFT proposes only the following replacement of **unaccepted IC-1** clauses.
+This accepted contract makes only the following replacement of **unaccepted IC-1** clauses.
 The historical document MUST NOT be edited to conceal its failed grammar.
 
 | IC-1 location and exact subject | Replacement in this object | Retained obligation |
@@ -52,14 +63,14 @@ keep their original receipts. No holder or consensus round trip is added.
 ## 2. Package boundary and actual producer/consumer
 
 `glade/contracts/crdt-storage-attempt-api`, Cargo
-`glade-crdt-storage-attempt-api`, is a proposed **Contract** library with two
+`glade-crdt-storage-attempt-api`, is an accepted **Contract** library with two
 meaningful required traits. `StorageAttemptHost::open` acquires a qualified
 exclusive session. `StorageAttemptSession` requires `recover`, `prepare`,
 `recover_plan`, `begin`, `inspect`, `request_fence` and `close`. None has a default
 implementation. The production dependency is `sha2` for byte-derived digests;
 `syn` is development-only source tooling. There is no database, runtime or
-framework dependency. Classification and allowed edges are proposals requiring
-this gate's review, not self-ratified exceptions.
+framework dependency. Classification and minimal allowed edges were accepted
+at the exact tuple above; they are not self-ratified exceptions.
 
 The existing admission kernel stays **Pure**, depending on existing `glade-wire`
 and the small new contract. It reexports genuinely shared `Bytes`, `Digest`,
@@ -445,10 +456,11 @@ were independently closed by Code-3/State-3. Code-3 returned GO; State-3 found
 one additional nonarchitectural historical-revision validator defect.
 [Remediation 3 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation3-Evidence.md)
 records the confined existing-validator correction and adjacent phase-payload
-checks. State-3 P2-1 remains OPEN for originating verification; Code MUST confirm
-the final tuple and unchanged invariants before aggregate GO/GO. This permitted
+checks. State-4 independently closed State-3 P2-1 and confirmed prior closures;
+Code-4 confirmed its GO and unchanged invariants on the same final tuple. This permitted
 third nonarchitectural correction does not reset the cap: any architectural root
 found in this round MUST stop the lane for owner decision. The retained
-architectural root count remains one; this document does not self-close findings.
+architectural root count remains one. Acceptance records the reviewers' filed
+testimony; it does not self-close findings or erase the failed IC-1 history.
 The implementation directive continues after
 those gates; this tranche deliberately remains a refusing kernel checkpoint.

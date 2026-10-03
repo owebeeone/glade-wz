@@ -2,7 +2,8 @@
 
 Date: 2026-10-04. Status: **owner authorized design, review and gated implementation;
 semantic design accepted; original contract stopped, owner authorized storage-attempt
-redesign, lifecycle design accepted; new contract/RED and implementation gates remain open**. The
+redesign, lifecycle design and redesigned typed/model/RED gate accepted;
+IC-2 implementation and IC-3/4 integration gates remain open**. The
 [attempt-lifecycle redesign](GladeIndependentCrdtStorageAttemptDesign.md) follows
 GDL-058 without erasing the stopped object's review history. After the sequencing recommendation,
 the owner directed a dedicated design, review and implementation, then said go.
@@ -14,6 +15,14 @@ are examples, not its product limits.
 The [dedicated design](GladeIndependentCrdtAdmissionDesign.md) and
 [review/delivery ledger](GladeIndependentCrdtAdmission-ReviewCycle.md) control
 the semantic, contract/RED, component and live-integration checkpoints.
+
+The internal [storage-attempt contract](GladeIndependentCrdtStorageAttemptContract.md)
+was accepted at root `fac445d74025f00c3d59574b2bbea1ebe14c665a` after final
+peer-blind Code/State GO on the exact recorded member tuple. This accepts the
+typed boundary, allocation and bounded model only: 34 API and 12 fixture/source
+checks pass; 43 domain tests and ten released-text rows remain compiling RED.
+Next is the Pure transition and immutable batch encoder, then component/aggregate
+review. Physical storage/authentication and automatic duplex are still IC-3/4.
 
 ## Recommendation and timeline
 
@@ -27,7 +36,7 @@ Bootstrap/governance evidence remains a separate requirement, not supplied by CR
 
 | Order | Milestone | Concrete completion evidence |
 | --- | --- | --- |
-| IC-1 — next specification tranche | Exact independent-admission profile, canonical amendments and Gyld responsibility allocation. | Declare binding identity/profile, authenticated writer/origin, disconnected authorization, local receipt/read guarantees, causal/gap recovery, retry, bounds and migration. Compiling behavioral RED consumers plus applicable Consistency/Safety review; Surface review before a user-facing freeze. |
+| IC-1 — specification and typed boundary | Exact independent-admission profile, canonical amendments and Gyld responsibility allocation. | Declare binding identity/profile, authenticated writer/origin, disconnected authorization, local receipt/read guarantees, causal/gap recovery, retry, bounds and migration. Semantic Consistency/Safety and redesigned typed Code/State review with compiling behavioral RED; Surface review before a user-facing freeze. |
 | IC-2 — first implementation/proof tranche | Deterministic admission and reconciliation proof over the existing supported text CRDT profile. | Both isolated replicas accept valid local edits without consulting an exclusive holder; delivery resumes and valid operation sets/text converge. Requirement-linked success, failure and edge tests pass, including a rejecting mutant. This is a proof, not production adapter qualification. |
 | IC-3 — real-node integration | Two actual Glade nodes retain their own admitted operations and exchange missing app operations in both directions. | Real scoped authentication, qualified local persistence, restart/exact retry, connection loss/reconnect and honest receipts. Existing Taut/Glial text projection is reused; a fixture signature/storage promise MUST NOT stand in for a real adapter. |
 | IC-4 — compatibility and bounded activation readiness | Affected clients/Glial consumers, profile negotiation and explicit legacy transition. | Rust/TS and affected consumer conformance, I/O/fault evidence, separate-instance isolation, legacy/mixed-version refusal and rollback fences on one reviewed tuple. Activation remains a separate reviewed step; no running stores are changed by this plan. |

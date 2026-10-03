@@ -1,7 +1,7 @@
 # Independent CRDT admission — review and delivery ledger
 
 Date: 2026-10-04. Status: **semantic design accepted; original typed contract
-stopped; owner-authorized storage-attempt design accepted, new typed gate pending; no admission
+stopped; owner-authorized storage-attempt design and redesigned typed gate accepted; no admission
 implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
@@ -20,11 +20,15 @@ change or activation follows from a gate verdict.
 | Checkpoint | Tier and boundary |
 | --- | --- |
 | Semantic design | Two fresh peer-blind Consistency/Safety reviewers. Proposed semantics and amendment obligations only; no public wire/API freeze or implemented feature. |
-| Typed internal contract / allocation / compiling RED | Consistency/Safety on exact Gyld allocation, package roles, internal event/effect semantics and executable RED evidence. Surface additionally required if the object freezes a user-facing API/schema. |
+| Original stopped IC-1 typed object (historical) | Its recorded Consistency/Safety review and stop remain in the history below. No acceptance follows. |
+| Redesigned typed internal contract / allocation / compiling RED | Dual Code/State, as fixed by StorageAttemptContract §9, on exact Gyld allocation, package roles, host/kernel semantics and executable RED evidence. Surface additionally required before a user-facing API/schema freeze. |
 | Pure component acceptance | Code/State dual gate on deterministic admission/reconciliation and actual released text consumer evidence. Does not qualify fixture crypto, physical storage or live sync. |
 | Real adapters / aggregate live feature | Dual Code/State at durable/aggregate boundaries, real auth/I/O/partition/restart evidence and affected consumers. Surface for user-facing freeze; separate activation gate. |
 
-At most two architectural remediation rounds per object. Findings close only
+At most two remediation rounds per object, with the skill's express third-round
+exception confined to non-architectural corrections; any architectural root in
+that third round stops the lane. A third architectural root on an object also
+stops regardless of round count. Findings close only
 through the originating reviewer's verification; preserve each complete report
 verbatim. Record exact prompt/source hashes, findings, closure tests, scope and
 remaining gates at each landing. Fresh axes are used after material architecture
@@ -413,3 +417,42 @@ GO/invariants on the same final tuple. Architectural count remains one and the
 third-round stop rule remains controlling. Only generated prompts and verbatim
 reports may be added during verification. No successful admission or live change
 is accepted yet.
+
+#### Typed/model/compiling-RED checkpoint accepted
+
+Both independent final axes reported GO with zero new P0–P3 findings at exact
+root `fac445d74025f00c3d59574b2bbea1ebe14c665a`, Glade
+`52fcbe5043d8178a917677d6c9461d771d3543e4`, Glial
+`348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`95a426595bba8e248a5f484272e483a070c73918`. Reports are filed verbatim.
+State independently closed the final historical-revision counterexample; Code
+confirmed its prior GO on the same tuple. All originating findings are closed at
+this contract/model tier. No architectural root arose in the third confined
+correction; architectural count remains one. The explicit exception was used
+without resetting the cap or erasing the original IC-1 object's stop/history.
+
+| Evidence | SHA256 |
+| --- | --- |
+| [Code prompt4](GladeIndependentCrdtStorageAttemptContract-PromptCode-4.md) | `059348f57082d0a7004da40dd99bbf01154199ff2f3298b6b1eef966b0d08953` |
+| [State prompt4](GladeIndependentCrdtStorageAttemptContract-PromptState-4.md) | `8d17e2042350ad1401a57fbbb9ead48f3aea72e8fd14ddc378569ea0fc139da0` |
+| [Code final GO](GladeIndependentCrdtStorageAttemptContract-ReviewCode-4.md) | `a808cf60188e91587f72527ef3ffa8fe3af1990002abab09ab3fa2531ea49d21` |
+| [State final GO](GladeIndependentCrdtStorageAttemptContract-ReviewState-4.md) | `da135b88085378936a18d7dbafd69ef52cd3a21a3e76a7bbb2fe87f52258c12f` |
+
+Acceptance covers the narrow internal Contract role/interfaces, Pure dependency,
+source-qualified Gyld allocation, bounded development provider/assembly and
+compiling behavioral RED consumers only. API34 and fixture/source12 pass;
+all43 domain tests and exact ten text rows remain RED. The released-corpus control
+passes. Timing limitations and initial TDD deviation remain disclosed in historical
+evidence; source tests do not imply physical/crypto/async qualification.
+
+Next IC-2: implement the Pure transition and complete immutable batch encoding
+under this accepted contract using the already-executed RED consumers. Preserve
+all assertions, actual-port continuations, full callback/custody history, original
+receipts, security-vs-qualified-fork behavior and fresh-origin post-fork recovery.
+Both disconnected local replicas and all ten released-text rows MUST pass, with
+meaningful rejecting mutants and affected source/lint/architecture checks, before
+the separately required component/aggregate reviews. Library roles/interfaces
+MUST NOT be weakened to pass. IC-3/4 still require real storage/authentication,
+automatic duplex, clients/compatibility and fault/readiness evidence. No push,
+desk rebuild, store seal, enrollment, migration or activation occurred.
