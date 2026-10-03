@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "packages": {
+    "glade-carrier-api": {
+      "role": "contract",
+      "reason": "DRAFT B0 meaningful instance source/work/election contracts; std-only. No engine/storage/runtime implementation types.",
+      "dependencies": [],
+      "traits": {
+        "ElectionSources": [
+          "now",
+          "sample",
+          "advance"
+        ],
+        "ScheduledWork": [
+          "register",
+          "spawn",
+          "advance",
+          "poll",
+          "cancel",
+          "inventory",
+          "stop"
+        ],
+        "ElectionNode": [
+          "advance",
+          "advance_by",
+          "drive",
+          "receive",
+          "transport",
+          "observe",
+          "inventory",
+          "stop"
+        ],
+        "TransportEndpoint": [
+          "emit",
+          "request",
+          "respond",
+          "take",
+          "control",
+          "messages",
+          "pending_rpcs",
+          "stop"
+        ],
+        "MemoryProtocolStore": [
+          "load",
+          "publish"
+        ],
+        "InstanceLogger": [
+          "record"
+        ]
+      },
+      "conformance_tests": [
+        "public_contract"
+      ]
+    },
+    "glade-carrier-spec": {
+      "role": "harness",
+      "reason": "DRAFT pure controlled test fixtures, shared normal consumers and independent oracle; no engine or production graph. Intentional RED provider selection is dev-only; does not claim qualification.",
+      "dependencies": [
+        "normal:glade-carrier-api",
+        "dev:glade-carrier-raft-rs",
+        "dev:glade-carrier-openraft"
+      ],
+      "conformance_tests": [
+        "b0_election",
+        "oracle",
+        "fixture_plumbing",
+        "constructor_contract",
+        "rpc_reply"
+      ]
+    },
+    "glade-carrier-raft-rs": {
+      "role": "implementation",
+      "reason": "DRAFT classification reserves replaceable carrier boundary; present compiler scaffold only REFUSES, not a real implementation. Shared ordinary behavioral consumers remain intentionally RED in spec. Any concrete adapted graph requires review before implementation.",
+      "dependencies": [
+        "normal:glade-carrier-api"
+      ],
+      "implements": [
+        {
+          "package": "glade-carrier-api",
+          "trait": "ElectionNode",
+          "type": "RefusingRaftRs"
+        }
+      ],
+      "conformance_tests": [
+        "compiler_contract"
+      ]
+    },
+    "glade-carrier-openraft": {
+      "role": "implementation",
+      "reason": "DRAFT classification reserves replaceable carrier boundary; present compiler scaffold only REFUSES, not a real implementation. Shared ordinary behavioral consumers remain intentionally RED in spec. Any concrete adapted graph requires review before implementation.",
+      "dependencies": [
+        "normal:glade-carrier-api"
+      ],
+      "implements": [
+        {
+          "package": "glade-carrier-api",
+          "trait": "ElectionNode",
+          "type": "RefusingOpenRaft"
+        }
+      ],
+      "conformance_tests": [
+        "compiler_contract"
+      ]
+    }
+  }
+}

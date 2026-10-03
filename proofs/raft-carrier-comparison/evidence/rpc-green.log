@@ -1,0 +1,21 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.94s
+     Running tests/fixture_plumbing.rs (proofs/raft-carrier-comparison/target/debug/deps/fixture_plumbing-e99ffd207108e3ca)
+
+running 3 tests
+test dropping_message_keeps_rpc_pending_until_explicit_timeout_then_stop_cancels_work ... ok
+test pending_rpc_waits_for_explicit_resolution_and_wake_requires_selected_poll ... ok
+test register_and_spawn_own_actual_futures_without_inline_polling ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/rpc_reply.rs (proofs/raft-carrier-comparison/target/debug/deps/rpc_reply-563893e56ae6ddbc)
+
+running 4 tests
+test wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation ... ok
+test foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply ... ok
+test wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc ... ok
+test issued_correlated_reply_resolves_only_its_actual_pending_rpc ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
