@@ -8,6 +8,9 @@ to accept CRDT edits during disconnection and reconcile after reconnection.
 [Resource consistency requirements](GladeResourceConsistencyProfiles.md),
 GDL-054/055, establish the general capability direction; text and preferences
 are examples, not its product limits.
+The [dedicated design](GladeIndependentCrdtAdmissionDesign.md) and
+[review/delivery ledger](GladeIndependentCrdtAdmission-ReviewCycle.md) control
+the semantic, contract/RED, component and live-integration checkpoints.
 
 ## Recommendation and timeline
 
