@@ -1,0 +1,34 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.82s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+
+running 13 tests
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... ok
+test fixture::transport::termination::held_stopped_peer_cancel ... ok
+test fixture::transport::termination::consumed_stopped_peer_cancel ... ok
+test fixture::transport::termination::held_replaced_peer_timeout ... ok
+test fixture::transport::termination::consumed_stopped_peer_timeout ... ok
+test fixture::transport::termination::consumed_replaced_peer_timeout ... ok
+test fixture::transport::termination::held_replaced_peer_cancel ... ok
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... ok
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... ok
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... ok
+test fixture::transport::termination::replaced_caller_cannot_terminate_old_pending_ownership_or_wake_its_future ... ok
+test fixture::transport::termination::held_stopped_peer_timeout ... ok
+test fixture::transport::termination::consumed_replaced_peer_cancel ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/endpoint_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/endpoint_lifecycle-0d2c307abed7ceea)
+
+running 7 tests
+test separately_obtained_and_fresh_handles_share_scope_stop ... ok
+test stopped_peer_refuses_delivery_but_live_caller_keeps_local_termination ... ok
+test replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens ... ok
+test replaced_destination_rejects_held_token_controls_before_mutation ... ok
+test take_refuses_replaced_issuer_and_destination_without_consuming ... ok
+test both_replacements_participate_and_old_rpc_controls_refuse_unchanged ... ok
+test live_caller_timeout_and_cancel_remove_ownership_after_peer_replacement ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

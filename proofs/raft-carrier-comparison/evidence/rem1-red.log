@@ -1,0 +1,164 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+warning: method `attempts` is never used
+  --> spec/src/fixture/sources.rs:24:19
+   |
+23 | impl SourceProbe {
+   | ---------------- method in this implementation
+24 |     pub(crate) fn attempts(&self) -> usize {
+   |                   ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `glade-carrier-spec` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.48s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+
+running 3 tests
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... FAILED
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... FAILED
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... FAILED
+
+failures:
+
+---- b0::sources::persistent_work_does_not_require_artificial_runtime_registration stdout ----
+
+thread 'b0::sources::persistent_work_does_not_require_artificial_runtime_registration' (167566422) panicked at spec/src/b0/sources.rs:40:5:
+assertion `left == right` failed
+  left: Err("runtime fault must surface")
+ right: Ok(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison stdout ----
+
+thread 'b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison' (167566421) panicked at spec/src/b0/sources.rs:25:5:
+assertion `left == right` failed
+  left: Err("runtime fault must surface")
+ right: Ok(())
+
+---- b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected stdout ----
+
+thread 'b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected' (167566420) panicked at spec/src/b0/sources.rs:36:5:
+assertion failed: runtime_cut(Carrier::OpenRaft, Fault::Entropy, before, source.attempts(),
+        failed).is_err()
+
+
+failures:
+    b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected
+    b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison
+    b0::sources::persistent_work_does_not_require_artificial_runtime_registration
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --lib`
+     Running tests/endpoint_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/endpoint_lifecycle-0d2c307abed7ceea)
+
+running 5 tests
+test separately_obtained_and_fresh_handles_share_scope_stop ... FAILED
+test replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens ... FAILED
+test take_refuses_replaced_issuer_and_destination_without_consuming ... FAILED
+test replaced_destination_rejects_held_token_controls_before_mutation ... FAILED
+test timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership ... FAILED
+
+failures:
+
+---- separately_obtained_and_fresh_handles_share_scope_stop stdout ----
+
+thread 'separately_obtained_and_fresh_handles_share_scope_stop' (167566432) panicked at spec/tests/endpoint_lifecycle.rs:12:5:
+assertion `left == right` failed
+  left: Ok(MessageToken { issuer: NodeScope { carrier: OpenRaft, session: 80, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(8011) }, destination: NodeScope { carrier: OpenRaft, session: 80, node: NodeKey { group: 7, node: 2 }, incarnation: 1, domain: ClockDomain(8021) }, sequence: 1 })
+ right: Err(Stopped)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens stdout ----
+
+thread 'replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens' (167566431) panicked at spec/tests/endpoint_lifecycle.rs:24:5:
+assertion `left == right` failed
+  left: Ok(MessageToken { issuer: NodeScope { carrier: OpenRaft, session: 81, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(8111) }, destination: NodeScope { carrier: OpenRaft, session: 81, node: NodeKey { group: 7, node: 2 }, incarnation: 1, domain: ClockDomain(8121) }, sequence: 2 })
+ right: Err(InvalidToken)
+
+---- take_refuses_replaced_issuer_and_destination_without_consuming stdout ----
+
+thread 'take_refuses_replaced_issuer_and_destination_without_consuming' (167566433) panicked at spec/tests/endpoint_lifecycle.rs:58:9:
+assertion failed: matches!(peer.take(token), Err(DriverError::InvalidToken))
+
+---- replaced_destination_rejects_held_token_controls_before_mutation stdout ----
+
+thread 'replaced_destination_rejects_held_token_controls_before_mutation' (167566430) panicked at spec/tests/endpoint_lifecycle.rs:42:9:
+assertion `left == right` failed
+  left: Ok([])
+ right: Err(InvalidToken)
+
+---- timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership stdout ----
+
+thread 'timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership' (167566434) panicked at spec/tests/endpoint_lifecycle.rs:71:9:
+assertion `left == right` failed
+  left: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 86, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(8611) }, sequence: 1 } }])
+ right: Err(InvalidToken)
+
+
+failures:
+    replaced_destination_rejects_held_token_controls_before_mutation
+    replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens
+    separately_obtained_and_fresh_handles_share_scope_stop
+    take_refuses_replaced_issuer_and_destination_without_consuming
+    timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership
+
+test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --test endpoint_lifecycle`
+     Running tests/scheduler_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/scheduler_lifecycle-4418bd7811ee43e4)
+
+running 4 tests
+test own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive ... FAILED
+test cancelling_parent_releases_borrow_before_reentrant_child_cleanup ... FAILED
+test rejected_deadline_drops_owned_future_after_releasing_borrow ... FAILED
+test bulk_stop_releases_borrow_before_reentrant_future_cleanup ... FAILED
+
+failures:
+
+---- own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive stdout ----
+
+thread 'own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive' (167566447) panicked at spec/tests/scheduler_lifecycle.rs:50:5:
+assertion `left == right` failed: selected future must be dropped by own-scope stop
+  left: 0
+ right: 1
+
+---- cancelling_parent_releases_borrow_before_reentrant_child_cleanup stdout ----
+
+thread 'cancelling_parent_releases_borrow_before_reentrant_child_cleanup' (167566446) panicked at spec/src/fixture/work.rs:172:32:
+RefCell already borrowed
+
+thread 'cancelling_parent_releases_borrow_before_reentrant_child_cleanup' (167566446) panicked at spec/tests/scheduler_lifecycle.rs:69:5:
+future Drop may reenter scheduler after borrow is released
+
+---- rejected_deadline_drops_owned_future_after_releasing_borrow stdout ----
+
+thread 'rejected_deadline_drops_owned_future_after_releasing_borrow' (167566448) panicked at spec/src/fixture/work.rs:172:32:
+RefCell already borrowed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'rejected_deadline_drops_owned_future_after_releasing_borrow' (167566448) panicked at spec/tests/scheduler_lifecycle.rs:93:5:
+invalid registration must release borrow before owned-future Drop
+
+---- bulk_stop_releases_borrow_before_reentrant_future_cleanup stdout ----
+
+thread 'bulk_stop_releases_borrow_before_reentrant_future_cleanup' (167566445) panicked at spec/src/fixture/work.rs:192:14:
+RefCell already mutably borrowed
+
+thread 'bulk_stop_releases_borrow_before_reentrant_future_cleanup' (167566445) panicked at spec/tests/scheduler_lifecycle.rs:69:5:
+future Drop may reenter scheduler after borrow is released
+
+
+failures:
+    bulk_stop_releases_borrow_before_reentrant_future_cleanup
+    cancelling_parent_releases_borrow_before_reentrant_child_cleanup
+    own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive
+    rejected_deadline_drops_owned_future_after_releasing_borrow
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --test scheduler_lifecycle`
+error: 3 targets failed:
+    `-p glade-carrier-spec --lib`
+    `-p glade-carrier-spec --test endpoint_lifecycle`
+    `-p glade-carrier-spec --test scheduler_lifecycle`

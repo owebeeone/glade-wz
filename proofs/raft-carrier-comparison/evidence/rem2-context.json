@@ -1,0 +1,49 @@
+{
+  "original_implementation_review_root": "256be2dd0fd652b34dfffa753fcba481f5fb842b",
+  "owner_supplied_documentary_root": "fe8b25bc736c1366be9c1aeecd0ca883d8e208e1",
+  "member_pins": {
+    "glade": "c8c0613f645dd4b6aaf546f586d77cfdb76a0c87",
+    "glade-discover": "52ea2d118f45d9e7c3d9a789310dd5d669958851",
+    "external-gyld": "ca04499a360d910fbf8ee2540ed446facd051b35"
+  },
+  "read_only_context": {
+    "dev-docs/GladeRaftB0-ReviewConsistency-1.md": "1c75455c833df164e34a23445799da365389c0138adfc2e44f03a159d21c7f5e",
+    "dev-docs/GladeRaftB0-ReviewSafety-1.md": "a2572f830389922463bedd0d6d74231fc642b09136724ac4ba6e0f609bc53312",
+    "dev-docs/GladeRaftB0-RemPlan-2.md": "15dbc3e91b01a0d44abe053155332353c7bc312b99fd7c2a94c0578eb531db08"
+  },
+  "red_first": {
+    "log": "evidence/rem2-red.log",
+    "command": "cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib --test endpoint_lifecycle --no-fail-fast",
+    "seconds": 1.757872084,
+    "exit_code": 101,
+    "passed": 10,
+    "failed": 10,
+    "ignored": 0,
+    "filtered": 0,
+    "matrix_cells_failed": 8,
+    "corrected_prior_expectations_failed": 2
+  },
+  "first_green": {
+    "log": "evidence/rem2-green.log",
+    "seconds": 1.538209875,
+    "exit_code": 0,
+    "passed": 20,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0
+  },
+  "mutant": "rem2-final-termination-mutant.log: actual Cargo exit101, exactly eight matrix assertion failures plus six passing units; wrapper exit0 verifies rejection, no selected/ignored tests.",
+  "current_counts": {
+    "spec_green": 41,
+    "api_provider_green": 4,
+    "total_green": 45,
+    "ordinary_b0_red": 20,
+    "ignored": 0,
+    "filtered": 0
+  },
+  "public_api_changed": false,
+  "library_roles_or_dependencies_changed": false,
+  "providers_or_case_labels_changed": false,
+  "writes": "Comparison subtree + dev-docs/GladeRaftB0Allocation.md only. No comparison-contract/report/plan/ledger/production/member/source-adaptation writes. No Git/GWZ or engines.",
+  "review_accounting": "Second architectural remediation round. Original finder closure and fresh full peer-blind reviews mandatory. No self-closure; no third architectural patch or runtime/production qualification."
+}

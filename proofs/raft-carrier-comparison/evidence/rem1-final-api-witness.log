@@ -1,0 +1,9 @@
+
+running 2 tests
+test complete_time_range_and_invalid_token_inputs_compile ... ok
+test owned_future_and_complete_error_event_matches_compile ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running tests/public_contract.rs (proofs/raft-carrier-comparison/target/debug/deps/public_contract-1222a6073f27e25f)

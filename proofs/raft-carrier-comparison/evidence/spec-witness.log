@@ -1,0 +1,41 @@
+
+running 1 test
+test constructor_compiler_witness_uses_separately_created_contexts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test register_and_spawn_own_actual_futures_without_inline_polling ... ok
+test dropping_message_keeps_rpc_pending_until_explicit_timeout_then_stop_cancels_work ... ok
+test pending_rpc_waits_for_explicit_resolution_and_wake_requires_selected_poll ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test bypassed_required_reset_draw_is_rejected ... ok
+test paused_background_work_is_rejected ... ok
+test implicit_advancement_of_another_nodes_clock_is_rejected ... ok
+test static_fixed_stream_ignoring_supplied_script_is_rejected ... ok
+test early_vote_removing_reviewed_lease_or_greater_log_delay_is_rejected ... ok
+test synthetic_leader_without_engine_vote_traffic_is_rejected ... ok
+test incompatible_standard_epoch_leaders_are_rejected_even_when_full_votes_differ ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation ... ok
+test wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc ... ok
+test issued_correlated_reply_resolves_only_its_actual_pending_rpc ... ok
+test foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running tests/constructor_contract.rs (proofs/raft-carrier-comparison/target/debug/deps/constructor_contract-71c127f102950e99)
+     Running tests/fixture_plumbing.rs (proofs/raft-carrier-comparison/target/debug/deps/fixture_plumbing-e99ffd207108e3ca)
+     Running tests/oracle.rs (proofs/raft-carrier-comparison/target/debug/deps/oracle-208f9efb7576db08)
+     Running tests/rpc_reply.rs (proofs/raft-carrier-comparison/target/debug/deps/rpc_reply-563893e56ae6ddbc)

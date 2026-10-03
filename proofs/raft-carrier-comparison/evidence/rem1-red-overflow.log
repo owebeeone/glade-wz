@@ -1,0 +1,51 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+
+running 4 tests
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... FAILED
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... FAILED
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... FAILED
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... FAILED
+
+failures:
+
+---- b0::sources::persistent_work_does_not_require_artificial_runtime_registration stdout ----
+
+thread 'b0::sources::persistent_work_does_not_require_artificial_runtime_registration' (167567682) panicked at spec/src/b0/sources.rs:40:5:
+assertion `left == right` failed
+  left: Err("runtime fault must surface")
+ right: Ok(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected stdout ----
+
+thread 'b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected' (167567680) panicked at spec/src/b0/sources.rs:36:5:
+assertion failed: runtime_cut(Carrier::OpenRaft, Fault::Entropy, before, source.attempts(),
+        failed).is_err()
+
+---- b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison stdout ----
+
+thread 'b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison' (167567681) panicked at spec/src/b0/sources.rs:25:5:
+assertion `left == right` failed
+  left: Err("runtime fault must surface")
+ right: Ok(())
+
+---- fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop stdout ----
+
+thread 'fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop' (167567683) panicked at spec/src/fixture/work.rs:192:14:
+RefCell already mutably borrowed
+
+thread 'fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop' (167567683) panicked at spec/src/fixture/work.rs:238:5:
+overflow rejection must release borrow before Drop
+
+
+failures:
+    b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected
+    b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison
+    b0::sources::persistent_work_does_not_require_artificial_runtime_registration
+    fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --lib`

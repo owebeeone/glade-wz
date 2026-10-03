@@ -1,0 +1,33 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+warning: method `attempts` is never used
+  --> spec/src/fixture/sources.rs:24:19
+   |
+23 | impl SourceProbe {
+   | ---------------- method in this implementation
+24 |     pub(crate) fn attempts(&self) -> usize {
+   |                   ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no variant, associated function, or constant named `ElectionTimeout` found for enum `glade_carrier_api::DrawPurpose` in the current scope
+  --> spec/src/b0/sources.rs:20:32
+   |
+20 |     source.sample(DrawPurpose::ElectionTimeout, 10, 20).unwrap();
+   |                                ^^^^^^^^^^^^^^^ variant, associated function, or constant not found in `glade_carrier_api::DrawPurpose`
+
+error[E0599]: no variant, associated function, or constant named `ElectionTimeout` found for enum `glade_carrier_api::DrawPurpose` in the current scope
+  --> spec/src/b0/sources.rs:32:32
+   |
+32 |     source.sample(DrawPurpose::ElectionTimeout, 10, 20).unwrap();
+   |                                ^^^^^^^^^^^^^^^ variant, associated function, or constant not found in `glade_carrier_api::DrawPurpose`
+
+error[E0599]: no variant, associated function, or constant named `ElectionTimeout` found for enum `glade_carrier_api::DrawPurpose` in the current scope
+  --> spec/src/b0/sources.rs:35:45
+   |
+35 |     let failed = source.sample(DrawPurpose::ElectionTimeout, 10, 20) == Err(SourceError::EntropyFailed);
+   |                                             ^^^^^^^^^^^^^^^ variant, associated function, or constant not found in `glade_carrier_api::DrawPurpose`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `glade-carrier-spec` (lib test) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+warning: `glade-carrier-spec` (lib) generated 1 warning

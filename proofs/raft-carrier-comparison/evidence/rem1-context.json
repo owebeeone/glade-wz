@@ -1,0 +1,51 @@
+{
+  "original_reviewed_root": "544c83d8cd07165cfeec2f0db64a78c8417849f3",
+  "owner_supplied_documentary_root": "9ac2fa4fa9c0f9b7e3d9aa112bfd5d993528882f",
+  "member_pins": {
+    "glade": "c8c0613f645dd4b6aaf546f586d77cfdb76a0c87",
+    "glade-discover": "52ea2d118f45d9e7c3d9a789310dd5d669958851",
+    "external-gyld": "ca04499a360d910fbf8ee2540ed446facd051b35"
+  },
+  "read_only_documentary_context": {
+    "dev-docs/GladeRaftB0-PromptConsistency.md": "3065360e0ff525820892dcb709642a0c5bf55fa2feef6b7f00cc940848ff0469",
+    "dev-docs/GladeRaftB0-PromptSafety.md": "5920f0c96cc9d8d89879d988dd087018596012bf09c93e3862e877c02162cbd9",
+    "dev-docs/GladeRaftB0-ReviewConsistency.md": "1b92b422e122c12d6666e8bdd44f0df91667a370560537d49335fe0b89a984f1",
+    "dev-docs/GladeRaftB0-ReviewSafety.md": "79aebb9452cfd51d11b382e5f7d1a6da28e6dc5ffa89da31025b99dd6462ef8d",
+    "dev-docs/GladeRaftB0-RemPlan-1.md": "003961b14a0ba35710cbc9043e4a54478bee4680e93976b640052889f92b4c1e",
+    "dev-docs/GladeRaftB0SourceAdaptationPlan.md": "d277e4a2e1f65bdabb2c7949d8f404ee11fa27f802f9d7a7b381e711225b278b"
+  },
+  "writes": "Only the comparison subtree and dev-docs/GladeRaftB0Allocation.md; no Git/GWZ operation, public API change or real engine/dependency.",
+  "observed_regression_first": [
+    {
+      "log": "evidence/rem1-red.log",
+      "command": "cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib --test endpoint_lifecycle --test scheduler_lifecycle --no-fail-fast",
+      "seconds": 1.556864125,
+      "exit_code": 101,
+      "passed": 0,
+      "failed": 12,
+      "ignored": 0,
+      "filtered": 0
+    },
+    {
+      "log": "evidence/rem1-red-overflow.log",
+      "command": "cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib",
+      "seconds": 0.523386042,
+      "exit_code": 101,
+      "passed": 0,
+      "failed": 4,
+      "unique_additional_failures": 1,
+      "ignored": 0,
+      "filtered": 0
+    }
+  ],
+  "authoring_compile_log": "evidence/rem1-authoring-compile.log (not behavioral RED)",
+  "current_counts": {
+    "spec_green": 31,
+    "api_provider_green": 4,
+    "total_green": 35,
+    "ordinary_b0_red": 20,
+    "ignored": 0,
+    "filtered": 0
+  },
+  "qualification": "No finding closure, engine/runtime/source adaptation/profile/production acceptance claimed."
+}

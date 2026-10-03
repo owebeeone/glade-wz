@@ -1,0 +1,5 @@
+    Checking glade-carrier-api v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/api)
+    Checking glade-carrier-raft-rs v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/raft-rs)
+    Checking glade-carrier-openraft v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/openraft)
+    Checking glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s

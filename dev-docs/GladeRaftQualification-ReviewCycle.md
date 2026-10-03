@@ -1,6 +1,6 @@
 # Glade Raft qualification — review ledger
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO**.
+Date: 2026-10-03. Status: **Q0–Q3 private qualification and Q4-A legacy Store retirement preparation accepted within their recorded scopes; Q4-B0 private contract/scaffold accepted, actual carrier qualification open; Q4-C through Q4-E and production activation remain open. Exact accepted-through tuples and limits appear below.**
 
 Q1a accepted at root `31bbea0cf1da3c6ae437cf482cb744d561693c08`, with the
 unchanged member/Gyld tuple below, after
@@ -488,3 +488,167 @@ canonical authority/transport, deployment/failure domains, automatic-election
 compliance and complete legacy writer/effect exclusion. Production crate/profile
 selection and activation remain open; no power-loss or physical-reclamation
 claim follows. No push or desktop rebuild is included in this landing.
+
+## Q4-A production integration preparation
+
+Authorized 2026-10-03: proceed with Glade production integration of **Raft**.
+Plan: [Q4](GladeRaftProductionIntegrationPlan.md); first internal store-lifecycle
+object: [legacy Store seal](GladeRaftLegacyStoreSealContract.md). Source audits
+are fact maps, not verdicts. GWZ local clone `raft-production` preserves all
+inherited dirt, which is outside this object. No production activation, push,
+start-script change or desk rebuild is included.
+
+Contract tuple root `6a35216a6d97aa22e9d53b54256f7395c306da3c`, Glade
+`19a269dd12b5f109d03e2361e3af4108d4b1fcbc`, discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35` received peer-blind
+[Consistency GO](GladeRaftQ4ASealContract-ReviewConsistency.md)/
+[Safety GO](GladeRaftQ4ASealContract-ReviewSafety.md).
+No P0/P1/P2. Consistency P3-1 shared non-Unix recognition coverage was corrected
+before implementation and [closed by its finder](GladeRaftQ4ASealContract-ClosureConsistency.md)
+at root `3bf731994c8f18e4e27ed568e123bed099dca2f0`, Glade
+`638cca4b2784cc3e51c1e47b1fea47d026b57734`. This contract gate accepted
+compiling behavioral RED, not an implementation.
+Exact evidence and honest fixture-interference results are in
+[Q4-A evidence](GladeRaftQ4ASealEvidence.md). No architectural remediation round
+has been consumed. Production freeze/activation will need their own reviews.
+
+
+### Q4-A implementation accepted-through
+
+Exact reviewed root `aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, unchanged discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851` and external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`; additional affected-consumer
+pins are enumerated in both reports. Fresh peer-blind
+[Code GO](GladeRaftQ4ASealImplementation-ReviewCode.md)/
+[State GO](GladeRaftQ4ASealImplementation-ReviewState.md), zero findings.
+The lane owner accepts only the internal whole-Store retirement interlock for
+participating builds on a stable root in the exercised macOS/APFS
+process-interruption profile. Exact committed-source full gate: nine components
+PASS, 507 cases per composition root across 20 binaries. Each reviewer separately
+reran the full gate and actual seal/process-kill targets; old fixed-name Store
+fixtures required serialized test windows. Inherited cold-join dirt is excluded.
+
+| Discovery phase | Findings/disposition | Architectural remediation rounds |
+| --- | --- | --- |
+| Contract | One P3 platform-selection coverage defect, original finder closed | 0 |
+| Implementation acceptance | No P0–P3 findings | 0 |
+| Broader production | Q4-B/C/D/E, RA-012, authority, carrier and failure domains remain open | No acceptance claimed |
+
+Test-driver and fixture failures remain recorded in evidence; passing reruns did
+not erase them. No released/activated production profile exists to support an
+escaped-defect claim. No baseline/policy/allowlist was relaxed. The accepted code
+was already committed in the local clone; this acceptance filing records the
+verdicts without changing source. It does not merge/push, seal live storage,
+rebuild the desk or alter the two-node development launcher.
+
+## Q4 semantic production-profile proposal reviewed
+
+Object [production-profile decisions](GladeRaftProductionProfileDecisions.md),
+root `4702e283e1adac5863c5d542e57a9ceea9454541`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, unchanged discovery/external Gyld
+pins from Q4-A, received fresh peer-blind
+[Consistency GO](GladeRaftProductionProfileDecisions-ReviewConsistency.md)/
+[Safety GO](GladeRaftProductionProfileDecisions-ReviewSafety.md), no P0–P3 findings,
+zero remediation rounds. Reports are filed verbatim. This accepts the proposal's
+fitness for owner selection only; no semantic choice, canonical amendment,
+production library, deployment, custody, retention budget, baseline or activation
+is ratified. Q4-C needs owner selection and then exact amendment/allocation and
+compiling consumer gates before implementation. B0 private source/election
+contract drafting continues independently, with no engine selected.
+
+## Q4-B0 contract/allocation/compiling RED initial review
+
+Object root `544c83d8cd07165cfeec2f0db64a78c8417849f3`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`.
+Fresh peer-blind [Consistency](GladeRaftB0-ReviewConsistency.md) and
+[Safety](GladeRaftB0-ReviewSafety.md) returned NO-GO. The initial 19 compiler/
+fixture/oracle GREEN and 20 ordinary behavioral RED results were independently
+reproduced; neither engine is installed. Three root causes converged blindly:
+unsatisfiable runtime entropy-fault cadence for OpenRaft, endpoint lifecycle/
+incarnation checks shared incorrectly across handles, and reentrant future
+cleanup while holding scheduler borrows. Safety additionally found stop during
+an in-flight task poll. All seven P2 IDs map to four corrections in
+[remediation 1](GladeRaftB0-RemPlan-1.md); closure remains pending. One bounded
+architectural remediation round is underway. These defects were found before
+source-adaptation or production-provider implementation; no escaped production
+defect or B0 runtime acceptance is claimed.
+
+[The source-adaptation allocation/TDD plan](GladeRaftB0SourceAdaptationPlan.md)
+is a separate DRAFT, not accepted by this gate. It inventories additional
+runtime/error/logging/macro/codec/global seams and requires runner extraction,
+compiling contracts and review before actual adapted sources. B1/B2/full B3
+comparison, canonical owner profile and Q4-D/Q4-E remain mandatory.
+
+## Q4-B0 remediation 1 verdict and second correction
+
+At root `256be2dd0fd652b34dfffa753fcba481f5fb842b`, unchanged member/Gyld
+pins, both [Consistency](GladeRaftB0-ReviewConsistency-1.md) and
+[Safety](GladeRaftB0-ReviewSafety-1.md) verified closure of every initial finding.
+They independently found a NEW ARCHITECTURAL ROOT CAUSE: live caller Timeout/
+Cancel was made dependent on remote peer incarnation liveness. Existing new
+GREEN tests endorsed that restriction. Combined gate remains NO-GO despite
+35 compiler/harness tests GREEN and 20 ordinary provider tests RED.
+[Remediation 2](GladeRaftB0-RemPlan-2.md) restores caller-owned terminal cleanup
+and preserves strict stale traffic/reply checks. Two architectural remediation
+rounds are now used. Original-finder closure and a fresh full peer-blind
+Consistency/Safety gate are mandatory. A third new architectural root cause
+stops this object for owner redesign-or-accept; no further architectural patch
+is authorized. This accounting does not reopen accepted Q4-A or grant B0 runtime
+or production acceptance.
+
+## Q4-B0 remediation 2 closure and fresh full verdicts
+
+At root `b2df51042ae01afd1b42cb12e2de8b28f1106ec5`, unchanged member/Gyld
+pins, the originating [Consistency](GladeRaftB0-ClosureConsistency-2.md) and
+[Safety](GladeRaftB0-ClosureSafety-2.md) finders independently closed their
+local RPC termination counterexamples. Separate fresh full
+[Consistency](GladeRaftB0-ReviewConsistency-2.md) and
+[Safety](GladeRaftB0-ReviewSafety-2.md) rechecked the complete packet and returned
+NO-GO: B0-04 omitted selected polls for newly awakened/spawned work, and the
+fixture's numeric clock-domain encoding admitted collisions. They explicitly
+classified both as NON-ARCHITECTURAL implementation defects; no third new
+architectural root cause was identified. The 45 GREEN compiler/harness tests,
+20 ordinary provider RED cases and mutation evidence do not waive either defect.
+
+[Remediation 3](GladeRaftB0-RemPlan-3.md) merges both bounded corrections.
+Two architectural remediation rounds and one non-architectural correction round
+are recorded. The skill permits this third confined correction; any architectural
+root cause found during it triggers the stop cap. The fresh originating finders
+must verify closure at the same settled tuple. No B0 runtime/source adaptation,
+full comparison or production acceptance is claimed.
+
+## Q4-B0 private contract/scaffold accepted-through
+
+At root `8553bc71b1f6bc9fe203729e61567e8b9bd37be2`, unchanged member/Gyld
+pins, the fresh originating [Consistency](GladeRaftB0-ReviewConsistency-3.md)
+and [Safety](GladeRaftB0-ReviewSafety-3.md) finders returned GO/GO, closed their
+original scheduling/domain counterexamples and independently verified the other
+correction. No new findings or architectural root cause was found. The complete
+prior full-review reasoning remains valid only for independently verified
+unchanged bytes; changed consumers and lifecycle regressions were rerun.
+
+The lane owner accepts only the private contract, four-package allocation and
+compiling RED scaffold at that source tuple. [Acceptance record](GladeRaftB0Acceptance.md)
+binds all supporting pins, prompts, verbatim report hashes, current 136-entry
+inventory and limits. Both reviewers reproduced **58 GREEN, 20 ordinary B0 RED**,
+all gates/Clippy PASS, and the compiled termination mutant's eight required
+failures/nineteen unrelated passes. Historical RED, compiler-error artifacts,
+measurements and prior manifests are preserved.
+
+| Discovery phase | Distinct defects and closure |
+| --- | --- |
+| Initial contract/scaffold review | Four P2 defects, seven reviewer IDs; three blind convergences and one Safety-only defect; original finders closed all. |
+| First remediation review | One new architectural RPC-termination defect, two blind reviewer IDs; both original finders closed it after remediation 2. |
+| Fresh full review | Two non-architectural scheduling/domain defects, two separate reviewer IDs; original finders closed both after remediation 3. |
+| Aggregate | Seven distinct defects, eleven IDs, zero open acceptance findings. Two architectural rounds plus one permitted confined non-architectural round. |
+| Production escape | None observed; no real carrier/provider or production group activated. |
+
+Actual B0 adapted engines, B1/B2 full common journeys, B3 carrier selection and
+Q4-C/D/E remain open. SourceAdaptationPlan remains unadopted. No allowance,
+classification, test-selection or governing promise was relaxed. This documentary
+filing does not move the accepted source pin or include inherited dirt, merge,
+push, live seal installation, enrollment, launcher changes or desktop rebuild.

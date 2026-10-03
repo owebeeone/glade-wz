@@ -1,0 +1,85 @@
+
+running 14 tests
+test fixture::transport::termination::consumed_stopped_peer_cancel ... ok
+test fixture::transport::termination::consumed_replaced_peer_cancel ... ok
+test fixture::transport::termination::held_stopped_peer_cancel ... ok
+test fixture::transport::termination::consumed_replaced_peer_timeout ... ok
+test fixture::transport::termination::held_replaced_peer_cancel ... ok
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... ok
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... ok
+test fixture::transport::termination::held_replaced_peer_timeout ... ok
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... ok
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... ok
+test fixture::transport::termination::held_stopped_peer_timeout ... ok
+test fixture::transport::termination::live_peer_late_reply_cannot_reopen_locally_terminated_rpc ... ok
+test fixture::transport::termination::consumed_stopped_peer_timeout ... ok
+test fixture::transport::termination::replaced_caller_cannot_terminate_old_pending_ownership_or_wake_its_future ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 1 test
+test constructor_compiler_witness_uses_separately_created_contexts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test separately_obtained_and_fresh_handles_share_scope_stop ... ok
+test stopped_peer_refuses_delivery_but_live_caller_keeps_local_termination ... ok
+test replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens ... ok
+test replaced_destination_rejects_held_token_controls_before_mutation ... ok
+test take_refuses_replaced_issuer_and_destination_without_consuming ... ok
+test live_caller_timeout_and_cancel_remove_ownership_after_peer_replacement ... ok
+test both_replacements_participate_and_old_rpc_controls_refuse_unchanged ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test register_and_spawn_own_actual_futures_without_inline_polling ... ok
+test dropping_message_keeps_rpc_pending_until_explicit_timeout_then_stop_cancels_work ... ok
+test pending_rpc_waits_for_explicit_resolution_and_wake_requires_selected_poll ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test static_fixed_stream_ignoring_supplied_script_is_rejected ... ok
+test bypassed_required_reset_draw_is_rejected ... ok
+test paused_background_work_is_rejected ... ok
+test early_vote_removing_reviewed_lease_or_greater_log_delay_is_rejected ... ok
+test implicit_advancement_of_another_nodes_clock_is_rejected ... ok
+test synthetic_leader_without_engine_vote_traffic_is_rejected ... ok
+test incompatible_standard_epoch_leaders_are_rejected_even_when_full_votes_differ ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+test issued_correlated_reply_resolves_only_its_actual_pending_rpc ... ok
+test wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation ... ok
+test wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc ... ok
+test foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test bulk_stop_releases_borrow_before_reentrant_future_cleanup ... ok
+test completed_future_cleanup_may_inspect_and_cancel_child ... ok
+test own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive ... ok
+test rejected_deadline_drops_owned_future_after_releasing_borrow ... ok
+test cancelling_parent_releases_borrow_before_reentrant_child_cleanup ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.48s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+     Running tests/constructor_contract.rs (proofs/raft-carrier-comparison/target/debug/deps/constructor_contract-71c127f102950e99)
+     Running tests/endpoint_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/endpoint_lifecycle-0d2c307abed7ceea)
+     Running tests/fixture_plumbing.rs (proofs/raft-carrier-comparison/target/debug/deps/fixture_plumbing-e99ffd207108e3ca)
+     Running tests/oracle.rs (proofs/raft-carrier-comparison/target/debug/deps/oracle-208f9efb7576db08)
+     Running tests/rpc_reply.rs (proofs/raft-carrier-comparison/target/debug/deps/rpc_reply-563893e56ae6ddbc)
+     Running tests/scheduler_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/scheduler_lifecycle-4418bd7811ee43e4)

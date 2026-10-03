@@ -1,0 +1,155 @@
+
+running 20 tests
+test openraft::b0_03 ... FAILED
+test raft_rs::b0_03 ... FAILED
+test openraft::b0_04 ... FAILED
+test openraft::b0_05 ... FAILED
+test openraft::b0_01 ... FAILED
+test openraft::b0_02 ... FAILED
+test raft_rs::b0_02 ... FAILED
+test openraft::b0_07 ... FAILED
+test openraft::b0_10 ... FAILED
+test openraft::b0_06 ... FAILED
+test raft_rs::b0_04 ... FAILED
+test raft_rs::b0_05 ... FAILED
+test raft_rs::b0_08 ... FAILED
+test openraft::b0_08 ... FAILED
+test raft_rs::b0_01 ... FAILED
+test raft_rs::b0_10 ... FAILED
+test raft_rs::b0_07 ... FAILED
+test raft_rs::b0_09 ... FAILED
+test openraft::b0_09 ... FAILED
+test raft_rs::b0_06 ... FAILED
+
+failures:
+
+---- openraft::b0_03 stdout ----
+
+thread 'openraft::b0_03' (167583552) panicked at spec/src/b0/sources.rs:231:25:
+B0-03 precise constructor source failure EntropyFailed required; scaffold observation=Err(NotQualified)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- raft_rs::b0_03 stdout ----
+
+thread 'raft_rs::b0_03' (167583562) panicked at spec/src/b0/sources.rs:231:25:
+B0-03 precise constructor source failure EntropyFailed required; scaffold observation=Err(NotQualified)
+
+---- openraft::b0_04 stdout ----
+
+thread 'openraft::b0_04' (167583553) panicked at spec/src/b0/elections.rs:20:9:
+B0-04 recorded engine eligibility boundary required: NotQualified
+
+---- openraft::b0_05 stdout ----
+
+thread 'openraft::b0_05' (167583554) panicked at spec/src/b0.rs:43:21:
+B0-05 no-quorum prefix observation: required actual engine observation refused: NotQualified
+
+---- openraft::b0_01 stdout ----
+
+thread 'openraft::b0_01' (167583550) panicked at spec/src/b0.rs:43:21:
+B0-01 elected-leader invariant: required actual engine observation refused: NotQualified
+
+---- openraft::b0_02 stdout ----
+
+thread 'openraft::b0_02' (167583551) panicked at spec/src/b0/sources.rs:136:13:
+B0-02 constructor supplied-stream assertion: constructor/reset must use the supplied stream; provider=Err(NotQualified)
+
+---- raft_rs::b0_02 stdout ----
+
+thread 'raft_rs::b0_02' (167583561) panicked at spec/src/b0/sources.rs:136:13:
+B0-02 constructor supplied-stream assertion: constructor/reset must use the supplied stream; provider=Err(NotQualified)
+
+---- openraft::b0_07 stdout ----
+
+thread 'openraft::b0_07' (167583556) panicked at spec/src/b0.rs:43:21:
+B0-07 initial actual election: required actual engine observation refused: NotQualified
+
+---- openraft::b0_10 stdout ----
+
+thread 'openraft::b0_10' (167583559) panicked at spec/src/b0/lifecycle.rs:84:5:
+assertion `left == right` failed: B0-10 valid time before invalid controls
+  left: Err(NotQualified)
+ right: Ok(())
+
+---- openraft::b0_06 stdout ----
+
+thread 'openraft::b0_06' (167583555) panicked at spec/src/b0.rs:43:21:
+B0-06 minority cannot establish quorum: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_04 stdout ----
+
+thread 'raft_rs::b0_04' (167583563) panicked at spec/src/b0/elections.rs:20:9:
+B0-04 recorded engine eligibility boundary required: NotQualified
+
+---- raft_rs::b0_05 stdout ----
+
+thread 'raft_rs::b0_05' (167583564) panicked at spec/src/b0.rs:43:21:
+B0-05 no-quorum prefix observation: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_08 stdout ----
+
+thread 'raft_rs::b0_08' (167583567) panicked at spec/src/b0.rs:43:21:
+B0-08 first automatic leader: required actual engine observation refused: NotQualified
+
+---- openraft::b0_08 stdout ----
+
+thread 'openraft::b0_08' (167583557) panicked at spec/src/b0.rs:43:21:
+B0-08 first automatic leader: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_01 stdout ----
+
+thread 'raft_rs::b0_01' (167583560) panicked at spec/src/b0.rs:43:21:
+B0-01 elected-leader invariant: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_10 stdout ----
+
+thread 'raft_rs::b0_10' (167583569) panicked at spec/src/b0/lifecycle.rs:84:5:
+assertion `left == right` failed: B0-10 valid time before invalid controls
+  left: Err(NotQualified)
+ right: Ok(())
+
+---- raft_rs::b0_07 stdout ----
+
+thread 'raft_rs::b0_07' (167583566) panicked at spec/src/b0.rs:43:21:
+B0-07 initial actual election: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_09 stdout ----
+
+thread 'raft_rs::b0_09' (167583568) panicked at spec/src/b0.rs:43:21:
+B0-09 independent initial state: required actual engine observation refused: NotQualified
+
+---- openraft::b0_09 stdout ----
+
+thread 'openraft::b0_09' (167583558) panicked at spec/src/b0.rs:43:21:
+B0-09 independent initial state: required actual engine observation refused: NotQualified
+
+---- raft_rs::b0_06 stdout ----
+
+thread 'raft_rs::b0_06' (167583565) panicked at spec/src/b0.rs:43:21:
+B0-06 minority cannot establish quorum: required actual engine observation refused: NotQualified
+
+
+failures:
+    openraft::b0_01
+    openraft::b0_02
+    openraft::b0_03
+    openraft::b0_04
+    openraft::b0_05
+    openraft::b0_06
+    openraft::b0_07
+    openraft::b0_08
+    openraft::b0_09
+    openraft::b0_10
+    raft_rs::b0_01
+    raft_rs::b0_02
+    raft_rs::b0_03
+    raft_rs::b0_04
+    raft_rs::b0_05
+    raft_rs::b0_06
+    raft_rs::b0_07
+    raft_rs::b0_08
+    raft_rs::b0_09
+    raft_rs::b0_10
+
+test result: FAILED. 0 passed; 20 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

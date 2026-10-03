@@ -1,0 +1,10 @@
+{
+  "rule": "Private B0 local source keeps instance-owned dependencies; no exceptions; not a dependency audit.",
+  "roots": [
+    "api/src/lib.rs",
+    "spec/src/lib.rs",
+    "raft-rs/src/lib.rs",
+    "openraft/src/lib.rs"
+  ],
+  "entries": []
+}

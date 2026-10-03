@@ -1,0 +1,50 @@
+   Compiling glade-carrier-api v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/api)
+   Compiling glade-carrier-openraft v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/openraft)
+   Compiling glade-carrier-raft-rs v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/raft-rs)
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.10s
+     Running tests/rpc_reply.rs (proofs/raft-carrier-comparison/target/debug/deps/rpc_reply-563893e56ae6ddbc)
+
+running 4 tests
+test wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation ... FAILED
+test issued_correlated_reply_resolves_only_its_actual_pending_rpc ... FAILED
+test wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc ... FAILED
+test foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply ... FAILED
+
+failures:
+
+---- wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation stdout ----
+
+thread 'wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation' (167503887) panicked at spec/tests/rpc_reply.rs:150:5:
+assertion `left == right` failed
+  left: Err(NotQualified)
+ right: Err(Protocol)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- issued_correlated_reply_resolves_only_its_actual_pending_rpc stdout ----
+
+thread 'issued_correlated_reply_resolves_only_its_actual_pending_rpc' (167503886) panicked at spec/tests/rpc_reply.rs:36:10:
+typed correlated reply must issue a token: NotQualified
+
+---- wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc stdout ----
+
+thread 'wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc' (167503888) panicked at spec/tests/rpc_reply.rs:83:10:
+called `Result::unwrap()` on an `Err` value: NotQualified
+
+---- foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply stdout ----
+
+thread 'foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply' (167503885) panicked at spec/tests/rpc_reply.rs:111:9:
+assertion `left == right` failed
+  left: Err(NotQualified)
+ right: Err(InvalidToken)
+
+
+failures:
+    foreign_peer_and_old_incarnation_cannot_issue_or_settle_a_reply
+    issued_correlated_reply_resolves_only_its_actual_pending_rpc
+    wrong_carrier_bytes_or_reply_kind_refuse_before_queue_mutation
+    wrong_rpc_correlation_cannot_consume_reply_or_settle_either_rpc
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --test rpc_reply`
