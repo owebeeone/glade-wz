@@ -193,6 +193,15 @@ pub trait CheckpointStore {
     fn publish(&mut self, expected_revision: u64, image: Image) -> Result<State, Error>;
 }
 
+/// Original result for one applied index. Missing history is Error::Missing,
+/// never Noop. Configuration results include accepted AND refused receipts.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ReplayResult {
+    Application(Receipt),
+    Configuration(ConfigReceipt),
+    Noop { index: u64 },
+}
+
 /// Private replaceable experiment composition. All controls are trusted test
 /// inputs; this interface is outside production paths. Result None is unknown,
 /// not noncommit; all outcomes require current disclosure at serving boundaries.
@@ -208,8 +217,9 @@ pub trait QualificationSession {
     fn install(&mut self, checkpoint: Checkpoint) -> Result<(), Error>;
     /// Trusted committed exact-index replay; envelope includes original carrier
     /// Entry bytes and private readiness. Changed bytes MUST fail.
+    /// Missing/unapplied indexes return Error::Missing, never Noop.
     fn applied_entry(&self, index: u64) -> Result<StoredEntry, Error>;
-    fn replay(&mut self, entry: StoredEntry) -> Result<Option<Receipt>, Error>;
+    fn replay(&mut self, entry: StoredEntry) -> Result<ReplayResult, Error>;
 }
 
 /// Opt-in reusable specifications. Store fixtures are deliberately opaque and

@@ -75,3 +75,23 @@ fn configuration_eligibility_lost_after_admission_retains_exact_refusal() {
 fn compacted_snapshot_restores_learner_before_joint_promotion() {
     conformance::snapshot_learner_catchup_and_membership(&mut UnqualifiedSession);
 }
+
+#[test]
+fn joint_exit_refuses_current_outgoing_home_until_retirement() {
+    conformance::joint_exit_rechecks_home(&mut UnqualifiedSession, false, false);
+}
+
+#[test]
+fn joint_exit_refuses_current_outgoing_home_until_qualified_movement() {
+    conformance::joint_exit_rechecks_home(&mut UnqualifiedSession, false, true);
+}
+
+#[test]
+fn joint_exit_rechecks_placement_queued_after_admission() {
+    conformance::joint_exit_rechecks_home(&mut UnqualifiedSession, true, false);
+}
+
+#[test]
+fn snapshot_original_accepted_refused_configuration_and_noop_replay_is_typed() {
+    conformance::snapshot_typed_configuration_and_noop_replay(&mut UnqualifiedSession);
+}

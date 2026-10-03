@@ -77,8 +77,8 @@ and exact reviewed source belong in the evidence/ledger, not inferred budgets.
 Q3 is now a **DRAFT contract-review package**, not an implementation. See
 [configuration/snapshot contract](../../dev-docs/GladeRaftConfigurationSnapshotContract.md)
 and [compilation/RED evidence](../../dev-docs/GladeRaftQ3ContractEvidence.md).
-The new API's dyn consumer is GREEN; the spec scaffold intentionally returns
-`NotQualified`, so all 15 `configuration_snapshot` behaviors are RED. No fake
+The new API's dyn consumer and exact Create fixture regression are GREEN; the spec scaffold intentionally returns
+`NotQualified`, so all 19 `configuration_snapshot` behaviors are RED. No fake
 model is presented as a working membership or snapshot adapter. The default
 whole-workspace test command therefore intentionally fails Q3 during this gate;
 no `default-members` or hidden exclusions are used. Select existing Q2 packages
@@ -98,3 +98,19 @@ Q3 review**; dependency allowlists/roles of existing packages and the empty
 process-global exception list are unchanged. Physical V2 journal, actual
 ConfChangeV2/RawNode snapshot lifecycle and SIGKILL matrix remain implementation
 exit witnesses. Q2 format is never silently upgraded or described as dynamic.
+
+
+Q3 contract remediation 1 adds a proposed **dev-only** proof-to-q3-api edge for
+fixture compatibility. The existing Application is unchanged: corrected Create
+uses generation/home zero, full Accepted resources are asserted, and nonzero
+preconditions keep their original refusals. This compatibility test is GREEN;
+the 19 real Q3 scaffold behaviors remain intentionally RED. Original-index
+replay now has distinct application/configuration/noop result variants; missing
+history is an error. Joint exit rechecks live homes at the actual ordered cut,
+retains refusal through restart/retry and allows a new exit after movement or
+retirement. Fresh contract review is required for this interface amendment.
+
+```sh
+# Requires compatible PROTOC supplied above; existing application compatibility.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test q3_fixture_compatibility
+```

@@ -92,6 +92,7 @@ dependencies = [
  "glade-raft-adoption-api",
  "glade-raft-disk",
  "glade-raft-durability-api",
+ "glade-raft-q3-api",
  "protobuf",
  "raft",
  "slog",

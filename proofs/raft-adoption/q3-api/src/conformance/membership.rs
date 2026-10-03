@@ -1,7 +1,7 @@
-use super::{command, create, intent};
+use super::{accepted_create, command, create, intent};
 use crate::{Action, ConfigKey, Control, Error, QualificationSession};
 
-fn learner(session: &mut dyn QualificationSession) -> crate::ConfigReceipt {
+pub(super) fn learner(session: &mut dyn QualificationSession) -> crate::ConfigReceipt {
     let view = session.view().expect("known configured scope");
     let receipt = session
         .configure(intent(
@@ -17,7 +17,7 @@ fn learner(session: &mut dyn QualificationSession) -> crate::ConfigReceipt {
     receipt
 }
 
-fn joint(session: &mut dyn QualificationSession) -> crate::ConfigReceipt {
+pub(super) fn joint(session: &mut dyn QualificationSession) -> crate::ConfigReceipt {
     learner(session);
     session
         .control(Control::CatchUp { node: 4 })
@@ -124,6 +124,14 @@ pub fn joint_authority(session: &mut dyn QualificationSession, isolated: Vec<u64
     assert_eq!(session.outcome(create().request), Ok(None));
     session.control(Control::Reconnect).expect("heal");
     session.control(Control::Drain).expect("drain");
+    let applied_create = session
+        .outcome(create().request)
+        .expect("outcome")
+        .expect("healed committed create");
+    assert_eq!(
+        applied_create.outcome,
+        crate::Outcome::Accepted(super::created_resource(1))
+    );
     let view = session.view().expect("view");
     let left = session
         .configure(intent(
@@ -133,6 +141,7 @@ pub fn joint_authority(session: &mut dyn QualificationSession, isolated: Vec<u64
         ))
         .expect("both majorities")
         .expect("stable receipt");
+    assert_eq!(left.outcome, crate::ConfigOutcome::Accepted);
     assert_eq!(left.configuration.voters, vec![1, 2, 4]);
     assert!(left.configuration.voters_outgoing.is_empty());
 }
@@ -173,7 +182,7 @@ pub fn joint_lost_reply_restart(session: &mut dyn QualificationSession) {
 
 /// QM-007: voter removal never silently rehomes or advances generation.
 pub fn removal_preserves_home(session: &mut dyn QualificationSession) {
-    session.submit(create()).expect("create").expect("receipt");
+    accepted_create(session);
     let before = session.resource(100).expect("resource").expect("live home");
     learner(session);
     session
@@ -197,7 +206,7 @@ pub fn removal_preserves_home(session: &mut dyn QualificationSession) {
 /// already admitted command precedes the configuration at C+2. Every replica
 /// deterministically retains the same refusal; local liveness is irrelevant.
 pub fn admitted_configuration_refusal_is_retained(session: &mut dyn QualificationSession) {
-    session.submit(create()).expect("create").expect("receipt");
+    accepted_create(session);
     learner(session);
     session
         .control(Control::CatchUp { node: 4 })

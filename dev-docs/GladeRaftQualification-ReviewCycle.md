@@ -222,3 +222,27 @@ originating reviewers verify closure, subject to the bound two-round cap.
 The Q2 accepted source/member tuple remains the baseline. Existing member
 modifications and untracked handoff/research/scratch work are outside the object.
 No production consumer, desktop build, push or activation is included.
+
+### Q3 initial contract verdict merge
+
+Source root `fa1ff8b9fd0be53932300730ff925d0e41c76b1a`, with unchanged member/Gyld
+pins recorded in canonical [Consistency](GladeRaftQ3Contract-PromptConsistency.md)
+and [Safety](GladeRaftQ3Contract-PromptSafety.md) prompts.
+The independent reports are filed verbatim:
+[Consistency GO](GladeRaftQ3Contract-ReviewConsistency.md),
+[Safety NO-GO](GladeRaftQ3Contract-ReviewSafety.md).
+
+Safety identified three distinct P2 defects: invalid Create fixture preconditions,
+live-home eligibility unprotected through joint exit, and an application-only
+index replay result unable to represent configuration receipts. No blind
+convergence occurred. [Remediation 1](GladeRaftQ3Contract-RemPlan-1.md) accepts all
+three for one bounded contract/specification patch and maps each to closure
+specifications. Compiler success and initial NotQualified failures did not expose
+these subsequent assertion/transition defects; no Q3 implementation has shipped.
+
+The typed replay correction changes a shared interface and the exit rule changes
+a reviewed mutation boundary, so the corrected committed package requires fresh
+dual Consistency/Safety reviewers under review-loop §5.5. The originating Safety
+reviewer also verifies its original counterexamples. Remediation round 1 is in
+progress; Q3 contract remains NO-GO pending completed verdicts, and Q3
+implementation/Q4 remain open.

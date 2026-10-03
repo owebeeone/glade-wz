@@ -1,7 +1,8 @@
 //! Deliberately refusing Q3 review scaffold. No implementation is qualified.
 use glade_raft_q3_api::{
     Checkpoint, CheckpointStore, Command, ConfigIntent, ConfigKey, ConfigReceipt, Control, Error,
-    Image, QualificationSession, Receipt, RequestId, Resource, State, StoredEntry, View,
+    Image, QualificationSession, Receipt, ReplayResult, RequestId, Resource, State, StoredEntry,
+    View,
 };
 
 pub struct UnqualifiedStore;
@@ -59,7 +60,7 @@ impl QualificationSession for UnqualifiedSession {
         Err(Error::NotQualified)
     }
 
-    fn replay(&mut self, _entry: StoredEntry) -> Result<Option<Receipt>, Error> {
+    fn replay(&mut self, _entry: StoredEntry) -> Result<ReplayResult, Error> {
         Err(Error::NotQualified)
     }
 }

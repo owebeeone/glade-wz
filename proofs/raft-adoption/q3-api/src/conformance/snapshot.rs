@@ -1,14 +1,18 @@
-use super::{command, create, intent};
+use super::{accepted_create, command, create, created_resource, intent, submit_accepted};
 use crate::{Action, Control, Error, QualificationSession};
 
 /// QS-001/002/003: checkpoint keeps complete externally retained receipt/bytes.
 pub fn snapshot_original_receipt(session: &mut dyn QualificationSession) {
-    let original = session.submit(create()).expect("create").expect("receipt");
+    let original = accepted_create(session);
     let mutation = command(2, Action::Mutate { payload: 23 });
-    let updated = session
-        .submit(mutation)
-        .expect("mutation")
-        .expect("receipt");
+    let updated = submit_accepted(
+        session,
+        mutation,
+        crate::Resource {
+            payload: 23,
+            ..created_resource(1)
+        },
+    );
     let original_entry = session
         .applied_entry(original.index)
         .expect("complete original envelope");
@@ -19,7 +23,10 @@ pub fn snapshot_original_receipt(session: &mut dyn QualificationSession) {
         .install(checkpoint)
         .expect("atomic install/compaction");
     session.control(Control::Restart).expect("reopen");
-    assert_eq!(session.replay(original_entry.clone()), Ok(Some(original)));
+    assert_eq!(
+        session.replay(original_entry.clone()),
+        Ok(crate::ReplayResult::Application(original))
+    );
     let mut changed_entry = original_entry;
     changed_entry.bytes.push(99);
     assert_eq!(
@@ -47,7 +54,7 @@ pub fn snapshot_original_receipt(session: &mut dyn QualificationSession) {
 /// QS-004: current disclosure and retirement survive snapshot, original retired
 /// create remains retryable for an authorized reader; reserved name cannot reset.
 pub fn snapshot_policy_retirement(session: &mut dyn QualificationSession) {
-    let original = session.submit(create()).expect("create").expect("receipt");
+    let original = accepted_create(session);
     let permission = command(
         2,
         Action::SetPermission {
@@ -56,13 +63,17 @@ pub fn snapshot_policy_retirement(session: &mut dyn QualificationSession) {
             disclose: false,
         },
     );
-    let revoked = session
-        .submit(permission)
-        .expect("ordered policy")
-        .expect("policy receipt");
+    let revoked = submit_accepted(session, permission, created_resource(1));
     let mut retire = command(3, Action::Retire);
     retire.policy_frontier = revoked.index;
-    session.submit(retire).expect("retire").expect("receipt");
+    submit_accepted(
+        session,
+        retire,
+        crate::Resource {
+            retired: true,
+            ..created_resource(1)
+        },
+    );
     let checkpoint = session.checkpoint().expect("checkpoint");
     session.install(checkpoint).expect("install");
     session.control(Control::Restart).expect("reopen");
@@ -99,7 +110,7 @@ pub fn snapshot_policy_retirement(session: &mut dyn QualificationSession) {
 
 /// QS-005/006: wrong cut/configuration/opaque bytes refuse before serving.
 pub fn snapshot_mismatch(session: &mut dyn QualificationSession) {
-    session.submit(create()).expect("create").expect("receipt");
+    accepted_create(session);
     let original = session.checkpoint().expect("checkpoint");
     let mut foreign = original.clone();
     foreign.binding.group = 71;
@@ -117,18 +128,23 @@ pub fn snapshot_mismatch(session: &mut dyn QualificationSession) {
 
 /// QS-003: retained private movement envelope preserves old-generation fence.
 pub fn snapshot_movement_fence(session: &mut dyn QualificationSession) {
-    session.submit(create()).expect("create").expect("receipt");
+    accepted_create(session);
     let cut = session.view().expect("view").committed;
-    let moved = session
-        .submit(command(
+    let moved = submit_accepted(
+        session,
+        command(
             2,
             Action::Move {
                 home: 2,
                 successor_applied: Some(cut),
             },
-        ))
-        .expect("host-verified full successor cut")
-        .expect("move receipt");
+        ),
+        crate::Resource {
+            home: 2,
+            generation: 2,
+            ..created_resource(1)
+        },
+    );
     let snapshot = session.checkpoint().expect("checkpoint");
     session.install(snapshot).expect("install");
     session.control(Control::Restart).expect("restart");
@@ -149,7 +165,7 @@ pub fn snapshot_movement_fence(session: &mut dyn QualificationSession) {
 /// QS-007/QM-003: learner catch-up after source log compaction needs the complete
 /// snapshot plus suffix, then retained original outcomes survive promotion.
 pub fn snapshot_learner_catchup_and_membership(session: &mut dyn QualificationSession) {
-    let original = session.submit(create()).expect("create").expect("receipt");
+    let original = accepted_create(session);
     let checkpoint = session.checkpoint().expect("complete checkpoint");
     session.install(checkpoint).expect("compact source log");
     let view = session.view().expect("view");
@@ -161,11 +177,16 @@ pub fn snapshot_learner_catchup_and_membership(session: &mut dyn QualificationSe
         ))
         .expect("bound authorized learner")
         .expect("configuration receipt");
+    assert_eq!(added.outcome, crate::ConfigOutcome::Accepted);
     let mutation = command(2, Action::Mutate { payload: 23 });
-    let updated = session
-        .submit(mutation)
-        .expect("ordinary post-admission suffix")
-        .expect("mutation receipt");
+    let updated = submit_accepted(
+        session,
+        mutation,
+        crate::Resource {
+            payload: 23,
+            ..created_resource(1)
+        },
+    );
     session
         .control(Control::CatchUp { node: 4 })
         .expect("actual snapshot plus suffix transfer");
@@ -180,7 +201,7 @@ pub fn snapshot_learner_catchup_and_membership(session: &mut dyn QualificationSe
     let received_snapshot = cut.snapshot_index.expect("actual snapshot received");
     assert!(received_snapshot >= added.index);
     assert!(received_snapshot < view.committed);
-    session
+    let promoted = session
         .configure(intent(
             2,
             view.configuration.index,
@@ -190,6 +211,7 @@ pub fn snapshot_learner_catchup_and_membership(session: &mut dyn QualificationSe
         ))
         .expect("verified complete restored cut")
         .expect("joint receipt");
+    assert_eq!(promoted.outcome, crate::ConfigOutcome::Accepted);
     session
         .control(Control::Restart)
         .expect("joint restored snapshot configuration");
