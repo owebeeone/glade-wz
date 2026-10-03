@@ -1,6 +1,6 @@
 # Q4-A legacy Store seal evidence
 
-Date: 2026-10-03. Status: **compiling behavioral RED; no implementation acceptance**.
+Date: 2026-10-03. Status: **Q4-A implementation accepted at root `aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87` after independent Code/State GO/GO; this accepts whole-Store retirement preparation only**.
 
 Contract and allocation: [seal contract](GladeRaftLegacyStoreSealContract.md).
 [Production integration plan](GladeRaftProductionIntegrationPlan.md) retains all
@@ -64,7 +64,7 @@ between concurrent test processes. Those initial failures remain in testimony;
 no unrelated fixture rewrite was performed. Subsequent Store/gate commands MUST
 be serialized between owner and reviewers. The new seal fixtures use process IDs.
 
-## Owner implementation verification — awaiting independent acceptance
+## Owner implementation verification
 
 The original Consistency reviewer [closed P3-1](GladeRaftQ4ASealContract-ClosureConsistency.md)
 at root `3bf731994c8f18e4e27ed568e123bed099dca2f0`, Glade
@@ -96,8 +96,7 @@ components but failed the Clippy ratchet on one new unused test import; that
 import was removed and the complete gate then passed. No baseline was relaxed.
 Logs: `/tmp/glade-q4-node-gate.log`, `/tmp/glade-q4-node-gate-final.log`.
 These live-tree runs include inherited cold-join dirt. They are compatibility
-observations, not qualification of that unrelated diff. An exact committed-source
-fixture check is still required before implementation acceptance.
+observations, not qualification of that unrelated diff. Exact committed-source verification subsequently passed as recorded below.
 
 Process-global ratchet inspected 79 production files: three permanent existing
 entries, zero debt, nothing new. New module and integration target are rustfmt
@@ -152,6 +151,26 @@ three fewer tests than the live tree because inherited cold-join cases are absen
 Fixture path and pins: `/tmp/glade-q4-exact-source-location.json`; initial builder
 `/tmp/glade-q4-exact-source.py`; final log
 `/tmp/glade-q4-exact-source-gate-accepted.log`; measured result
-`/tmp/glade-q4-exact-source-result-accepted.json`. Implementation acceptance still
-requires independent Code/State verdicts against the exact tuple; passing owner
-checks do not supply those verdicts.
+`/tmp/glade-q4-exact-source-result-accepted.json`. The independent verdicts and their separate verification are recorded below;
+owner checks did not substitute for those verdicts.
+
+
+## Independent implementation acceptance
+
+[Code GO](GladeRaftQ4ASealImplementation-ReviewCode.md) and
+[State GO](GladeRaftQ4ASealImplementation-ReviewState.md) reviewed root
+`aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87` and the unchanged supporting
+pins above. Both verified tuple and scoped fixture hashes at start/end. They
+independently reran eight seal consumers, four boundary cases with all four real
+SIGKILL cuts, and the complete node gate in serialized windows. State independently
+reported 507 passing cases per root; Code additionally ran 26 Store cases, with
+only the explicit parent-invoked worker ignored. Their reports are filed verbatim.
+No open P0–P3 findings, no implementation remediation rounds. The contract's
+original P3-1 is closed by its finder. Acceptance is limited to participating
+builds, a stable physical root and the exercised macOS/APFS process-interruption
+profile. Broader Unix source selection does not qualify other platforms.
+
+This filing changes documentation only. No seal installation, migration cut,
+production activation, production-carrier selection, launcher edit, push or desk
+rebuild follows. Q4-B through Q4-E remain open.

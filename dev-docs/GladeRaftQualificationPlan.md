@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3a/Q3b private implementation accepted at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO; Q4 remains open**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3a/Q3b private implementation accepted at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO; Q4-A legacy Store retirement preparation accepted at Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87` after Code/State GO/GO; Q4-B through Q4-E and production activation remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -181,3 +181,17 @@ Q3a membership and Q3b snapshots are qualified within this profile only. Q4
 requires reviewed canonical/production amendments, real authority and transport,
 failure domains, automatic-election randomness/compliance and legacy/effect
 exclusion before production activation. Production crate selection is separate.
+
+
+## Q4-A preparation accepted-through
+
+[Q4 production integration](GladeRaftProductionIntegrationPlan.md) now has an
+accepted first preparation interlock: [legacy Store seal](GladeRaftLegacyStoreSealContract.md).
+Exact reviewed root `aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, after independent
+[Code](GladeRaftQ4ASealImplementation-ReviewCode.md)/
+[State](GladeRaftQ4ASealImplementation-ReviewState.md) GO/GO.
+This is a one-way whole physical Store-root retirement interlock for participating
+builds on a stable root; demonstrated runtime is macOS/APFS process interruption.
+It does not exclude unaware old binaries, seal Registry/external sinks, reconcile
+legacy copies, close RA-012 or activate Raft. Q4-B through Q4-E remain mandatory.

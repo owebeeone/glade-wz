@@ -1,6 +1,6 @@
 # Glade legacy Store seal — Q4-A contract
 
-Date: 2026-10-03. Status: **DRAFT; compiling consumer specification precedes implementation**.
+Date: 2026-10-03. Status: **Q4-A contract and implementation accepted; exact implementation tuple root `aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, after [Code](GladeRaftQ4ASealImplementation-ReviewCode.md)/[State](GladeRaftQ4ASealImplementation-ReviewState.md) GO/GO; whole-Store retirement preparation only**.
 Controlling plan: [Q4 production integration](GladeRaftProductionIntegrationPlan.md).
 This is a preparation interlock for taking a legacy store offline for a later
 verified cut. It does not enroll any scope, supply authenticated evidence,

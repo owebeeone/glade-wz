@@ -504,9 +504,41 @@ Contract tuple root `6a35216a6d97aa22e9d53b54256f7395c306da3c`, Glade
 `ca04499a360d910fbf8ee2540ed446facd051b35` received peer-blind
 [Consistency GO](GladeRaftQ4ASealContract-ReviewConsistency.md)/
 [Safety GO](GladeRaftQ4ASealContract-ReviewSafety.md).
-No P0/P1/P2; Consistency P3-1 shared non-Unix recognition coverage is being
-corrected before implementation. This accepts the internal contract and compiling
-behavioral RED only. Code/State implementation acceptance is still open.
+No P0/P1/P2. Consistency P3-1 shared non-Unix recognition coverage was corrected
+before implementation and [closed by its finder](GladeRaftQ4ASealContract-ClosureConsistency.md)
+at root `3bf731994c8f18e4e27ed568e123bed099dca2f0`, Glade
+`638cca4b2784cc3e51c1e47b1fea47d026b57734`. This contract gate accepted
+compiling behavioral RED, not an implementation.
 Exact evidence and honest fixture-interference results are in
 [Q4-A evidence](GladeRaftQ4ASealEvidence.md). No architectural remediation round
 has been consumed. Production freeze/activation will need their own reviews.
+
+
+### Q4-A implementation accepted-through
+
+Exact reviewed root `aafb14a663fe130db5ef56cb002b2bb9b9399b11`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, unchanged discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851` and external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`; additional affected-consumer
+pins are enumerated in both reports. Fresh peer-blind
+[Code GO](GladeRaftQ4ASealImplementation-ReviewCode.md)/
+[State GO](GladeRaftQ4ASealImplementation-ReviewState.md), zero findings.
+The lane owner accepts only the internal whole-Store retirement interlock for
+participating builds on a stable root in the exercised macOS/APFS
+process-interruption profile. Exact committed-source full gate: nine components
+PASS, 507 cases per composition root across 20 binaries. Each reviewer separately
+reran the full gate and actual seal/process-kill targets; old fixed-name Store
+fixtures required serialized test windows. Inherited cold-join dirt is excluded.
+
+| Discovery phase | Findings/disposition | Architectural remediation rounds |
+| --- | --- | --- |
+| Contract | One P3 platform-selection coverage defect, original finder closed | 0 |
+| Implementation acceptance | No P0–P3 findings | 0 |
+| Broader production | Q4-B/C/D/E, RA-012, authority, carrier and failure domains remain open | No acceptance claimed |
+
+Test-driver and fixture failures remain recorded in evidence; passing reruns did
+not erase them. No released/activated production profile exists to support an
+escaped-defect claim. No baseline/policy/allowlist was relaxed. The accepted code
+was already committed in the local clone; this acceptance filing records the
+verdicts without changing source. It does not merge/push, seal live storage,
+rebuild the desk or alter the two-node development launcher.
