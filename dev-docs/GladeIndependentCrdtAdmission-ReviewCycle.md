@@ -296,3 +296,27 @@ One merged, test-first correction is authorized under remediation round 1, with
 the admission kernel still refusing. Originating verification and fresh full
 Code/State review follow because Recovery's internal interface changes. Original
 failed-object history is retained; no activation or successful kernel acceptance.
+
+#### Remediation 1 correction settled for verification
+
+One merged correction is documented in
+[Remediation1-Evidence](GladeIndependentCrdtStorageAttemptContract-Remediation1-Evidence.md).
+Glade moves to `346d963f09089a0636a01fac8a257f067908147d`; other member pins
+remain unchanged. Generated review prompts will record this root checkpoint's
+exact SHA. Shared Recovery adds invocation cardinality only; finite genesis
+custody belongs exclusively to the owned development seed. All text replicas
+retain their actual-port sessions; policy injection is separate from Begin;
+issued lookup helpers preserve complete continuation history and counters.
+
+Executed regression failures preceded fixture corrections. API26 and core
+fixture/representation/source11 pass. All original40 domain tests plus two new
+callback closures compile and remain assertion RED; exact ten released-Taut rows
+remain RED with the unchanged corpus control passing. Focused compile/fmt/clippy,
+source/process, selector/architecture/tooling and whitespace evidence is filed.
+Gyld is unchanged and unaffected; no redundant external rerun is claimed.
+
+All five finding IDs remain open, with one architectural root and one remediation
+round on this typed object. Originating counterexample verification and fresh
+full Code/State review MUST both complete on this same settled tuple. No source
+writes may occur while those reviews run; only generated prompts/reports are
+permitted outputs. No successful kernel or activation acceptance follows yet.

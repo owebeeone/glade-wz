@@ -230,6 +230,14 @@ retained incarnation and issuance/invocation/owner floors before a usable sessio
 Recovery MUST validate complete custody/outcome coupling, revisions, reservations
 and retained preparations. `Recovery` explicitly carries owner, invocation
 namespace, limits, preparing bindings, revisions, attempts/phases and floors.
+It additionally carries `invocation_count`: the actual retained request cardinality,
+independent of `invocation_high_water`. Sparse scalar IDs are legal and consume
+one entry per actually issued request. Restoration MUST preserve both values,
+validate count against the declared finite history capacity and identity floor,
+and retain enough consumption for all preparation/attempt history. A high-water
+number MUST NOT be converted into a cardinality or used to require dense issuance.
+Restored binding sizes, instance references and Started/terminal payloads MUST
+satisfy the same limits and complete binding rules as the live session.
 Reserved/Started restore as Pending, not absent or auto-committed. Missing
 ownership/floor/format/ledger evidence makes writable recovery unavailable.
 
@@ -297,7 +305,8 @@ The four-kind matrix still checks Committed/NonCommit/Pending, original receipts
 no synthetic Candidate/Security admission, qualified-fork custody, once charges,
 lookup IDs/exhaustion/restoration, policy cuts, fresh-origin post-fork AB/old retries
 and Y isolation. Thirteen new STA tests (eleven requirements plus callback-history
-and caller-owned driver regressions) compile and fail behaviorally against
+and caller-owned driver regressions), plus two issued/unissued lookup closures,
+compile and fail behaviorally against
 unchanged refusing step. Neither compile errors nor successful helper output is
 presented as kernel RED/implementation evidence.
 
@@ -310,10 +319,45 @@ registration, pending worker, close ownership, both fence races, entire permit
 window and Started cut after revocation. This is model conformance only.
 
 The reusable `drive_with_port` consumer takes a caller-owned session retained
-across continuations. Original tests keep a fresh-session `drive` convenience
-wrapper for their scoped fixtures; it does not reconstruct a real restarted host
-from arbitrary kernel State. Future successful multi-call journeys MUST own one
-session or inject qualified trusted host recovery explicitly.
+across continuations. `FixtureReplica` composes that session with explicit trusted
+fixture State and a separately injected policy/time observation. Initialization
+uses the exact fixture policy digest and interval. An independent trusted provider
+change updates its observation; Begin caller data MUST NOT update that provider.
+The valid core-cut port journey publishes the original staged receipt, and a
+separately changed provider fences a stale Begin.
+
+Every text call site now uses one retained session per logical replica: both
+buffer/rival orders, qualified-fork A then fresh E1 AB/retry/refusal, isolation and
+both ABC directions. Original multi-call rival/fork tests use the same lifetime.
+Independent test branches use an explicit owned recovery seed rather than silently
+pairing a nonempty kernel State with an empty host. The `drive` convenience wrapper
+now constructs that declared fixture assembly and validates the supplied seed;
+it is not a successful kernel fallback or a live restoration mechanism.
+
+`OwnedFixtureSeed` is confined to the development provider. It carries shared
+Recovery plus an immutable, finite genesis custody image for each fixture instance.
+These images are deterministic debug snapshots of the explicit InstanceState,
+including accepted records/original receipts, candidate/evidence/fork custody,
+usage, policy and derived recovery state. They represent the existing revision0
+fixture cut; they neither allocate a new attempt nor manufacture a new admission.
+The provider retains them alongside all attempt/outcome bindings and critical
+reservations, exports them in its development seed and validates aggregate bytes
+against the finite critical capacity. The helper also checks exact issued/consumed
+request maps, lookup indexes, counters, revisions/terminal coupling and original
+receipt/accounting presence. Shared production Recovery gains **only cardinality**;
+there is no production genesis/import API or exception to outcome coupling.
+This test-owned continuation assumes the supplied execution ownership; it does
+not acquire a real lock, exclude a clone, decode or encode a storage format, import
+records or qualify antirollback. Such an image is never a peer-controlled DTO.
+
+Every manually issued lookup uses `register_lookup`, which records the full exact
+request in the authoritative outstanding map and the secondary lookup index,
+checks owner/namespace/attempt/binding and finite shared history, and advances the
+next issuance counter. The attempt fixture retains its consumed Prepare request
+and issued Begin as well. Restoration moves invalidated live lookup requests into
+consumed full history. Secondary lookup entries alone MUST NOT authorize callbacks;
+terminal-field mutation tests begin from fully issued requests so rejection is
+attributable to the intended mismatch.
 
 The real Rust text trace still follows public `step` results, using the same
 actual port fixture for emitted operations. No private admission implementation
@@ -357,5 +401,9 @@ sync, client/Glial durable intent, compatibility and seal exclusion.
 No disk/restart/crypto, stronger storage class, production keys/quotas/time/loss
 values, enrollment, migration, launcher, automatic duplex activation or push is
 qualified here. Owner deployment inputs and new-store/existing-store transitions
-remain decisions at their gates. The implementation directive continues after
+remain decisions at their gates. [Remediation 1 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation1-Evidence.md)
+records one merged correction against the filed Code/State findings. All finding
+IDs remain OPEN until their originating reviewers verify closure; because shared
+Recovery changes, fresh complete peer-blind Code/State review is required too.
+The implementation directive continues after
 those gates; this tranche deliberately remains a refusing kernel checkpoint.
