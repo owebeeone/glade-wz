@@ -1,7 +1,8 @@
 # Independent CRDT admission — review and delivery ledger
 
-Date: 2026-10-04. Status: **semantic design accepted; typed contract/allocation/RED
-remediation 1 is required; no admission implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
+Date: 2026-10-04. Status: **semantic design accepted; original typed contract
+stopped; owner-authorized storage-attempt redesign in review; no admission
+implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
 is the controlling draft. Existing Raft and legacy writer contracts remain.
@@ -191,3 +192,25 @@ round. No new patch or successful kernel is authorized.
 records the counterexample and recommended lifecycle redesign. Semantic design
 acceptance is retained; IC-1 contract acceptance and IC-2 implementation remain
 blocked. All commits remain local; no push or activation occurred.
+
+## Owner-authorized storage-attempt redesign
+
+GDL-058 records the owner's explicit “yes, redesign” decision after the stop.
+The [new lifecycle design](GladeIndependentCrdtStorageAttemptDesign.md) is a
+separate owner-authorized object covering the unified storage boundary. The
+failed IC-1 history and architectural count above remain intact. Its full
+regression obligations and accepted general CRDT semantics remain controlling.
+No corrective implementation patch or claim of old-object acceptance follows.
+
+The new DRAFT recommends a narrow Records-owned host reusing qualified atomic
+snapshot primitives in a separate versioned root, with coupled custody/outcomes,
+independent application and metadata revisions, retained attempt identity,
+terminal fencing and finite critical reserves. STA-001–011 map future deterministic
+RED and real-provider qualifications. Recovery-overflow representation is explicitly
+a proposal for the later contract; no clearing operation is invented now.
+
+Next: fresh peer-blind Consistency/Safety review on the exact root tuple recorded
+in generated prompts, with unchanged member pins. That gate accepts lifecycle
+design only. A new typed boundary/allocation/conformance RED gate MUST precede
+successful kernel or host implementation. All production activation inputs and
+IC-3/4 integration/fault checks remain required.

@@ -70,6 +70,17 @@ G* design work.
 
 ## Notes
 
+GDL-058 — Owner decision, 2026-10-04: **redesign** the independent CRDT
+storage-outcome lifecycle after the review-loop's third-architectural-root stop,
+rather than accepting the known defect. The
+[new attempt-lifecycle design](GladeIndependentCrdtStorageAttemptDesign.md)
+addresses preparation, commit, lookup, cancellation/fencing and restart as one
+boundary. The accepted general CRDT semantics and failed IC-1 review history
+remain intact. This authorizes the new design, fresh review and subsequent gated
+contract/RED work; it does not accept the DRAFT, bypass TDD/review, qualify physical
+storage or authorize live activation/push. See the
+[escalation](GladeIndependentCrdtAdmissionContract-Escalation.md).
+
 GDL-057 — Owner directive, 2026-10-04: proceed with a dedicated independent
 CRDT admission design, review it, then implement under the accepted contracts.
 The directive followed the recommendation to put this lane before the first
