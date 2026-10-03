@@ -1,6 +1,6 @@
 # Q3 implementation remediation 2
 
-Date: 2026-10-03. Status: **planned; renewal Code P2-1 open; Q3 acceptance pending**.
+Date: 2026-10-03. Status: **bounded correction implemented and independently verified; renewal Code P2-1 open pending Code/State re-verdicts; Q3 acceptance pending**.
 Reviewed root `ce0876423e921cdd066106af9190ae7c6ec5d781`; unchanged Glade
 `90dc1a60981185fa26ae5bfafbbb5377c12a413b`, glade-discover
 `52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
@@ -66,3 +66,20 @@ interface, mutation boundary or call graph requiring another fresh renewal.
 If the actual patch exceeds that classification, the owner MUST reconsider the
 review tier before acceptance. No finding self-closes. The two-round cap and
 reviewer classification of new architectural causes remain controlling.
+
+## Owner pre-freeze evidence
+
+The drafter observed the exact compiling behavioral RED, then GREEN through real
+V2 reopen/RawNode voting and original unknown-entry reconciliation. One owning
+test in the existing 455-LOC module adds complete retained originals, repeated
+physical reopen and independent incoming/outgoing-majority loss fixtures. The
+implementation change adds only outgoing enumeration and BTreeSet deduplication
+before the existing checks/ranking/campaign. No boundary/call graph change
+exceeds the bounded classification above.
+
+After STOP EDITS the owner independently ran 121 default cases (zero failures,
+four explicit tier ignores, zero filtered), both explicit Q2 cases, both oracle
+self-tests, all five actual SIGKILL cuts and strict gates. All pass; 49 owned
+Rust files, zero exceptions. The ensuing frozen commit is supplied in the two
+canonical re-verdict prompts. Finding closure remains the originating Code
+reviewer's responsibility; Q3 acceptance remains conditional on both verdicts.

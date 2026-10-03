@@ -1,6 +1,6 @@
 # Q3 implementation evidence — 2026-10-03
 
-Status: **remediation 1 implemented and verified by the drafter; all five originating findings remain open pending independent closure and fresh Code/State renewal**. The initial reviewed implementation received Code/State NO-GO; the corrected object has not been accepted. This document records the implementation drafter's evidence; it is not a review verdict or production approval. The owner MUST pin the settled implementation source tuple and file the independent reviews in [GladeRaftQualification-ReviewCycle.md](GladeRaftQualification-ReviewCycle.md). No commit, push, desktop rebuild or production activation was performed by the drafter.
+Status: **remediation 2 implemented and verified by the drafter; renewal Code P2-1 remains open pending independent re-verdict**. All five original findings were independently closed on `ce0876423e921cdd066106af9190ae7c6ec5d781`; fresh renewal Code found the bounded outgoing-only candidate defect and State renewal was GO. The corrected round-2 object has not been accepted. This document records the implementation drafter's evidence; it is not a review verdict or production approval. The owner MUST pin the settled implementation source tuple and file the independent reviews in [GladeRaftQualification-ReviewCycle.md](GladeRaftQualification-ReviewCycle.md). No commit, push, desktop rebuild or production activation was performed by the drafter.
 
 ## Accepted scope and concrete providers
 
@@ -44,7 +44,7 @@ All cases below pass against actual files/carriers unless specifically labelled 
 | --- | --- |
 | V2 lifecycle/compatibility | `explicit_create_sync_reopen_and_exact_binding`, `open_missing_never_creates`, `empty_old_format_and_wrong_instance_never_reset`, `held_lock_and_exclusive_create_prevent_overwrite`, `invalid_instance_is_refused_before_file_creation`, `real_q2_file_is_incompatible_and_preserved_byte_for_byte`; `join_authority_missing_reopen_and_incomplete_restart_never_reset_or_vote` checks unauthorized/wrong-group admission leaves node-4 absent, missing learner reopen remains missing, and incomplete restart revalidates external join. The original `snapshot_valid_foreign_binding_corrupt_state_and_capacity_refuse` includes an outer-only foreign binding mismatch. The distinct internally coherent foreign fixture is covered by `coherent_foreign_checkpoint_envelope_history_and_binding_refuse_without_publication`, including independent full-history/materialized-state validation and fixed-profile normalization. |
 | Learner and dual quorum | Original `membership_authorized_namespace_and_exact_intent_retry`, `learner_unavailable_cannot_promote_or_supply_quorum`, both `joint_*_majority_alone_cannot_accept`, and `compacted_snapshot_restores_learner_before_joint_promotion`; owning actual vote/pre-vote and incomplete-restart gates; `ordered_stale_promotion_refusal_agrees_at_every_replica_and_demotion_is_invalid`; `direct_and_queued_home_exit_refusals_are_retained_at_every_actual_replica` executes all direct/queued × movement/retirement variants and compares full refused receipts/typed entries on every member. Actual removed leader, new voter 4 resource home, same-target explicit joint and unsupported demotion cases are additional witnesses. `correctly_versioned_nonjoint_leave_and_nested_joint_refuse_without_logging_or_outcome` checks fresh correctly versioned NotJoint/JointInProgress admission, unchanged complete logs/files/configuration, absent rejected-key outcomes and subsequent legitimate work. |
-| Configuration interruption | `joint_restart_and_lost_configuration_reply_are_recoverable`, `configuration_eligibility_lost_after_admission_retains_exact_refusal`, pending exact/changed-intent regression; `uncommitted_configuration_restart_keeps_unknown_then_commits_exact_original_entry` keeps original uncommitted Entry across reopen and explicitly manually recampaigns after dropped partitioned election messages; `partitioned_joint_exit_reopens_fresh_eligible_voter_and_preserves_full_originals` physically reopens stale voter 2 versus current voters 3/4 after the incoming234 joint exit, retains complete originals/home2/generation1, accepts a new mutation, repeats restart and verifies real quorum loss. `disconnected_freshest_voter_does_not_trap_manual_restart_with_an_available_quorum` excludes disconnected 1 and campaigns available 2 through legal RawNode voting. SIGKILL joint-before-apply below. `snapshot_original_accepted_refused_configuration_and_noop_replay_is_typed` compares complete accepted/refused/configuration/application/noop originals, changed envelopes conflict, missing remains distinct. |
+| Configuration interruption | `joint_restart_and_lost_configuration_reply_are_recoverable`, `configuration_eligibility_lost_after_admission_retains_exact_refusal`, pending exact/changed-intent regression; `uncommitted_configuration_restart_keeps_unknown_then_commits_exact_original_entry` keeps original uncommitted Entry across reopen and explicitly manually recampaigns after dropped partitioned election messages; `partitioned_joint_exit_reopens_fresh_eligible_voter_and_preserves_full_originals` physically reopens stale voter 2 versus current voters 3/4 after the incoming234 joint exit, retains complete originals/home2/generation1, accepts a new mutation, repeats restart and verifies real quorum loss. `disconnected_freshest_voter_does_not_trap_manual_restart_with_an_available_quorum` excludes disconnected 1 and campaigns available 2 through legal RawNode voting. `outgoing_only_fresh_voter_recovers_joint_unknown_after_actual_reopen` adds the round-2 exact incoming4/outgoing123 actual-file counterexample: unknown Entry5 survives drop before live reconnect, a fresh outgoing-only candidate lawfully commits it, full originals/home4/generation1 survive repeated physical reopen, and loss of either joint majority prevents later acceptance. SIGKILL joint-before-apply below. `snapshot_original_accepted_refused_configuration_and_noop_replay_is_typed` compares complete accepted/refused/configuration/application/noop originals, changed envelopes conflict, missing remains distinct. |
 | Snapshot semantic adversaries | `valid_format_materialized_maps_must_equal_full_original_replay` changes applied/policy/voters/resource generation/home/payload/tombstone/name/id within valid word framing; `valid_format_original_command_result_index_policy_permissions_and_cut_adversaries_quarantine` changes canonical original command, typed original result/request/index, complete permission keys/values, checkpoint index/term/ConfState/version with replay mismatch; accepted retirement fixture checks complete tombstone. Term-regressing history and actual valid coherent same-group conflicting committed history are separate regressions. `valid_future_checkpoints_validate_overlap_and_refuse_without_any_publication` uses two actual sessions, validates common committed originals before recipient selection, quarantines conflicting future history, explicitly refuses nonconflicting unsupported future installation and preserves successful same-history compaction/restart. |
 | Snapshot plus suffix | `compacted_snapshot_restores_learner_before_joint_promotion` asserts actual received snapshot S at learner-add and later applied suffix beyond S; `actual_snapshot_ready_all_five_faults_preserve_coherent_join_cut_then_real_suffix` directly asserts incoming Ready.snapshot S, no immediate later committed entries, then sends real MsgAppend normal suffix; `actual_append_after_snapshot_reconciles_uncommitted_original_suffix_without_applying_it` restores cp2/uncommitted original3 and replaces it with actual higher-term MsgAppend3, preserving original create and never applying old payload99. Original policy/retirement and historical retry cases apply current disclosure after later policy. |
 | Publication faults | `all_publication_faults_preserve_full_or_unknown_quarantined_history`, `all_publication_faults_keep_checkpoint_configuration_and_suffix_in_one_cut` publish full checkpoint+configuration+suffix images together at all five faults. At the adapter level BeforeWrite leaves the original store usable; other injected uncertain faults poison it. An attached host voter MUST stop on any publication error until physical reopen, including BeforeWrite. Reopen is exact prior, complete new, or quarantine for torn partial record. Actual snapshot Ready and `actual_light_ready_commit_all_five_publication_faults_gate_apply_and_messages` each exercise all five faults: no failed-lifecycle messages or candidate/application install. Genuine LightReady commit-only publication is observed using legal Ready/advance_append_async sequencing; complete original expected Resource and Entry survive successful/recoverable cuts. |
@@ -126,7 +126,7 @@ pre-review verification, not independent reviewer acceptance. The owner freezes
 these source/evidence bytes and supplies the exact tuple in the canonical
 Code/State prompts.
 
-## Remediation 1: corrected candidate, independent closure pending
+## Historical remediation 1: corrected candidate before independent closure
 
 The merged plan is [GladeRaftQ3Implementation-RemPlan-1.md](GladeRaftQ3Implementation-RemPlan-1.md); originating reports are [Code](GladeRaftQ3Implementation-ReviewCode.md) and [State](GladeRaftQ3Implementation-ReviewState.md). These reports reviewed `b61197602e5594bdf89770bda069ce7d30fdb222`. Remediation began from root `95b29caa7376fabf1dca0bf3044b8a74a900cd90`, retaining the accepted member/Gyld pins in the plan. The owner MUST freeze the corrected source/evidence tuple before review; this drafter does not self-close findings or supply a GO verdict.
 
@@ -166,7 +166,7 @@ These remediation observations include Cargo's work for each command; no new col
 
 Source organization: the split-files skill was used at GREEN on the initial paired coverage module. Syntax-aware `rust-split explode` and ordered split manifests reproduced its bytes exactly; the two owning test items, including their ordinary `#[test]` attributes, were moved into separate foreign-checkpoint and configuration-admission modules with no visibility widening. The transient combined module was removed. Formatting and both relocated tests were checked separately, then the full matrix passed. New modules remain below 500 LOC; no unrelated refactor or broader cfg migration is claimed.
 
-All five originating findings remain **open pending independent closure**. Neither the focused GREENs nor the complete matrix is reviewer acceptance. The owner records the exact corrected object and final decisions in the canonical review cycle.
+At this round-1 checkpoint, all five originating findings remained **open pending independent closure**. Neither the focused GREENs nor the complete matrix is reviewer acceptance. The owner records the exact corrected object and final decisions in the canonical review cycle.
 
 ### Bounded malformed-success follow-up within Code P2-1
 
@@ -184,9 +184,9 @@ Final corrected default workspace after the follow-up: **120 PASS, zero failures
 | Strict all-target Clippy | 0.534 s |
 | `check.sh` / formatting check | 0.793 s / 0.116 s |
 
-Final follow-up logs are `/tmp/glade-q3-rem1-{malformed-success-green,host-final,workspace-followup,clippy-followup,gates-followup,fmt-followup}.log` and `/tmp/glade-q3-rem1-followup-measurements.json`. Earlier explicit Q2 library/oracle/SIGKILL and Q3 oracle/SIGKILL PASS observations above predate this bounded follow-up; they are preserved as such, not relabelled final-source executions. The owner MUST rerun the complete independent verification on the settled object before freeze/renewal. All originating findings remain open pending independent closure; this follow-up is part of the same merged remediation round 1.
+Final follow-up logs are `/tmp/glade-q3-rem1-{malformed-success-green,host-final,workspace-followup,clippy-followup,gates-followup,fmt-followup}.log` and `/tmp/glade-q3-rem1-followup-measurements.json`. Earlier explicit Q2 library/oracle/SIGKILL and Q3 oracle/SIGKILL PASS observations above predate this bounded follow-up; they are preserved as such, not relabelled final-source executions. The owner MUST rerun the complete independent verification on the settled object before freeze/renewal. At this checkpoint all originating findings remained open pending independent closure; this follow-up is part of the same merged remediation round 1.
 
-### Owner independent verification of the complete corrected patch
+### Historical owner independent verification of the complete corrected round-1 patch
 
 After the drafter's final STOP EDITS, the owner independently reran the whole
 private workspace: **120 PASS, zero failures, four explicit tier ignores, zero
@@ -207,3 +207,59 @@ root correction, owning tests and evidence/remediation documents are staged for
 the next frozen object; unrelated member/untracked work is excluded. Fresh
 Code/State renewal and originating finder closures MUST verify that exact
 corrected source tuple before acceptance.
+
+## Remediation 2: outgoing-only candidate enumeration
+
+The controlling [RemPlan-2](GladeRaftQ3Implementation-RemPlan-2.md) and complete [Code-1 renewal](GladeRaftQ3Implementation-ReviewCode-1.md) / [State-1 renewal](GladeRaftQ3Implementation-ReviewState-1.md) were read. Reviewed source was `ce0876423e921cdd066106af9190ae7c6ec5d781`; remediation began at filing HEAD `3edd9ef03eb44a566213c4445ded964790d87006`. The five original findings are independently closed by the filed originating reports; the new renewal Code P2-1 remains open. No drafter statement substitutes for the continued Code/State reviewer re-verdicts.
+
+Owning regression: `outgoing_only_fresh_voter_recovers_joint_unknown_after_actual_reopen`, in the existing `proof/src/q3/session/restart_freshness_tests.rs`. Its exact actual V2/RawNode sequence is initial election noop1, complete accepted AddLearner4@2 with real catch-up, complete accepted EnterJoint incoming `[4]` / outgoing `[1,2,3]`@3 before any live resource, and complete Accepted home4 Create@4. The original full create/configuration receipts and serialized Entries are retained outside the session. Disconnect4 then submits a valid home4 mutation; it remains unknown while nodes1/2/3 each durably hold the exact original uncommitted Entry5 and node4 ends at4. The test **drops before any live Reconnect**, opens all four actual files into fresh recovery, and checks the stored log imbalance before constructing carriers.
+
+Compiling behavioral RED was observed against incoming-only enumeration: actual fresh recovery returned NoQuorum instead of an authorized leader. The exact output is `/tmp/glade-q3-rem2-outgoing-red.log`; compiler failure is not claimed as RED. The smallest implementation correction in `session/lifecycle.rs` chains the newest validated configuration's outgoing voters into its incoming voters, deduplicates with `BTreeSet`, then uses the existing availability/nonfailure/local-completeness filters, actual durable `(last_term,last_index)` ranking, deterministic lowest-ID tie-break and terminal-term guard. The same legal `RawNode::campaign` call remains. No election ticks, term/log/counter assignment, artificial membership or restriction of allowed target cardinality was introduced. Learners and post-exit removed members remain outside the latest voter union.
+
+The owning regression is GREEN. Fresh outgoing-only1 receives the real votes from both majorities and actual new-term reconciliation commits the exact original unknown mutation Entry5. Its complete expected Receipt was independently specified before drop: index5, original request, Accepted Resource(home4/generation1/payload23). Full configuration/create/unknown results and Entry bytes match lookup, exact retry and typed original-index replay at fresh recovery; every replica retains the original Entry5/result at a committed cut. New accepted payload77 preserves the complete expected home4/generation1 Resource. A second genuine drop/open/recover retains all originals and exact new receipt/Entry replay. Two complete fixture executions then isolate `[4]` (missing incoming majority) or `[2,3]` (missing outgoing majority): fresh payload99 remains unknown, committed cut and every materialized original Resource remain unchanged. The prior stale post-exit and disconnected-candidate regressions remain selected and GREEN.
+
+This patch changes only `session/lifecycle.rs`, its existing `session/restart_freshness_tests.rs`, and this evidence document. The owning test module is 455 LOC, under the cohesion limit; no file move/split or public visibility change was required. Public contracts, normal/dev edges, library roles, compatibility formats, dependency/policy shapes, process-global exceptions, platform boundaries, fixture target domain and default test selection are unchanged. This is bounded candidate enumeration within the already reviewed manual recovery path, as classified by Code-1 and RemPlan-2; no other source correction is included.
+
+### Final round-2 verification
+
+All following commands were run after the settled source changes and formatting. Use the cached PROTOC and reproduction commands above; the exact additional focused command is:
+
+```sh
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib outgoing_only_fresh_voter
+```
+
+Final default workspace: **121 PASS, zero failures, four explicit tier ignores**. Owning Q3 host: **29 PASS**. Original concrete Q3 consumers: **19/19 PASS**, separately run with zero ignored/filtered/skipped; all remain default-selected. Preserved Q1a/Q2, V2, contract-compiler and extra consumer suites pass in the complete workspace; explicit old Q2 library cases **2 PASS**. Strict all-target Clippy, formatting and `check.sh` pass: architecture/source boundaries PASS and **49 owned Rust files, zero process-global exceptions/debt/permanent entries**.
+
+Both external workers were built/identified with Cargo `--no-run`; the executable paths remain the Cargo-reported paths in the reproduction commands. Q2 parent-oracle self-tests **4 PASS**; Q3 adversarial parent-oracle **PASS** (ten recovered-field mutations plus missing/changed parent originals). Actual external SIGKILL: **two Q2 cuts PASS** and **three Q3 cuts PASS**, including complete parent-held APP/CONFIG/ENTRY lookup/exact retry/typed replay and the independently specified joint-before-apply expected configuration receipt. These are fresh round-2 executions, distinct from the preserved historical runs above. They remain process-termination evidence, not power-loss, automatic-election, independent-machine or production certification.
+
+| Final round-2 command, cached local target | Observed wall time |
+| --- | ---: |
+| Focused outgoing-only regression | 0.506 s |
+| All owning Q3 host cases, 29 | 2.394 s |
+| Original nineteen concrete consumers | 2.308 s |
+| Complete default workspace, 121 | 12.110 s |
+| Two explicit Q2 library cases / worker no-run | 0.130 s / 0.045 s |
+| Strict all-target Clippy | 0.538 s |
+| `check.sh` / formatting check | 1.009 s / 0.115 s |
+| Q2 parent-oracle self-tests / Q3 parent-oracle self-test | 0.038 s / 0.025 s |
+| Actual two Q2 SIGKILL cuts / three Q3 SIGKILL cuts | 0.273 s / 0.917 s |
+
+Logs are `/tmp/glade-q3-rem2-{outgoing-green,host,consumer19,workspace,q2-explicit,workers-build,clippy,gates,format,q2-oracle,q3-oracle,q2-crash,q3-crash}.log`; measurements are `/tmp/glade-q3-rem2-measurements.json`. These observations include each command's Cargo work and are not cold-build or performance guarantees. Historical initial and round-1 counts/timings remain recorded at their corresponding checkpoints.
+
+Renewal Code P2-1 remains **open pending independent closure**. The owner independently verifies and freezes this bounded patch; continued Code/State reviewers MUST re-trace the original counterexample and preserve prior closures/State GO before Q3 acceptance.
+
+### Owner independent round-2 verification
+
+After the final drafter STOP EDITS the owner reran the complete matrix on the
+settled patch: **121 default PASS, zero failures, four explicit tier ignores,
+zero filtered**, including the original nineteen. The two explicit Q2 cases,
+both parent-oracle self-tests and all two Q2/three Q3 actual SIGKILL cuts pass.
+Architecture, formatting, token/source boundary and strict all-target Clippy
+pass; **49 owned Rust files, zero exceptions**. A separate nonquiet Cargo
+`--no-run` confirms both exact worker executables used by the runners. Logs are
+`/tmp/glade-q3-owner-rem2-{workspace,q2-explicit,gates,clippy,workers,q2-oracle,
+q3-oracle,q2-crash,q3-crash}.log`; command times are in
+`/tmp/glade-q3-owner-rem2.json`. Workspace observed 5.420 s, Q2/Q3 kill batches
+0.262/0.883 s; observations only. This is verification, not review acceptance.
+The owner freezes code/test/evidence plus RemPlan-2 together; all unrelated work
+is excluded. Exact source tuple is supplied in both continued reviewer prompts.

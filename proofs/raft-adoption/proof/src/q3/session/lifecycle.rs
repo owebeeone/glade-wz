@@ -84,7 +84,10 @@ impl Q3Session {
             .configuration
             .voters
             .iter()
+            .chain(&newest.machine.configuration.voters_outgoing)
             .copied()
+            .collect::<BTreeSet<_>>()
+            .into_iter()
             .filter(|id| {
                 !self.disconnected.contains(id)
                     && self.nodes.get(id).is_some_and(|node| {
