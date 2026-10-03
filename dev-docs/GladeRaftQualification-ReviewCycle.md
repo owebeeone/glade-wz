@@ -411,3 +411,33 @@ is now authorized for TDD; all five findings remain open. The contract/allocatio
 round counts are separate. Q3 implementation and Q4/production activation remain
 pending. This review filing does not change the reviewed algorithms, member
 sources, unrelated work, push status or desktop runtime.
+
+## Q3 implementation remediation 1 — original closures, renewal NO-GO
+
+Corrected source root `ce0876423e921cdd066106af9190ae7c6ec5d781`, unchanged
+member/Gyld tuple above. Owner independently verified 120 default PASS, two
+explicit Q2 cases, both oracle self-tests, all five actual SIGKILL cuts and strict
+gates; 49 owned Rust files, zero exceptions. The original nineteen remain enabled.
+The source/evidence/merged patch was committed before reviews.
+
+Originating [Code](GladeRaftQ3ImplementationClosure-ReviewCode-1.md) and
+[State](GladeRaftQ3ImplementationClosure-ReviewState-1.md) both GO, independently
+closing all five original findings. Fresh full-scope peer-blind
+[Code](GladeRaftQ3Implementation-ReviewCode-1.md) NO-GO /
+[State](GladeRaftQ3Implementation-ReviewState-1.md) GO. All reports are filed
+verbatim from the reviewers' completed Markdown; no current peer/closure
+reports were shared during review. Canonical prompts use the same source tuple:
+[Code](GladeRaftQ3Implementation-PromptCode-1.md),
+[State](GladeRaftQ3Implementation-PromptState-1.md), originating
+[Code](GladeRaftQ3ImplementationClosure-PromptCode-1.md)/
+[State](GladeRaftQ3ImplementationClosure-PromptState-1.md).
+
+New renewal Code P2-1 identifies outgoing-only voter exclusion from manual
+campaign enumeration. Legal incoming[4]/outgoing[1,2,3], a partitioned unknown
+entry on the outgoing suffix, and physical reopen permanently campaign stale4.
+The reviewer classifies this as a bounded implementation defect under the same
+manual recovery strategy, not a new architectural root cause. State did not
+independently converge on it; no production escape occurred.
+[Remediation 2](GladeRaftQ3Implementation-RemPlan-2.md) accepts the counterexample
+and authorizes one TDD correction with continued independent re-verdicts.
+Q3 acceptance and Q4 production gates remain open.
