@@ -488,3 +488,25 @@ canonical authority/transport, deployment/failure domains, automatic-election
 compliance and complete legacy writer/effect exclusion. Production crate/profile
 selection and activation remain open; no power-loss or physical-reclamation
 claim follows. No push or desktop rebuild is included in this landing.
+
+## Q4-A production integration preparation
+
+Authorized 2026-10-03: proceed with Glade production integration of **Raft**.
+Plan: [Q4](GladeRaftProductionIntegrationPlan.md); first internal store-lifecycle
+object: [legacy Store seal](GladeRaftLegacyStoreSealContract.md). Source audits
+are fact maps, not verdicts. GWZ local clone `raft-production` preserves all
+inherited dirt, which is outside this object. No production activation, push,
+start-script change or desk rebuild is included.
+
+Contract tuple root `6a35216a6d97aa22e9d53b54256f7395c306da3c`, Glade
+`19a269dd12b5f109d03e2361e3af4108d4b1fcbc`, discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35` received peer-blind
+[Consistency GO](GladeRaftQ4ASealContract-ReviewConsistency.md)/
+[Safety GO](GladeRaftQ4ASealContract-ReviewSafety.md).
+No P0/P1/P2; Consistency P3-1 shared non-Unix recognition coverage is being
+corrected before implementation. This accepts the internal contract and compiling
+behavioral RED only. Code/State implementation acceptance is still open.
+Exact evidence and honest fixture-interference results are in
+[Q4-A evidence](GladeRaftQ4ASealEvidence.md). No architectural remediation round
+has been consumed. Production freeze/activation will need their own reviews.
