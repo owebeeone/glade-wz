@@ -395,3 +395,21 @@ explicit exception. The cap is not reset; any architectural root in the third
 round MUST stop. State P2-1 remains open, Code GO is prior evidence only until
 both axes attest the final same tuple. Kernel remains refusing; no push or
 activation accepted.
+
+#### Confined correction 3 settled for final verification
+
+Glade `52fcbe5043d8178a917677d6c9461d771d3543e4`; other members unchanged.
+The [third evidence](GladeIndependentCrdtStorageAttemptContract-Remediation3-Evidence.md)
+records the original duplicate-revision attack and adjacent missing-history,
+immutable start-window and negative-revision counterexamples failing before
+the existing validator was corrected. API34 and core fixture/source12 pass;
+all43 domain and exact ten text rows remain compiling assertion RED, canonical
+control passes. Focused compilation/fmt/clippy, positive architecture and source
+checks pass. Shared API/kernel and all other source paths remain byte-identical.
+
+No new field, architecture, ownership abstraction or mutation boundary is added.
+State-3 P2-1 remains open pending originating retrace; Code must confirm prior
+GO/invariants on the same final tuple. Architectural count remains one and the
+third-round stop rule remains controlling. Only generated prompts and verbatim
+reports may be added during verification. No successful admission or live change
+is accepted yet.

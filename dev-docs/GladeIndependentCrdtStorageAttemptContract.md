@@ -252,6 +252,16 @@ attempts; multiple historical terminals remain legal. Unresolved bindings MUST
 match the retained current revision, and queued/current instance unions MUST fit
 the declared instance capacity. Recovery MUST reject inconsistent images rather
 than reconstructing identities or deleting history.
+Distinct Committed attempts for one instance MUST have distinct resulting
+revisions. Under this existing full-history/no-GC grammar, retained positive
+committed revisions MUST cover every revision from1 through the current head;
+missing head, gap or unbacked positive head makes recovery inconsistent. Other
+instances have independent revision spaces. NonCommit MUST retain its binding's
+unchanged expected revision; repeated NonCommit at one revision remains legal.
+Started/Committed cuts MUST satisfy their immutable interval and all original
+permit windows, as at Begin; restoration MUST NOT reauthorize against current
+policy. These checks neither introduce an import/base-revision exception nor
+establish an external rollback floor.
 Reserved/Started restore as Pending, not absent or auto-committed. Missing
 ownership/floor/format/ledger evidence makes writable recovery unavailable.
 
@@ -430,9 +440,15 @@ records the first merged correction and its shared-Recovery review requirement.
 Fresh full reviews returned six nonarchitectural finding IDs representing four
 defects. [Remediation 2 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation2-Evidence.md)
 records their merged validation/fixture correction, with shared API, architecture,
-assembly seams and mutation boundaries unchanged. All six current finding IDs
-remain OPEN until the current full reviewers independently re-verdict their
-counterexamples and corrected range at the settled tuple. The retained
+assembly seams and mutation boundaries unchanged. Those six finding IDs
+were independently closed by Code-3/State-3. Code-3 returned GO; State-3 found
+one additional nonarchitectural historical-revision validator defect.
+[Remediation 3 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation3-Evidence.md)
+records the confined existing-validator correction and adjacent phase-payload
+checks. State-3 P2-1 remains OPEN for originating verification; Code MUST confirm
+the final tuple and unchanged invariants before aggregate GO/GO. This permitted
+third nonarchitectural correction does not reset the cap: any architectural root
+found in this round MUST stop the lane for owner decision. The retained
 architectural root count remains one; this document does not self-close findings.
 The implementation directive continues after
 those gates; this tranche deliberately remains a refusing kernel checkpoint.
