@@ -15,10 +15,10 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: 90dc1a60981185fa26ae5bfafbbb5377c12a413b
+    commit: 19a269dd12b5f109d03e2361e3af4108d4b1fcbc
     branch: main
     detached: false
-    dirty: false
+    dirty: true
     materialized: true
   mem_glade_chat:
     path: glade-chat
