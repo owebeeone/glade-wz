@@ -52,6 +52,15 @@ ruling does not constitute completed production failure-domain evidence.
 
 ## Proposed first production profile — for review and owner selection
 
+The owner's subsequent cardinality requirement is one, two, three or more nodes,
+including initially disconnected participants and unstable links. The next
+design object is [authenticated bootstrap and safe growth](GladeRaftBootstrapGrowthDesign.md),
+recorded under GDL-053. Three complete-data voters below are a resilience
+recommendation, not a minimum installation size. Peer discovery does not change
+committed voter membership. The new design must reconcile singleton genesis,
+learner admission, promotion and configuration recovery before production
+profile selection; it is not implemented or ratified here.
+
 Recommendation: one authenticated known group with **three complete data voters**,
 majority durable log/application acceptance, APFS process-crash guarantees first,
 one complete canonical `value` binding (appearance is the affected-consumer case).

@@ -70,6 +70,17 @@ G* design work.
 
 ## Notes
 
+GDL-053 — Owner clarification and design direction, 2026-10-03: Glade MUST
+support deployment with **one, two, three or more nodes**, including initially
+disconnected participants that later discover each other and unstable networks.
+Proceed with [authenticated bootstrap and safe growth design](GladeRaftBootstrapGrowthDesign.md).
+Three complete-data voters remain a proposed resilience target, not a minimum
+installation size. This authorizes design and review, not a membership policy,
+production profile, wire/API freeze or activation. Bootstrap identity/custody,
+learner admission and voter promotion, exact configuration recovery, independent
+first starts and lost-quorum behavior require explicit contracts. Discovery MUST
+NOT silently become group creation, membership or replacement authority.
+
 GDL-052 — Owner direction, 2026-10-03: proceed with the recommended **Raft
 adoption contract and bounded executable qualification** after the mechanism
 comparison. [Contract](GladeRaftAdoptionContract.md),

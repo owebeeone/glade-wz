@@ -6,6 +6,12 @@ Proposal reviewed at root `4702e283e1adac5863c5d542e57a9ceea9454541`, Glade
 [Consistency](GladeRaftProductionProfileDecisions-ReviewConsistency.md)/
 [Safety](GladeRaftProductionProfileDecisions-ReviewSafety.md) GO/GO, no findings.
 This accepts fitness for owner selection, not the recommended choices themselves.
+Owner clarification after that review: Glade must support one, two, three or
+more nodes, including disconnected first starts and unstable connectivity.
+[Bootstrap and growth design](GladeRaftBootstrapGrowthDesign.md) addresses that
+requirement. Three voters below describe the proposed resilience target, not a
+minimum installation size. The original review applies to the pinned proposal;
+the new design and its exact profile implications require their own review.
 This packet makes the remaining decisions in [Q4](GladeRaftProductionIntegrationPlan.md)
 concrete. Raft is already the algorithm direction. Carrier selection follows the
 separate comparison; these recommendations do not select a crate.
