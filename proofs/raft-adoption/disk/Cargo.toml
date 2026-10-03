@@ -6,6 +6,7 @@ rust-version.workspace = true
 publish.workspace = true
 
 [dependencies]
+glade-raft-q3-api = { path = "../q3-api" }
 glade-raft-durability-api = { path = "../durability-api" }
 
 [lints]

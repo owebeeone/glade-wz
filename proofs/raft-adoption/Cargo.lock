@@ -103,6 +103,7 @@ name = "glade-raft-disk"
 version = "0.0.0"
 dependencies = [
  "glade-raft-durability-api",
+ "glade-raft-q3-api",
 ]
 
 [[package]]
@@ -121,6 +122,8 @@ dependencies = [
 name = "glade-raft-q3-spec"
 version = "0.0.0"
 dependencies = [
+ "glade-raft-adoption-proof",
+ "glade-raft-disk",
  "glade-raft-q3-api",
 ]
 

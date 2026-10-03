@@ -301,3 +301,18 @@ must pass before dual Code/State Q3 implementation acceptance. Q4 and production
 activation remain open. Final filing changes documentation/status only; accepted
 source remains pinned above. No push or desktop rebuild is included. Unrelated
 member, handoff, research and scratch work is preserved.
+
+## Q3 implementation allocation gate — preparation
+
+The owner directed implementation after Q3 contract acceptance. The
+[allocation supplement](GladeRaftQ3ImplementationAllocation.md) declares the
+exact new provider normal/development edges and injected create/open lifecycle,
+with compiling refusing providers and actual consumer RED cases. No algorithms
+are included at this checkpoint. Library-boundary policy and BuildEntry require
+fresh Consistency/Safety review before implementing these additions. The
+accepted Q3 semantic contract remains the controller; no production integration,
+new GWZ member, third-party dependency, process-global exception, push or desktop
+rebuild is included. The baseline is root
+`e1c260f6cf992f5d890c2ca454e2323b0d8e78b1`, unchanged member/Gyld pins. Canonical
+prompts bind the new committed tuple; reports are filed verbatim. Q3a/Q3b actual
+implementation remains pending allocation acceptance and its TDD/evidence gates.

@@ -8,5 +8,9 @@ publish.workspace = true
 [dependencies]
 glade-raft-q3-api = { path = "../q3-api" }
 
+[dev-dependencies]
+glade-raft-disk = { path = "../disk" }
+glade-raft-adoption-proof = { path = "../proof" }
+
 [lints]
 workspace = true

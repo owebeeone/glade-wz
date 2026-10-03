@@ -16,7 +16,7 @@
     },
     "glade-raft-adoption-proof": {
       "role": "harness",
-      "reason": "Proposed Q2 re-review: controlled experiment outside production dependency paths. Host injects the std-only durability contract; disk composition occurs only in dev targets. Memory qualification remains separate from local I/O/restart faults. No production service, network adapter or private codec reuse is authorized. DRAFT Q3 remediation proposes a dev-only q3-api edge solely to test shared numeric Create fixtures against the unchanged existing committed application. This new edge requires contract review; it does not implement or qualify Q3.",
+      "reason": "DRAFT Q3 implementation allocation: existing controlled actual-Raft harness gains a private Q3 QualificationSession provider consuming q3-api and its injected StoreLifecycle; concrete disk remains dev-only composition. Q1a/Q2 remain unchanged and separately verified. New normal edge and provider require allocation review before algorithms.",
       "dependencies": [
         "normal:glade-raft-adoption-api",
         "normal:raft",
@@ -24,12 +24,19 @@
         "normal:slog",
         "normal:glade-raft-durability-api",
         "dev:glade-raft-disk",
-        "dev:glade-raft-q3-api"
+        "normal:glade-raft-q3-api"
       ],
       "conformance_tests": [
         "qualification",
         "recovery",
         "q3_fixture_compatibility"
+      ],
+      "implements": [
+        {
+          "package": "glade-raft-q3-api",
+          "trait": "QualificationSession",
+          "type": "q3::Q3Session"
+        }
       ]
     },
     "glade-raft-durability-api": {
@@ -48,22 +55,35 @@
     "glade-raft-disk": {
       "role": "implementation",
       "dependencies": [
-        "normal:glade-raft-durability-api"
+        "normal:glade-raft-durability-api",
+        "normal:glade-raft-q3-api"
       ],
       "implements": [
         {
           "package": "glade-raft-durability-api",
           "trait": "DurableStore",
           "type": "DiskStore"
+        },
+        {
+          "package": "glade-raft-q3-api",
+          "trait": "CheckpointStore",
+          "type": "v2::V2DiskStore"
+        },
+        {
+          "package": "glade-raft-q3-api",
+          "trait": "StoreLifecycle",
+          "type": "v2::V2StoreFactory"
         }
       ],
       "conformance_tests": [
-        "conformance"
-      ]
+        "conformance",
+        "v2_lifecycle"
+      ],
+      "reason": "DRAFT Q3 implementation allocation: separate V2 modules implement coherent checkpoint publication and injected owned-path lifecycle; Q2 format/contract unchanged. New normal q3-api edge/providers require review before algorithms."
     },
     "glade-raft-q3-api": {
       "role": "contract",
-      "reason": "DRAFT Q3: private coherent-checkpoint and qualification-session boundaries, no implementation/production adoption. Existing application/durable-entry contracts supply smallest relevant values. Review required before implementing.",
+      "reason": "Accepted private Q3 store/session contract plus DRAFT smallest injected store create/open lifecycle supplement; no implementation types or production adoption. Supplement requires renewed contract review.",
       "dependencies": [
         "normal:glade-raft-adoption-api",
         "normal:glade-raft-durability-api"
@@ -85,6 +105,10 @@
           "install",
           "applied_entry",
           "replay"
+        ],
+        "StoreLifecycle": [
+          "create",
+          "open"
         ]
       },
       "conformance_tests": [
@@ -93,9 +117,11 @@
     },
     "glade-raft-q3-spec": {
       "role": "harness",
-      "reason": "DRAFT Q3: intentionally refusing review scaffold plus bounded deterministic reusable consumer specifications, isolated from production and concrete carrier/I/O dependencies. This role and edge are proposed for contract review; no implementation is qualified.",
+      "reason": "DRAFT Q3 implementation allocation: reusable normal consumer still depends only on q3-api; integration-test composition selects actual carrier and filesystem providers through dev edges. All nineteen default specifications remain selected and deliberately RED until providers are qualified. No production dependency path.",
       "dependencies": [
-        "normal:glade-raft-q3-api"
+        "normal:glade-raft-q3-api",
+        "dev:glade-raft-adoption-proof",
+        "dev:glade-raft-disk"
       ],
       "conformance_tests": [
         "configuration_snapshot"

@@ -14,6 +14,7 @@
 mod application;
 mod cluster;
 mod codec;
+pub mod q3;
 
 pub use application::Application;
 pub use cluster::{Cluster, Proposal};

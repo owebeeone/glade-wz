@@ -193,6 +193,26 @@ pub trait CheckpointStore {
     fn publish(&mut self, expected_revision: u64, image: Image) -> Result<State, Error>;
 }
 
+/// Injected local store lifecycle. The implementation selects paths from its
+/// caller-supplied owned root; no path, filesystem or carrier type leaks here.
+/// Creation is structural only. The HOST MUST validate initial fixture genesis
+/// authority or an existing-group committed learner join before calling create.
+/// Missing/empty files never confer group creation or replacement authority.
+/// open MUST NOT create or repair a missing/corrupt store; its recovery floor
+/// MUST come from independent trusted input rather than the same journal.
+pub trait StoreLifecycle {
+    fn create(
+        &mut self,
+        instance: Instance,
+        initial: Image,
+    ) -> Result<Box<dyn CheckpointStore>, Error>;
+    fn open(
+        &mut self,
+        instance: Instance,
+        minimum_revision: Option<u64>,
+    ) -> Result<Box<dyn CheckpointStore>, Error>;
+}
+
 /// Original result for one applied index. Missing history is Error::Missing,
 /// never Noop. Configuration results include accepted AND refused receipts.
 #[derive(Clone, Debug, PartialEq, Eq)]

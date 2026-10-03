@@ -61,3 +61,14 @@ fn create_fixture_has_zero_preconditions_and_complete_selected_home() {
         }
     );
 }
+
+#[test]
+fn injected_lifecycle_consumer_compiles_without_paths_or_carrier() {
+    use glade_raft_q3_api::{Image, Instance, StoreLifecycle};
+    fn consumer(factory: &mut dyn StoreLifecycle, instance: Instance, image: Image) {
+        let _created: Result<Box<dyn CheckpointStore>, Error> =
+            factory.create(instance.clone(), image);
+        let _opened: Result<Box<dyn CheckpointStore>, Error> = factory.open(instance, Some(0));
+    }
+    let _consumer: fn(&mut dyn StoreLifecycle, Instance, Image) = consumer;
+}

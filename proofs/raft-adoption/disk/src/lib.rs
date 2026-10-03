@@ -2,6 +2,7 @@
 //! This is not a certified power-loss or independent physical quorum guarantee.
 mod codec;
 mod journal;
+pub mod v2;
 mod validation;
 
 use glade_raft_durability_api::{Binding, DurableImage, StoreError, StoredState};
