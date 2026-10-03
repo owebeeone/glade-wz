@@ -124,6 +124,14 @@ prepare remains Pending. Another plan for X cannot overlap that uncertainty;
 Y remains logically independent. Scalar or finite history exhaustion refuses
 before allocation; counters never wrap.
 
+For a new plan, Records MUST compare expected revision with its actual retained
+application revision before exposing queued preparation or Reserved. An ahead or
+stale expectation MUST return nonterminal Refused without creating an attempt,
+terminal outcome or application revision. Exact existing-plan deduplication and
+recovery take precedence over this new-plan check; refusal MUST preserve existing
+unresolved ownership and reservations. A rejected invocation can still consume
+its bounded issuance entry.
+
 Preparation/attempt lifetime continues independently of invocation retirement.
 All requests bind the owner and invocation namespace, operation and full original
 binding; a resolve reply echoes that exact request and its terminal payload binds
@@ -238,6 +246,12 @@ and retain enough consumption for all preparation/attempt history. A high-water
 number MUST NOT be converted into a cardinality or used to require dense issuance.
 Restored binding sizes, instance references and Started/terminal payloads MUST
 satisfy the same limits and complete binding rules as the live session.
+Complete AttemptIds MUST be unique across retained history. Each instance MUST
+have at most one unresolved owner across queued preparations and Reserved/Started
+attempts; multiple historical terminals remain legal. Unresolved bindings MUST
+match the retained current revision, and queued/current instance unions MUST fit
+the declared instance capacity. Recovery MUST reject inconsistent images rather
+than reconstructing identities or deleting history.
 Reserved/Started restore as Pending, not absent or auto-committed. Missing
 ownership/floor/format/ledger evidence makes writable recovery unavailable.
 
@@ -247,6 +261,11 @@ ownership must exclude old generations/submitted I/O, not just obtain a released
 lock. Rollback/clone/restored-copy qualification remains mandatory and cannot be
 inferred from copying a trusted fixture Recovery. That fixture restore validates
 bounded internal identities; it does not establish an external antirollback floor.
+Before granting a new owner, open MUST validate the complete retained ledger,
+bindings, issuance cardinality and critical reservations under proposed limits.
+Incompatible reductions MUST refuse before changing ownership or scalar floors,
+without dropping data or shrinking existing reservations. A compatible retry at
+the same proposed generation MUST remain possible and export restorable recovery.
 
 `Limits` finitely bounds instances, attempt history, invocation history, batch/
 receipt/window/name sizes and critical byte reservation. State carries the explicit
@@ -358,6 +377,11 @@ and issued Begin as well. Restoration moves invalidated live lookup requests int
 consumed full history. Secondary lookup entries alone MUST NOT authorize callbacks;
 terminal-field mutation tests begin from fully issued requests so rejection is
 attributable to the intended mismatch.
+The prior-cut delayed recovery fixture also registers Inspect40 through this
+helper before advancing the issuance floor. Its original ExactRetry receipt
+assertion remains, paired with the otherwise identical unissued callback's
+unchanged state/reservation and CallbackMismatch obligation. This pair adds one
+compiling kernel RED test to the existing42; it does not implement callback handling.
 
 The real Rust text trace still follows public `step` results, using the same
 actual port fixture for emitted operations. No private admission implementation
@@ -402,8 +426,13 @@ No disk/restart/crypto, stronger storage class, production keys/quotas/time/loss
 values, enrollment, migration, launcher, automatic duplex activation or push is
 qualified here. Owner deployment inputs and new-store/existing-store transitions
 remain decisions at their gates. [Remediation 1 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation1-Evidence.md)
-records one merged correction against the filed Code/State findings. All finding
-IDs remain OPEN until their originating reviewers verify closure; because shared
-Recovery changes, fresh complete peer-blind Code/State review is required too.
+records the first merged correction and its shared-Recovery review requirement.
+Fresh full reviews returned six nonarchitectural finding IDs representing four
+defects. [Remediation 2 evidence](GladeIndependentCrdtStorageAttemptContract-Remediation2-Evidence.md)
+records their merged validation/fixture correction, with shared API, architecture,
+assembly seams and mutation boundaries unchanged. All six current finding IDs
+remain OPEN until the current full reviewers independently re-verdict their
+counterexamples and corrected range at the settled tuple. The retained
+architectural root count remains one; this document does not self-close findings.
 The implementation directive continues after
 those gates; this tranche deliberately remains a refusing kernel checkpoint.

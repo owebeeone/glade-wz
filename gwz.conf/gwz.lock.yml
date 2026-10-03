@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: 346d963f09089a0636a01fac8a257f067908147d
+    commit: c6c4239beecb129aa0585fe74006cc287dff3b87
     branch: main
     detached: false
     dirty: false

@@ -348,3 +348,26 @@ counterexamples and inspect the corrected range. New fresh axes are required if
 the patch instead changes the skill's listed architectural/interface boundaries.
 This is remediation round2; the review cap is retained, not reset. All current
 full-review blockers remain open. No push, implementation or activation acceptance.
+
+#### Remediation 2 correction settled for originating full re-verdicts
+
+Glade `c6c4239beecb129aa0585fe74006cc287dff3b87`; other member pins remain
+unchanged. This root's exact review SHA will be given to both originating full
+reviewers after commitment. The
+[second evidence](GladeIndependentCrdtStorageAttemptContract-Remediation2-Evidence.md)
+records the four-root test-first correction, extra restored revision/instance
+edge failures and all affected results. Shared API and refusing kernel are
+byte-identical; assembly/interface/architecture and application mutation boundaries
+remain unchanged. Source changes are four development test/provider files only.
+
+API29 and core fixture/representation/source12 pass. All previous42 domain tests
+plus one historical issued/unissued pair compile and remain assertion RED;
+exact ten text rows remain RED with the canonical control passing. Compile,
+fmt/clippy, positive architecture, source/process/JS and whitespace checks pass.
+Unchanged negative tooling/selection and external Gyld were not redundantly rerun.
+No classification, allowlist or budget adjustment is made.
+
+All six current P2 IDs remain open pending independent Code/State re-verdicts on
+the exact same tuple. This is remediation round2, with one architectural root
+retained. No successful kernel work, push or activation is accepted. During
+review only generated prompts and verbatim report outputs may be added.
