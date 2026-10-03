@@ -114,7 +114,14 @@ impl Q3Session {
                 let snapshot = message.get_msg_type() == MessageType::MsgSnapshot;
                 let delivered = !self.disconnected.contains(&from)
                     && !self.disconnected.contains(&to)
-                    && self.nodes.contains_key(&to);
+                    && self
+                        .nodes
+                        .get(&from)
+                        .is_none_or(|source| source.failure.is_none())
+                    && self
+                        .nodes
+                        .get(&to)
+                        .is_some_and(|target| target.failure.is_none());
                 if delivered {
                     if snapshot {
                         let metadata = message.get_snapshot().get_metadata();
@@ -162,7 +169,10 @@ impl Q3Session {
                         }
                     }
                 }
-                if snapshot && let Some(source) = self.nodes.get_mut(&from) {
+                if snapshot
+                    && let Some(source) = self.nodes.get_mut(&from)
+                    && source.failure.is_none()
+                {
                     source.raft.report_snapshot(
                         to,
                         if delivered {
@@ -338,3 +348,13 @@ mod light_ready_tests;
 mod recovery_tests;
 
 mod lifecycle;
+
+mod install_fault_tests;
+
+mod restart_freshness_tests;
+
+mod future_install_tests;
+
+mod foreign_checkpoint_tests;
+
+mod configuration_admission_tests;

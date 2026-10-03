@@ -85,13 +85,29 @@ impl Q3Session {
             .voters
             .iter()
             .copied()
-            .find(|id| {
-                self.nodes.get(id).is_some_and(|node| {
-                    node.failure.is_none()
-                        && (node.machine.configuration.voters.contains(id)
-                            || node.machine.configuration.voters_outgoing.contains(id))
-                        && node.state.image.applied == node.machine.applied()
-                })
+            .filter(|id| {
+                !self.disconnected.contains(id)
+                    && self.nodes.get(id).is_some_and(|node| {
+                        node.failure.is_none()
+                            && (node.machine.configuration.voters.contains(id)
+                                || node.machine.configuration.voters_outgoing.contains(id))
+                            && node.state.image.applied == node.machine.applied()
+                    })
+            })
+            .max_by_key(|id| {
+                let image = &self.nodes[id].state.image;
+                let (term, index) = image.suffix.last().map_or_else(
+                    || {
+                        image
+                            .checkpoint
+                            .as_ref()
+                            .map_or((0, 0), |cp| (cp.term, cp.index))
+                    },
+                    |entry| (entry.term, entry.index),
+                );
+                // Actual durable Raft-log freshness determines voting legality;
+                // lowest eligible ID breaks only an equal-log tie.
+                (term, index, std::cmp::Reverse(*id))
             })
             .ok_or(Error::NoQuorum)?;
         let node = self.nodes.get_mut(&candidate).ok_or(Error::Missing)?;

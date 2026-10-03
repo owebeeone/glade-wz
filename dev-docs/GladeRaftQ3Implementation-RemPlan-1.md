@@ -1,6 +1,6 @@
 # Q3 implementation remediation 1
 
-Date: 2026-10-03. Status: **planned, all findings open; Q3 acceptance pending**.
+Date: 2026-10-03. Status: **one merged correction implemented; all findings open pending originating closure and fresh Code/State renewal; Q3 acceptance pending**.
 Reviewed implementation source: `b61197602e5594bdf89770bda069ce7d30fdb222`.
 Unchanged Glade `90dc1a60981185fa26ae5bfafbbb5377c12a413b`, Glade-discover
 `52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
@@ -51,3 +51,35 @@ architecture, mutation/compatibility/platform boundary or call graph requires
 fresh numbered reviewers under review-loop §5. Implementation remains pending
 until Code/State both GO on the same corrected tuple. The two-round cap applies
 to this object; reviewers classify any new architectural root causes.
+
+## Corrected patch and renewal classification
+
+The patch centralizes stopped-voter handling in `Voter::publish`, including a
+store error or malformed successful response after actual publication. The
+owner's additional actual-V2-backed malformed-return regression observed RED:
+direct installation returned Quarantined but still served the original memory
+receipt. Returned binding/revision/image corruption and a separately labelled
+synthetic cached-revision overflow now preserve the error and stop participation
+until physical reopen. The physical V2 revision never wraps in that witness.
+Queued source traffic and snapshot-result callbacks also exclude stopped voters.
+These changes alter shared failure/mutation paths and the reviewed call graph;
+review-loop §5 therefore requires fresh numbered full-scope Code/State reviewers
+in addition to focused verification by the original finders.
+
+Actual durable-log freshness and availability now select the manual recovery
+candidate. Direct checkpoint installation validates overlapping committed
+original history before selecting recipients, and explicitly refuses an ahead
+cut with no possible local publication. Coherent foreign-envelope and correctly
+versioned nested-joint/nonjoint-leave cases add the missing witnesses without
+claiming an implementation RED where the original guards already passed.
+
+Exact owning cases, RED observations and final commands/counts are recorded in
+[implementation evidence](GladeRaftQ3ImplementationEvidence.md). All corrections
+remain one patch under the accepted interfaces/roles/edges and fault/recovery
+obligations. This classification adds no public contract amendment or production
+activation. No finding is self-closed by the drafter or owner.
+
+Owner pre-freeze independent matrix: 120 default PASS, two explicit Q2 PASS,
+both oracle self-tests PASS, two Q2 plus three Q3 actual SIGKILL cuts PASS,
+strict gates PASS, 49 owned Rust sources and zero exceptions. Findings remain
+open. The exact ensuing commit is supplied in all four canonical review prompts.

@@ -197,7 +197,12 @@ impl glade_raft_q3_api::QualificationSession for crate::q3::Q3Session {
         self.serving()?.machine.checkpoint()
     }
     fn install(&mut self, checkpoint: Checkpoint) -> Result<(), Error> {
-        Machine::restore(&checkpoint)?;
+        let candidate = Machine::restore(&checkpoint)?;
+        // Self-consistency does not prove agreement with acknowledged history.
+        // Validate every common committed prefix before filtering recipients.
+        for node in self.nodes.values() {
+            recovery::snapshot_agrees(&node.state, &node.machine, &candidate)?;
+        }
         let targets: Vec<_> = self
             .nodes
             .iter()
@@ -206,6 +211,11 @@ impl glade_raft_q3_api::QualificationSession for crate::q3::Q3Session {
             })
             .map(|(id, _)| *id)
             .collect();
+        if targets.is_empty() {
+            // This port only compacts a locally applied prefix; an ahead cut
+            // needs actual protocol restoration, not a successful no-op.
+            return Err(Error::InvalidImage);
+        }
         for id in targets {
             self.compact_node(id, checkpoint.clone())?;
         }

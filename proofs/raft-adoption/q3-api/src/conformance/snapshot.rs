@@ -112,6 +112,8 @@ pub fn snapshot_policy_retirement(session: &mut dyn QualificationSession) {
 pub fn snapshot_mismatch(session: &mut dyn QualificationSession) {
     accepted_create(session);
     let original = session.checkpoint().expect("checkpoint");
+    // Outer-only mismatch: this retained envelope still binds group70. The
+    // actual host separately tests a coherent foreign envelope/history fixture.
     let mut foreign = original.clone();
     foreign.binding.group = 71;
     assert_eq!(session.install(foreign), Err(Error::WrongBinding));

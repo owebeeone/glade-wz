@@ -25,18 +25,30 @@ impl Voter {
         if image == self.state.image {
             return Ok(());
         }
-        let next = self.store.publish(self.state.revision, image.clone())?;
-        if next.instance != self.state.instance
-            || next.revision
-                != self
-                    .state
-                    .revision
-                    .checked_add(1)
-                    .ok_or(Error::CapacityExhausted)?
-            || next.image != image
-        {
-            return Err(Error::Quarantined);
-        }
+        let published = self.store.publish(self.state.revision, image.clone());
+        let validated = published.and_then(|next| {
+            if next.instance != self.state.instance
+                || next.revision
+                    != self
+                        .state
+                        .revision
+                        .checked_add(1)
+                        .ok_or(Error::CapacityExhausted)?
+                || next.image != image
+            {
+                return Err(Error::Quarantined);
+            }
+            Ok(next)
+        });
+        let next = match validated {
+            Ok(next) => next,
+            Err(error) => {
+                // Publication errors and malformed success both leave this
+                // instance stopped until physical reopen validates actual bytes.
+                self.failure = Some(error.clone());
+                return Err(error);
+            }
+        };
         self.state = next;
         Ok(())
     }
