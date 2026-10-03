@@ -14,3 +14,8 @@ The document review excludes all in-progress uncommitted Q3 algorithms and unrel
 ## Observed carrier counterexample evidence
 
 `proof/tests/q3_seeded_snapshot.rs` first asserted that the receiver already seeded at S=5 would produce an incoming snapshot Ready at S; this compiled and failed behaviorally. The corrected source explicitly asserts absence for that seeded receiver and presence of a genuine snapshot Ready for the original-genesis nonserving receiver; 1 PASS. Exact command: `PROTOC=/Users/owebeeone/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/protobuf-build-0.14.1/bin/protoc-osx-x86_64 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test q3_seeded_snapshot`. Owner independently reran 1 PASS. This uses actual RawNode/MemStorage/Snapshot and explicitly labelled carrier-only opaque data; it establishes no application validation, authorization or physical durability. The full host tests remain mandatory. No learner algorithm change has been made while the clarification awaits review.
+
+
+## Independent closure
+
+Corrected supplement at root `d4589feb02ad86b92f58686da35c8a216c370c44`, unchanged member/Gyld pins, received fresh Consistency/Safety GO with zero additional findings. Both reviewers independently traced the original source counterexample and classify it as one bounded allocation/consumer satisfiability defect; no additional architectural root cause. One allocation remediation round. This closes the declaration conflict only, not learner algorithms or any implementation matrix row. See the verbatim bootstrap reviews and final qualification-ledger disposition.

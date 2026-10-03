@@ -361,3 +361,27 @@ corresponding learner algorithm. All in-progress uncommitted Q3 implementation
 is outside this document-review object and uses no unreviewed learner rule.
 This is allocation remediation round 1, distinct from the accepted semantic
 contract's round count and the upcoming implementation Code/State object.
+
+
+### Q3 bootstrap clarification accepted-through
+
+Source root `d4589feb02ad86b92f58686da35c8a216c370c44`, unchanged member/Gyld tuple
+above. Fresh [Consistency](GladeRaftQ3Bootstrap-ReviewConsistency.md) and
+[Safety](GladeRaftQ3Bootstrap-ReviewSafety.md) both GO, zero open/new findings.
+Canonical generated prompts are [Consistency](GladeRaftQ3Bootstrap-PromptConsistency.md)
+and [Safety](GladeRaftQ3Bootstrap-PromptSafety.md); reports filed verbatim.
+Both independently trace the seeded-cut counterexample and amended boundary;
+only pinned document/carrier-test sources were reviewed. Uncommitted Q3 algorithms
+and the carrier-test initializer rewrite were excluded; no algorithm or actual
+physical/application catch-up acceptance is inferred. All four HEADs verified
+start/end. One allocation remediation round; semantic-contract and final
+implementation-object round counts remain separate. The contract satisfiability
+issue escaped the initial allocation review and was caught before implementing
+learner construction, with no production escape. No blind convergence on a new
+finding occurred in renewal.
+
+The learner rule is now authorized for TDD implementation. Actual incomplete
+follower vote/pre-vote suppression, restart admission/no-reset, complete real
+snapshot-plus-suffix catch-up and all other matrix rows remain mandatory before
+Code/State implementation acceptance. This filing touches documentation only,
+not the in-progress algorithms. Production profile/activation remains unchanged.
