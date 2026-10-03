@@ -599,3 +599,24 @@ Consistency/Safety gate are mandatory. A third new architectural root cause
 stops this object for owner redesign-or-accept; no further architectural patch
 is authorized. This accounting does not reopen accepted Q4-A or grant B0 runtime
 or production acceptance.
+
+## Q4-B0 remediation 2 closure and fresh full verdicts
+
+At root `b2df51042ae01afd1b42cb12e2de8b28f1106ec5`, unchanged member/Gyld
+pins, the originating [Consistency](GladeRaftB0-ClosureConsistency-2.md) and
+[Safety](GladeRaftB0-ClosureSafety-2.md) finders independently closed their
+local RPC termination counterexamples. Separate fresh full
+[Consistency](GladeRaftB0-ReviewConsistency-2.md) and
+[Safety](GladeRaftB0-ReviewSafety-2.md) rechecked the complete packet and returned
+NO-GO: B0-04 omitted selected polls for newly awakened/spawned work, and the
+fixture's numeric clock-domain encoding admitted collisions. They explicitly
+classified both as NON-ARCHITECTURAL implementation defects; no third new
+architectural root cause was identified. The 45 GREEN compiler/harness tests,
+20 ordinary provider RED cases and mutation evidence do not waive either defect.
+
+[Remediation 3](GladeRaftB0-RemPlan-3.md) merges both bounded corrections.
+Two architectural remediation rounds and one non-architectural correction round
+are recorded. The skill permits this third confined correction; any architectural
+root cause found during it triggers the stop cap. The fresh originating finders
+must verify closure at the same settled tuple. No B0 runtime/source adaptation,
+full comparison or production acceptance is claimed.
