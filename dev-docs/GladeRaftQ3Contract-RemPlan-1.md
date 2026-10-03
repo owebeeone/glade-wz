@@ -11,3 +11,8 @@ Date: 2026-10-03. Initial root: `fa1ff8b9fd0be53932300730ff925d0e41c76b1a`, unch
 The patch MUST remain contract/specification-only. No Q3 Raft/store/codec implementation, assertion inversion, hidden skip, dependency-role relaxation, global exception or production change is authorized. All behavioral specs MUST remain intentionally RED on NotQualified, with fixture compatibility checks independently GREEN after observed RED. Run focused compiler/fixture/spec tests, affected Q2 tests and structural/Clippy gates.
 
 P2-3 changes the shared replay interface and P2-2 clarifies its mutation rule. Under review-loop §5.5 the revised object therefore requires a fresh dual Consistency/Safety review, in addition to originating Safety verification of its original counterexamples. One remediation round is in progress; the object is not accepted until reviewers return GO on the corrected settled tuple. Record evidence and exact tuples in the qualification ledger. Preserve initial reports verbatim.
+
+
+## Verified disposition
+
+All three findings are closed for the contract/specification gate at corrected root `ed243db983c485e46a27aa870ec745de16a56d7a`, unchanged member/Gyld pins. [Originating Safety](GladeRaftQ3Contract-ReviewSafetyClosure-1.md) verifies its original counterexamples and closure specifications; fresh [Consistency](GladeRaftQ3Contract-ReviewConsistency-1.md) and [Safety](GladeRaftQ3Contract-ReviewSafety-1.md) both GO on the changed shared boundary. One remediation round; zero open findings. Actual algorithms remain unimplemented, 19 behavioral specs intentionally RED, and Q3 implementation acceptance remains a separate gate. Earlier pending language is historical, not the final verdict.

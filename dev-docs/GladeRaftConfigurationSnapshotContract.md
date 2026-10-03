@@ -1,6 +1,6 @@
 # Glade Raft Q3 configuration and snapshot contract
 
-Date: 2026-10-03. Status: **DRAFT remediation 1 for renewed Consistency/Safety review after three initial Safety P2 findings; compiler/fixture checks and deliberately RED specifications, no Q3 implementation or production ratification**.
+Date: 2026-10-03. Status: **contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after fresh Consistency/Safety GO and originating Safety closure; member/Gyld tuple and reports in [the review ledger](GladeRaftQualification-ReviewCycle.md). This accepts the private Q3 contract, reviewed roles/edges and compiling specifications only; no Q3 implementation or production ratification**.
 
 This refines Q3 in [the qualification plan](GladeRaftQualificationPlan.md), RA-004/005/006/009/010/011 in [the adoption contract](GladeRaftAdoptionContract.md), and retains the accepted [Q2 profile](GladeRaftPersistenceContract.md). The two gates are contract Consistency/Safety before implementation, then Code/State on actual carrier/disk/crash evidence. Q2's fixed-configuration journal MUST NOT be described as supporting membership or snapshots. [Q3 contract evidence](GladeRaftQ3ContractEvidence.md) distinguishes compiler success from intended behavioral failures.
 

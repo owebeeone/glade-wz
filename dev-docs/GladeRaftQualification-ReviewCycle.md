@@ -246,3 +246,58 @@ dual Consistency/Safety reviewers under review-loop §5.5. The originating Safet
 reviewer also verifies its original counterexamples. Remediation round 1 is in
 progress; Q3 contract remains NO-GO pending completed verdicts, and Q3
 implementation/Q4 remain open.
+
+
+## Q3 contract accepted-through
+
+| Gate | Source root | Verdict | Disposition |
+| --- | --- | --- | --- |
+| Q3 contract initial | `fa1ff8b9fd0be53932300730ff925d0e41c76b1a` | Consistency GO / Safety NO-GO | Three distinct Safety P2 findings: invalid Create fixtures, incomplete joint-exit home protection, application-only index replay. |
+| Q3 contract remediation 1 | `ed243db983c485e46a27aa870ec745de16a56d7a` | Fresh Consistency GO / fresh Safety GO / originating Safety closure GO | All original counterexamples independently verified; no new/open P0–P3 findings. |
+
+Accepted-through tuple: root `ed243db983c485e46a27aa870ec745de16a56d7a`;
+Glade `90dc1a60981185fa26ae5bfafbbb5377c12a413b`;
+Glade-discover `52ea2d118f45d9e7c3d9a789310dd5d669958851`;
+external Gyld `ca04499a360d910fbf8ee2540ed446facd051b35`.
+
+Fresh [Consistency](GladeRaftQ3Contract-ReviewConsistency-1.md) and
+[Safety](GladeRaftQ3Contract-ReviewSafety-1.md) reports and the
+[originating Safety closure](GladeRaftQ3Contract-ReviewSafetyClosure-1.md) are
+verbatim. Canonical generated prompts are archived as
+[Consistency](GladeRaftQ3Contract-PromptConsistency-1.md),
+[Safety](GladeRaftQ3Contract-PromptSafety-1.md) and
+[originating closure](GladeRaftQ3Contract-PromptSafetyClosure-1.md).
+Fresh contexts were required because typed replay changed a shared interface
+and the LeaveJoint rule changed the reviewed mutation boundary. Both initial
+reports and the merged plan were legitimate prior-round inputs; no reviewer
+read a peer current-round prompt/report. The originating reviewer separately
+verified its own counterexamples on the same frozen source.
+
+One merged contract remediation round used. No blind convergence. The three
+initial findings were discovered during contract review, before Q3 implementation.
+Zero production escapes observed; no Q3 production integration occurred.
+
+Acceptance is limited to the private Q3 contract/specifications, new contract and
+harness roles/normal edges, plus the explicitly justified dev-only
+proof-to-q3-api fixture compatibility edge. No existing role, normal dependency
+boundary, process-global exception or application/Q2 implementation was loosened.
+The checker verifies declared boundaries; independent reviews approve their
+allocation within this experiment. The accepted source includes no actual V2
+store, configuration driver or snapshot codec.
+
+Current evidence: API/compiler and exact fixture **2 PASS**, real unchanged
+Application compatibility **2 PASS**, **19 intentional NotQualified RED**;
+original selected Q2 packages **49 PASS**, with compatibility cases making **51**
+in that selected command, plus **2 explicit Q2 disk cases PASS**. Architecture,
+format, explicit source boundaries, process-global scan (21 files, zero
+exceptions) and all-target Clippy PASS. Existing Q2 SIGKILL evidence remains at
+its prior accepted tuple; it is not new Q3 evidence. Full evidence/commands and
+measurements are in [Q3 contract evidence](GladeRaftQ3ContractEvidence.md).
+
+Next: Q3a actual V2 lifecycle/fault and authorized uncompacted learner/joint host
+RED tests before implementation; Q3b full-history codec/semantic replay and actual
+snapshot/suffix/compaction tests. Both slices and every mandatory exit-matrix row
+must pass before dual Code/State Q3 implementation acceptance. Q4 and production
+activation remain open. Final filing changes documentation/status only; accepted
+source remains pinned above. No push or desktop rebuild is included. Unrelated
+member, handoff, research and scratch work is preserved.
