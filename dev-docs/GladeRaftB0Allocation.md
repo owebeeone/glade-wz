@@ -11,7 +11,7 @@ subtree plus this allocation. The controlling requirements remain
 [the library policy](LibraryBoundaryAndTestingPolicy.md) and
 [package architecture](GladePackageArchitecture.md). The
 [review-loop skill](</Users/owebeeone/.claude/skills/review-loop/SKILL.md>) controls
-independent review. This drafter has made no Git/GWZ operation. Existing documents,
+independent review. This drafter has made no Git/GWZ operation. Other existing documents,
 production code, `raft-adoption`, member repositories, and the separate production
 profile review object are outside this draft's writes.
 
@@ -233,10 +233,10 @@ renamed edges), and checks formatting. Its local no-conditional-attribute profil
 is stricter than needed: no cfg/cfg_attr attribute is present. These checks are
 local source/declared-edge checks, not macro expansion or third-party source audits.
 
-Current focused commands, exact logs and machine/toolchain/timings are in
+Initial checkpoint commands, exact logs and machine/toolchain/timings are in
 [the subtree README](../proofs/raft-carrier-comparison/README.md) and
 [`evidence/measurements.json`](../proofs/raft-carrier-comparison/evidence/measurements.json).
-Observed final checkpoint: **19 passing compiler/fixture/oracle tests; 20 intended
+Observed initial checkpoint: **19 passing compiler/fixture/oracle tests; 20 intended
 behavioral failures; zero ignored/filtered intended B0 cases**. Structural gate,
 source/global checks and all-four-package Clippy `--all-targets -- -D warnings`
 pass. Initial lint findings were mechanical nested-if warnings and were corrected;
@@ -254,7 +254,7 @@ all common behavioral consumers; actual engine/affected-adapter checks remain
 mandatory once those packages exist. B1 real-I/O and B2 snapshot/configuration
 matrices remain independent exits.
 
-Measurements concern this small std-only scaffold on macOS 26.6.2/arm64,
+Initial measurements concern this small std-only scaffold on macOS 26.6.2/arm64,
 Rust/Cargo 1.96.0. B0 execution alone took 0.014461 s; warm Cargo build-plus-RED
 0.054268 s; fresh target test build 0.871023 s; warm structural gate 1.451806 s;
 all-target Clippy 0.432752 s. These are observations, not accepted budgets,
@@ -262,3 +262,66 @@ engine timings, reliability rankings, license/security/notice audits, disk/proce
 crash evidence or production results. The source footprint, complete resolved
 adapted graph, licenses/security/platform inventory and measured adaptation/upgrade
 cost are still absent. No B0/B1/B2/B3 exit is closed.
+
+
+## Remediation 1: scoped correction, original closure pending
+
+The [merged plan](GladeRaftB0-RemPlan-1.md) maps all seven findings in
+[Consistency](GladeRaftB0-ReviewConsistency.md) and
+[Safety](GladeRaftB0-ReviewSafety.md) to four root causes. Three converged blindly.
+This one patch enforces the existing public lifecycle contract; **no public API,
+library role, dependency edge, engine, source adaptation or production code changed**.
+The architecture proposal only adds the two focused conformance targets. No
+allowlist entry or classification was relaxed. Original finders MUST independently
+verify their counterexamples on a settled revision; this drafter closes no finding.
+
+| Original IDs | Correction and executable coverage |
+| --- | --- |
+| Consistency P2-1; Safety P2-1 | B0-02/03 use a caller-owned access/state oracle. OpenRaft MUST retain constructor-only entropy access; post-constructor poison remains healthy with no attempted draw. A source/work-only once-sampling witness passes and an extra-runtime-draw mutant is rejected. raft-rs isolates the actual established leader and withholds inbound quorum activity to reach `tick_heartbeat`/MsgCheckQuorum -> `become_follower` -> `reset` (raft.rs 1095, 1126, 986), rather than assuming a follower pre-campaign resets. Both constructors retain exact entropy/clock/register failures. Runtime clock/task faults target actual owned advance/poll. Runtime Register failures are required only at an observed registration attempt; no attempt MUST mean unchanged footprint and healthy state. A once-registered persistent-future witness covers no artificial registrations; an attempted-registration/no-failure mutant is rejected. Unknown runtime errors and inventory failures are asserted, never ignored. |
+| Consistency P2-2; Safety P2-2 | One network-owned current-scope/stopped registry governs all separately obtained endpoints. Emit/request/take/ordinary controls/respond/Resolve/Timeout/Cancel validate live issuer and destination plus actual registered message/RPC ownership before sequence/queue/RPC mutation. Stop is shared and terminal; replacement invalidates old handles/tokens. Seven endpoint tests cover no-mutation refusals, no burned sequence, stopped peers/callers, stale RPC ownership and valid replacement participation; four existing correlation tests stay GREEN. |
+| Safety P2-3 | Selected future metadata remains scheduler-visible. A stop or cancellation during poll is reconciled before reinsertion, leaves terminal inventory and drops the selected future once. A saved wake cannot revive it. |
+| Consistency P2-3; Safety P2-4 | Cancel/stop detach owned futures and establish terminal state under the scheduler borrow; arbitrary future Drop runs after release. Register binds the owned future before its borrow so wrong-domain/sequence-overflow rejection releases it first. Reentrant parent/child cleanup, exact-once drops, rejected registrations and completed-future cleanup are executable. RPC mutation/state settlement also releases both borrows before saved wake; existing RPC tests cover this scoped refactor. |
+
+[`rem1-red.log`](../proofs/raft-carrier-comparison/evidence/rem1-red.log) records
+**12 compiling behavioral failures**, zero passes/ignored/filtered, before the
+four corrections. The separate
+[`rem1-red-overflow.log`](../proofs/raft-carrier-comparison/evidence/rem1-red-overflow.log)
+adds one unique compiling overflow/Drop regression before its correction (the
+three source tests repeat there). Thus **13 distinct new regressions observed RED**.
+The first authoring compile error is retained separately and is explicitly not
+RED evidence. Original logs and `files.sha256` remain unchanged. GREEN logs and
+[`rem1-final-measurements.json`](../proofs/raft-carrier-comparison/evidence/rem1-final-measurements.json)
+record the current commands, machine/toolchain and observed status.
+
+Current result: **31 spec/unit/fixture/oracle tests GREEN plus 4 API/provider
+compiler tests GREEN = 35 total; all 20 ordinary B0 provider tests remain RED,
+zero ignored/filtered**. The evidence gate verifies the precise 20-test failure
+summary, preventing compiler failure or a changed selection from masquerading as
+intended RED. The source-footprint witnesses are minimal pure test scaffolding,
+not an election provider, real engine mutant, adapted source or concrete-runtime
+cadence proof. Later pin-specific clock/work/registration source evidence remains
+mandatory; no OpenRaft runtime registration allocation is invented here.
+
+A direct reentrant std `Wake` callback capturing the fixture's local Rc endpoint
+cannot satisfy `Wake`'s Send/Sync bound safely. No unsafe/global workaround or
+fabricated RED wake witness was added. The existing selected-poll/saved-wake/RPC
+checks stay GREEN; direct callback integration remains a source/runtime obligation.
+
+The root-relative
+[`rem1-files.sha256`](../proofs/raft-carrier-comparison/evidence/rem1-files.sha256)
+inventory covers this allocation and the subtree (excluding target/cache outputs
+and its own digest). The read-only documentary context is separately named in
+`rem1-context.json`; it does not enlarge this patch's authorized file set. The
+original reviewed root was `544c83d8cd07165cfeec2f0db64a78c8417849f3`; the owner
+filed the reports/plan at documentary root
+`9ac2fa4fa9c0f9b7e3d9aa112bfd5d993528882f`. No Git/GWZ operation was performed by
+this drafter. This uses one architectural remediation round; no B0/B1/B2/B3,
+source adaptation, canonical profile or production exit is accepted.
+
+Final remediation measurements on macOS 26.6.2/arm64, Rust/Cargo 1.96.0:
+B0 execution-only **0.013763 s**, warm build-plus-RED **0.033829 s**, fresh-target
+B0 test build **1.018200 s**, structural gate **1.480033 s**, all-target denied-warning
+Clippy **0.296296 s**. All are observations of this std-only scaffold, not engine
+performance, accepted budgets or qualification. The source gate inspected all
+**23 Rust files**; the global guard inspected **13 normal-source files**, with
+**zero allowlisted items**. All five architecture negative fixtures were rejected.

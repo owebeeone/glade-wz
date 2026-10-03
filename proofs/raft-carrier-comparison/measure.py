@@ -2,7 +2,9 @@
 """Explicit B0 checkpoint evidence; expected behavioral RED is recorded separately.
 No pass is inferred from an expected failure. Logs always retain actual status.
 """
+import argparse
 import json
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -10,21 +12,30 @@ import time
 
 root = Path(__file__).resolve().parent
 workspace = root.parent.parent
+parser = argparse.ArgumentParser()
+parser.add_argument("--prefix", required=True, help="fresh evidence prefix; preserves historical checkpoint files")
+args = parser.parse_args()
+if not re.fullmatch(r"[a-z0-9-]+", args.prefix):
+    raise SystemExit("Use a lowercase alphanumeric/hyphen evidence prefix")
+prefix = args.prefix + "-"
 records = []
 base = ["cargo", "test", "--locked", "--offline", "--manifest-path", str(root / "Cargo.toml")]
 def run(label, command, expected):
     start = time.perf_counter()
     result = subprocess.run(command, cwd=workspace, capture_output=True, text=True)
     elapsed = time.perf_counter() - start
-    (root / "evidence" / f"{label}.log").write_text(result.stdout + result.stderr)
+    (root / "evidence" / f"{prefix}{label}.log").write_text(result.stdout + result.stderr)
     records.append({"label": label, "command": command, "seconds": round(elapsed, 6), "exit_code": result.returncode, "expected_exit_code": expected})
     print(f"{label}: exit={result.returncode}, expected={expected}, {elapsed:.6f}s")
     if result.returncode != expected:
         raise SystemExit(f"Unexpected checkpoint result: {label}; inspect evidence/{label}.log")
+    if label.startswith("behavior-red"):
+        if not re.search(r"test result: FAILED\. 0 passed; 20 failed; 0 ignored; 0 measured; 0 filtered out;", result.stdout):
+            raise SystemExit("Expected exactly 20 compiling ordinary B0 assertion failures")
     return result
 run("api-witness", base + ["-p", "glade-carrier-api", "--test", "public_contract"], 0)
 run("provider-witness", base + ["-p", "glade-carrier-raft-rs", "-p", "glade-carrier-openraft", "--test", "compiler_contract"], 0)
-run("spec-witness", base + ["-p", "glade-carrier-spec", "--test", "fixture_plumbing", "--test", "oracle", "--test", "constructor_contract", "--test", "rpc_reply"], 0)
+run("spec-witness", base + ["-p", "glade-carrier-spec", "--lib", "--test", "fixture_plumbing", "--test", "oracle", "--test", "constructor_contract", "--test", "rpc_reply", "--test", "endpoint_lifecycle", "--test", "scheduler_lifecycle"], 0)
 run("behavior-red", base + ["-p", "glade-carrier-spec", "--test", "b0_election"], 101)
 run("behavior-red-warm", base + ["-p", "glade-carrier-spec", "--test", "b0_election"], 101)
 artifacts = run("execution-artifacts", base + ["-p", "glade-carrier-spec", "--test", "b0_election", "--no-run", "--message-format=json"], 0)
@@ -38,4 +49,4 @@ context = {}
 for label, command in [("machine", ["uname", "-a"]), ("os", ["sw_vers"]), ("rustc", ["rustc", "-Vv"]), ("cargo", ["cargo", "-V"]), ("python", ["python3", "-V"])]:
     result = subprocess.run(command, capture_output=True, text=True, check=True)
     context[label] = result.stdout.strip()
-(root / "evidence" / "measurements.json").write_text(json.dumps({"context": context, "records": records}, indent=2) + "\n")
+(root / "evidence" / f"{prefix}measurements.json").write_text(json.dumps({"context": context, "records": records}, indent=2) + "\n")

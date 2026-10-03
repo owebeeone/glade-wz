@@ -65,7 +65,9 @@
         "oracle",
         "fixture_plumbing",
         "constructor_contract",
-        "rpc_reply"
+        "rpc_reply",
+        "endpoint_lifecycle",
+        "scheduler_lifecycle"
       ]
     },
     "glade-carrier-raft-rs": {

@@ -1,0 +1,33 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+
+running 4 tests
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... ok
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... ok
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... ok
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/endpoint_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/endpoint_lifecycle-0d2c307abed7ceea)
+
+running 5 tests
+test separately_obtained_and_fresh_handles_share_scope_stop ... ok
+test replaced_destination_rejects_held_token_controls_before_mutation ... ok
+test replaced_issuer_handle_cannot_emit_request_or_mutate_old_tokens ... ok
+test take_refuses_replaced_issuer_and_destination_without_consuming ... ok
+test timeout_and_cancel_validate_live_rpc_peer_before_removing_ownership ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/scheduler_lifecycle.rs (proofs/raft-carrier-comparison/target/debug/deps/scheduler_lifecycle-4418bd7811ee43e4)
+
+running 4 tests
+test bulk_stop_releases_borrow_before_reentrant_future_cleanup ... ok
+test cancelling_parent_releases_borrow_before_reentrant_child_cleanup ... ok
+test own_scope_stop_during_poll_is_terminal_and_saved_wake_cannot_revive ... ok
+test rejected_deadline_drops_owned_future_after_releasing_borrow ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

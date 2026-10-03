@@ -17,9 +17,13 @@ pub(super) struct SourceState {
     pub(super) clock: LogicalInstant,
     pub(super) samples: VecDeque<Result<u64, SourceError>>,
     pub(super) fault: Option<Fault>,
+    pub(super) attempts: usize,
     pub(super) trace: Rc<RefCell<Vec<Event>>>,
 }
 impl SourceProbe {
+    pub(crate) fn attempts(&self) -> usize {
+        self.0.borrow().attempts
+    }
     pub fn script(&self, values: Vec<u64>) {
         self.0.borrow_mut().samples = values.into_iter().map(Ok).collect();
     }
@@ -60,6 +64,7 @@ impl ElectionSources for SourceProbe {
             upper_exclusive,
         };
         let mut state = self.0.borrow_mut();
+        state.attempts += 1;
         let value = match state.fault {
             Some(Fault::Entropy) => return Err(SourceError::EntropyFailed),
             Some(Fault::Exhausted) => return Err(SourceError::ScriptExhausted),

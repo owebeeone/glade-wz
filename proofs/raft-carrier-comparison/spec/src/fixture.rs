@@ -5,7 +5,11 @@ mod work;
 use glade_carrier_api::*;
 use sources::SourceState;
 pub use sources::{Fault, SourceProbe};
-use std::{cell::RefCell, collections::BTreeMap, rc::Rc};
+use std::{
+    cell::RefCell,
+    collections::{BTreeMap, BTreeSet},
+    rc::Rc,
+};
 pub use transport::Endpoint;
 use transport::Network;
 pub use work::WorkProbe;
@@ -42,6 +46,7 @@ impl Fixture {
     pub fn new(carrier: Carrier, session: u64) -> Self {
         let network = Rc::new(RefCell::new(Network {
             scopes: BTreeMap::new(),
+            stopped: BTreeSet::new(),
             sequence: 0,
             messages: BTreeMap::new(),
             rpcs: BTreeMap::new(),
@@ -119,6 +124,7 @@ impl Fixture {
             },
             samples,
             fault: None,
+            attempts: 0,
             trace: self.trace.clone(),
         })));
         let work = WorkProbe::new(scope);
@@ -184,7 +190,6 @@ impl Fixture {
         Endpoint {
             scope,
             network: self.network.clone(),
-            stopped: Rc::new(RefCell::new(false)),
         }
     }
     pub fn trace(&self) -> Vec<Event> {

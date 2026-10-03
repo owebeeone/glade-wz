@@ -2,7 +2,7 @@
 use glade_carrier_api::*;
 use std::{
     cell::RefCell,
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     future::Future,
     pin::Pin,
     rc::Rc,
@@ -33,15 +33,68 @@ pub(super) struct Queued {
 }
 pub(super) struct Network {
     pub(super) scopes: BTreeMap<u64, NodeScope>,
+    pub(super) stopped: BTreeSet<NodeScope>,
     pub(super) sequence: u64,
     pub(super) messages: BTreeMap<MessageToken, Queued>,
     pub(super) rpcs: BTreeMap<RpcId, Rc<RefCell<RpcState>>>,
+}
+impl Network {
+    fn live(&self, scope: NodeScope) -> bool {
+        self.scopes.get(&scope.node.node) == Some(&scope) && !self.stopped.contains(&scope)
+    }
+    fn endpoint(&self, scope: NodeScope) -> Result<(), DriverError> {
+        if self.scopes.get(&scope.node.node) != Some(&scope) {
+            return Err(DriverError::InvalidToken);
+        }
+        if self.stopped.contains(&scope) {
+            return Err(DriverError::Stopped);
+        }
+        Ok(())
+    }
+    fn token(&self, token: MessageToken) -> Result<(), DriverError> {
+        if !self.live(token.issuer)
+            || !self.live(token.destination)
+            || !self.messages.contains_key(&token)
+        {
+            return Err(DriverError::InvalidToken);
+        }
+        Ok(())
+    }
+    fn rpc(&self, rpc: RpcId) -> Result<(), DriverError> {
+        let state = self
+            .rpcs
+            .get(&rpc)
+            .ok_or(DriverError::InvalidToken)?
+            .borrow();
+        self.token(state.request)?;
+        if state.request.issuer != rpc.scope
+            || state.expected_peer != state.request.destination
+            || self
+                .messages
+                .get(&state.request)
+                .is_none_or(|queued| queued.view.rpc != Some(rpc))
+            || state.result.is_some()
+        {
+            return Err(DriverError::InvalidToken);
+        }
+        Ok(())
+    }
+}
+// Complete mutations before invoking a saved wake, which may run caller code.
+fn settle(state: Rc<RefCell<RpcState>>, result: Result<ProtocolMessage, RpcError>) {
+    let waker = {
+        let mut state = state.borrow_mut();
+        state.result = Some(result);
+        state.waker.take()
+    };
+    if let Some(waker) = waker {
+        waker.wake();
+    }
 }
 #[derive(Clone)]
 pub struct Endpoint {
     pub(super) scope: NodeScope,
     pub(super) network: Rc<RefCell<Network>>,
-    pub(super) stopped: Rc<RefCell<bool>>,
 }
 impl Endpoint {
     fn emit_inner(
@@ -52,11 +105,12 @@ impl Endpoint {
         rpc: Option<RpcId>,
         reply_to: Option<RpcId>,
     ) -> Result<MessageToken, DriverError> {
-        if *self.stopped.borrow() {
-            return Err(DriverError::Stopped);
-        }
         let mut network = self.network.borrow_mut();
+        network.endpoint(self.scope)?;
         let destination = *network.scopes.get(&to.node).ok_or(DriverError::Protocol)?;
+        if !network.live(destination) {
+            return Err(DriverError::InvalidToken);
+        }
         if to.group != self.scope.node.group || message.carrier != self.scope.carrier {
             return Err(DriverError::Protocol);
         }
@@ -101,12 +155,14 @@ impl TransportEndpoint for Endpoint {
         kind: ProtocolKind,
         message: ProtocolMessage,
     ) -> Result<PendingRpc, DriverError> {
-        let sequence = self
-            .network
-            .borrow()
-            .sequence
-            .checked_add(1)
-            .ok_or(SourceError::Overflow)?;
+        let sequence = {
+            let network = self.network.borrow();
+            network.endpoint(self.scope)?;
+            network
+                .sequence
+                .checked_add(1)
+                .ok_or(SourceError::Overflow)?
+        };
         let id = RpcId {
             scope: self.scope,
             sequence,
@@ -131,11 +187,10 @@ impl TransportEndpoint for Endpoint {
         kind: ProtocolKind,
         message: ProtocolMessage,
     ) -> Result<MessageToken, DriverError> {
-        if *self.stopped.borrow() {
-            return Err(DriverError::Stopped);
-        }
         {
             let network = self.network.borrow();
+            network.endpoint(self.scope)?;
+            network.rpc(rpc)?;
             let state = network
                 .rpcs
                 .get(&rpc)
@@ -170,13 +225,12 @@ impl TransportEndpoint for Endpoint {
         self.emit_inner(rpc.scope.node, kind, message, None, Some(rpc))
     }
     fn take(&mut self, token: MessageToken) -> Result<Inbound, DriverError> {
-        if *self.stopped.borrow() {
-            return Err(DriverError::Stopped);
-        }
         if token.destination != self.scope {
             return Err(DriverError::InvalidToken);
         }
         let mut network = self.network.borrow_mut();
+        network.endpoint(self.scope)?;
+        network.token(token)?;
         let queued = network
             .messages
             .get_mut(&token)
@@ -193,10 +247,8 @@ impl TransportEndpoint for Endpoint {
         })
     }
     fn control(&mut self, action: TransportAction) -> Result<Vec<Event>, DriverError> {
-        if *self.stopped.borrow() {
-            return Err(DriverError::Stopped);
-        }
         let mut network = self.network.borrow_mut();
+        network.endpoint(self.scope)?;
         match action {
             TransportAction::Release(token)
             | TransportAction::Hold(token)
@@ -205,6 +257,7 @@ impl TransportEndpoint for Endpoint {
                 if token.issuer != self.scope {
                     return Err(DriverError::InvalidToken);
                 }
+                network.token(token)?;
                 let queued = network
                     .messages
                     .get(&token)
@@ -246,6 +299,8 @@ impl TransportEndpoint for Endpoint {
                 if rpc.scope != self.scope || reply.destination != self.scope {
                     return Err(DriverError::InvalidToken);
                 }
+                network.token(reply)?;
+                network.rpc(rpc)?;
                 let queued = network
                     .messages
                     .get(&reply)
@@ -278,27 +333,25 @@ impl TransportEndpoint for Endpoint {
                     .ok_or(DriverError::InvalidToken)?
                     .view
                     .state = MessageState::Consumed;
-                let mut state = state.borrow_mut();
-                state.result = Some(Ok(result));
-                if let Some(waker) = state.waker.take() {
-                    waker.wake();
-                }
+                drop(network);
+                settle(state, Ok(result));
                 Ok(vec![Event::RpcResolved { rpc }])
             }
             TransportAction::Timeout(rpc) | TransportAction::Cancel(rpc) => {
                 if rpc.scope != self.scope {
                     return Err(DriverError::InvalidToken);
                 }
+                network.rpc(rpc)?;
                 let state = network.rpcs.remove(&rpc).ok_or(DriverError::InvalidToken)?;
-                let mut state = state.borrow_mut();
-                state.result = Some(Err(if matches!(action, TransportAction::Timeout(_)) {
-                    RpcError::TimedOut
-                } else {
-                    RpcError::Cancelled
-                }));
-                if let Some(waker) = state.waker.take() {
-                    waker.wake();
-                }
+                drop(network);
+                settle(
+                    state,
+                    Err(if matches!(action, TransportAction::Timeout(_)) {
+                        RpcError::TimedOut
+                    } else {
+                        RpcError::Cancelled
+                    }),
+                );
                 Ok(vec![Event::RpcResolved { rpc }])
             }
         }
@@ -325,22 +378,38 @@ impl TransportEndpoint for Endpoint {
             .collect()
     }
     fn stop(&mut self) -> Result<(), DriverError> {
-        let rpcs = self.pending_rpcs();
-        for rpc in rpcs {
-            self.control(TransportAction::Cancel(rpc))?;
-        }
-        for queued in self.network.borrow_mut().messages.values_mut() {
-            if (queued.view.token.issuer == self.scope
-                || queued.view.token.destination == self.scope)
-                && !matches!(
-                    queued.view.state,
-                    MessageState::Consumed | MessageState::Dropped
-                )
-            {
-                queued.view.state = MessageState::Dropped;
+        let detached: Vec<_> = {
+            let mut network = self.network.borrow_mut();
+            if network.scopes.get(&self.scope.node.node) != Some(&self.scope) {
+                return Err(DriverError::InvalidToken);
             }
+            network.stopped.insert(self.scope);
+            let owned: Vec<_> = network
+                .rpcs
+                .keys()
+                .filter(|rpc| rpc.scope == self.scope)
+                .copied()
+                .collect();
+            let detached = owned
+                .into_iter()
+                .filter_map(|rpc| network.rpcs.remove(&rpc))
+                .collect();
+            for queued in network.messages.values_mut() {
+                if (queued.view.token.issuer == self.scope
+                    || queued.view.token.destination == self.scope)
+                    && !matches!(
+                        queued.view.state,
+                        MessageState::Consumed | MessageState::Dropped
+                    )
+                {
+                    queued.view.state = MessageState::Dropped;
+                }
+            }
+            detached
+        };
+        for state in detached {
+            settle(state, Err(RpcError::Cancelled));
         }
-        *self.stopped.borrow_mut() = true;
         Ok(())
     }
 }

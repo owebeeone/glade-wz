@@ -1,6 +1,6 @@
 # Glade Raft qualification — review ledger
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO**.
+Date: 2026-10-03. Status: **Q0–Q3 private qualification and Q4-A legacy Store retirement preparation accepted within their recorded scopes; Q4-B contract/scaffold remediation pending; Q4-C through Q4-E and production activation remain open. Exact accepted-through tuples and limits appear below.**
 
 Q1a accepted at root `31bbea0cf1da3c6ae437cf482cb744d561693c08`, with the
 unchanged member/Gyld tuple below, after
@@ -557,3 +557,28 @@ production library, deployment, custody, retention budget, baseline or activatio
 is ratified. Q4-C needs owner selection and then exact amendment/allocation and
 compiling consumer gates before implementation. B0 private source/election
 contract drafting continues independently, with no engine selected.
+
+## Q4-B0 contract/allocation/compiling RED initial review
+
+Object root `544c83d8cd07165cfeec2f0db64a78c8417849f3`, Glade
+`c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`, discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`.
+Fresh peer-blind [Consistency](GladeRaftB0-ReviewConsistency.md) and
+[Safety](GladeRaftB0-ReviewSafety.md) returned NO-GO. The initial 19 compiler/
+fixture/oracle GREEN and 20 ordinary behavioral RED results were independently
+reproduced; neither engine is installed. Three root causes converged blindly:
+unsatisfiable runtime entropy-fault cadence for OpenRaft, endpoint lifecycle/
+incarnation checks shared incorrectly across handles, and reentrant future
+cleanup while holding scheduler borrows. Safety additionally found stop during
+an in-flight task poll. All seven P2 IDs map to four corrections in
+[remediation 1](GladeRaftB0-RemPlan-1.md); closure remains pending. One bounded
+architectural remediation round is underway. These defects were found before
+source-adaptation or production-provider implementation; no escaped production
+defect or B0 runtime acceptance is claimed.
+
+[The source-adaptation allocation/TDD plan](GladeRaftB0SourceAdaptationPlan.md)
+is a separate DRAFT, not accepted by this gate. It inventories additional
+runtime/error/logging/macro/codec/global seams and requires runner extraction,
+compiling contracts and review before actual adapted sources. B1/B2/full B3
+comparison, canonical owner profile and Q4-D/Q4-E remain mandatory.

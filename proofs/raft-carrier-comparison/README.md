@@ -13,12 +13,12 @@ allocation must preserve the common consumers while moving real composition out
 before installing engines. Source, future scheduling and queued-RPC modules here
 are pure controlled test scaffolding, not claimed implementation providers.
 
-From the adopting workspace root, compiler/fixture/oracle witnesses (19 passing):
+From the adopting workspace root, compiler/fixture/oracle witnesses (35 passing: 31 spec and 4 API/provider):
 
 ```sh
 cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-api --test public_contract
 cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-raft-rs -p glade-carrier-openraft --test compiler_contract
-cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --test constructor_contract --test fixture_plumbing --test oracle --test rpc_reply
+cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib --test constructor_contract --test fixture_plumbing --test oracle --test rpc_reply --test endpoint_lifecycle --test scheduler_lifecycle
 ```
 
 Ordinary behavioral RED command (20 failing assertions; no ignored/filtered cases):
@@ -42,9 +42,41 @@ machine/toolchain, execution-only, warm build-plus-RED and fresh-target build.
 and [fixture/compiler/oracle](evidence/spec-witness.log) are filed separately.
 The correlated-reply fixture supplement has its own observed [RED](evidence/rpc-red.log)
 and [GREEN](evidence/rpc-green.log) evidence; it implements only controlled fixture mechanics.
-`measure.py` replays this checkpoint with the RED failure recorded as failure;
+`measure.py --prefix <fresh-label>` replays this checkpoint with the RED failure recorded as failure;
 recognizing its expected status does not make behavior pass or qualify a carrier.
 
 Future real adapters MUST reuse the same exported scenario functions. The refusing
 command remains explicit and RED; a separate reviewed composition runs real
 adapters without changing these expected invariants or selecting fewer scenarios.
+
+Remediation 1 preserves the original evidence above. Its regression-first
+[RED log](evidence/rem1-red.log) records 12 compiling assertion failures; the
+[overflow supplement](evidence/rem1-red-overflow.log) adds the thirteenth unique
+regression before corrections. The separate
+[authoring compile log](evidence/rem1-authoring-compile.log) is not behavioral RED.
+[Initial GREEN](evidence/rem1-green.log) and
+[expanded GREEN](evidence/rem1-green-expanded.log) retain fixture verification.
+Current [measurements](evidence/rem1-final-measurements.json) and
+[inventory](evidence/rem1-files.sha256) describe the final scoped packet.
+
+The footprint witnesses exercise only supplied source/work mechanics and an
+external access/state oracle, without an election/engine surrogate. OpenRaft's
+constructor-only entropy access remains distinct from raft-rs's documented leader
+quorum-loss reset. A persistent task need not register again: a runtime registration
+fault is asserted at an actual attempted registration, or the no-access cut remains
+healthy. Concrete adapted clock/task/register cadence remains a later obligation.
+The endpoint/scheduler regressions cover shared stop, replacement, unchanged stale
+controls, selected-future stop, saved wake and reentrant future cleanup. Moving
+saved RPC wakes after all borrows is a scoped cleanup refactor verified by existing
+RPC tests; no safe direct Rc-endpoint reentrant std-Wake witness is claimed.
+Both originating reviewers must verify their findings before closure. No B0
+runtime or source-adaptation acceptance follows from these GREEN fixtures.
+
+To reproduce with a fresh evidence prefix (prior logs are retained):
+
+```sh
+python3 -B proofs/raft-carrier-comparison/measure.py --prefix review-next
+```
+
+The evidence gate requires exactly 20 ordinary compiled B0 failures, zero ignored
+or filtered cases, as well as passing independent GREEN and structural/lint gates.
