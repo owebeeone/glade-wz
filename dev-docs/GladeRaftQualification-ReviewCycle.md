@@ -385,3 +385,29 @@ follower vote/pre-vote suppression, restart admission/no-reset, complete real
 snapshot-plus-suffix catch-up and all other matrix rows remain mandatory before
 Code/State implementation acceptance. This filing touches documentation only,
 not the in-progress algorithms. Production profile/activation remains unchanged.
+
+## Q3 implementation review — first gate, NO-GO
+
+Frozen source root `b61197602e5594bdf89770bda069ce7d30fdb222`, unchanged member/Gyld
+tuple above. Concrete Q3a/Q3b algorithms and [implementation evidence](GladeRaftQ3ImplementationEvidence.md)
+passed independent owner verification: 113 default tests, two explicit Q2
+library cases, two Q2/three Q3 actual SIGKILL cuts, strict gates; 44 owned Rust
+files, zero process-global exceptions. Every original nineteen consumer remained
+default-selected with no filter. These passing tests are not review acceptance.
+
+Fresh peer-blind [Code](GladeRaftQ3Implementation-ReviewCode.md) and
+[State](GladeRaftQ3Implementation-ReviewState.md) both NO-GO, reports verbatim.
+Generated canonical prompts: [Code](GladeRaftQ3Implementation-PromptCode.md),
+[State](GladeRaftQ3Implementation-PromptState.md). Both verified all four HEADs
+and clean scoped bytes at start/end. No current peer prompt/report accessed.
+Code found one P2 failure to exclude poisoned direct-compaction callers and two
+P3 mandatory witness gaps. State found two P2 defects: stale first-voter restart
+selection and silently successful ahead-of-local checkpoint installation.
+The axes did not converge on a shared defect; no production escape occurred.
+
+[One merged remediation plan](GladeRaftQ3Implementation-RemPlan-1.md) maps every
+finding to a disposition and exact closure. Implementation remediation round 1
+is now authorized for TDD; all five findings remain open. The contract/allocation
+round counts are separate. Q3 implementation and Q4/production activation remain
+pending. This review filing does not change the reviewed algorithms, member
+sources, unrelated work, push status or desktop runtime.
