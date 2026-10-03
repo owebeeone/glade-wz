@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3a/Q3b private implementation accepted at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO; Q4-A legacy Store retirement preparation accepted at Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87` after Code/State GO/GO; Q4-B through Q4-E and production activation remain open**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract/specification accepted at root `ed243db983c485e46a27aa870ec745de16a56d7a` after renewed Consistency/Safety GO; Q3a/Q3b private implementation accepted at `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2` after Code/State GO/GO; Q4-A legacy Store retirement preparation accepted at Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87` after Code/State GO/GO; Q4-B0 private contract/scaffold accepted at root `8553bc71b1f6bc9fe203729e61567e8b9bd37be2` after Consistency/Safety GO/GO; actual Q4-B carrier qualification, Q4-C through Q4-E and production activation remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -195,3 +195,15 @@ This is a one-way whole physical Store-root retirement interlock for participati
 builds on a stable root; demonstrated runtime is macOS/APFS process interruption.
 It does not exclude unaware old binaries, seal Registry/external sinks, reconcile
 legacy copies, close RA-012 or activate Raft. Q4-B through Q4-E remain mandatory.
+
+## Q4-B0 private contract/scaffold accepted-through
+
+[Acceptance record](GladeRaftB0Acceptance.md) binds source root
+`8553bc71b1f6bc9fe203729e61567e8b9bd37be2`, supporting pins and the independent
+[Consistency](GladeRaftB0-ReviewConsistency-3.md)/
+[Safety](GladeRaftB0-ReviewSafety-3.md) GO/GO. The std-only scaffold has 58 GREEN
+witnesses and twenty ordinary behavioral RED cases against refusing providers.
+No actual carrier is installed or qualified. Actual adapted B0, full B1/B2 and
+B3 comparison/selection remain mandatory; the separate source-adaptation plan
+remains unadopted. The reviewed production-profile proposal awaits owner
+selection before exact Q4-C canonical amendments and consumer review.

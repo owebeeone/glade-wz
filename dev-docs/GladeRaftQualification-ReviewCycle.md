@@ -1,6 +1,6 @@
 # Glade Raft qualification — review ledger
 
-Date: 2026-10-03. Status: **Q0–Q3 private qualification and Q4-A legacy Store retirement preparation accepted within their recorded scopes; Q4-B contract/scaffold remediation pending; Q4-C through Q4-E and production activation remain open. Exact accepted-through tuples and limits appear below.**
+Date: 2026-10-03. Status: **Q0–Q3 private qualification and Q4-A legacy Store retirement preparation accepted within their recorded scopes; Q4-B0 private contract/scaffold accepted, actual carrier qualification open; Q4-C through Q4-E and production activation remain open. Exact accepted-through tuples and limits appear below.**
 
 Q1a accepted at root `31bbea0cf1da3c6ae437cf482cb744d561693c08`, with the
 unchanged member/Gyld tuple below, after
@@ -620,3 +620,35 @@ are recorded. The skill permits this third confined correction; any architectura
 root cause found during it triggers the stop cap. The fresh originating finders
 must verify closure at the same settled tuple. No B0 runtime/source adaptation,
 full comparison or production acceptance is claimed.
+
+## Q4-B0 private contract/scaffold accepted-through
+
+At root `8553bc71b1f6bc9fe203729e61567e8b9bd37be2`, unchanged member/Gyld
+pins, the fresh originating [Consistency](GladeRaftB0-ReviewConsistency-3.md)
+and [Safety](GladeRaftB0-ReviewSafety-3.md) finders returned GO/GO, closed their
+original scheduling/domain counterexamples and independently verified the other
+correction. No new findings or architectural root cause was found. The complete
+prior full-review reasoning remains valid only for independently verified
+unchanged bytes; changed consumers and lifecycle regressions were rerun.
+
+The lane owner accepts only the private contract, four-package allocation and
+compiling RED scaffold at that source tuple. [Acceptance record](GladeRaftB0Acceptance.md)
+binds all supporting pins, prompts, verbatim report hashes, current 136-entry
+inventory and limits. Both reviewers reproduced **58 GREEN, 20 ordinary B0 RED**,
+all gates/Clippy PASS, and the compiled termination mutant's eight required
+failures/nineteen unrelated passes. Historical RED, compiler-error artifacts,
+measurements and prior manifests are preserved.
+
+| Discovery phase | Distinct defects and closure |
+| --- | --- |
+| Initial contract/scaffold review | Four P2 defects, seven reviewer IDs; three blind convergences and one Safety-only defect; original finders closed all. |
+| First remediation review | One new architectural RPC-termination defect, two blind reviewer IDs; both original finders closed it after remediation 2. |
+| Fresh full review | Two non-architectural scheduling/domain defects, two separate reviewer IDs; original finders closed both after remediation 3. |
+| Aggregate | Seven distinct defects, eleven IDs, zero open acceptance findings. Two architectural rounds plus one permitted confined non-architectural round. |
+| Production escape | None observed; no real carrier/provider or production group activated. |
+
+Actual B0 adapted engines, B1/B2 full common journeys, B3 carrier selection and
+Q4-C/D/E remain open. SourceAdaptationPlan remains unadopted. No allowance,
+classification, test-selection or governing promise was relaxed. This documentary
+filing does not move the accepted source pin or include inherited dirt, merge,
+push, live seal installation, enrollment, launcher changes or desktop rebuild.

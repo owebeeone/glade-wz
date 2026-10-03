@@ -4,6 +4,13 @@ Date: 2026-10-03. Status: **implementation authorized; production activation not
 Q3 source is `468fa7725bcd7cf025b4889c37f697f2bfc3d2d2`; acceptance filing is
 `55b6ee30bb18fa58c80805be2d29a44b404077f6`. Raft is the algorithm direction.
 Neither production library nor deployment/authority/migration profile is selected.
+Q4-A's internal Store retirement interlock is implemented and reviewed. The
+[Q4-B0 private contract/scaffold](GladeRaftB0Acceptance.md) is accepted at root
+`8553bc71b1f6bc9fe203729e61567e8b9bd37be2`; actual carrier adaptations and
+automatic-election qualification remain open. The reviewed
+[production-profile packet](GladeRaftProductionProfileDecisions.md) awaits owner
+selection before Q4-C canonical amendment work. These preparation gates do not
+activate a Raft provider in Glade.
 This plan extends [qualification](GladeRaftQualificationPlan.md), preserving
 [RA-001–012](GladeRaftAdoptionContract.md). It MUST NOT turn private Q3 fixture
 identities, receipts, storage encodings or trust decisions into production contracts.
