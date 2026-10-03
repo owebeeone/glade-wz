@@ -14,27 +14,83 @@ pub fn automatic_election_without_campaign(provider: &impl Provider) {
     // No campaign/trigger operation exists in the consumer boundary.
 }
 
+fn boundary_point(
+    node: &mut dyn ElectionNode,
+    at: LogicalInstant,
+    first_eligible: Option<LogicalInstant>,
+    eligibility: &mut Option<(LogicalInstant, WorkId)>,
+) -> Vec<WorkId> {
+    point::drain_point(|selected| {
+        if let Some(work) = selected {
+            node.drive(work)?; // Exactly one selected poll/tick; no delivery/time here.
+            if let Some(first_eligible) = first_eligible {
+                let view = node.observe()?;
+                if at.nanos < first_eligible.nanos {
+                    assert_eq!(
+                        view.role,
+                        Role::Follower,
+                        "B0-04 no early election after any selected action"
+                    );
+                } else if matches!(view.role, Role::PreCandidate | Role::Candidate)
+                    && eligibility.is_none()
+                {
+                    *eligibility = Some((at, work));
+                }
+            }
+        }
+        let inventory = node.inventory()?;
+        assert_eq!(
+            inventory.clock, at,
+            "B0-04 fixed-instant drain cannot change time"
+        );
+        if let Some(first_eligible) = first_eligible {
+            let votes = inventory
+                .messages
+                .iter()
+                .any(|message| message.kind == ProtocolKind::VoteRequest);
+            if at.nanos < first_eligible.nanos {
+                assert!(
+                    !votes,
+                    "B0-04 no early vote emission after any selected action"
+                );
+            } else if votes {
+                assert!(
+                    eligibility.is_some(),
+                    "B0-04 eligibility precedes scheduled send completion"
+                );
+            }
+        }
+        Ok(inventory.work)
+    })
+    .expect("B0-04 current-inventory bounded one-action drain")
+}
+
 pub fn deadline_and_vote_rules_preserved(provider: &impl Provider) {
     let mut cluster = Cluster::new(provider, false);
-    let inventory = cluster.nodes[0].inventory().unwrap_or_else(|error| {
+    let initial = cluster.nodes[0].inventory().unwrap_or_else(|error| {
         panic!("B0-04 recorded engine eligibility boundary required: {error:?}")
     });
-    assert!(inventory.timing.before.nanos < inventory.timing.first_eligible.nanos);
-    assert_eq!(
-        inventory.timing.before.domain,
-        cluster.fixture.scope(1, 1).domain
-    );
-    cluster.nodes[0].advance(inventory.timing.before).unwrap();
-    let before = cluster.nodes[0].inventory().unwrap();
-    for work in before.work {
-        if work.state == WorkState::Runnable {
-            cluster.nodes[0].drive(work.id).unwrap();
-        }
-    }
+    // Initialize pending core/ticker work at the constructor's unchanged time.
+    let mut eligibility = None;
+    let mut selected = vec![(
+        initial.clock,
+        boundary_point(
+            cluster.nodes[0].as_mut(),
+            initial.clock,
+            None,
+            &mut eligibility,
+        ),
+    )];
+    let inventory = cluster.nodes[0].inventory().unwrap();
+    let timing = inventory.timing;
+    assert!(inventory.clock.nanos <= timing.before.nanos);
+    assert!(timing.before.nanos < timing.first_eligible.nanos);
+    assert_eq!(timing.before.domain, cluster.fixture.scope(1, 1).domain);
+    assert_eq!(timing.first_eligible.domain, timing.before.domain);
     assert_eq!(
         cluster.nodes[0].observe().unwrap().role,
         Role::Follower,
-        "B0-04 no early election"
+        "B0-04 initialized follower prerequisite"
     );
     assert!(
         !cluster
@@ -43,24 +99,50 @@ pub fn deadline_and_vote_rules_preserved(provider: &impl Provider) {
             .iter()
             .any(|message| message.kind == ProtocolKind::VoteRequest)
     );
-    cluster.nodes[0]
-        .advance(inventory.timing.first_eligible)
-        .unwrap();
-    let at = cluster.nodes[0].inventory().unwrap();
-    for work in at.work {
-        if work.state == WorkState::Runnable {
-            cluster.nodes[0].drive(work.id).unwrap();
+    // Progress actual controlled host/ticker opportunities. A jump is not a
+    // substitute for elapsed raft-rs ticks; partial boundary points stay exact.
+    for target in [timing.before, timing.first_eligible] {
+        let now = cluster.nodes[0].inventory().unwrap().clock;
+        for to in point::time_points(now, target) {
+            cluster.nodes[0].advance(to).unwrap();
+            selected.push((
+                to,
+                boundary_point(
+                    cluster.nodes[0].as_mut(),
+                    to,
+                    Some(timing.first_eligible),
+                    &mut eligibility,
+                ),
+            ));
+        }
+        if target == timing.before {
+            assert_eq!(
+                cluster.nodes[0].observe().unwrap().role,
+                Role::Follower,
+                "B0-04 no early election at boundary"
+            );
+            assert!(
+                !cluster
+                    .fixture
+                    .messages()
+                    .iter()
+                    .any(|message| message.kind == ProtocolKind::VoteRequest)
+            );
         }
     }
+    assert!(
+        eligibility.is_some(),
+        "B0-04 actual eligible election action; selected={selected:?}"
+    );
     assert!(
         cluster
             .fixture
             .messages()
             .iter()
             .any(|message| message.kind == ProtocolKind::VoteRequest),
-        "B0-04 actual eligible election action"
+        "B0-04 subsequent scheduled vote emission; eligibility={eligibility:?}; selected={selected:?}"
     );
-    // The correctness of the boundary mapping requires additional per-pin tests.
+    // Exact per-pin eligibility mapping still requires real adapted-source tests.
 }
 
 pub fn split_vote_eventual_useful_schedule(provider: &impl Provider) {

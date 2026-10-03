@@ -1,4 +1,5 @@
 //! Explicit instance-owned test fixture assembly; no election algorithm.
+mod domains;
 mod sources;
 mod transport;
 mod work;
@@ -14,6 +15,8 @@ pub use transport::Endpoint;
 use transport::Network;
 pub use work::WorkProbe;
 pub const QUANTUM_NS: u64 = 1_000_000;
+const MAX_SESSION: u64 = (1 << 31) - 1;
+const MAX_INCARNATION: u64 = (1 << 30) - 1;
 struct Memory(ProtocolImage);
 impl MemoryProtocolStore for Memory {
     fn load(&self) -> Result<ProtocolImage, DriverError> {
@@ -44,6 +47,7 @@ pub struct Fixture {
 }
 impl Fixture {
     pub fn new(carrier: Carrier, session: u64) -> Self {
+        assert!(session <= MAX_SESSION, "bounded fixture session");
         let network = Rc::new(RefCell::new(Network {
             scopes: BTreeMap::new(),
             stopped: BTreeSet::new(),
@@ -69,20 +73,24 @@ impl Fixture {
         fixture
     }
     pub fn scope(&self, node: u64, incarnation: u64) -> NodeScope {
+        assert!(self.session <= MAX_SESSION, "bounded fixture session");
+        assert!((1..=3).contains(&node), "three-node fixture coordinate");
+        assert!(
+            incarnation <= MAX_INCARNATION,
+            "bounded fixture incarnation"
+        );
+        let carrier = match self.carrier {
+            Carrier::RaftRs => 0,
+            Carrier::OpenRaft => 1,
+        };
+        // Disjoint fields: carrier:1 / session:31 / node:2 / incarnation:30.
+        let domain = (carrier << 63) | (self.session << 32) | (node << 30) | incarnation;
         NodeScope {
             carrier: self.carrier,
             session: self.session,
             node: NodeKey { group: 7, node },
             incarnation,
-            domain: ClockDomain(
-                self.session
-                    .checked_mul(100)
-                    .unwrap()
-                    .checked_add(node.checked_mul(10).unwrap())
-                    .unwrap()
-                    .checked_add(incarnation)
-                    .unwrap(),
-            ),
+            domain: ClockDomain(domain),
         }
     }
     pub fn range(&self) -> SampleRange {
@@ -98,6 +106,10 @@ impl Fixture {
         }
     }
     pub fn inputs(&self, node: u64, incarnation: u64) -> NodeInputs {
+        assert!(
+            incarnation > 0,
+            "zero incarnation is an unissued negative-test scope"
+        );
         let scope = self.scope(node, incarnation);
         let range = self.range();
         let first = if self.equal_scripts {

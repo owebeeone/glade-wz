@@ -382,7 +382,7 @@ records **20 passing focused tests** after correction. Two additional GREEN
 edge witnesses (replaced-caller Pending future and live-peer late reply) are not
 claimed as observed RED. Original/remediation-1 logs and inventories are preserved.
 
-Current result: **41 spec/unit/compiler/fixture/oracle tests GREEN plus 4 API/
+Remediation 2 result: **41 spec/unit/compiler/fixture/oracle tests GREEN plus 4 API/
 provider compiler witnesses = 45 GREEN total**. The ten unchanged cases for each
 refusing provider remain **20 ordinary behavioral RED assertions**, zero passing,
 ignored or filtered; no refusal is reinterpreted as qualification. Architecture,
@@ -410,3 +410,107 @@ with changes from the preserved remediation-1 inventory named in `rem2-changes.j
 `fe8b25bc736c1366be9c1aeecd0ca883d8e208e1`; member/external pins remain unchanged.
 Read-only reports/plans are context, not patch writes. No Git/GWZ operation was
 performed by this drafter.
+
+
+## Remediation 3: bounded scheduling and clock identity, closure pending
+
+Fresh [Consistency P2-5](GladeRaftB0-ReviewConsistency-2.md) and
+[Safety P2-6](GladeRaftB0-ReviewSafety-2.md) classified their two new findings
+**non-architectural**. Their full reviews independently verified all prior
+counterexamples corrected; the separate originating-finder closure records are
+named by [remediation plan 3](GladeRaftB0-RemPlan-3.md). This patch implements
+only that plan. The [review-loop](</Users/owebeeone/.claude/skills/review-loop/SKILL.md>)
+permits: "A third round confined to non-architectural corrections is permitted;
+any architectural root cause found in it triggers the cap." Two architectural
+rounds remain used. The TWO fresh finders MUST verify their exact new counterexamples
+on the same settled correction; this drafter self-closes neither finding. Any
+new reviewer-classified architectural root now stops the lane for owner action.
+
+| Finding | Bounded correction and executable witness |
+| --- | --- |
+| Fresh Consistency P2-5 | B0-04 initializes currently runnable core/ticker work at the constructor's unchanged clock, refreshes the boundary record after initialization, and progresses actual aligned 1-ms host/ticker opportunities up to the exact `before`/`first_eligible` points. At each point the private common `drain_point` re-reads inventory after every single selected drive, including newly awakened/spawned work. Clock and message delivery stay fixed inside the drain. The consumer records `(instant, selected IDs)` and the first actual Candidate/PreCandidate observation separately from the later vote-emission assertion. A raft-rs tick may produce traffic in that one action; OpenRaft spawned vote work must receive its own poll. |
+| Fresh Safety P2-6 | Fixture domains replace the overlapping decimal arithmetic with checked disjoint bit fields for the complete private carrier/session/node/incarnation coordinates. Bounds are checked before source/work state construction. All existing source/work traits, ownership and error semantics stay unchanged; no allocator or global state is introduced. |
+
+`spec/src/b0/point/witness.rs` uses actual owned futures, a saved waker and the
+same private drain as B0-04. A startup poll parks the core; a selected deadline
+ticker wakes it; its separately selected poll registers a send future; that
+future emits only at its own selected poll. The exact four selected actions and
+fixed logical clock are checked. Early-eligibility and inline-send mutants are
+rejected by external time/action records, not by a claimed engine observation.
+A resumed host task schedules from current time: jumping four quanta grants
+one resumed tick, whereas the corrected time schedule actually selects all four
+ticks at four separate points. Self-rewoken work hits the explicit action bound;
+partial points stay exact; same-time, wrong-domain, backward and over-bound time
+schedules have edge checks. No ElectionNode fake, engine role, election or leader
+result is supplied by these carrier-free witnesses. Actual adapted OpenRaft and
+raft-rs still MUST execute the unchanged common B0-04 selection later.
+
+The deterministic private encoding is:
+`carrier << 63 | session << 32 | node << 30 | incarnation`, with disjoint widths
+**1/31/2/30**. RaftRs carrier=0, OpenRaft=1; group remains fixed at 7. Limits:
+**session 0..2^31-1; node 1..3; issued incarnation 1..2^30-1**. Raw scope
+incarnation zero is reserved for unissued negative-test tokens. `Fixture::new`
+checks session before assembly; `scope` checks every field before encoding;
+`inputs` rejects zero incarnation before constructing source/work or updating
+issued scope. Fixture coordinate misuse keeps the existing panic-style assembly
+interface, with explicit checked bounds; source/scheduler foreign instants and
+work deadlines retain typed `WrongDomain`. No public API or protocol format changes.
+The same coordinates intentionally replay the same identity; sessions are explicit
+caller-supplied namespaces, with no ambient or global allocation.
+
+`spec/src/fixture/domains.rs` reproduces node1/inc11 versus node2/inc1 for both
+carriers. Bilateral foreign instants leave source clocks/traces and scheduler
+inventories unchanged; bilateral foreign deadlines register no work. Neighbor
+incarnations, node boundaries, session/carrier boundaries and limits yield 108
+distinct raw domains with deterministic replay. Invalid coordinates leave probes,
+queues and trace empty. Maximum issued coordinates construct actual supplied
+source/work and accept their own deadline/poll, including the u64::MAX domain
+identity; that identity is unrelated to clock nanos.
+
+The fixed-instant drain and time-point schedule each have an explicit **4096**
+action/point bound. Exhaustion fails the harness assertion with a diagnosis; it
+is not a source error, new engine policy, latency promise or production budget.
+No inline spawn, hidden work, no-time tick catch-up or delivery is introduced.
+
+[`rem3-red.log`](../proofs/raft-carrier-comparison/evidence/rem3-red.log) records
+actual compilation then **10 failed assertions and 14 passes**, zero ignored/
+filtered, before correction. It includes the exact ClockDomain(121) alias, accepted
+foreign instants/deadline, missed wake/spawn chain, undetected early/inline mutants
+and missing bound. [`rem3-red-time.log`](../proofs/raft-carrier-comparison/evidence/rem3-red-time.log)
+adds the host-tick time-jump regression: **11 failures, 14 passes**, with ten repeats
+and **one additional unique RED**. Thus **11 distinct compiling regressions** were
+observed RED. The first authoring borrow compile error remains separate and is
+not RED. [`rem3-green.log`](../proofs/raft-carrier-comparison/evidence/rem3-green.log)
+then records 25 unit passes. Maximum-issued and partial-point edge checks are
+additional GREEN coverage, with no retrospective RED claim.
+
+Current result: **54 spec/unit/compiler/fixture/oracle GREEN plus 4 API/provider
+compiler GREEN = 58 total; 20 unchanged ordinary provider RED assertions**, none
+ignored/filtered. The termination mutant still compiles and fails precisely its
+eight expected cells with **19 other unit passes**; its mechanical expected-pass
+count was updated for the added unit witnesses, without changing RPC behavior.
+Architecture, all-source scope, globals, five architecture negatives, formatting
+and denied-warning all-target Clippy PASS. **27 Rust files** were source-checked;
+**17 normal-source files** were global-checked, with **zero allowlisted items**.
+Roles/edges/allowlists, all manifests/lockfile, public traits, both refusing
+providers, source/cache ownership, algorithms and all twenty case labels are
+unchanged. Comparison contract, reviews/plans/ledger, production/member sources
+and the separate source-adaptation plan received no writes.
+
+Current actual machine/toolchain/commands are recorded in
+[`rem3-settled-measurements.json`](../proofs/raft-carrier-comparison/evidence/rem3-settled-measurements.json).
+On macOS 26.6.2/arm64, Rust/Cargo 1.96.0: B0 execution-only **0.013598 s**, warm
+build-plus-RED **0.044403 s**, fresh target **0.883943 s**, structural **1.648440 s**,
+denied-warning Clippy **0.285114 s**, isolated termination-mutant verification
+**1.455506 s**. These are scaffold observations only. The evidence prefix marks
+the drafter's final packet, not a claimed committed or accepted revision.
+
+Exact root-relative hashes are in
+[`rem3-files.sha256`](../proofs/raft-carrier-comparison/evidence/rem3-files.sha256),
+with changes from the preserved remediation-2 inventory in `rem3-changes.json`.
+The owner-supplied documentary root is
+`ccbcd44a9c402eff199be06daca2d0f51ed9a42c`; implementation-review baseline is
+`b2df51042ae01afd1b42cb12e2de8b28f1106ec5`. `rem3-context.json` records unchanged
+member/external pins and read-only report/plan context. All prior evidence is
+preserved. No Git/GWZ action, source adaptation, real carrier/runtime, B0 runtime,
+carrier selection, profile, production or activation acceptance is claimed.

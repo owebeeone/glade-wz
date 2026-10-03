@@ -1,0 +1,6 @@
+   Compiling glade-carrier-api v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/api)
+   Compiling glade-carrier-raft-rs v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/raft-rs)
+   Compiling glade-carrier-openraft v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/openraft)
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.84s
+  Executable tests/b0_election.rs (proofs/raft-carrier-comparison/target/cold-checkpoint-dkqmhaxk/debug/deps/b0_election-9e7236b17a94f0c3)

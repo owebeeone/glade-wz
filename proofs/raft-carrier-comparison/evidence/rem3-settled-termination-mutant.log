@@ -1,0 +1,109 @@
+
+running 27 tests
+test b0::point::witness::partial_boundary_points_are_exact_bounded_and_domain_checked ... ok
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... ok
+test b0::point::witness::early_eligibility_mutant_is_rejected ... ok
+test b0::point::witness::selected_host_ticks_require_actual_progress_between_logical_points ... ok
+test fixture::domains::domain_encoding_neighbors_limits_carriers_sessions_and_replay_are_distinct ... ok
+test b0::point::witness::inline_send_poll_mutant_is_rejected ... ok
+test fixture::domains::invalid_encoding_coordinates_refuse_before_source_or_work_allocation ... ok
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... ok
+test fixture::domains::colliding_counterexample_instants_are_foreign_to_both_owned_sources ... ok
+test fixture::domains::colliding_counterexample_instants_cannot_enable_either_owned_scheduler ... ok
+test b0::point::witness::current_inventory_reaches_ticker_core_and_new_send_future ... ok
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... ok
+test fixture::domains::maximum_issued_coordinates_construct_and_drive_owned_sources_and_work ... ok
+test fixture::domains::colliding_counterexample_deadlines_refuse_without_registration ... ok
+test fixture::transport::termination::consumed_stopped_peer_cancel ... FAILED
+test b0::point::witness::perpetually_rewoken_work_hits_the_explicit_point_action_bound ... ok
+test fixture::transport::termination::consumed_stopped_peer_timeout ... FAILED
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... ok
+test fixture::transport::termination::held_stopped_peer_cancel ... FAILED
+test fixture::transport::termination::consumed_replaced_peer_cancel ... FAILED
+test fixture::transport::termination::held_stopped_peer_timeout ... FAILED
+test fixture::transport::termination::held_replaced_peer_cancel ... FAILED
+test fixture::domains::node_one_incarnation_eleven_and_node_two_incarnation_one_are_distinct ... ok
+test fixture::transport::termination::live_peer_late_reply_cannot_reopen_locally_terminated_rpc ... ok
+test fixture::transport::termination::held_replaced_peer_timeout ... FAILED
+test fixture::transport::termination::replaced_caller_cannot_terminate_old_pending_ownership_or_wake_its_future ... ok
+test fixture::transport::termination::consumed_replaced_peer_timeout ... FAILED
+
+failures:
+
+---- fixture::transport::termination::consumed_stopped_peer_cancel stdout ----
+
+thread 'fixture::transport::termination::consumed_stopped_peer_cancel' (167711339) panicked at spec/src/fixture/transport/termination.rs:220:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::consumed_stopped_peer_timeout stdout ----
+
+thread 'fixture::transport::termination::consumed_stopped_peer_timeout' (167711340) panicked at spec/src/fixture/transport/termination.rs:219:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::held_stopped_peer_cancel stdout ----
+
+thread 'fixture::transport::termination::held_stopped_peer_cancel' (167711343) panicked at spec/src/fixture/transport/termination.rs:216:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::consumed_replaced_peer_cancel stdout ----
+
+thread 'fixture::transport::termination::consumed_replaced_peer_cancel' (167711337) panicked at spec/src/fixture/transport/termination.rs:222:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::held_stopped_peer_timeout stdout ----
+
+thread 'fixture::transport::termination::held_stopped_peer_timeout' (167711344) panicked at spec/src/fixture/transport/termination.rs:215:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::held_replaced_peer_cancel stdout ----
+
+thread 'fixture::transport::termination::held_replaced_peer_cancel' (167711341) panicked at spec/src/fixture/transport/termination.rs:218:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::held_replaced_peer_timeout stdout ----
+
+thread 'fixture::transport::termination::held_replaced_peer_timeout' (167711342) panicked at spec/src/fixture/transport/termination.rs:217:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+---- fixture::transport::termination::consumed_replaced_peer_timeout stdout ----
+
+thread 'fixture::transport::termination::consumed_replaced_peer_timeout' (167711338) panicked at spec/src/fixture/transport/termination.rs:221:1:
+assertion `left == right` failed: a live caller must terminate its own RPC without a live peer
+  left: Err(InvalidToken)
+ right: Ok([RpcResolved { rpc: RpcId { scope: NodeScope { carrier: OpenRaft, session: 110, node: NodeKey { group: 7, node: 1 }, incarnation: 1, domain: ClockDomain(9223372510374920193) }, sequence: 1 } }])
+
+
+failures:
+    fixture::transport::termination::consumed_replaced_peer_cancel
+    fixture::transport::termination::consumed_replaced_peer_timeout
+    fixture::transport::termination::consumed_stopped_peer_cancel
+    fixture::transport::termination::consumed_stopped_peer_timeout
+    fixture::transport::termination::held_replaced_peer_cancel
+    fixture::transport::termination::held_replaced_peer_timeout
+    fixture::transport::termination::held_stopped_peer_cancel
+    fixture::transport::termination::held_stopped_peer_timeout
+
+test result: FAILED. 19 passed; 8 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Compiling glade-carrier-api v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/termination-mutant-kf0u5ml2/fixture/api)
+   Compiling glade-carrier-openraft v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/termination-mutant-kf0u5ml2/fixture/openraft)
+   Compiling glade-carrier-raft-rs v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/termination-mutant-kf0u5ml2/fixture/raft-rs)
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/target/termination-mutant-kf0u5ml2/fixture/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.96s
+     Running unittests src/lib.rs (target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+error: test failed, to rerun pass `-p glade-carrier-spec --lib`
+Local RPC termination mutant: REJECTED (all eight compiling matrix assertions; no selection bypass)

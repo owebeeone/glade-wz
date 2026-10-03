@@ -171,6 +171,7 @@ impl Cluster {
     }
 }
 
+mod point;
 mod sources;
 pub use sources::{
     constructor_and_reset_use_supplied_streams, source_failure_has_no_ambient_fallback,

@@ -33,5 +33,5 @@ expected = {
 observed = set(re.findall(r"^test (\S+) \.\.\. FAILED$", result.stdout, re.MULTILINE))
 assert result.returncode == 101, "Mutant must compile and fail behavior"
 assert observed == expected, (observed, expected)
-assert "test result: FAILED. 6 passed; 8 failed; 0 ignored; 0 measured; 0 filtered out;" in result.stdout
+assert "test result: FAILED. 19 passed; 8 failed; 0 ignored; 0 measured; 0 filtered out;" in result.stdout
 print("Local RPC termination mutant: REJECTED (all eight compiling matrix assertions; no selection bypass)")

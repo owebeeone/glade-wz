@@ -13,7 +13,7 @@ allocation must preserve the common consumers while moving real composition out
 before installing engines. Source, future scheduling and queued-RPC modules here
 are pure controlled test scaffolding, not claimed implementation providers.
 
-From the adopting workspace root, compiler/fixture/oracle witnesses (45 passing: 41 spec and 4 API/provider):
+From the adopting workspace root, compiler/fixture/oracle witnesses (58 passing: 54 spec and 4 API/provider):
 
 ```sh
 cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-api --test public_contract
@@ -102,7 +102,7 @@ RPC and work inventories stay unchanged. The caller continues traffic. Foreign,
 forged, replaced-caller and repeated terminal controls, as well as stale and live-
 peer late replies, refuse unchanged. These are controlled fixture results only.
 
-Current [measurements](evidence/rem2-final-measurements.json),
+Remediation 2 [measurements](evidence/rem2-final-measurements.json),
 [exact changes](evidence/rem2-changes.json), and
 [root-relative inventory](evidence/rem2-files.sha256) retain the new checkpoint
 separately from all earlier evidence. The ownership clarification is in the
@@ -116,3 +116,43 @@ Focused standalone mutant reproduction:
 ```sh
 python3 -B proofs/raft-carrier-comparison/check-termination-mutant.py
 ```
+
+Remediation 3 is confined to the two reviewer-classified non-architectural defects.
+Its [first compiling RED](evidence/rem3-red.log) records 10 failures; the
+[time-point supplement](evidence/rem3-red-time.log) adds the eleventh distinct
+failure before correction. The [authoring compile log](evidence/rem3-authoring-compile.log)
+is not behavioral RED. [Initial GREEN](evidence/rem3-green.log) records 25 unit
+passes after correction. The final [spec witnesses](evidence/rem3-settled-spec-witness.log)
+record 54 passes, plus four API/provider compiler passes (58 total), while the
+[20 ordinary provider cases](evidence/rem3-settled-behavior-red.log) remain RED.
+The existing termination mutant still fails exactly its eight cases; all 19 other
+current units pass in that copied mutant fixture.
+
+B0-04 now drains startup at unchanged time, advances through actual aligned logical
+points, and refreshes runnable inventory after every selected drive. Each fixed
+point has a 4096-action bound and no time advancement or message delivery inside
+the drain. The time schedule has a separate 4096-point bound. Actual eligibility
+is recorded independently of later outbound vote emission. Pure owned-future
+witnesses exercise ticker -> awakened pending core -> newly registered send,
+reject early/inline mutants, and show that a time jump does not grant elapsed host
+ticks. They claim no engine, election or leader result. Real adapted B0-04 remains
+mandatory later.
+
+Clock domains use a private collision-free bounded encoding: carrier 1 bit,
+session 31 bits, node 2 bits, incarnation 30 bits. Sessions are 0..2^31-1; nodes
+are 1..3; issued incarnations are 1..2^30-1. Incarnation zero is allowed only in
+raw negative-test scope values, never `inputs`. Invalid coordinates assert before
+source/work assembly. Domains are opaque identities, unrelated to time nanos or
+wire format. Same coordinates replay deterministically without a global allocator.
+The original node1/inc11/node2/inc1 collision, bilateral foreign source/scheduler
+instants and deadlines, neighbors, limits and maximum issued construction all
+have executable witnesses.
+
+Current [measurements](evidence/rem3-settled-measurements.json),
+[exact changes](evidence/rem3-changes.json), and
+[root-relative inventory](evidence/rem3-files.sha256) describe the ready-for-review
+packet. All prior evidence is preserved. Public traits, roles/edges, manifests,
+providers and case labels are unchanged. Both fresh finders must verify their
+counterexamples on the owner's settled revision; no finding is self-closed.
+The review-loop permits this bounded third non-architectural correction; any new
+reviewer-classified architectural root cause stops the lane.

@@ -1,0 +1,78 @@
+{
+  "implementation_review_baseline": "b2df51042ae01afd1b42cb12e2de8b28f1106ec5",
+  "owner_supplied_documentary_root": "ccbcd44a9c402eff199be06daca2d0f51ed9a42c",
+  "member_pins": {
+    "glade": "c8c0613f645dd4b6aaf546f586d77cfdb76a0c87",
+    "glade-discover": "52ea2d118f45d9e7c3d9a789310dd5d669958851",
+    "external-gyld": "ca04499a360d910fbf8ee2540ed446facd051b35"
+  },
+  "read_only_context": {
+    "dev-docs/GladeRaftB0-ReviewConsistency-2.md": "d10228fcbb0d799b6605820fd8fd5c11807394f271ada7fcc081330a0dcec682",
+    "dev-docs/GladeRaftB0-ReviewSafety-2.md": "160d9cd1f9cef55a2685d962063bd6114529a56e3eb117f553d6efc16acb0928",
+    "dev-docs/GladeRaftB0-RemPlan-3.md": "032bfe7409b2b89a95b1f1d8a2196cc68b847086d8abcceeb82fd887b649e537"
+  },
+  "observed_red_first": [
+    {
+      "log": "evidence/rem3-red.log",
+      "command": "cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib",
+      "seconds": 1.011174875,
+      "exit_code": 101,
+      "passed": 14,
+      "failed": 10,
+      "ignored": 0,
+      "filtered": 0
+    },
+    {
+      "log": "evidence/rem3-red-time.log",
+      "command": "cargo test --locked --offline --manifest-path proofs/raft-carrier-comparison/Cargo.toml -p glade-carrier-spec --lib",
+      "seconds": 1.284894334,
+      "exit_code": 101,
+      "passed": 14,
+      "failed": 11,
+      "unique_additional_failures": 1,
+      "ignored": 0,
+      "filtered": 0
+    }
+  ],
+  "distinct_compiling_red_regressions": 11,
+  "authoring_compile_log": "evidence/rem3-authoring-compile.log (not behavioral RED)",
+  "initial_green": {
+    "log": "evidence/rem3-green.log",
+    "seconds": 0.753656084,
+    "exit_code": 0,
+    "passed": 25,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0
+  },
+  "current_counts": {
+    "spec_green": 54,
+    "api_provider_green": 4,
+    "total_green": 58,
+    "ordinary_b0_red": 20,
+    "ignored": 0,
+    "filtered": 0,
+    "termination_mutant_failed": 8,
+    "termination_mutant_other_passed": 19
+  },
+  "fixture_limits": {
+    "session_min": 0,
+    "session_max": 2147483647,
+    "node_min": 1,
+    "node_max": 3,
+    "issued_incarnation_min": 1,
+    "issued_incarnation_max": 1073741823,
+    "zero_incarnation": "raw unissued negative-test scopes only",
+    "domain_encoding_bits": [
+      1,
+      31,
+      2,
+      30
+    ],
+    "fixed_point_action_bound": 4096,
+    "boundary_time_point_bound": 4096
+  },
+  "public_api_roles_dependencies_manifests_providers_case_labels_changed": false,
+  "writes": "Comparison subtree + dev-docs/GladeRaftB0Allocation.md only. No comparison-contract/report/plan/ledger/production/member/source-adaptation writes. No Git/GWZ or engines.",
+  "review_accounting": "Third patch confined to two fresh-reviewer-classified nonarchitectural defects; two architectural rounds remain used. Both fresh finders must verify exact new tuple. Any new architectural root stops lane. No self-closure, runtime or production qualification."
+}

@@ -1,0 +1,119 @@
+   Compiling glade-carrier-spec v0.0.0 (/Volumes/projects/limbo/glade-wz-raft-production/proofs/raft-carrier-comparison/spec)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.87s
+     Running unittests src/lib.rs (proofs/raft-carrier-comparison/target/debug/deps/glade_carrier_spec-a05a7aa1953a4803)
+
+running 25 tests
+test b0::sources::extra_runtime_entropy_sampling_mutant_is_rejected ... ok
+test b0::sources::once_only_openraft_entropy_footprint_accepts_post_constructor_poison ... ok
+test fixture::domains::domain_encoding_neighbors_limits_carriers_sessions_and_replay_are_distinct ... FAILED
+test b0::point::witness::current_inventory_reaches_ticker_core_and_new_send_future ... FAILED
+test b0::point::witness::early_eligibility_mutant_is_rejected ... FAILED
+test b0::point::witness::perpetually_rewoken_work_hits_the_explicit_point_action_bound ... FAILED
+test fixture::domains::invalid_encoding_coordinates_refuse_before_source_or_work_allocation ... FAILED
+test b0::point::witness::selected_host_ticks_require_actual_progress_between_logical_points ... FAILED
+test b0::point::witness::inline_send_poll_mutant_is_rejected ... FAILED
+test fixture::domains::colliding_counterexample_instants_are_foreign_to_both_owned_sources ... FAILED
+test b0::sources::persistent_work_does_not_require_artificial_runtime_registration ... ok
+test fixture::domains::colliding_counterexample_instants_cannot_enable_either_owned_scheduler ... FAILED
+test fixture::domains::colliding_counterexample_deadlines_refuse_without_registration ... FAILED
+test fixture::transport::termination::consumed_stopped_peer_timeout ... ok
+test fixture::domains::node_one_incarnation_eleven_and_node_two_incarnation_one_are_distinct ... FAILED
+test fixture::transport::termination::consumed_stopped_peer_cancel ... ok
+test fixture::transport::termination::consumed_replaced_peer_cancel ... ok
+test fixture::work::overflow_rejection_releases_borrow_before_owned_future_drop ... ok
+test fixture::transport::termination::held_stopped_peer_cancel ... ok
+test fixture::transport::termination::held_replaced_peer_timeout ... ok
+test fixture::transport::termination::replaced_caller_cannot_terminate_old_pending_ownership_or_wake_its_future ... ok
+test fixture::transport::termination::consumed_replaced_peer_timeout ... ok
+test fixture::transport::termination::held_stopped_peer_timeout ... ok
+test fixture::transport::termination::live_peer_late_reply_cannot_reopen_locally_terminated_rpc ... ok
+test fixture::transport::termination::held_replaced_peer_cancel ... ok
+
+failures:
+
+---- fixture::domains::domain_encoding_neighbors_limits_carriers_sessions_and_replay_are_distinct stdout ----
+
+thread 'fixture::domains::domain_encoding_neighbors_limits_carriers_sessions_and_replay_are_distinct' (167696943) panicked at spec/src/fixture/domains.rs:71:21:
+bounded coordinates must not alias
+
+---- b0::point::witness::current_inventory_reaches_ticker_core_and_new_send_future stdout ----
+
+thread 'b0::point::witness::current_inventory_reaches_ticker_core_and_new_send_future' (167696932) panicked at spec/src/b0/point/witness.rs:108:1:
+assertion `left == right` failed: refresh must select ticker, awakened core, newly spawned send
+  left: ["startup", "tick"]
+ right: ["startup", "tick", "eligible", "send"]
+
+---- b0::point::witness::early_eligibility_mutant_is_rejected stdout ----
+
+thread 'b0::point::witness::early_eligibility_mutant_is_rejected' (167696933) panicked at spec/src/b0/point/witness.rs:109:1:
+early eligibility mutant must be rejected
+
+---- b0::point::witness::perpetually_rewoken_work_hits_the_explicit_point_action_bound stdout ----
+
+thread 'b0::point::witness::perpetually_rewoken_work_hits_the_explicit_point_action_bound' (167696935) panicked at spec/src/b0/point/witness.rs:127:5:
+nonquiescent point must fail at an explicit action bound
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- fixture::domains::invalid_encoding_coordinates_refuse_before_source_or_work_allocation stdout ----
+
+thread 'fixture::domains::invalid_encoding_coordinates_refuse_before_source_or_work_allocation' (167696944) panicked at spec/src/fixture/domains.rs:81:5:
+assertion failed: std::panic::catch_unwind(||
+            super::Fixture::new(Carrier::OpenRaft, 1 << 31)).is_err()
+
+---- b0::point::witness::selected_host_ticks_require_actual_progress_between_logical_points stdout ----
+
+thread 'b0::point::witness::selected_host_ticks_require_actual_progress_between_logical_points' (167696936) panicked at spec/src/b0/point/witness.rs:158:5:
+assertion `left == right` failed: a jump grants one resumed tick, never four elapsed host ticks
+  left: [4000000]
+ right: [1000000, 2000000, 3000000, 4000000]
+
+---- b0::point::witness::inline_send_poll_mutant_is_rejected stdout ----
+
+thread 'b0::point::witness::inline_send_poll_mutant_is_rejected' (167696934) panicked at spec/src/b0/point/witness.rs:110:1:
+inline-send mutant must be rejected
+
+---- fixture::domains::colliding_counterexample_instants_are_foreign_to_both_owned_sources stdout ----
+
+thread 'fixture::domains::colliding_counterexample_instants_are_foreign_to_both_owned_sources' (167696941) panicked at spec/src/fixture/domains.rs:23:9:
+assertion `left == right` failed
+  left: Ok(())
+ right: Err(WrongDomain)
+
+---- fixture::domains::colliding_counterexample_instants_cannot_enable_either_owned_scheduler stdout ----
+
+thread 'fixture::domains::colliding_counterexample_instants_cannot_enable_either_owned_scheduler' (167696942) panicked at spec/src/fixture/domains.rs:40:9:
+assertion `left == right` failed
+  left: Ok(())
+ right: Err(WrongDomain)
+
+---- fixture::domains::colliding_counterexample_deadlines_refuse_without_registration stdout ----
+
+thread 'fixture::domains::colliding_counterexample_deadlines_refuse_without_registration' (167696940) panicked at spec/src/fixture/domains.rs:55:9:
+assertion `left == right` failed
+  left: Ok(WorkId { scope: NodeScope { carrier: OpenRaft, session: 1, node: NodeKey { group: 7, node: 1 }, incarnation: 11, domain: ClockDomain(121) }, sequence: 1 })
+ right: Err(WrongDomain)
+
+---- fixture::domains::node_one_incarnation_eleven_and_node_two_incarnation_one_are_distinct stdout ----
+
+thread 'fixture::domains::node_one_incarnation_eleven_and_node_two_incarnation_one_are_distinct' (167696945) panicked at spec/src/fixture/domains.rs:9:9:
+assertion `left != right` failed
+  left: ClockDomain(121)
+ right: ClockDomain(121)
+
+
+failures:
+    b0::point::witness::current_inventory_reaches_ticker_core_and_new_send_future
+    b0::point::witness::early_eligibility_mutant_is_rejected
+    b0::point::witness::inline_send_poll_mutant_is_rejected
+    b0::point::witness::perpetually_rewoken_work_hits_the_explicit_point_action_bound
+    b0::point::witness::selected_host_ticks_require_actual_progress_between_logical_points
+    fixture::domains::colliding_counterexample_deadlines_refuse_without_registration
+    fixture::domains::colliding_counterexample_instants_are_foreign_to_both_owned_sources
+    fixture::domains::colliding_counterexample_instants_cannot_enable_either_owned_scheduler
+    fixture::domains::domain_encoding_neighbors_limits_carriers_sessions_and_replay_are_distinct
+    fixture::domains::invalid_encoding_coordinates_refuse_before_source_or_work_allocation
+    fixture::domains::node_one_incarnation_eleven_and_node_two_incarnation_one_are_distinct
+
+test result: FAILED. 14 passed; 11 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p glade-carrier-spec --lib`
