@@ -345,3 +345,19 @@ matrix before fresh dual Code/State implementation review. New boundary/edge
 recomposition still requires review. Source qualification, real faults/SIGKILL,
 external original oracles and measured tiers remain open. This filing changes
 review/status documentation only; accepted allocation source is pinned above.
+
+
+### Q3 allocation remediation 1 — bootstrap clarification pending
+
+Before implementing learner creation, the drafter identified a concrete
+satisfiability conflict: seeded receiver at learner-add S cannot demonstrate
+actual installation of the required same-cut snapshot. [One bounded correction](GladeRaftQ3Allocation-RemPlan-1.md)
+allows the externally authorized but locally incomplete private catch-up follower,
+with campaign/vote/quorum/home/serving blocked until appropriate validated
+restoration. Actual RawNode RED -> GREEN carrier counterexample is filed;
+application/authority/disk catch-up still requires full implementation tests.
+Fresh Consistency/Safety review of the pinned supplement amendment precedes the
+corresponding learner algorithm. All in-progress uncommitted Q3 implementation
+is outside this document-review object and uses no unreviewed learner rule.
+This is allocation remediation round 1, distinct from the accepted semantic
+contract's round count and the upcoming implementation Code/State object.
