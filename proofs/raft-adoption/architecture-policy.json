@@ -16,7 +16,7 @@
     },
     "glade-raft-adoption-proof": {
       "role": "harness",
-      "reason": "DRAFT Q3 implementation allocation: existing controlled actual-Raft harness gains a private Q3 QualificationSession provider consuming q3-api and its injected StoreLifecycle; concrete disk remains dev-only composition. Q1a/Q2 remain unchanged and separately verified. New normal edge and provider require allocation review before algorithms.",
+      "reason": "Accepted Q3 allocation: controlled actual-Raft harness implements the private QualificationSession consuming q3-api and injected StoreLifecycle; concrete disk remains dev-only. Q1a/Q2 contracts remain preserved. Concrete Q3 implementation and complete qualification evidence are pending Code/State review.",
       "dependencies": [
         "normal:glade-raft-adoption-api",
         "normal:raft",
@@ -79,11 +79,11 @@
         "conformance",
         "v2_lifecycle"
       ],
-      "reason": "DRAFT Q3 implementation allocation: separate V2 modules implement coherent checkpoint publication and injected owned-path lifecycle; Q2 format/contract unchanged. New normal q3-api edge/providers require review before algorithms."
+      "reason": "Accepted Q3 allocation: isolated V2 modules implement CheckpointStore and injected owned-path StoreLifecycle; Q2 format/contract remain preserved. Concrete implementation is pending Code/State review."
     },
     "glade-raft-q3-api": {
       "role": "contract",
-      "reason": "Accepted private Q3 store/session contract plus DRAFT smallest injected store create/open lifecycle supplement; no implementation types or production adoption. Supplement requires renewed contract review.",
+      "reason": "Accepted private Q3 store/session contract and reviewed smallest injected create/open lifecycle supplement; no carrier/path implementation types or production adoption.",
       "dependencies": [
         "normal:glade-raft-adoption-api",
         "normal:glade-raft-durability-api"
@@ -117,7 +117,7 @@
     },
     "glade-raft-q3-spec": {
       "role": "harness",
-      "reason": "DRAFT Q3 implementation allocation: reusable normal consumer still depends only on q3-api; integration-test composition selects actual carrier and filesystem providers through dev edges. All nineteen default specifications remain selected and deliberately RED until providers are qualified. No production dependency path.",
+      "reason": "Accepted Q3 allocation: reusable normal consumer depends only on q3-api; dev-only integration composition selects actual carrier and filesystem providers. All nineteen original default specifications remain selected against concrete providers; full implementation is pending Code/State review. No production dependency path.",
       "dependencies": [
         "normal:glade-raft-q3-api",
         "dev:glade-raft-adoption-proof",

@@ -3,8 +3,10 @@ use raft::eraftpb::{Message, MessageType, Snapshot};
 use raft::storage::MemStorage;
 use raft::{Config, RawNode};
 fn checkpoint() -> Snapshot {
-    let mut snapshot = Snapshot::default();
-    snapshot.data = b"carrier-only".to_vec().into();
+    let mut snapshot = Snapshot {
+        data: b"carrier-only".to_vec().into(),
+        ..Snapshot::default()
+    };
     let metadata = snapshot.mut_metadata();
     metadata.index = 5;
     metadata.term = 1;
