@@ -6,6 +6,11 @@ Proposal reviewed at root `4702e283e1adac5863c5d542e57a9ceea9454541`, Glade
 [Consistency](GladeRaftProductionProfileDecisions-ReviewConsistency.md)/
 [Safety](GladeRaftProductionProfileDecisions-ReviewSafety.md) GO/GO, no findings.
 This accepts fitness for owner selection, not the recommended choices themselves.
+Subsequent GDL-054 confirms disconnected acceptance and later conflict resolution
+for shared preferences. See the [resource consistency requirement](GladeResourceConsistencyProfiles.md).
+The appearance-first recommendation below therefore requires reconsideration;
+it is not the selected contract for those preferences. Raft's quorum rules remain
+applicable to resources using the strong profile. This addendum is unreviewed.
 Owner clarification after that review: Glade must support one, two, three or
 more nodes, including disconnected first starts and unstable connectivity.
 [Bootstrap and growth design](GladeRaftBootstrapGrowthDesign.md) addresses that

@@ -11,6 +11,11 @@ automatic-election qualification remain open. The reviewed
 [production-profile packet](GladeRaftProductionProfileDecisions.md) awaits owner
 selection before Q4-C canonical amendment work. These preparation gates do not
 activate a Raft provider in Glade.
+Subsequent GDL-054 requires partition-available, mergeable shared preferences;
+[resource consistency profiles](GladeResourceConsistencyProfiles.md) captures the
+owner direction. Reconsider appearance as the first strong-profile consumer
+before Q4-C. This requirement does not relax Raft quorum rules or select a
+multiwriter wire/receipt profile; the addendum is not yet reviewed.
 This plan extends [qualification](GladeRaftQualificationPlan.md), preserving
 [RA-001–012](GladeRaftAdoptionContract.md). It MUST NOT turn private Q3 fixture
 identities, receipts, storage encodings or trust decisions into production contracts.
@@ -36,6 +41,14 @@ reviewed allocations and compiling behavioral RED consumers before implementatio
 Proof harness packages MUST NOT enter production dependency paths.
 
 ## Ordered work and gates
+
+Near-term owner priority: independent CRDT admission during disconnection and
+reconciliation after reconnect. The [IC-1–4 delivery plan](GladeIndependentCrdtAdmissionPlan.md)
+recommends specifying, proving and integrating that path before Q4-D/E, with
+Q4-B carrier qualification continuing independently and Q4-C contracts coordinated
+with IC-1. The owner subsequently authorized this design/review/implementation
+lane (GDL-057). No gate is completed or strong Raft contract changed by that
+authorization. The new plan is unreviewed; activation remains separately gated.
 
 | Slice | Concrete output | Exit gate |
 | --- | --- | --- |

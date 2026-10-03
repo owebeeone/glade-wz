@@ -4,6 +4,15 @@ Date: 2026-10-03. Status: **DRAFT evaluation and next-proof recommendation**. Th
 work and this separate evaluation. This document does not select H3, amend an existing contract, freeze an
 API, or authorize code.
 
+Subsequent owner confirmation, GDL-054: shared browser preferences such as theme
+color may remain writable during disconnection, with competing edits resolved
+after reconnection. The [resource-profile requirement capture](GladeResourceConsistencyProfiles.md)
+records this direction. Home-outage acceptance and temporary disagreement are no
+longer merely hypothetical product conditions; the exact field scope, conflict,
+permission-freshness and receipt/loss profiles remain open. The pinned historical
+appearance/layout scope below is evidence for this evaluation, not a current
+ruling for every browser preference. Earlier reviews do not cover this addendum.
+
 ## 1. Recommendation and product conditions
 
 Continue H1 for resources requiring one authoritative admission point. In parallel, evaluate independent

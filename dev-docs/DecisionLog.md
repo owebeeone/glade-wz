@@ -70,6 +70,44 @@ G* design work.
 
 ## Notes
 
+GDL-057 — Owner directive, 2026-10-04: proceed with a dedicated independent
+CRDT admission design, review it, then implement under the accepted contracts.
+The directive followed the recommendation to put this lane before the first
+Raft production integration and was confirmed by "Go". The
+[delivery plan](GladeIndependentCrdtAdmissionPlan.md) records the sequence.
+Canonical/interface amendments, compiling behavioral RED consumers, applicable
+reviews, genuine adapter evidence and legacy compatibility remain mandatory;
+the directive does not activate running nodes or waive those gates.
+
+GDL-056 — Owner near-term priority, 2026-10-04: put independent CRDT admission
+and partition/reconnect reconciliation into the delivery timeline. The owner
+asked whether to do it before or after the first Raft integration. The
+[delivery plan](GladeIndependentCrdtAdmissionPlan.md) recommends IC-1–4 before
+Q4-D/E, with carrier qualification independent and shared canonical contracts
+reconciled early. This records the requested priority and proposed sequencing,
+not owner ratification of that sequence, implementation completion or activation.
+
+GDL-055 — Owner design direction, 2026-10-04: general CRDT resources MUST NOT
+be restricted to preference or text use cases. Distinct resources/scopes require
+independent instances with their own identity, causal history, authorization and
+replication participation. [Resource-profile capture](GladeResourceConsistencyProfiles.md)
+separates engine, exact payload/merge profile and admission/receipt contract.
+Text is an implemented profile, not the general engine's product limit. New
+profiles and independent admission still require contracts, tests and review;
+this direction does not claim implementation or grant rights through discovery.
+
+GDL-054 — Owner-confirmed requirement, 2026-10-03: shared browser preferences
+such as theme color MAY accept competing edits during disconnection and resolve
+conflicts when peers reconnect. Glade MUST support resource-specific consistency
+expectations; a source supplied only by a missing provider may remain unavailable.
+[Requirement capture](GladeResourceConsistencyProfiles.md) separates the proposed
+multiwriter preference path from exclusive coordination. A timeout does not grant
+rights, create identity or change Raft membership. Exact eligible fields, merge
+rule, authorization freshness, receipt/read and storage-loss promises remain open;
+per-field LWW is a candidate, not an owner-selected algorithm. The proposed use of
+appearance as the first Raft consumer requires reconsideration. This records the
+product direction, not implementation, a canonical-contract change or activation.
+
 GDL-053 — Owner clarification and design direction, 2026-10-03: Glade MUST
 support deployment with **one, two, three or more nodes**, including initially
 disconnected participants that later discover each other and unstable networks.

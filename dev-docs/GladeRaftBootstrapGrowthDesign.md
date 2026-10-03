@@ -4,6 +4,11 @@ Date: 2026-10-03. Status: **semantic proposal reviewed at root `761f691a17d65a5b
 The [review record](GladeRaftBootstrapGrowth-ReviewCycle.md) binds the complete
 tuple, verbatim reports and scope. Fourteen test obligations below remain future
 work; analytical design review is not executed qualification.
+Subsequent GDL-054 distinguishes partition-available preferences from resources
+requiring exclusive coordination. The [resource-profile requirement capture](GladeResourceConsistencyProfiles.md)
+is an unreviewed addendum. This document's Raft bootstrap/membership rules remain
+the strong-profile proposal; they do not impose quorum write availability on a
+future, separately qualified multiwriter preference profile.
 The owner requires Glade to operate with one, two, three or more nodes, including
 participants that start disconnected and later discover each other. Three is a
 resilience recommendation, not a minimum. This selects the cardinality objective,
