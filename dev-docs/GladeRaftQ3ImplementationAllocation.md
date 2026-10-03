@@ -1,6 +1,6 @@
 # Glade Raft Q3 implementation allocation supplement
 
-Date: 2026-10-03. Status: **DRAFT for fresh Consistency/Safety review before algorithms**.
+Date: 2026-10-03. Status: **allocation/lifecycle accepted at root `ccab267c6b23bfec7471923098944048a7959563` after [Consistency](GladeRaftQ3Allocation-ReviewConsistency.md)/[Safety](GladeRaftQ3Allocation-ReviewSafety.md) GO; unchanged member/Gyld tuple in the review ledger. This accepts exact roles/edges, lifecycle declarations and compiling RED providers only, not Q3 algorithms**.
 
 This supplements the accepted [Q3 configuration/snapshot contract](GladeRaftConfigurationSnapshotContract.md), source `ed243db983c485e46a27aa870ec745de16a56d7a`, filed at root `e1c260f6cf992f5d890c2ca454e2323b0d8e78b1`. It proposes the concrete provider allocation and a small injected store-lifecycle contract that the accepted declaration deliberately left for implementation allocation. It MUST pass the new contract gate before any V2 journal, membership or snapshot algorithm is implemented. It does not reopen Q1a/Q2 guarantees or claim Q3 qualification.
 

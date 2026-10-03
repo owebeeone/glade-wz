@@ -316,3 +316,32 @@ rebuild is included. The baseline is root
 `e1c260f6cf992f5d890c2ca454e2323b0d8e78b1`, unchanged member/Gyld pins. Canonical
 prompts bind the new committed tuple; reports are filed verbatim. Q3a/Q3b actual
 implementation remains pending allocation acceptance and its TDD/evidence gates.
+
+
+## Q3 implementation allocation accepted-through
+
+Source root `ccab267c6b23bfec7471923098944048a7959563`; unchanged Glade
+`90dc1a60981185fa26ae5bfafbbb5377c12a413b`, Glade-discover
+`52ea2d118f45d9e7c3d9a789310dd5d669958851`, external Gyld
+`ca04499a360d910fbf8ee2540ed446facd051b35`.
+Fresh independent [Consistency](GladeRaftQ3Allocation-ReviewConsistency.md) and
+[Safety](GladeRaftQ3Allocation-ReviewSafety.md) both GO, zero P0–P3, zero
+remediation rounds. Reports are verbatim. Canonical generated prompts:
+[Consistency](GladeRaftQ3Allocation-PromptConsistency.md),
+[Safety](GladeRaftQ3Allocation-PromptSafety.md). Both verified the tuple and empty
+scoped working-tree diff at start/end; neither accessed peer current-round
+prompt/report. No blind convergence or production escape observed.
+
+This accepts the paired StoreLifecycle create/open contract and exactly the
+allocation supplement's normal/development edges for V2DiskStore/V2StoreFactory,
+Q3Session and dev-composed Q3 consumer tests. No new package/third-party
+dependency, classification relaxation or process-global exception. Compiler
+consumer 3 PASS, nineteen shared + eight lifecycle cases deliberately RED,
+51 preserved selected regressions PASS, structural/format/Clippy PASS (23 owned
+files/zero exceptions). The historical refusing stage is not Q3 qualification.
+
+Owner directive now proceeds through Q3a/Q3b TDD and the complete accepted exit
+matrix before fresh dual Code/State implementation review. New boundary/edge
+recomposition still requires review. Source qualification, real faults/SIGKILL,
+external original oracles and measured tiers remain open. This filing changes
+review/status documentation only; accepted allocation source is pinned above.
