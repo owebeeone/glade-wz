@@ -114,3 +114,18 @@ Safety additionally found the crash oracle could accept a changed recovered
 receipt (one distinct P2). [Remediation1](GladeRaftQ2Contract-RemPlan-1.md)
 corrects both in one specification patch before disk/integration implementation.
 Storage interfaces, authority, roles and persistence design remain unchanged.
+
+## Q2 contract accepted-through
+
+Accepted at root `db2db3bba1bdbd931468949fffbd81d444044a3a`, unchanged
+member/Gyld pins, after [Consistency](GladeRaftQ2Contract-ReviewConsistency-1.md)
+and [Safety](GladeRaftQ2Contract-ReviewSafety-1.md) GO/GO. One remediation round,
+one distinct P2 and one distinct P3, zero open contract findings. Same reviewers
+verified their original counterexamples on one merged patch. No storage boundary,
+architecture or authority changed. The generated canonical prompts remain archived;
+focused dispatch added the Python oracle self-test to allowed commands.
+
+Both reports note a late redundant working-tree evidence appendix, excluded from
+the pinned object. The owner removed it; the contract was restored byte-for-byte
+to the reviewed revision before implementation. Historical RED/GREEN evidence
+was already committed in QualificationEvidence. No unreviewed clause was adopted.

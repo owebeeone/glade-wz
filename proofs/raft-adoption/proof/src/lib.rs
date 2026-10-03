@@ -16,3 +16,6 @@ mod codec;
 
 pub use application::Application;
 pub use cluster::{Cluster, Proposal};
+
+mod recovery;
+mod voter;

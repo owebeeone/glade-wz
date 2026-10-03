@@ -20,7 +20,8 @@ struct Applied {
 
 /// Deterministic committed-log host with complete retained numeric data.
 /// This bounded experiment uses memory and unbounded retained evidence;
-/// capacity exhaustion, compaction and durable recovery remain unqualified.
+/// the Q2 host can reconstruct it from a validated committed disk prefix.
+/// This interface itself promises no physical durability or snapshot support.
 pub struct Application {
     voters: Vec<u64>,
     applied: u64,

@@ -365,3 +365,199 @@ fn q2_follower_storage_failure_cannot_supply_a_data_quorum_ack() {
     assert!(cluster.outcome(1, command.request).is_none());
     assert_eq!(cluster.resource(1, 100).unwrap().payload, 11);
 }
+
+#[test]
+fn q2_recovery_rejects_conflicting_committed_voter_prefixes() {
+    use protobuf::Message as ProtobufMessage;
+    use raft::eraftpb::Entry;
+    let mut stores = loaded_stores();
+    for node in [1, 2] {
+        let term = node;
+        let entry = Entry {
+            index: 1,
+            term,
+            ..Entry::default()
+        };
+        let state = StoredState {
+            revision: 1,
+            binding: binding(node),
+            image: DurableImage {
+                term,
+                vote: node,
+                commit: 1,
+                entries: vec![StoredEntry {
+                    index: 1,
+                    term,
+                    bytes: entry.write_to_bytes().unwrap(),
+                }],
+            },
+        };
+        stores.insert(node, Box::new(Loaded(state)));
+    }
+    assert!(matches!(
+        Cluster::recover(&[1, 2, 3], stores),
+        Err(StoreError::Quarantined)
+    ));
+}
+
+#[test]
+fn q2_recovery_closes_protobuf_and_private_command_grammar() {
+    use protobuf::Message as ProtobufMessage;
+    use raft::eraftpb::{Entry, EntryType};
+    for case in 0..5 {
+        let mut stores = loaded_stores();
+        let mut entry = Entry {
+            index: 1,
+            term: 1,
+            ..Entry::default()
+        };
+        match case {
+            0 => {
+                entry.data = vec![255].into();
+            }
+            1 => {
+                entry.index = 2;
+            }
+            2 => {
+                entry.set_entry_type(EntryType::EntryConfChange);
+            }
+            3 => {
+                entry.context = vec![1].into();
+            }
+            _ => {
+                entry.sync_log = true;
+            }
+        }
+        let state = StoredState {
+            revision: 1,
+            binding: binding(2),
+            image: DurableImage {
+                term: 1,
+                vote: 2,
+                commit: 0,
+                entries: vec![StoredEntry {
+                    index: 1,
+                    term: 1,
+                    bytes: entry.write_to_bytes().unwrap(),
+                }],
+            },
+        };
+        stores.insert(2, Box::new(Loaded(state)));
+        assert!(matches!(
+            Cluster::recover(&[1, 2, 3], stores),
+            Err(StoreError::Quarantined)
+        ));
+    }
+}
+
+#[test]
+fn q2_exhausted_raft_term_is_refused_before_a_wrapping_campaign() {
+    let mut stores = loaded_stores();
+    let mut state = stores.get_mut(&1).unwrap().load().unwrap();
+    state.image.term = u64::MAX;
+    stores.insert(1, Box::new(Loaded(state)));
+    assert!(matches!(
+        Cluster::recover(&[1, 2, 3], stores),
+        Err(StoreError::CapacityExhausted)
+    ));
+}
+
+#[test]
+fn q2_actual_disk_valid_frame_with_malformed_command_never_starts_a_voter() {
+    use protobuf::Message as ProtobufMessage;
+    use raft::eraftpb::Entry;
+    for commit in [0, 1] {
+        let dir = Directory::new(&format!("invalid-command-{commit}"));
+        let mut stores = dir.stores(true);
+        let entry = Entry {
+            index: 1,
+            term: 1,
+            data: vec![255].into(),
+            ..Entry::default()
+        };
+        stores
+            .get_mut(&2)
+            .unwrap()
+            .persist(
+                0,
+                DurableImage {
+                    term: 1,
+                    vote: 2,
+                    commit,
+                    entries: vec![StoredEntry {
+                        index: 1,
+                        term: 1,
+                        bytes: entry.write_to_bytes().unwrap(),
+                    }],
+                },
+            )
+            .unwrap();
+        drop(stores);
+        assert!(matches!(
+            Cluster::recover(&[1, 2, 3], dir.stores(false)),
+            Err(StoreError::Quarantined)
+        ));
+    }
+}
+
+#[test]
+fn q2_actual_after_sync_error_is_unknown_and_can_later_commit_without_losing_old_receipt() {
+    use glade_raft_disk::FaultPoint;
+    struct Armed {
+        inner: Option<DiskStore>,
+        fault: std::rc::Rc<std::cell::Cell<Option<FaultPoint>>>,
+    }
+    impl DurableStore for Armed {
+        fn load(&mut self) -> Result<StoredState, StoreError> {
+            self.inner.as_mut().unwrap().load()
+        }
+        fn persist(
+            &mut self,
+            revision: u64,
+            image: DurableImage,
+        ) -> Result<StoredState, StoreError> {
+            let mut inner = self.inner.take().unwrap();
+            if let Some(fault) = self.fault.take() {
+                inner = inner.with_fault(fault);
+            }
+            let result = inner.persist(revision, image);
+            self.inner = Some(inner);
+            result
+        }
+    }
+    let dir = Directory::new("unknown-after-sync");
+    let mut stores = dir.stores(true);
+    stores.remove(&1);
+    let fault = std::rc::Rc::new(std::cell::Cell::new(None));
+    stores.insert(
+        1,
+        Box::new(Armed {
+            inner: Some(DiskStore::open(&dir.0.join("voter-1"), binding(1), None).unwrap()),
+            fault: fault.clone(),
+        }),
+    );
+    let mut cluster = Cluster::recover(&[1, 2, 3], stores).unwrap();
+    cluster.campaign(1);
+    cluster.drain();
+    apply(&mut cluster, 1, create());
+    let original = apply(&mut cluster, 1, mutate(1, 23));
+    fault.set(Some(FaultPoint::AfterSync));
+    let unknown = mutate(2, 99);
+    cluster.propose(1, unknown);
+    cluster.drain();
+    assert_eq!(cluster.failure(1), Some(StoreError::Io));
+    assert!(cluster.reply(1, unknown).is_none());
+    assert_eq!(cluster.resource(1, 100).unwrap().payload, 23);
+    drop(cluster);
+    let mut recovered = Cluster::recover(&[1, 2, 3], dir.stores(false)).unwrap();
+    assert_eq!(recovered.outcome(1, original.request), Some(original));
+    assert!(recovered.outcome(1, unknown.request).is_none());
+    recovered.campaign(1);
+    recovered.drain();
+    let settled = recovered
+        .outcome(1, unknown.request)
+        .expect("unknown persisted suffix can later commit");
+    assert!(matches!(settled.outcome, Outcome::Accepted(resource) if resource.payload == 99));
+    assert_eq!(recovered.outcome(1, original.request), Some(original));
+    assert_eq!(apply(&mut recovered, 1, unknown), settled);
+}

@@ -1,12 +1,15 @@
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 
 use glade_raft_adoption_api::{Action, Command, CommittedMachine, Receipt, RequestId, Resource};
-use raft::eraftpb::{Entry, EntryType, Message};
+use glade_raft_durability_api::{Binding, DurableStore, StoreError};
+use raft::eraftpb::{HardState, Message};
 use raft::storage::MemStorage;
 use raft::{Config, RawNode, StateRole};
 
 use crate::application::{Application, Readiness};
 use crate::codec;
+use crate::recovery;
+use crate::voter::Voter;
 
 /// Proposing reports neither application acceptance nor terminal noncommit.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -14,7 +17,18 @@ pub enum Proposal {
     Unknown,
 }
 
+mod light_ready_tests;
+
 mod tests {
+    #[test]
+    fn q2_campaign_refuses_exhausted_live_term() {
+        use glade_raft_durability_api::StoreError;
+        let mut cluster = super::Cluster::new(&[1, 2, 3]);
+        cluster.voters.get_mut(&1).unwrap().raft.raft.term = u64::MAX;
+        cluster.campaign(1);
+        assert_eq!(cluster.failure(1), Some(StoreError::CapacityExhausted));
+    }
+
     #[test]
     fn public_replay_of_driver_attested_move_recovers_original_receipt() {
         use super::Cluster;
@@ -91,70 +105,8 @@ mod tests {
     }
 }
 
-struct Voter {
-    raft: RawNode<MemStorage>,
-    application: Application,
-}
-
-impl Voter {
-    fn apply(&mut self, entries: Vec<Entry>) {
-        for entry in entries {
-            assert_eq!(
-                entry.get_entry_type(),
-                EntryType::EntryNormal,
-                "configuration changes are outside Q1a"
-            );
-            let (command, readiness) = if entry.data.is_empty() {
-                (None, None)
-            } else {
-                let (command, readiness) =
-                    codec::decode(&entry.data).expect("invalid committed fixture encoding");
-                (Some(command), readiness)
-            };
-            self.application
-                .apply_committed(entry.index, command, readiness)
-                .expect("committed application ordering violation");
-        }
-    }
-
-    fn ready(&mut self) -> Vec<Message> {
-        let mut outgoing = Vec::new();
-        while self.raft.has_ready() {
-            let mut ready = self.raft.ready();
-            assert!(ready.snapshot().is_empty(), "snapshots are outside Q1a");
-            assert!(
-                ready.read_states().is_empty(),
-                "read barriers are outside Q1a"
-            );
-            // Release both classes only after entries and HardState are readable
-            // under the memory-only persistence profile. No fsync is claimed.
-            let entries = ready.take_entries();
-            self.raft
-                .mut_store()
-                .wl()
-                .append(&entries)
-                .expect("memory append failed");
-            if let Some(hard_state) = ready.hs() {
-                self.raft.mut_store().wl().set_hardstate(hard_state.clone());
-            }
-            outgoing.extend(ready.take_messages());
-            outgoing.extend(ready.take_persisted_messages());
-            self.apply(ready.take_committed_entries());
-            let mut light = self.raft.advance(ready);
-            if let Some(commit) = light.commit_index() {
-                // commit_to rewrites term from the committed entry. A LightReady
-                // commit-only update MUST instead preserve current term/vote.
-                self.raft.mut_store().wl().mut_hard_state().commit = commit;
-            }
-            self.apply(light.take_committed_entries());
-            outgoing.extend(light.take_messages());
-            self.raft.advance_apply_to(self.application.applied());
-        }
-        outgoing
-    }
-}
-
-/// Explicit FIFO schedules over fixed, complete-data logical voters in memory.
+/// Explicit FIFO schedules over fixed, complete-data logical voters.
+/// Memory creation and injected persistent recovery are separate profiles.
 /// Campaigns and message-loss/healing are manual; no timer ticks or sleeps.
 pub struct Cluster {
     voters: BTreeMap<u64, Voter>,
@@ -164,16 +116,82 @@ pub struct Cluster {
 }
 
 impl Cluster {
-    /// Q2 constructor specification; real recovery follows boundary acceptance.
+    /// Recover all configured stores before creating any participant.
     pub fn recover(
-        _voters: &[u64],
-        _stores: BTreeMap<u64, Box<dyn glade_raft_durability_api::DurableStore>>,
-    ) -> Result<Self, glade_raft_durability_api::StoreError> {
-        Err(glade_raft_durability_api::StoreError::NotQualified)
+        voters: &[u64],
+        mut stores: BTreeMap<u64, Box<dyn DurableStore>>,
+    ) -> Result<Self, StoreError> {
+        if !matches!(voters, [1, 2] | [1, 2, 3])
+            || stores.keys().copied().collect::<Vec<_>>() != voters
+        {
+            return Err(StoreError::BindingMismatch);
+        }
+        let mut loaded = Vec::new();
+        for id in voters {
+            let mut store = stores.remove(id).ok_or(StoreError::Missing)?;
+            let state = store.load()?;
+            let expected = Binding {
+                scope: 7,
+                node: *id,
+                voters: voters.to_vec(),
+                application_profile: 1,
+            };
+            let entries = recovery::entries(&state, &expected)?;
+            loaded.push((*id, store, state, entries));
+        }
+        for left in &loaded {
+            for right in &loaded {
+                let common = left.2.image.commit.min(right.2.image.commit) as usize;
+                if left.2.image.entries[..common] != right.2.image.entries[..common] {
+                    return Err(StoreError::Quarantined);
+                }
+            }
+        }
+        let logger = slog::Logger::root(slog::Discard, slog::o!());
+        let mut nodes = BTreeMap::new();
+        for (id, store, state, entries) in loaded {
+            let application = recovery::application(voters, state.image.commit, &entries)?;
+            let storage = MemStorage::new_with_conf_state((voters.to_vec(), Vec::<u64>::new()));
+            storage
+                .wl()
+                .append(&entries)
+                .map_err(|_| StoreError::Quarantined)?;
+            let hard_state = HardState {
+                term: state.image.term,
+                vote: state.image.vote,
+                commit: state.image.commit,
+                ..HardState::default()
+            };
+            storage.wl().set_hardstate(hard_state);
+            let config = Config {
+                id,
+                election_tick: 10,
+                heartbeat_tick: 1,
+                applied: state.image.commit,
+                ..Config::default()
+            };
+            let raft =
+                RawNode::new(&config, storage, &logger).map_err(|_| StoreError::Quarantined)?;
+            nodes.insert(
+                id,
+                Voter {
+                    raft,
+                    application,
+                    persistence: Some((store, state)),
+                    failure: None,
+                },
+            );
+        }
+        Ok(Self {
+            voters: nodes,
+            messages: VecDeque::new(),
+            isolated: BTreeSet::new(),
+            readiness: Vec::new(),
+        })
     }
 
-    pub fn failure(&self, _voter: u64) -> Option<glade_raft_durability_api::StoreError> {
-        None
+    pub fn failure(&self, voter: u64) -> Option<StoreError> {
+        self.voters.get(&voter)?.failure.clone()
     }
 
     pub fn new(voters: &[u64]) -> Self {
@@ -199,6 +217,8 @@ impl Cluster {
                     Voter {
                         raft,
                         application: Application::with_voters(voters),
+                        persistence: None,
+                        failure: None,
                     },
                 )
             })
@@ -212,32 +232,42 @@ impl Cluster {
     }
 
     pub fn campaign(&mut self, voter: u64) {
-        self.voters
-            .get_mut(&voter)
-            .expect("unknown fixed voter")
-            .raft
-            .campaign()
-            .expect("campaign failed");
+        let voter = self.voters.get_mut(&voter).expect("unknown fixed voter");
+        if voter.failure.is_none() {
+            if voter.raft.raft.term == u64::MAX {
+                voter.failure = Some(StoreError::CapacityExhausted);
+                return;
+            }
+            voter.raft.campaign().expect("campaign failed");
+        }
     }
 
     pub fn drain(&mut self) {
         for _ in 0..100_000 {
             let mut progressed = false;
             for voter in self.voters.values_mut() {
-                if voter.raft.has_ready() {
-                    self.messages.extend(voter.ready());
+                if voter.failure.is_none() && voter.raft.has_ready() {
+                    match voter.ready() {
+                        Ok(messages) => {
+                            self.messages.extend(messages);
+                        }
+                        Err(error) => {
+                            voter.failure = Some(error);
+                        }
+                    }
                     progressed = true;
                 }
             }
             if let Some(message) = self.messages.pop_front() {
                 progressed = true;
                 if !self.isolated.contains(&message.from) && !self.isolated.contains(&message.to) {
-                    self.voters
+                    let voter = self
+                        .voters
                         .get_mut(&message.to)
-                        .expect("message outside bound configuration")
-                        .raft
-                        .step(message)
-                        .expect("Raft message rejected");
+                        .expect("message outside bound configuration");
+                    if voter.failure.is_none() {
+                        voter.raft.step(message).expect("Raft message rejected");
+                    }
                 }
             }
             if !progressed {
@@ -263,7 +293,9 @@ impl Cluster {
     pub fn leader(&self) -> Option<u64> {
         self.voters
             .iter()
-            .filter(|(_, voter)| voter.raft.raft.state == StateRole::Leader)
+            .filter(|(_, voter)| {
+                voter.failure.is_none() && voter.raft.raft.state == StateRole::Leader
+            })
             .max_by_key(|(_, voter)| voter.raft.raft.term)
             .map(|(id, _)| *id)
     }
@@ -277,6 +309,15 @@ impl Cluster {
     }
 
     pub fn propose(&mut self, voter: u64, command: Command) -> Proposal {
+        if self
+            .voters
+            .get(&voter)
+            .expect("unknown fixed voter")
+            .failure
+            .is_some()
+        {
+            return Proposal::Unknown;
+        }
         let witness = self.readiness.iter().rev().find_map(|(minted, witness)| {
             if *minted == command {
                 Some(*witness)
@@ -297,7 +338,11 @@ impl Cluster {
 
     /// Transient attempted-command response, protected by current disclosure.
     pub fn reply(&self, voter: u64, command: Command) -> Option<Receipt> {
-        let application = &self.voters.get(&voter)?.application;
+        let node = self.voters.get(&voter)?;
+        if node.failure.is_some() {
+            return None;
+        }
+        let application = &node.application;
         if !application.may_disclose(command.request) {
             return None;
         }
@@ -307,7 +352,11 @@ impl Cluster {
     /// Original retained outcome with current local disclosure permission.
     /// Local policy may be stale; unseen remote revocation is not qualified.
     pub fn outcome(&self, voter: u64, request: RequestId) -> Option<Receipt> {
-        let application = &self.voters.get(&voter)?.application;
+        let node = self.voters.get(&voter)?;
+        if node.failure.is_some() {
+            return None;
+        }
+        let application = &node.application;
         if !application.may_disclose(request) {
             return None;
         }
@@ -331,6 +380,7 @@ impl Cluster {
         let frontier = self
             .voters
             .get(&successor)
+            .filter(|voter| voter.failure.is_none())
             .map(|voter| voter.application.applied());
         let policy_frontier = self
             .leader()

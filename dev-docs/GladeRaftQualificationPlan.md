@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted; Q2 contract/RED review underway; Q2–Q4 remain open**.
+Date: 2026-10-03. Status: **Q0 and initial Q1a memory proof accepted; Q2 boundary accepted, real-disk implementation awaiting Code/State review; Q3–Q4 remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.

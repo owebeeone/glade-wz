@@ -233,3 +233,128 @@ fn oversized_image_is_rejected_before_write_and_prior_state_stays_usable() {
         1
     );
 }
+
+// Independent private-format adversarial records; checksum recomputation ensures
+// semantic recovery checks, rather than merely checksum detection, are exercised.
+fn test_record(revision: u64, image: &DurableImage) -> Vec<u8> {
+    let mut payload = Vec::new();
+    let bound = binding();
+    for word in [
+        revision,
+        bound.scope,
+        bound.node,
+        bound.application_profile,
+        3,
+        1,
+        2,
+        3,
+        image.term,
+        image.vote,
+        image.commit,
+        image.entries.len() as u64,
+    ] {
+        payload.extend(word.to_le_bytes());
+    }
+    for entry in &image.entries {
+        for word in [entry.index, entry.term, entry.bytes.len() as u64] {
+            payload.extend(word.to_le_bytes());
+        }
+        payload.extend(&entry.bytes);
+    }
+    let mut record = b"GQ2JRNL1".to_vec();
+    record.extend((payload.len() as u64 + 24).to_le_bytes());
+    record.extend(payload);
+    test_checksum(&mut record);
+    record
+}
+
+fn test_checksum(record: &mut Vec<u8>) {
+    let mut crc = 0_u64;
+    for byte in &*record {
+        crc ^= u64::from(*byte) << 56;
+        for _ in 0..8 {
+            crc = if crc & (1 << 63) != 0 {
+                (crc << 1) ^ 0x42F0_E1EB_A9EA_3693
+            } else {
+                crc << 1
+            };
+        }
+    }
+    record.extend(crc.to_le_bytes());
+}
+
+fn rejects_without_repair(label: &str, bytes: &[u8]) {
+    let fixture = Fixture::new(label);
+    // Ensure the adapter accepts actual genesis before forging recovery records.
+    let store = DiskStore::create_new(&fixture.path(), binding()).unwrap();
+    drop(store);
+    fs::write(fixture.path(), bytes).unwrap();
+    assert!(matches!(
+        DiskStore::open(&fixture.path(), binding(), None),
+        Err(StoreError::Quarantined)
+    ));
+    assert_eq!(fs::read(fixture.path()).unwrap(), bytes);
+}
+
+#[test]
+fn malformed_length_version_and_count_are_bounded_and_quarantined() {
+    for size in [0_u64, 23, 16 * 1024 * 1024 + 1, u64::MAX] {
+        let mut record = b"GQ2JRNL1".to_vec();
+        record.extend(size.to_le_bytes());
+        rejects_without_repair(&format!("length-{size}"), &record);
+    }
+    let mut wrong_version = test_record(0, &DurableImage::default());
+    wrong_version[7] = b'2';
+    wrong_version.truncate(wrong_version.len() - 8);
+    test_checksum(&mut wrong_version);
+    rejects_without_repair("version", &wrong_version);
+    let mut huge_count = test_record(0, &DurableImage::default());
+    huge_count[104..112].copy_from_slice(&u64::MAX.to_le_bytes());
+    huge_count.truncate(huge_count.len() - 8);
+    test_checksum(&mut huge_count);
+    rejects_without_repair("entry-count", &huge_count);
+}
+
+#[test]
+fn revision_gaps_duplicates_and_missing_genesis_quarantine() {
+    let image = conformance::image(1, 1, 1, &[1]);
+    for revision in [0, 2, u64::MAX] {
+        let mut journal = test_record(0, &DurableImage::default());
+        journal.extend(test_record(revision, &image));
+        rejects_without_repair(&format!("revision-{revision}"), &journal);
+    }
+    rejects_without_repair("missing-genesis", &test_record(1, &image));
+}
+
+#[test]
+fn valid_checksums_cannot_hide_conflicting_committed_history_or_binding() {
+    let first = conformance::image(1, 1, 1, &[1]);
+    let mut changed = first.clone();
+    changed.entries[0].bytes.push(99);
+    let mut journal = test_record(0, &DurableImage::default());
+    journal.extend(test_record(1, &first));
+    journal.extend(test_record(2, &changed));
+    rejects_without_repair("conflicting-prefix", &journal);
+    let mut wrong_binding = test_record(1, &first);
+    wrong_binding[32..40].copy_from_slice(&2_u64.to_le_bytes());
+    wrong_binding.truncate(wrong_binding.len() - 8);
+    test_checksum(&mut wrong_binding);
+    let mut journal = test_record(0, &DurableImage::default());
+    journal.extend(wrong_binding);
+    rejects_without_repair("changed-binding", &journal);
+}
+
+#[test]
+fn genesis_must_be_revision_zero_exactly_empty_and_canonical() {
+    rejects_without_repair(
+        "genesis-nonempty",
+        &test_record(0, &conformance::image(1, 1, 1, &[1])),
+    );
+    let mut trailing = test_record(0, &DurableImage::default());
+    trailing.truncate(trailing.len() - 8);
+    trailing.extend(0_u64.to_le_bytes());
+    let size = trailing.len() as u64 + 8;
+    trailing[8..16].copy_from_slice(&size.to_le_bytes());
+    test_checksum(&mut trailing);
+    rejects_without_repair("genesis-trailing-word", &trailing);
+}

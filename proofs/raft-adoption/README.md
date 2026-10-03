@@ -38,3 +38,37 @@ Movement readiness is a private trusted fixture envelope retained in the log;
 first-time public apply without it refuses movement. Exact replay recovers retained results. Production ports/certificates remain
 unqualified. The public resource observer is trusted test inspection, not a client
 read endpoint; local reply/outcome accessors enforce fixture disclosure permission.
+
+Q2 now adds an injected std-only persistence contract and real disk implementation.
+See [the persistence contract](../../dev-docs/GladeRaftPersistenceContract.md).
+The journal retains complete entries/HardState/binding; replay reconstructs committed
+outcomes, payloads, movement fences, policy and tombstones. It refuses torn/invalid
+history, holds a file lock and calls sync_all before publication. This is the
+named APFS/process-crash experiment; power-loss and production quorum guarantees
+remain open. Whole valid old-file rollback needs an independently trusted floor.
+
+Keep the test tiers explicit (manifest and PROTOC above):
+
+```sh
+# Small contract/model loop, no Raft build or disk I/O.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-durability-api
+# Existing memory driver/application loop; real-disk LightReady is ignored here.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib --test qualification
+# Real disk/host recovery tiers.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-disk
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test recovery
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib q2_real_light_ready -- --ignored
+# External process-kill tier: --no-run reports the executable path to supply.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test process_crash --no-run
+python3 proofs/raft-adoption/process-crash.py --self-test
+# Set q2_worker_path to the exact executable Cargo just reported.
+python3 proofs/raft-adoption/process-crash.py --worker "$q2_worker_path"
+```
+
+The default workspace run is broad qualification, not the pure edit loop. It
+intentionally ignores the disk LightReady unit and process worker: both MUST be
+executed through their separate commands for Q2 acceptance. The runner kills only
+its owned workers and uses disposable paths plus an explicit minimal environment.
+It compares complete externally retained original receipts after fresh-process
+lookup/exact retry at the acknowledged and durable-before-apply cuts. Measurements
+and exact reviewed source belong in the evidence/ledger, not inferred budgets.

@@ -1,6 +1,6 @@
 # Glade Raft Q2 persistence and recovery contract
 
-Date: 2026-10-03. Status: **proposed experimental boundary; implementation awaits contract review**.
+Date: 2026-10-03. Status: **experimental boundary accepted at root `db2db3bba1bdbd931468949fffbd81d444044a3a` after Consistency/Safety GO; implementation awaits Code/State acceptance**.
 
 This document refines Q2 in [GladeRaftQualificationPlan.md](GladeRaftQualificationPlan.md), principally RA-003/004/005/006/010/011 in [GladeRaftAdoptionContract.md](GladeRaftAdoptionContract.md). Q1a's accepted memory proof does not qualify persistence. This is a controlled local-disk/process-crash profile, not production adoption of raft-rs or a ratified production durability promise. Q2 MUST include the actual RawNode persistence/replay path and a process-kill witness; closing only the file adapter is insufficient.
 
@@ -8,7 +8,7 @@ This document refines Q2 in [GladeRaftQualificationPlan.md](GladeRaftQualificati
 
 The experiment remains the independent `proofs/raft-adoption` workspace. `glade-raft-durability-api` is a dependency-free contract crate with meaningful dyn-compatible `DurableStore::load` and `persist` operations. `glade-raft-disk` is its replaceable std-only implementation. The proof harness depends normally on the contract and chooses the disk adapter only in development composition/tests. No production Glade/Gyld dependency or canonical wire format changes.
 
-These role/edge/inventory changes are **proposals for the Q2 contract review**, not silent allowance relaxations. The contract inventory/source scans include the new crates; there are no process-global exception entries. File paths, expected bindings, trusted recovery floor and fault hooks MUST be caller-supplied instance inputs. The eventual host remains responsible for Raft and application semantic validation. Storage owns physical local publication and single-writer access. Records/application replay owns ordered payload and retained outcomes. Existing Admission/Policy responsibilities are unchanged; this does not authorize unsigned production policy.
+These role/edge/inventory changes were reviewed in the Q2 contract gate at the accepted tuple above; the production boundary is unchanged. The contract inventory/source scans include the new crates; there are no process-global exception entries. File paths, expected bindings, trusted recovery floor and fault hooks MUST be caller-supplied instance inputs. The eventual host remains responsible for Raft and application semantic validation. Storage owns physical local publication and single-writer access. Records/application replay owns ordered payload and retained outcomes. Existing Admission/Policy responsibilities are unchanged; this does not authorize unsigned production policy.
 
 ## 2. Named profile and explicit limits
 
@@ -63,7 +63,7 @@ Retained application state is reconstructed deterministically from complete comm
 | Complete append, before/during sync | I/O error or killed process; unknown publication; poisoned if alive | Full coherent result or quarantine/prior coherent prefix as justified by actual persisted evidence; no failure-as-noncommit inference |
 | After sync, before driver apply | Persisted command may be committed; no premature receipt | Replay committed prefix; preserve uncommitted entries without apply |
 | After apply, before client receipt | Lost reply; one retained outcome | Exact retry returns original receipt subject to current disclosure rule |
-| After receipt | Receipt promises named local process-crash profile and data-bearing quorum application evidence | Actual kill/restart recovers original receipt/payload/fences |
+| After receipt | Receipt promises named local process-crash profile and data-bearing log quorum plus ordered application at the serving voter | Actual kill/restart recovers original receipt/payload/fences |
 | Old complete journal replacement | Out of detection range without external floor | With trusted floor reject; without floor admit only explicitly qualified older observation |
 
 The one-shot `FaultPoint` inputs are `BeforeWrite`, `PartialWrite`, `AfterWrite`, `BeforeSync`, and `AfterSync`. They reside on each store instance and are test controls, never process-global hooks. `AfterWrite` and `BeforeSync` may coincide physically; both names make consumer boundary intent explicit. Live driver apply/reply cuts require separate host/process witnesses.
@@ -96,3 +96,35 @@ request/index/materialized payload with changed home/generation or changed outco
 MUST fail the oracle. `python3 proofs/raft-adoption/process-crash.py --self-test`
 contains adversarial regressions for both cases and strict record parsing. The
 worker stdout format is a private test oracle, not a production protocol.
+
+## Implementation allocation and exercised boundaries
+
+The disk adapter separates publication/locking (`disk/src/lib.rs`), bounded CRC64
+full-image framing (`codec.rs`), closed-history recovery (`journal.rs`) and image
+transition validation (`validation.rs`). Reopen synchronizes both validated file
+and its parent directory before admission, covering complete unknown writes and
+a genesis whose initial directory sync may not have completed. No file is repaired.
+
+The host separates FIFO/partition orchestration (`proof/src/cluster.rs`), live
+Ready/LightReady persistence (`voter.rs`) and startup validation/replay (`recovery.rs`).
+It validates every voter, checks common committed prefixes for conflicts, and
+restores configuration, HardState, log and Config.applied before serving.
+The host refuses exhausted term `u64::MAX` before startup/campaign instead of
+letting the carrier increment wrap/panic; this is bounded refusal, not complete
+production capacity qualification. The parser also refuses unsupported protobuf
+entry kind/context/unknown fields and malformed private command bytes, including
+uncommitted suffixes.
+
+The explicit disk LightReady unit tier uses real RawNodes and stores: persist
+leader append, deliver follower data acknowledgements, then advance append to
+produce an actual commit-only LightReady. The success/failure cases verify current
+term/vote preservation, persistence before application and no returned messages
+or new outcome after a persistence failure. The ordinary Cluster schedule holds
+all outgoing messages until both persistence stages complete. This alternate
+controlled schedule exercises the same live helpers; it does not add a client API.
+
+Fault evidence is bounded to the named hooks, malformed-history grammar cases,
+leader/follower refusal, real reopen, this LightReady cut, and two actual SIGKILL
+cuts. It is not exhaustive coverage of every OS syscall/interleaving, physical
+short-write mechanism or power interruption. The complete RA-011 anti-rollback
+requirement remains open without separately trustworthy state, as RP-007 states.

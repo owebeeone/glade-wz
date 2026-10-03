@@ -185,3 +185,108 @@ Recovery Result diagnostics are retained directly. Warnings-denied all-target
 Clippy and structural gates pass. Behavioral scaffold RED remains: disk 8 failures,
 recovery 1 negative pass/6 failures on NotQualified, process worker refusal before
 the kill cut. This corrects specification/oracle fidelity, not implementation.
+
+## Q2 implementation — real disk, replay and controlled crash evidence
+
+The corrected contract is accepted at `db2db3bba1bdbd931468949fffbd81d444044a3a`
+after Consistency/Safety GO/GO. Implementation source awaits a fresh Code/State
+settled-tree gate; no production adoption follows from GREEN.
+
+The disk adapter observed **12 behavioral RED tests before implementation**:
+the original eight and four additional malformed/checksummed-history cases.
+All twelve now pass against actual files. Its four cohesive modules own locking/
+publication, bounded CRC64 full-image codec, journal recovery and transition
+validation. Every successful publish calls file sync_all; genesis and reopen
+synchronize the parent directory, and reopen resynchronizes the complete recovered
+file before admission. Partial records quarantine; post-write errors poison;
+committed bytes/term/vote/commit invariants hold; uncommitted suffix replacement
+remains legal. There are no added third-party dependencies.
+
+The injected host's six initial positive/fault tests were RED before integration;
+they now pass. Twelve recovery tests additionally exercise nonvacuous invalid
+binding/bytes/prefix rejection, actual-disk malformed commands at committed and
+uncommitted indexes, cross-voter committed conflicts, policy/tombstone/outcome
+replay, private Move evidence/fences, old-leader suffix reconciliation, and real
+AfterSync uncertainty. In the latter test an I/O error returns no receipt; the
+persisted uncommitted proposal can later commit after restart, while prior receipts
+stay identical. An error is demonstrably not proof of noncommit.
+
+Two new capacity regressions observed RED: valid recovered u64::MAX term was
+admitted, and a live campaign at that term panicked in the carrier's increment.
+They now explicitly refuse with CapacityExhausted before startup/campaign. This
+does not certify general production capacity or automatic-election behavior.
+
+The live driver persists complete Ready entries/HardState before its memory
+mirror. It uses advance_append to obtain LightReady without prematurely advancing
+application, persists any commit-only change while preserving term/vote, then
+applies both batches and advances the actual applied frontier. Failures halt the
+voter's participation/serving and return no failed batch messages. Startup validates
+all configured images/private entries and their common committed prefixes, replays
+all committed history, and sets Config.applied before constructing the usable cluster.
+
+A separate ignored real-disk unit case drives actual RawNodes through a legal
+persist → follower acknowledgement → advance_append schedule to obtain a genuine
+LightReady commit-only update. Success and injected failure verify that update's
+term/vote preservation and ordering before application/messages/outcome. This is
+supplemental boundary coverage, not a claim that every OS interleaving was tested.
+
+The existing Voter declarations were moved as complete parser-identified items:
+`rust-split explode` reconstruction was byte-identical; scoped memory tests stayed
+GREEN after the move and before extending persistence. Orchestration, live storage
+ordering and restart validation now have separate source files. No legacy/upstream
+conditional compilation migration or unrelated refactor is claimed.
+
+### Verification at the implementation checkpoint
+
+**48 default Rust tests pass**; the separately selected real-disk LightReady case
+passes, for **49 Rust tests**. The default run intentionally ignores that case and
+the externally driven process worker. **Four Python oracle/parser regressions pass.**
+**Two actual SIGKILL/fresh-process recovery cycles pass**, with complete receipt
+lookup/retry equality against the parent's pre-kill original, or the independent
+before-apply fixture. All original 22 Q1a tests remain passing.
+
+Architecture, token-aware explicit boundaries, format, process-global inventory
+and all-target Clippy with warnings denied pass. Four libraries are classified;
+13 owned source files are scanned with zero exception entries. The scanner does
+not certify dependency code; raft-rs timeout RNG remains an open production gate.
+Commands/tier separation are in the [README](../proofs/raft-adoption/README.md).
+
+Machine/profile: Apple M3 Pro arm64, macOS26.6.2 build25G83, Rust1.96.0
+(ac68faa20 2026-05-25). `diskutil info /Volumes/projects` identifies external
+APFS disk5s1 (disk4s2 physical store); `df /private/var` and
+`diskutil info /System/Volumes/Data` identify internal APFS disk3s1 (disk0s2).
+Disk/LightReady fixtures use the project target on the former; tempfile host/kill
+fixtures use the latter. No power interruption, controller-cache certification,
+independent-machine quorum or production performance claim is made.
+
+Partial RA trace: RP-001–012 supply bounded RA-003/004/005/006/009/010/011 witnesses.
+Full RA-011 rollback protection without independent trusted state, production
+failure domains/receipt promises, snapshots/compaction/configuration Q3, authentic
+bootstrap/crypto, automatic elections/RNG and Glade legacy/effect exclusion Q4
+remain open. Parser checksums do not authenticate malicious storage. The journal
+retains unbounded records, limited to 16 MiB per complete image record.
+
+### Q2 feedback measurements
+
+Monotonic perf_counter around subprocesses, one run each, successful final
+implementation source bytes. “Cold” means fresh CARGO_TARGET_DIR with the existing
+registry and OS caches; it does not mean a clean machine or registry download.
+
+| Selected tier | Wall seconds |
+| --- | ---: |
+| Durability API cold build + model test | 1.584 |
+| Durability API warm build + model test | 0.077 |
+| Durability API prebuilt model execution | 0.004 |
+| Full proof workspace cold build + 48 default tests | 11.527 |
+| Disk warm build + 12 tests | 0.191 |
+| Disk prebuilt 12-test execution | 0.051 |
+| Host recovery warm build + 12 tests | 0.589 |
+| Host recovery prebuilt 12-test execution | 0.467 |
+| Explicit LightReady build + disk case | 0.116 |
+| External two process-kill cycles | 0.212 |
+
+No achieved latency budget is inferred from these samples. The small std-only
+contract can be built/tested without Raft or disk; broader actual-I/O assurance
+remains an explicitly selected tier. Metrics do not include the architecture
+checker build. The implementation-review checkpoint pins these source bytes;
+any later remediation must identify whether its measurements were repeated.
