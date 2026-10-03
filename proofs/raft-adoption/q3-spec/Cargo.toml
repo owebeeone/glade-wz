@@ -1,0 +1,12 @@
+[package]
+name = "glade-raft-q3-spec"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+glade-raft-q3-api = { path = "../q3-api" }
+
+[lints]
+workspace = true

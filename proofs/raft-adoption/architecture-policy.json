@@ -58,6 +58,46 @@
       "conformance_tests": [
         "conformance"
       ]
+    },
+    "glade-raft-q3-api": {
+      "role": "contract",
+      "reason": "DRAFT Q3: private coherent-checkpoint and qualification-session boundaries, no implementation/production adoption. Existing application/durable-entry contracts supply smallest relevant values. Review required before implementing.",
+      "dependencies": [
+        "normal:glade-raft-adoption-api",
+        "normal:glade-raft-durability-api"
+      ],
+      "traits": {
+        "CheckpointStore": [
+          "load",
+          "publish"
+        ],
+        "QualificationSession": [
+          "control",
+          "view",
+          "configure",
+          "configuration_outcome",
+          "submit",
+          "outcome",
+          "resource",
+          "checkpoint",
+          "install",
+          "applied_entry",
+          "replay"
+        ]
+      },
+      "conformance_tests": [
+        "public_contract"
+      ]
+    },
+    "glade-raft-q3-spec": {
+      "role": "harness",
+      "reason": "DRAFT Q3: intentionally refusing review scaffold plus bounded deterministic reusable consumer specifications, isolated from production and concrete carrier/I/O dependencies. This role and edge are proposed for contract review; no implementation is qualified.",
+      "dependencies": [
+        "normal:glade-raft-q3-api"
+      ],
+      "conformance_tests": [
+        "configuration_snapshot"
+      ]
     }
   }
 }

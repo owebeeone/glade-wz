@@ -1,6 +1,6 @@
 # Glade Raft qualification plan — bounded executable proof
 
-Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3–Q4 remain open**.
+Date: 2026-10-03. Status: **Q0, initial Q1a and Q2 private disk/process-crash proof accepted; Q2 implementation source `c3fe2e0f4afb08df4dfd39ec5021f0415cac1df5` after Code/State GO; Q3 contract review in preparation; Q3 implementation and Q4 remain open**.
 Passing results and limits are recorded in [the evidence](GladeRaftQualificationEvidence.md).
 The [adoption contract](GladeRaftAdoptionContract.md) defines RA-001–012.
 The [ownership evaluation](GladeOwnershipMechanismEvaluation.md) defines EM-01–12.
@@ -155,3 +155,15 @@ Q2 is bound by [GladeRaftPersistenceContract.md](GladeRaftPersistenceContract.md
 a dual Consistency/Safety gate on compiling RED boundary specifications precedes
 implementation, and a dual Code/State gate follows real disk/host/fault/process-kill
 evidence. This is a private experiment; no user-facing production format is frozen.
+
+
+Q3 is bound by the proposed
+[configuration/snapshot contract](GladeRaftConfigurationSnapshotContract.md).
+The contract, versioned persistence shape, package roles/edges and compiling RED
+consumer/conformance specifications MUST pass a dual **Consistency/Safety** gate
+before implementation. Its private numeric trust and schedule inputs are fixtures,
+not authenticated production admission. A later dual **Code/State** gate MUST
+verify actual RawNode configuration/snapshot behavior, real V2 storage, crash
+publication/compaction/restart and complete retained application/configuration
+outcomes. Q2 acceptance does not confer dynamic-membership or snapshot support.
+Q3 has no user-facing production surface or wire/file compatibility freeze.

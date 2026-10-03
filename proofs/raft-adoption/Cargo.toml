@@ -1,5 +1,5 @@
 [workspace]
-members = ["api", "durability-api", "disk", "proof"]
+members = ["api", "durability-api", "disk", "proof", "q3-api", "q3-spec"]
 resolver = "3"
 
 [workspace.package]

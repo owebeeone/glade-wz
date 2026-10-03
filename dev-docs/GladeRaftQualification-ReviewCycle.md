@@ -200,3 +200,25 @@ transport, failure-domain and legacy/effect exclusion gate. Automatic-election
 randomness and power-loss claims still require their recorded profile decisions
 and evidence. No push or desktop rebuild is part of this landing; unrelated
 member, handoff, research and scratch work was preserved.
+
+
+## Q3 contract review — package preparation
+
+The owner requested continuation of reviews. The next object is the DRAFT
+[configuration/snapshot contract](GladeRaftConfigurationSnapshotContract.md),
+its separately compiled contract consumers and deliberately refusing provider.
+[Q3 evidence](GladeRaftQ3ContractEvidence.md) records the expected behavioral RED,
+compiler witnesses, affected Q2 checks and tier measurements. This is contract
+review, not Q3 implementation acceptance or production ratification.
+
+The review tier is dual **Consistency/Safety** before implementation; a later
+dual **Code/State** gate follows actual carrier/disk/fault qualification. New
+package roles and exact dependency edges are proposals in this gate, with no
+relaxation of existing boundaries or process-global exceptions. Use fresh,
+read-only peer-blind reviewers on one committed tuple, archive canonical
+prompts and file reports verbatim. Merge findings into one remediation patch;
+originating reviewers verify closure, subject to the bound two-round cap.
+
+The Q2 accepted source/member tuple remains the baseline. Existing member
+modifications and untracked handoff/research/scratch work are outside the object.
+No production consumer, desktop build, push or activation is included.

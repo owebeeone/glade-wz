@@ -109,6 +109,21 @@ name = "glade-raft-durability-api"
 version = "0.0.0"
 
 [[package]]
+name = "glade-raft-q3-api"
+version = "0.0.0"
+dependencies = [
+ "glade-raft-adoption-api",
+ "glade-raft-durability-api",
+]
+
+[[package]]
+name = "glade-raft-q3-spec"
+version = "0.0.0"
+dependencies = [
+ "glade-raft-q3-api",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.189"
 source = "registry+https://github.com/rust-lang/crates.io-index"

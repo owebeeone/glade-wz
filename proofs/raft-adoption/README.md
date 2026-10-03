@@ -72,3 +72,29 @@ its owned workers and uses disposable paths plus an explicit minimal environment
 It compares complete externally retained original receipts after fresh-process
 lookup/exact retry at the acknowledged and durable-before-apply cuts. Measurements
 and exact reviewed source belong in the evidence/ledger, not inferred budgets.
+
+
+Q3 is now a **DRAFT contract-review package**, not an implementation. See
+[configuration/snapshot contract](../../dev-docs/GladeRaftConfigurationSnapshotContract.md)
+and [compilation/RED evidence](../../dev-docs/GladeRaftQ3ContractEvidence.md).
+The new API's dyn consumer is GREEN; the spec scaffold intentionally returns
+`NotQualified`, so all 15 `configuration_snapshot` behaviors are RED. No fake
+model is presented as a working membership or snapshot adapter. The default
+whole-workspace test command therefore intentionally fails Q3 during this gate;
+no `default-members` or hidden exclusions are used. Select existing Q2 packages
+explicitly when checking their unaffected regression tier.
+
+```sh
+# Carrier-free contract compiler witness.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-q3-api
+# Compiles successfully, then deliberately fails behaviorally at NotQualified.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-q3-spec --test configuration_snapshot
+# Existing accepted packages, with compatible PROTOC supplied as above.
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-api -p glade-raft-durability-api -p glade-raft-disk -p glade-raft-adoption-proof
+```
+
+The expanded architecture inventory and source roots are **proposals for this
+Q3 review**; dependency allowlists/roles of existing packages and the empty
+process-global exception list are unchanged. Physical V2 journal, actual
+ConfChangeV2/RawNode snapshot lifecycle and SIGKILL matrix remain implementation
+exit witnesses. Q2 format is never silently upgraded or described as dynamic.

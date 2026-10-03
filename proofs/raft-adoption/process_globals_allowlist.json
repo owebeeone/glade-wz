@@ -4,7 +4,9 @@
     "api/src/lib.rs",
     "proof/src/lib.rs",
     "durability-api/src/lib.rs",
-    "disk/src/lib.rs"
+    "disk/src/lib.rs",
+    "q3-api/src/lib.rs",
+    "q3-spec/src/lib.rs"
   ],
   "entries": []
 }

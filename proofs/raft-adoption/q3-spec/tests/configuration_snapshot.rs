@@ -1,0 +1,77 @@
+use glade_raft_q3_api::conformance;
+use glade_raft_q3_spec::{UnqualifiedSession, UnqualifiedStore};
+
+#[test]
+fn v2_checkpoint_exact_roundtrip_and_immutable_same_cut() {
+    conformance::store_snapshot_roundtrip(&mut UnqualifiedStore);
+}
+
+#[test]
+fn v2_suffix_replacement_bounds_and_commit_cut() {
+    conformance::store_suffix_and_bounds(&mut UnqualifiedStore);
+}
+
+#[test]
+fn v2_historical_same_term_vote_survives_removed_voter() {
+    conformance::store_removed_vote_is_not_rewritten(&mut UnqualifiedStore);
+}
+
+#[test]
+fn membership_authorized_namespace_and_exact_intent_retry() {
+    conformance::membership_authority_and_retry(&mut UnqualifiedSession);
+}
+
+#[test]
+fn learner_unavailable_cannot_promote_or_supply_quorum() {
+    conformance::learner_unavailable_and_nonvoting(&mut UnqualifiedSession);
+}
+
+#[test]
+fn joint_outgoing_majority_alone_cannot_accept() {
+    conformance::joint_authority(&mut UnqualifiedSession, vec![2, 4]);
+}
+
+#[test]
+fn joint_incoming_majority_alone_cannot_accept() {
+    conformance::joint_authority(&mut UnqualifiedSession, vec![2, 3]);
+}
+
+#[test]
+fn joint_restart_and_lost_configuration_reply_are_recoverable() {
+    conformance::joint_lost_reply_restart(&mut UnqualifiedSession);
+}
+
+#[test]
+fn removing_current_resource_home_refuses_without_rehoming() {
+    conformance::removal_preserves_home(&mut UnqualifiedSession);
+}
+
+#[test]
+fn snapshot_original_receipts_commands_and_exact_index_replay_survive() {
+    conformance::snapshot_original_receipt(&mut UnqualifiedSession);
+}
+
+#[test]
+fn snapshot_policy_retirement_and_name_reservation_survive() {
+    conformance::snapshot_policy_retirement(&mut UnqualifiedSession);
+}
+
+#[test]
+fn snapshot_valid_foreign_binding_corrupt_state_and_capacity_refuse() {
+    conformance::snapshot_mismatch(&mut UnqualifiedSession);
+}
+
+#[test]
+fn snapshot_movement_preserves_complete_readiness_and_generation_fence() {
+    conformance::snapshot_movement_fence(&mut UnqualifiedSession);
+}
+
+#[test]
+fn configuration_eligibility_lost_after_admission_retains_exact_refusal() {
+    conformance::admitted_configuration_refusal_is_retained(&mut UnqualifiedSession);
+}
+
+#[test]
+fn compacted_snapshot_restores_learner_before_joint_promotion() {
+    conformance::snapshot_learner_catchup_and_membership(&mut UnqualifiedSession);
+}

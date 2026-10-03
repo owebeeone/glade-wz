@@ -15,7 +15,7 @@ sys.modules[spec.name] = module
 spec.loader.exec_module(module)
 root = Path(sys.argv[2])
 errors = []
-for crate in ("api", "durability-api", "disk", "proof"):
+for crate in ("api", "durability-api", "disk", "proof", "q3-api", "q3-spec"):
     for path in sorted((root / crate).rglob("*.rs")):
         tokens = [token.text for token in module.lex(path.read_text())]
         for index in range(len(tokens) - 2):
