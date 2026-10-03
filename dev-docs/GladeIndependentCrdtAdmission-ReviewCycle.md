@@ -240,3 +240,41 @@ the lifecycle design, scoped future supersession and requirement/test map only.
 Typed operations/classification/allocation and executable conformance must pass
 their next contract/RED review. Actual storage, restart, crypto, live transfer,
 Surface and activation remain unqualified. No push or live operation occurred.
+
+### Redesigned typed storage-attempt checkpoint awaiting review
+
+The [typed contract](GladeIndependentCrdtStorageAttemptContract.md) and
+[evidence](GladeIndependentCrdtStorageAttemptContract-Evidence.md) define the new
+internal Contract package, required host/session methods, Pure continuations,
+bounded development-only provider and frozen Gyld lifecycle allocation. This
+checkpoint requires fresh peer-blind **Code/State** review before successful
+kernel behavior. It is not a user-facing API/wire freeze; Surface remains a later
+gate. The root review pin is recorded in generated prompts after this checkpoint
+is committed; member pins are Glade `3cf1fa79cd752012acd0d2ff66d595e293b3433c`,
+Glial `348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69` and external Gyld
+`95a426595bba8e248a5f484272e483a070c73918`. Relevant member ranges start at the
+accepted design's unchanged pins above. The drafter has stopped writes.
+
+The actual port's 23 conformance/source checks and five core representation/source
+checks pass. All original 27 plus 13 new kernel behavior tests compile and fail
+against the unchanged refusing kernel; the ten released-Taut rows remain RED.
+The original corpus's three-order positive control passes. Selection, minimal
+package roles/edges, all-member architecture refusal, process-global, compile,
+format and lint checks are recorded in Evidence. Allocation is 34/135, preserving
+the frozen semantic 31/124 ledger; it does not prove requirement satisfaction.
+
+The initial API declaration/type move preceded its specific new consumers. That
+TDD deviation is retained explicitly. The drafter restored the affected baseline,
+recorded new-consumer failure before reintroducing declarations and then executed
+compiling behavioral RED before the test provider's implementation. Review MUST
+audit that chronology; it is not retrospectively described as flawless TDD.
+Gyld's unchanged full affected runner passed 176 tests in 1.958s against its 2.0s
+execution budget after earlier recorded budget failures. The 0.042s margin and
+contention failures remain limitations. No test budget, selection, engine,
+classification or process-global allowlist was loosened.
+
+This new typed object has no review verdict or remediation round yet. The failed
+original typed object's three-root stop and owner-authorized redesign remain
+recorded. No successful admission kernel, physical restart/fencing, crypto,
+automatic duplex transfer, deployment, push or live activation is accepted here.
