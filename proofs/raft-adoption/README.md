@@ -57,7 +57,7 @@ cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p
 # Real disk/host recovery tiers.
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-disk
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test recovery
-cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib q2_real_light_ready -- --ignored
+cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --lib q2_real -- --ignored
 # External process-kill tier: --no-run reports the executable path to supply.
 cargo test --locked --offline --manifest-path proofs/raft-adoption/Cargo.toml -p glade-raft-adoption-proof --test process_crash --no-run
 python3 proofs/raft-adoption/process-crash.py --self-test
@@ -66,7 +66,7 @@ python3 proofs/raft-adoption/process-crash.py --worker "$q2_worker_path"
 ```
 
 The default workspace run is broad qualification, not the pure edit loop. It
-intentionally ignores the disk LightReady unit and process worker: both MUST be
+intentionally ignores the disk LightReady/terminal-term units and process worker: both MUST be
 executed through their separate commands for Q2 acceptance. The runner kills only
 its owned workers and uses disposable paths plus an explicit minimal environment.
 It compares complete externally retained original receipts after fresh-process

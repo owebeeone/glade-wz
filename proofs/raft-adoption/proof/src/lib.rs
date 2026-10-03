@@ -1,8 +1,9 @@
-//! Bounded memory-only Q1a experiment using actual synchronous raft-rs.
+//! Bounded Q1a memory and Q2 disk/recovery experiment using actual raft-rs.
 //!
 //! Scope 7, administrator 1, writer 10 and fixed voters are trusted numeric
-//! fixtures. No signatures, disk/restart, snapshots, automatic elections,
-//! membership transitions, transport or production integration are qualified.
+//! fixtures. Q2 exercises the named APFS/process-crash profile. No signatures,
+//! power-loss survival, snapshots, automatic elections, membership transitions,
+//! transport or production integration are qualified.
 //! Manual campaigns do not eliminate raft-rs's ambient election-timeout
 //! randomness; no election ticks are exercised here.
 //!

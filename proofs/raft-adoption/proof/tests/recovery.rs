@@ -69,13 +69,26 @@ impl Directory {
         Self(path)
     }
     fn stores(&self, create: bool) -> BTreeMap<u64, Box<dyn DurableStore>> {
-        (1..=3)
+        self.configured_stores(create, &[1, 2, 3])
+    }
+    fn configured_stores(
+        &self,
+        create: bool,
+        voters: &[u64],
+    ) -> BTreeMap<u64, Box<dyn DurableStore>> {
+        voters
+            .iter()
+            .copied()
             .map(|node| {
                 let path = self.0.join(format!("voter-{node}"));
+                let expected = Binding {
+                    voters: voters.to_vec(),
+                    ..binding(node)
+                };
                 let store = if create {
-                    DiskStore::create_new(&path, binding(node))
+                    DiskStore::create_new(&path, expected)
                 } else {
-                    DiskStore::open(&path, binding(node), None)
+                    DiskStore::open(&path, expected, None)
                 }
                 .unwrap();
                 (node, Box::new(store) as Box<dyn DurableStore>)
@@ -560,4 +573,37 @@ fn q2_actual_after_sync_error_is_unknown_and_can_later_commit_without_losing_old
     assert!(matches!(settled.outcome, Outcome::Accepted(resource) if resource.payload == 99));
     assert_eq!(recovered.outcome(1, original.request), Some(original));
     assert_eq!(apply(&mut recovered, 1, unknown), settled);
+}
+
+#[test]
+fn q2_disk_campaign_cannot_publish_a_term_that_restart_refuses() {
+    for voters in [vec![1, 2], vec![1, 2, 3]] {
+        let dir = Directory::new(&format!("term-predecessor-{}", voters.len()));
+        let mut cluster = Cluster::recover(&voters, dir.configured_stores(true, &voters)).unwrap();
+        cluster.campaign(1);
+        cluster.drain();
+        let original = apply(&mut cluster, 1, create());
+        drop(cluster);
+        let mut stores = dir.configured_stores(false, &voters);
+        for store in stores.values_mut() {
+            let previous = store.load().unwrap();
+            let mut image = previous.image;
+            image.term = u64::MAX - 1;
+            image.vote = 0;
+            store.persist(previous.revision, image).unwrap();
+        }
+        let mut cluster = Cluster::recover(&voters, stores).unwrap();
+        cluster.campaign(1);
+        cluster.drain();
+        drop(cluster);
+        let recovered = Cluster::recover(&voters, dir.configured_stores(false, &voters))
+            .expect("an admitted live campaign must leave prior outcomes recoverable");
+        for node in &voters {
+            assert_eq!(recovered.outcome(*node, original.request), Some(original));
+        }
+        drop(recovered);
+        for store in dir.configured_stores(false, &voters).values_mut() {
+            assert_eq!(store.load().unwrap().image.term, u64::MAX - 1);
+        }
+    }
 }

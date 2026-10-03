@@ -109,15 +109,21 @@ The host separates FIFO/partition orchestration (`proof/src/cluster.rs`), live
 Ready/LightReady persistence (`voter.rs`) and startup validation/replay (`recovery.rs`).
 It validates every voter, checks common committed prefixes for conflicts, and
 restores configuration, HardState, log and Config.applied before serving.
-The host refuses exhausted term `u64::MAX` before startup/campaign instead of
-letting the carrier increment wrap/panic; this is bounded refusal, not complete
-production capacity qualification. The parser also refuses unsupported protobuf
+The host MUST reserve terminal term `u64::MAX`: startup refuses it, campaigning
+from `MAX-1` refuses before increment, and live persistence rejects it before
+publication/message release, including terms learned from peers. This preserves
+prior history for reopen; it is bounded refusal, not complete production capacity
+qualification. The parser also refuses unsupported protobuf
 entry kind/context/unknown fields and malformed private command bytes, including
 uncommitted suffixes.
 
 The explicit disk LightReady unit tier uses real RawNodes and stores: persist
-leader append, deliver follower data acknowledgements, then advance append to
-produce an actual commit-only LightReady. The success/failure cases verify current
+the leader append, return that Ready through `advance_append_async`, then deliver
+a follower acknowledgement. The carrier persistence notification is delayed
+until a later Ready is returned through the live `finish_ready`/`advance_append`
+path, which confirms ordered persistence and produces an actual commit-only
+LightReady. A test lifecycle guard rejects step/propose/campaign with any Ready
+outstanding. The success/failure cases verify current
 term/vote preservation, persistence before application and no returned messages
 or new outcome after a persistence failure. The ordinary Cluster schedule holds
 all outgoing messages until both persistence stages complete. This alternate

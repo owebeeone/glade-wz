@@ -36,6 +36,11 @@ impl Voter {
     }
 
     fn persist(&mut self, image: DurableImage) -> Result<(), StoreError> {
+        // Reserve the terminal term consistently with startup admission.
+        // This also fences higher terms learned from incoming peer messages.
+        if image.term == u64::MAX {
+            return Err(StoreError::CapacityExhausted);
+        }
         if let Some((store, previous)) = &mut self.persistence {
             if image == previous.image {
                 return Ok(());

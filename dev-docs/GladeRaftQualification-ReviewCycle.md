@@ -129,3 +129,24 @@ Both reports note a late redundant working-tree evidence appendix, excluded from
 the pinned object. The owner removed it; the contract was restored byte-for-byte
 to the reviewed revision before implementation. Historical RED/GREEN evidence
 was already committed in QualificationEvidence. No unreviewed clause was adopted.
+
+## Q2 implementation initial gate and remediation 1
+
+Settled root `ac69bbcc325c0946bbf215309bcce5edd3210db6`, unchanged member/Gyld
+pins: fresh [Code](GladeRaftQ2Implementation-ReviewCode.md) and
+[State](GladeRaftQ2Implementation-ReviewState.md) both report **NO-GO**.
+Reports are verbatim; canonical generated prompts are archived as
+[Code](GladeRaftQ2Implementation-PromptCode.md) and
+[State](GladeRaftQ2Implementation-PromptState.md).
+
+There are two distinct P2 findings, no blind convergence: Code found an
+unsupported outstanding-Ready interleaving in the LightReady witness; State
+found a live campaign could publish a reserved terminal term that startup refused.
+The initial passing LightReady schedule is withdrawn as qualification evidence.
+[One merged remediation](GladeRaftQ2Implementation-RemPlan-1.md) maps both findings
+to observed-RED regressions and bounded corrections. Ordinary host orchestration,
+public contracts, dependency/journal/production boundaries remain unchanged.
+Originating reviewers re-verdict their own counterexamples on the new settled
+checkpoint before any acceptance. Q2 contract and implementation round counts
+are separate; implementation is in remediation round 1, with both findings open
+until their reviewers verify closure.

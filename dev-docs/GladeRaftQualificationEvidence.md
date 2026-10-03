@@ -213,8 +213,10 @@ stay identical. An error is demonstrably not proof of noncommit.
 
 Two new capacity regressions observed RED: valid recovered u64::MAX term was
 admitted, and a live campaign at that term panicked in the carrier's increment.
-They now explicitly refuse with CapacityExhausted before startup/campaign. This
-does not certify general production capacity or automatic-election behavior.
+Initial exact-MAX refusal covered only the destination state. State review found
+that campaigning from MAX-1 could publish the reserved term and prevent restart.
+Remediation 1 closes that transition as documented below; general production
+capacity and automatic-election behavior remain unqualified.
 
 The live driver persists complete Ready entries/HardState before its memory
 mirror. It uses advance_append to obtain LightReady without prematurely advancing
@@ -224,11 +226,10 @@ voter's participation/serving and return no failed batch messages. Startup valid
 all configured images/private entries and their common committed prefixes, replays
 all committed history, and sets Config.applied before constructing the usable cluster.
 
-A separate ignored real-disk unit case drives actual RawNodes through a legal
-persist → follower acknowledgement → advance_append schedule to obtain a genuine
-LightReady commit-only update. Success and injected failure verify that update's
-term/vote preservation and ordering before application/messages/outcome. This is
-supplemental boundary coverage, not a claim that every OS interleaving was tested.
+The initial ignored real-disk LightReady case passed, but Code review found its
+leader step occurred before returning the outstanding Ready, contrary to the
+carrier contract. That passing schedule is withdrawn as qualification evidence.
+The supported replacement and its RED/GREEN closure are recorded below.
 
 The existing Voter declarations were moved as complete parser-identified items:
 `rust-split explode` reconstruction was byte-identical; scoped memory tests stayed
@@ -236,10 +237,11 @@ GREEN after the move and before extending persistence. Orchestration, live stora
 ordering and restart validation now have separate source files. No legacy/upstream
 conditional compilation migration or unrelated refactor is claimed.
 
-### Verification at the implementation checkpoint
+### Historical verification at initial implementation checkpoint ac69bbcc325c0946bbf215309bcce5edd3210db6
 
 **48 default Rust tests pass**; the separately selected real-disk LightReady case
-passes, for **49 Rust tests**. The default run intentionally ignores that case and
+passed, for **49 executed Rust tests**. Code review subsequently disqualified
+that LightReady witness; these are historical execution results, not acceptance. The default run intentionally ignores that case and
 the externally driven process worker. **Four Python oracle/parser regressions pass.**
 **Two actual SIGKILL/fresh-process recovery cycles pass**, with complete receipt
 lookup/retry equality against the parent's pre-kill original, or the independent
@@ -269,7 +271,9 @@ retains unbounded records, limited to 16 MiB per complete image record.
 ### Q2 feedback measurements
 
 Monotonic perf_counter around subprocesses, one run each, successful final
-implementation source bytes. “Cold” means fresh CARGO_TARGET_DIR with the existing
+initial implementation source bytes at `ac69bbcc325c0946bbf215309bcce5edd3210db6`.
+The LightReady measurement belongs to the unsupported historical schedule and
+MUST NOT be used as accepted ordering evidence. “Cold” means fresh CARGO_TARGET_DIR with the existing
 registry and OS caches; it does not mean a clean machine or registry download.
 
 | Selected tier | Wall seconds |
@@ -290,3 +294,55 @@ contract can be built/tested without Raft or disk; broader actual-I/O assurance
 remains an explicitly selected tier. Metrics do not include the architecture
 checker build. The implementation-review checkpoint pins these source bytes;
 any later remediation must identify whether its measurements were repeated.
+
+## Q2 implementation remediation 1 — revised acceptance witness
+
+The initial Code/State gate at root
+`ac69bbcc325c0946bbf215309bcce5edd3210db6` found two distinct P2 defects.
+Both are accepted in [one remediation plan](GladeRaftQ2Implementation-RemPlan-1.md).
+This section records verification, not self-closure: originating reviewers MUST
+verify their own counterexamples on the revised settled tuple in the ledger.
+
+**State RED → GREEN.** `q2_disk_campaign_cannot_publish_a_term_that_restart_refuses`
+starts actual disk files with retained committed receipts, raises their legal
+term to `MAX-1`, campaigns and reopens all files. Before correction it failed
+with `CapacityExhausted` at startup. After correction it recovers each identical
+prior receipt and leaves the persisted term at `MAX-1`, for both fixed voter
+configurations. `q2_real_disk_reserved_term_is_refused_before_publication`
+steps a real incoming terminal-term heartbeat: RED returned a heartbeat response
+at `MAX`; GREEN returns `CapacityExhausted` before changing the stored image or
+returning messages, and all files reopen. This fences peer-learned terms as well
+as manual campaigning. Existing exact-MAX startup/live refusal tests still pass.
+
+**Code RED → GREEN.** A test-only lifecycle guard inserted into the original
+LightReady witness failed at its leader step with `state mutation while Ready
+outstanding`. The corrected schedule persists the first Ready into disk and the
+memory mirror, returns it using `advance_append_async`, then delivers exactly
+one follower's persisted data acknowledgement. It delays the local persistence
+notification, legally pings/collects a subsequent Ready, then returns that Ready
+through the live `finish_ready`/`advance_append` helper. Ordered persistence
+notification drains both records and produces an actual commit-only LightReady.
+The pinned carrier documents this lifecycle in `raw_node.rs:471–475,617–645,
+669–698` and `raft.rs:1033–1058` (raft 0.7.0 cached source).
+
+The guard checks both refusal and permission for step/propose/campaign around
+advance, and protects controlled mutations. Exactly one commit-only persist is
+observed with unchanged term/vote and the new commit. Success applies the complete
+independently expected receipt and recovers it after actual disk reopen. Failure
+returns `Err(Io)` instead of any outgoing message vector, leaves application and
+receipt unchanged, and retains the old stored commit. These are real RawNode and
+disk paths; no fabricated LightReady substitutes for the carrier.
+
+**Revised verification:** 49 default Rust tests pass; the two explicit ignored
+real-disk unit cases pass (**51 executed Rust tests** total). Four Python oracle
+self-tests and both actual SIGKILL/fresh-process recovery cycles pass. Architecture,
+source-boundary, formatting, process-global checks and all-target Clippy with
+warnings denied pass; 13 owned source files, zero allowlisted exceptions. The
+normal run intentionally ignores the two explicit disk unit cases and the
+external worker. The host recovery tier now contains 13 tests. No dependencies,
+public interfaces, journal format, production consumer or allowlist changed.
+
+The earlier cold/warm samples remain attributed to the initial checkpoint and
+were not remeasured for this remediation. The revised acceptance counts and
+ordering/crash evidence above supersede the unsupported historical LightReady
+claim. Named machine/filesystem and process-crash limits remain unchanged.

@@ -234,7 +234,7 @@ impl Cluster {
     pub fn campaign(&mut self, voter: u64) {
         let voter = self.voters.get_mut(&voter).expect("unknown fixed voter");
         if voter.failure.is_none() {
-            if voter.raft.raft.term == u64::MAX {
+            if voter.raft.raft.term >= u64::MAX - 1 {
                 voter.failure = Some(StoreError::CapacityExhausted);
                 return;
             }
@@ -406,5 +406,76 @@ impl Cluster {
             ));
         }
         command
+    }
+}
+
+#[test]
+#[ignore = "Q2 real-disk terminal-term publication tier; execute explicitly"]
+fn q2_real_disk_reserved_term_is_refused_before_publication() {
+    use glade_raft_disk::DiskStore;
+    use raft::eraftpb::{Message, MessageType};
+    for voters in [vec![1, 2], vec![1, 2, 3]] {
+        let directory = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../target")
+            .join(format!(
+                "q2-term-message-{}-{}",
+                std::process::id(),
+                voters.len()
+            ));
+        std::fs::create_dir(&directory).unwrap();
+        let binding = |node| glade_raft_durability_api::Binding {
+            scope: 7,
+            node,
+            voters: voters.clone(),
+            application_profile: 1,
+        };
+        let stores = voters
+            .iter()
+            .map(|node| {
+                (
+                    *node,
+                    Box::new(
+                        DiskStore::create_new(
+                            &directory.join(format!("node-{node}")),
+                            binding(*node),
+                        )
+                        .unwrap(),
+                    ) as Box<dyn DurableStore>,
+                )
+            })
+            .collect();
+        let mut cluster = Cluster::recover(&voters, stores).unwrap();
+        let voter = cluster.voters.get_mut(&1).unwrap();
+        let before = voter.persistence.as_ref().unwrap().1.clone();
+        let mut incoming = Message::default();
+        incoming.set_msg_type(MessageType::MsgHeartbeat);
+        incoming.from = 2;
+        incoming.to = 1;
+        incoming.term = u64::MAX;
+        voter.raft.step(incoming).unwrap();
+        let result = voter.ready();
+        // Test the real publication barrier, including terms learned from peers.
+        assert_eq!(result, Err(StoreError::CapacityExhausted));
+        assert_eq!(voter.persistence.as_ref().unwrap().1, before);
+        drop(cluster);
+        let stores = voters
+            .iter()
+            .map(|node| {
+                (
+                    *node,
+                    Box::new(
+                        DiskStore::open(
+                            &directory.join(format!("node-{node}")),
+                            binding(*node),
+                            None,
+                        )
+                        .unwrap(),
+                    ) as Box<dyn DurableStore>,
+                )
+            })
+            .collect();
+        let recovered = Cluster::recover(&voters, stores).unwrap();
+        drop(recovered);
+        std::fs::remove_dir_all(directory).unwrap();
     }
 }
