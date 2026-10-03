@@ -83,7 +83,7 @@ journal bytes, presence/absence, next admission and idempotent resync. The first
 parent run exposed a libtest stdout-prefix handling error (cut signal could appear
 after the test name); the parent matcher was corrected against that failing case
 before all four cuts passed. This was a test-driver error, not a recovered success.
-Targeted final runs: integration build-plus-run 0.70 seconds, execution 0.02 seconds;
+Targeted final runs: integration build-plus-run 1.56 seconds, execution 0.02 seconds;
 boundary build-plus-run 1.98 seconds, execution 0.08 seconds. Logs are
 `/tmp/glade-q4-seal-green.log`, `/tmp/glade-q4-seal-boundary-green.log`.
 
@@ -116,3 +116,42 @@ qualified separately from modeled injected errors; power-loss/media certificatio
 independent machines, authenticated authority, Raft crate selection and complete
 old-binary/Registry/effect/rollback exclusion remain unqualified. No seal was
 installed outside disposable test roots; no running desk was rebuilt or changed.
+
+## Exact committed-source verification
+
+Accepted-source candidate is Glade `c8c0613f645dd4b6aaf546f586d77cfdb76a0c87`.
+Owner built a disposable source-only verification fixture by read-only `git archive`
+of exact commits, outside the workspace/GWZ family, with no `.git`, workspace
+configuration or dirt. This is a test fixture, not a clean local-clone workaround.
+Its supporting pins are discover52ea2d118f45d9e7c3d9a789310dd5d669958851,
+grazelc839fe87c9d18ebb6e995964d2e79aef7cbd380e,
+glade-gyld327d62c0033db0fae145d002a00663a3826b6d53,
+glade-gwz35b38ba0845a7cb7034a4af3609975ea1bd48741 and
+glade-decl-rsb85044e1f6631114dbb290c02298e644f8363055.
+All exported tracked objects were compared byte-exact against those Git archives
+after the gate. CARGO_TARGET_DIR reused ignored build cache only.
+
+The complete adopted node gate passed **all nine components** on these exact
+sources; each root ran **507 passing cases across 20 binaries**. Runtime for the
+final full gate was 66.644 seconds, not a pure-library fast-loop budget or a clean
+cold build. APFS process-kill cases execute by the parent in the default unit tier;
+its explicit ignored worker is invoked only in that parent. Existing style debt
+remains node252/wire1 fmt hunks and node9/wire7 Clippy warnings. The gate notes
+that exported lockfiles have no Git tracking metadata; their bytes were separately
+verified against committed sources, not generated or weakened to pass.
+
+Two precursor fixture attempts are retained: the first missed glade-decl-rs, so
+four gate components failed dependency resolution; adding its exact committed
+source repaired the fixture. The second passed eight components but exposed a
+new multiline callback-signature fmt hunk (253 against252), previously masked
+by an inherited cold-join formatting reduction. Correcting only that new signature
+made the exact-source full gate pass. No inherited code was formatted and no
+style/dependency/process-global allowance was relaxed. The clean fixture has
+three fewer tests than the live tree because inherited cold-join cases are absent.
+
+Fixture path and pins: `/tmp/glade-q4-exact-source-location.json`; initial builder
+`/tmp/glade-q4-exact-source.py`; final log
+`/tmp/glade-q4-exact-source-gate-accepted.log`; measured result
+`/tmp/glade-q4-exact-source-result-accepted.json`. Implementation acceptance still
+requires independent Code/State verdicts against the exact tuple; passing owner
+checks do not supply those verdicts.
