@@ -160,3 +160,34 @@ context, not a claim that the original live processes survived. Each restored ro
 MUST verify its original counterexamples; neither the drafter nor lane owner may
 self-close them. Two additional fresh peer-blind full reviews MUST independently
 review the changed interface. Acceptance MUST identify this process discontinuity.
+
+### Remediation 1 result — architectural stop
+
+Reviewed tuple: root `f0d0b1ebc396e70d5f0e2beb817eb5da232230fb`, corrected
+member pins above. All reports verified the same five HEADs at start and end.
+
+| Evidence | SHA256 / result |
+| --- | --- |
+| [Restored Consistency closure](GladeIndependentCrdtAdmissionContract-ClosureConsistency-1.md) | `4d5bff4bd11ac58f151fb1b0f602ee0a1aab4f3c899c087bb95c2b2357ecf740`; GO, original P2-1/P2-2/P3-1 verified closed |
+| [Restored Safety closure](GladeIndependentCrdtAdmissionContract-ClosureSafety-1.md) | `b89520274bedfd9bf4cbb19ed4425284db38b59d59dfe08270064ee850892b25`; GO, original P2-1 verified closed |
+| [Fresh Consistency prompt](GladeIndependentCrdtAdmissionContract-PromptConsistency-2.md) | `c5bf0328098e02258a4a69e37480bab6eff7e7d15a8fc2d968dfdb1aabd6498b` |
+| [Fresh Consistency report](GladeIndependentCrdtAdmissionContract-ReviewConsistency-2.md) | `20cf55ac4a77a777a06b8d88ecbb6446b75e1a8f868fdecd193b380eba6fb6c8`; GO, zero findings |
+| [Fresh Safety prompt](GladeIndependentCrdtAdmissionContract-PromptSafety-2.md) | `1a70974a1c05cf9a381f7f1f81f9752dd42b298cae89fb26689a90aafd877253` |
+| [Fresh Safety report](GladeIndependentCrdtAdmissionContract-ReviewSafety-2.md) | `ec05b4fb5cdf25588c0033df3c4ac1bf26833602f3f1864e5e5ab7f8c86d7323`; NO-GO, new architectural P2-1 |
+| [Consistency root classification](GladeIndependentCrdtAdmissionContract-RootClassification-1.md) | `78c5a67fc50449a6368b9e694fd62034d314045ee95fd9dca1112fed9d55d531`; original lookup identity is architectural |
+
+Both restored closure reports explicitly disclose process discontinuity; neither
+claims original-agent continuity. Original counterexamples were independently
+reverified. Fresh full axes were peer-blind. No blind convergence is claimed for
+the new finding.
+
+Fresh Safety identifies temporary absence versus terminal noncommit as a new
+architectural storage-outcome lifecycle root. Together with original Consistency
+lookup identity and original Safety retention recovery, there are three
+architectural roots on this typed-contract object. The review-loop cap therefore
+**stops the lane pending owner redesign-or-accept**, despite only one remediation
+round. No new patch or successful kernel is authorized.
+[Escalation and recommendation](GladeIndependentCrdtAdmissionContract-Escalation.md)
+records the counterexample and recommended lifecycle redesign. Semantic design
+acceptance is retained; IC-1 contract acceptance and IC-2 implementation remain
+blocked. All commits remain local; no push or activation occurred.
