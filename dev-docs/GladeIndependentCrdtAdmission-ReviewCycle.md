@@ -1,7 +1,7 @@
 # Independent CRDT admission — review and delivery ledger
 
 Date: 2026-10-04. Status: **semantic design accepted; typed contract/allocation/RED
-is next; no implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
+draft is committed for review; no admission implementation or activation accepted**. GDL-057 authorizes design, review and implementation in
 the [IC-1–4 lane](GladeIndependentCrdtAdmissionPlan.md), ahead of first strong
 Raft production integration. The [design](GladeIndependentCrdtAdmissionDesign.md)
 is the controlling draft. Existing Raft and legacy writer contracts remain.
@@ -89,3 +89,38 @@ executable `AD`/`AB` witnesses remain future contract regressions. Next: sole
 drafter prepares the internal event/effect contract, reviewed Pure package role,
 Gyld source/allocation update and compiling behavioral RED consumers. Kernel
 success behavior MUST wait for that checkpoint's review.
+
+## IC-1 typed contract / allocation / compiling RED checkpoint
+
+Root baseline `4d735893c8db0a9ac9b4de9cde01600873b20ce3`. Settled member pins:
+Glade `885249a2a093e082aad6e1dc9936a7fd5c54052b`, Glial
+`5fd46ba5180051eb20d7b5547f59f52c0f3ebe06`, external Gyld app
+`64666e8b1caadde8922b9d42163afbab90655c65`; discovery unchanged
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`. The generated review prompts
+will record the exact root revision carrying this checkpoint. All commits are
+local; the scope remains IC-1, not an activated feature.
+
+Controlling [internal contract](GladeIndependentCrdtAdmissionContract.md) and
+[evidence/inventory](GladeIndependentCrdtAdmissionContract-Evidence.md) define
+the event/effect/continuation semantics, proposed Pure role/minimal dependencies,
+and frozen inherited Gyld allocation. Existing 24 allocation owners and 107
+source-qualified obligations are retained; seven new capabilities link all 17
+ICD requirements and four new journeys. No Gyld engine/evaluator or base policy
+is changed. The new host reads only app-owned pinned sources.
+
+The state-preserving refusing scaffold compiles. Twenty-one Rust behavioral
+consumers fail assertions (exit101), and all eight mandatory released-Taut text
+rows fail for absent kernel cuts/receipts (exit1); merge-only corpus reference
+passes. This is intentional RED before implementation. Structural/source,
+architecture, framework-refusal, selection, process, format and clippy checks pass.
+The full Gyld affected runner passes 171 tests in 1.923s after test-first validated
+baseline reuse; its prior 2.290s/2.156s failures are preserved, and the 2.0s budget
+and selector remain unchanged. Six broader Mypy errors reproduce identically with
+the pinned baseline; the new capture host passes. No suppression or relaxed policy.
+
+Next gate: fresh peer-blind Consistency/Safety review of this exact typed contract,
+allocation and RED evidence. Internal API only; user-facing schema/Surface remains
+later. Successful kernel behavior MUST NOT begin before this gate. Fixture facts,
+volatile commit replies and delivered sync events do not qualify real signatures,
+physical restart receipts or automatic duplex app synchronization. IC-3/4 remain
+required before the complete live feature and any separate activation.

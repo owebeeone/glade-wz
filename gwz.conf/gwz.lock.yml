@@ -15,7 +15,7 @@ members:
     path: glade
     source_id: src_glade
     source_kind: git
-    commit: c65a6e87f0c257c15de8db080c29d365a883af85
+    commit: 885249a2a093e082aad6e1dc9936a7fd5c54052b
     branch: main
     detached: false
     dirty: false
@@ -96,7 +96,7 @@ members:
     path: glial
     source_id: src_glial
     source_kind: git
-    commit: 4c6e8561c1740de78b7634d9205a521183919d83
+    commit: 5fd46ba5180051eb20d7b5547f59f52c0f3ebe06
     branch: main
     detached: false
     dirty: false
