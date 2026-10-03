@@ -320,3 +320,31 @@ round on this typed object. Originating counterexample verification and fresh
 full Code/State review MUST both complete on this same settled tuple. No source
 writes may occur while those reviews run; only generated prompts/reports are
 permitted outputs. No successful kernel or activation acceptance follows yet.
+
+#### Remediation 1 review: focused closures GO, fresh full review NO-GO
+
+All four reports use exact root `e5b7f3e14c2da8f9e0c3f64f17bf3161e6c7a539`
+and Glade `346d963f09089a0636a01fac8a257f067908147d`, other members unchanged.
+Originating reviewers independently closed their initial counterexamples; fresh
+full reviewers found six P2 IDs representing four defects, all non-architectural.
+Blind convergence occurred on one remaining unissued historical lookup and on
+revision-mismatch finality. The lookup is a residual coverage instance of original
+Code P2-3, so aggregate closure was not achieved. Focused reports remain verbatim;
+their scope does not override fresh full blockers. Architectural count remains one.
+
+| Evidence | SHA256 |
+| --- | --- |
+| [Code prompt2](GladeIndependentCrdtStorageAttemptContract-PromptCode-2.md) | `dd18229de85d4febb23f69f88139dadf331a400032a0ed093e45fdad569fd803` |
+| [State prompt2](GladeIndependentCrdtStorageAttemptContract-PromptState-2.md) | `3624cc5f9f79feafbd16cb17f8677147b8d6531cffbf876b764d633d51c1ff0f` |
+| [Originating Code closure1](GladeIndependentCrdtStorageAttemptContract-ClosureCode-1.md) | `c15018389905e8dcbf4b404de4805b15ce2d5b20401b8834750a936dc749a7d8` |
+| [Originating State closure1](GladeIndependentCrdtStorageAttemptContract-ClosureState-1.md) | `756214898dbd2a5be296c8a1405c94c0ab58c1bbd04623959a7f8c2f965247ec` |
+| [Fresh Code review2](GladeIndependentCrdtStorageAttemptContract-ReviewCode-2.md) | `55947bacf8122fe31653806fdb082bb66a7a280152a233d2859851dd7774704b` |
+| [Fresh State review2](GladeIndependentCrdtStorageAttemptContract-ReviewState-2.md) | `d1b47d2fcfa4c7fbc86fa6dc7d35b9b6b1d0b3ebe1029808ebaabac5eb2e1b39` |
+
+[Remediation2](GladeIndependentCrdtStorageAttemptContract-RemPlan-2.md) authorizes
+one merged test-first validation correction, preserving shared interfaces and
+the refusing kernel. Originating full reviewers will re-verdict their own
+counterexamples and inspect the corrected range. New fresh axes are required if
+the patch instead changes the skill's listed architectural/interface boundaries.
+This is remediation round2; the review cap is retained, not reset. All current
+full-review blockers remain open. No push, implementation or activation acceptance.
