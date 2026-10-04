@@ -1,6 +1,6 @@
 # Independent CRDT production integration — IC-3 review and delivery ledger
 
-Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; semantic remediation 1 settled for re-review; no integration accepted**.
+Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; IC-3A semantic design accepted; typed gate and IC-3B/C remain open**.
 
 The owner directed “Proceed IC-3ABC” after the deterministic IC-2 kernel was
 accepted and its source/checkpoint history pushed. This authorizes design,
@@ -143,3 +143,35 @@ committed five-repository tuple, compare the full change range from initial root
 and classify any new roots against the existing root set. Exact root appears in
 generated prompts. Third new architectural root requires STOP without another
 patch. No typed/API/provider implementation begins before semantic acceptance.
+
+## IC-3A semantic acceptance
+
+Status: **semantic design accepted at root
+`06b16c9e17ff5507268a5823fad9a0be70a36790`, with unchanged Glade/Glial/discovery/Gyld
+pins above, after fresh full Consistency/Safety GO and both originating closure
+GO; this accepts semantic production-adapter design and exact amendments ONLY**.
+
+| Required review | Result | Verbatim artifact |
+| --- | --- | --- |
+| Originating Consistency | GO; P2-1/P2-2/P2-3 closed semantically | [Closure](history/GladeIndependentCrdtProductionIntegrationDesign-OriginatingClosure-ReviewConsistency-1.md), SHA256 `ece3feec09507615c01f6dce98de0fb3bdc146a7a941c30c3b2b5c171f1c6c9a` |
+| Originating Safety | GO; P2-1 closed semantically | [Closure](history/GladeIndependentCrdtProductionIntegrationDesign-OriginatingClosure-ReviewSafety-1.md), SHA256 `c9c321c8cfa4c4a930a54107989c22c9fc9af7e0ab97e05f7b8c091e67164609` |
+| Fresh full Consistency | GO; zero new P0–P3 | [Review](history/GladeIndependentCrdtProductionIntegrationDesign-ReviewConsistency-2.md), SHA256 `756d2e83deeb9c1366fecfb3d3e8a650aa61cf728d28d48e9eb387fdc3fca9e9` |
+| Fresh full Safety | GO; zero new P0–P3 | [Review](history/GladeIndependentCrdtProductionIntegrationDesign-ReviewSafety-2.md); byte-exact testimony filed, hash recorded below |
+
+All four reviewers independently verified the same five HEADs at start and end,
+read the complete changed context, performed read-only inspection and excluded
+current peer testimony. No typed, cryptographic, physical disk or actual network
+execution is claimed. Semantic closures require the specified later executable
+regressions. Two architectural roots and one nonarchitectural root were found
+before acceptance; one merged remediation round closed them. No third root or
+escaped defect is established. Historical stopped objects/counts remain intact.
+
+Next: authorized A2 contract/data/structural-codec/allocation tranche with tests
+first, protected existing consumers, actual production refusing-provider behavioral
+RED and mandatory independent canonical-vector gate. The newly typed boundary is
+a separate recorded Code/State checkpoint; this does not reset the semantic
+object's retained root/cap record or authorize evading a newly discovered semantic
+counterexample. No successful physical/auth provider or duplex starts before its
+typed gate. IC-3ABC delivery remains open; no push/live/desk changes.
+
+Fresh full Safety testimony SHA256: `49dbc20b4f92c9bdf7b46a05d17256129f884560ea3bf9a0ca24897c149de325`.
