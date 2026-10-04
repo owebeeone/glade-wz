@@ -1,6 +1,6 @@
 # Independent CRDT production integration — IC-3 review and delivery ledger
 
-Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; design in progress, no integration accepted**.
+Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; initial semantic dual NO-GO; remediation 1 in progress, no integration accepted**.
 
 The owner directed “Proceed IC-3ABC” after the deterministic IC-2 kernel was
 accepted and its source/checkpoint history pushed. This authorizes design,
@@ -82,3 +82,40 @@ root SHA appears there. Other pins remain the baseline above. During review only
 current generated prompts and verbatim report outputs may be untracked. Zero
 remediation rounds/architectural roots initially; neither implementation nor
 interface creation is authorized by writer completion. No push or live changes.
+
+## Initial IC-3A semantic review — dual NO-GO
+
+Both read-only reviewers verified the root `4d641dd179e5b0bd94e84df9cb334d7a21dae371`
+and all four unchanged source pins at start and end. Their complete testimony
+is filed verbatim in history:
+
+- [Consistency](history/GladeIndependentCrdtProductionIntegrationDesign-ReviewConsistency.md),
+  SHA256 `ae3dc3e72e9cbc858982324f85e9e173649943e838a5a05e72c66eb061a60bdf`:
+  NO-GO, three P2 findings.
+- [Safety](history/GladeIndependentCrdtProductionIntegrationDesign-ReviewSafety.md),
+  SHA256 `7dda23b87d73a36eac9db41f8aaed2bfc3c180a616a68ffcad58231db69b5f46`:
+  NO-GO, one P2 finding.
+
+Four IDs represent three distinct roots. Consistency P2-1 and Safety P2-1
+independently converge on the same architectural root: history can be consumed
+before a durable ingress discriminator exists, and failed observation plus
+failed loss-marker writes allow false completeness after restart. Consistency
+P2-2 is a second architectural root, incomplete authoritative declaration/schema
+identity composition. Consistency P2-3 restores the required pre-remote-use
+Rust/TS/Python canonical-vector gate and is nonarchitectural. There are two
+unique architectural roots, not four; no third root is established.
+
+[Remediation 1](history/GladeIndependentCrdtProductionIntegrationDesign-RemPlan-1.md)
+maps every ID to a correction and closure witness. One drafter edits the design
+and plan as one patch. Completed remediation count remains zero until that
+patch settles; round 1 is authorized. The original reviewers MUST verify their
+own counterexamples on the corrected tuple. Because durable consumption and
+authenticated identity boundaries change materially, fresh full
+Consistency/Safety review is also required on that same tuple. This remains
+the same semantic object and preserves the two-root count and all historical
+caps. A reviewer-classified third architectural root requires STOP before
+another patch. No source/interface implementation is accepted or begun.
+
+The aggregate IC-3C gate also requires fresh Consistency/Safety verification
+of the semantic contract in addition to the recorded Code/State review, as
+specified by the delivery plan; this adds evidence and does not replace an axis.
