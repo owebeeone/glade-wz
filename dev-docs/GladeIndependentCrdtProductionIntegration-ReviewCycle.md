@@ -662,3 +662,63 @@ typed2architectural/5nonarchitectural/2completedremediations,
 B0architectural/6nonarchitectural/2completedremediations. No new reviewer root/cap reset.
 Original A2 closure verification stays deferred to ABC; fresh aggregate Code/State,
 Consistency/Safety and actual Surface remain required. No live/default/push authority.
+
+## Owner-authorized Glade-only review efficiency trial
+
+On 2026-10-04 the owner asked to reduce review time and token use, chose to try
+the optimization here before changing the shared skill, and authorized proceeding.
+The implementation plan's **Glade-only review efficiency trial** now controls the
+next aggregate review's dispatch and evidence preparation. This is adoption of a
+local process change, not acceptance of IC-3C or a change to an earlier verdict.
+
+Dispatch: two fresh peer-blind technical reviewers on one settled tuple, A covering
+Code plus Consistency and B covering State plus Safety, with a separate cold
+Surface reviewer. All five explicit perspective verdicts remain required. Original
+A2 finding owners retain their focused counterexample-closure responsibility;
+the three aggregate reviewers do not replace those originators. Prior accepted B
+evidence is pinned and reused where unchanged; changed assumptions and impacted
+call graphs receive fresh inspection. No current peer reports enter blind prompts.
+
+One compact common packet replaces repeated context reconstruction. Focused TDD
+and affected checks remain the implementation loop; the full required affected
+matrix runs at the final checkpoint. Repetition requires a documented new change,
+failure or unresolved concern. Pin checks, canonical prompt generation and
+verbatim filing are mechanical script work. No dependency classification, test
+selector, budget, authorization or persistence invariant is relaxed.
+
+The parent owns these two documentation edits; the sole C writer continues its
+authorized source and qualification work. Earlier archived artifacts remain
+unchanged. Historical accounting stays semantic2architectural/1nonarchitectural/
+1completedremediation, typed2architectural/5nonarchitectural/2completedremediations,
+B0architectural/6nonarchitectural/2completedremediations. All caps and STOP rules
+remain in force. The shared review-loop skill has not been changed.
+
+Trial measurements are pending: record actual dispatch count, distinct blocking
+roots, repeated checks and reasons, and available review time/token use after the
+gate. Do not claim measured savings before those results exist. IC-3C acceptance,
+IC4 activation, live/default changes, Raft and push remain unclaimed.
+
+## Owner-requested IC-3C handoff checkpoint
+
+On 2026-10-04 the owner requested transfer to another LLM. The handoff point is
+the frozen **UNREVIEWED** C candidate before aggregate review. Glade source
+`1be9be62bbd743b9fe30cca529204f9edcdbd822` contains exactly 21 C-changed files
+from baseline `3bfdea5921d0e500476379557dc79813ca568c07`. Parent independently
+verified all 83 combined source pins against working bytes and committed blobs,
+361 immutable prior objects, six consumer guides, 27 canonical files and the
+compressed/decompressed chronology. No source writer or reviewer remains active.
+
+Candidate evidence is `history/GladeIndependentCrdtProductionIntegrationC-Evidence.md`;
+its SourcePins and RunLog siblings retain exact hashes, executed results, failed
+attempts and explicit gaps. Passing automatic two-node exchange is not
+disconnect-at-every-phase qualification. Directed actual-peer interruptions in
+HELLO/readiness, inventory header/page, missing-request header/page and bundle
+receive remain open. The selected-remote-inbox pre-dispatch OS cut is qualified.
+No phase requirement is waived by reusing B disk cuts or generic carrier tests.
+
+Final consolidated review and original A2 own-finding closures are not dispatched
+and remain prerequisites. C/ABC acceptance and IC4 activation are not claimed.
+Historical accounting/caps and the Glade-only efficiency trial remain unchanged.
+The next LLM begins with the handoff document, verifies pins, closes necessary
+coverage gaps, then freezes its review tuple. These are local reproducible
+checkpoints; no push, live/default activation or Raft integration occurred.

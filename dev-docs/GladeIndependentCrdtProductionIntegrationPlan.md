@@ -206,13 +206,57 @@ replace normal minor-edit loops with whole-workspace tests. Record selected chec
 commands, machine/toolchain, warm execution/build separately and unmeasured cold
 context honestly; no arbitrary budget relaxation.
 
-Freeze aggregate production tuple. Fresh Consistency/Safety and Code/State inspect
-call graph, exact physical/network evidence and every ID in design matrix. Surface
+Freeze aggregate production tuple. Two fresh peer-blind technical reviewers cover
+all four perspectives: reviewer A covers Code and Consistency; reviewer B covers
+State and Safety. Both inspect the actual changed call graph, exact physical/network
+evidence and every relevant ID in the design matrix, and report an explicit verdict
+for each assigned perspective. Surface
 is required for any actual operator/user-facing CLI/settings/config-file/API/protocol
 or product promise introduced/frozen, even if named private qualification. Browser
 activation deferral is not a Surface or canonical-vector waiver. Done: all required
 axes GO, all findings independently closed, exact requirement coverage filed and local tree
 settled. Completion says bounded actual-node qualification, not IC-4 activation.
+
+## Glade-only review efficiency trial
+
+The owner authorized this local trial on 2026-10-04. It changes review dispatch
+and evidence preparation, not resource contracts, test requirements or acceptance
+criteria. The shared review-loop skill MUST remain unchanged during the trial.
+
+- The lane owner MUST prepare one compact packet naming the exact settled tuple,
+  changed files and impacted contracts, requirement-to-test evidence, known limits,
+  prior accepted checkpoints and unresolved findings. Prior acceptance MUST be
+  referenced by exact source/evidence pins rather than copying whole reports into
+  every prompt. Reviewers MUST retain access to controlling sources and prior
+  evidence; a compact packet is not permission to omit an affected dependency.
+- The two technical reviewers and the separate cold Surface reviewer MUST run
+  concurrently on that same frozen tuple. Canonical role mandates and report
+  sections remain in force. Each technical report MUST distinguish its two
+  perspectives and give both verdicts. No reviewer may read a current peer report.
+  Aggregate acceptance still requires Code, State, Consistency, Safety and Surface
+  GO, plus all required original-finding closures.
+- Accepted work SHOULD reuse its pinned evidence when its code and assumptions
+  remain unchanged. Changed interfaces, call graphs, wire or mutation boundaries,
+  compatibility rules and platform assumptions MUST receive fresh inspection of
+  their affected context. Original A2 finding owners MUST verify their own deferred
+  counterexamples; the consolidated reviewers cannot substitute for those closures.
+- During fixes, the writer MUST run the regression and affected focused gates.
+  The complete required affected matrix MUST run at the final implementation
+  checkpoint. A passing check MUST NOT be repeated on unchanged inputs without a
+  failure, intervening change or unresolved concern that justifies the repetition.
+  Existing test selection, architecture gates and budgets are not relaxed.
+- The lane owner MUST merge blocking findings into one remediation patch. Original
+  reviewers SHOULD recheck their own counterexamples with retained context. A
+  material boundary change still requires fresh independent coverage; historical
+  remediation caps, STOP rules and nonblocking P3 treatment remain unchanged.
+- Scripts SHOULD perform mechanical pin/hash checks, prompt generation and verbatim
+  report filing. Reports SHOULD be compact and evidence-linked; brevity MUST NOT
+  remove a concrete finding, required closure or explanation of a verdict.
+
+The review ledger MUST record the actual reviewer dispatches, distinct blocking
+root causes, repeated checks and their reasons, and available review elapsed time
+and token usage. Unavailable measurements MUST be marked unavailable. The owner
+will judge the trial after this gate; no cross-project skill change follows from it.
 
 ## Evidence and cap discipline
 
