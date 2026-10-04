@@ -606,3 +606,50 @@ on the identical settled tuple. Nine prior closures remain preserved. Existing
 contexts continue only subject to each reviewer's independent boundary assessment.
 Source MUST remain frozen; only generated prompts and verbatim reports may be
 added. No component acceptance, push, physical qualification or live change yet.
+
+### IC-2 Pure component accepted — final dual GO
+
+Status: **accepted at root `104d91cab7fde2c036ff962d979b56aadca6534a`,
+Glade `37dff286ce1eb9690204d4a7d14c940333396a30`, Glial
+`348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`95a426595bba8e248a5f484272e483a070c73918` after originating
+Code-3 and State-3 GO; this accepts the deterministic Pure component and complete
+internal encoder only**. This acceptance metadata is subsequent to the frozen
+review tuple; reviewed member source remains unchanged.
+
+| Artifact | SHA256 |
+| --- | --- |
+| [Code prompt3](GladeIndependentCrdtAdmissionKernelImplementation-PromptCode-3.md) | `84e831e04192150507a2dacc02590c4e53784d70c22dcf38e82c08e10267fd06` |
+| [State prompt3](GladeIndependentCrdtAdmissionKernelImplementation-PromptState-3.md) | `f70ea9e9380f0ab6b30d287962663a6a114b86454a94389dea8f3434e3b58a4a` |
+| [Code final GO](GladeIndependentCrdtAdmissionKernelImplementation-ReviewCode-3.md) | `b57a834bafb867209aa20163440c30209ef43e92dfb10ec0502e96f0b7c70feb` |
+| [State final GO](GladeIndependentCrdtAdmissionKernelImplementation-ReviewState-3.md) | `56ba2e638a2a653002cfce18426b27a046c33bca688a057074c8717247a9348d` |
+
+Code independently verified and closed Code-2 P2-5; State confirmed its prior GO
+and independently verified the busy-history sequence. Both preserved every
+original closure and justified retained context after complete range inspection.
+Ten IDs representing six nonarchitectural roots are closed: five roots found at
+initial component review (four blind convergences), one new root at remediation1
+re-verdict, none at final remediation2 re-verdict. Remediation count two;
+architectural count zero. No exceptional third round was used; historical
+contract stops/caps remain intact. No open P0–P3 at this component gate. These
+counts describe discovery in this review loop, not production escaped defects.
+
+Core105/API34 and exact ten actual-Taut rows/three-order canonical corpus pass,
+with adopted architecture/fmt/Clippy/process/source/whitespace evidence. Both
+reviews independently audited all47 protected sources and the actual-port
+RED/GREEN chronology. Earlier isolated semantic mutants and unchanged-rerun
+decisions remain filed; no synthetic fixture qualifies real crypto or durability.
+
+Accepted conservative limitations remain explicit: unknown frontier digests and
+refused busy historical input retain sticky incompleteness; neither retry nor
+ResumeRecovery clears it. A deferred queue, authoritative full-cut reconstruction
+witness and clearing action remain unselected. No eventual exact-cut claim follows.
+
+Next IC-3: design/review the production adapter boundary for genuine scoped
+evidence/clock policy, a versioned Records-owned physical envelope and complete
+restart/attempt reconstruction, process ownership/antirollback and bounded
+authenticated duplex. Tests MUST precede implementation; physical fault evidence,
+real two-node partition/heal, clients/compatibility/aggregate and Surface remain
+required before live readiness. The running claim-holder path is unchanged.
+No push, desk rebuild, store seal, enrollment, migration or activation occurred.

@@ -1,6 +1,16 @@
 # Independent CRDT admission — IC-2 kernel implementation
 
-Date: 2026-10-04. Status: **DRAFT implementation checkpoint; not accepted**.
+Date: 2026-10-04. Status: **accepted at root
+`104d91cab7fde2c036ff962d979b56aadca6534a`, Glade
+`37dff286ce1eb9690204d4a7d14c940333396a30`, Glial
+`348eed97cd1ee4f677ea2866dfabe5a81cbebee1`, discovery
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`, external Gyld
+`95a426595bba8e248a5f484272e483a070c73918` after
+[Code-3](GladeIndependentCrdtAdmissionKernelImplementation-ReviewCode-3.md) and
+[State-3](GladeIndependentCrdtAdmissionKernelImplementation-ReviewState-3.md)
+reported GO; this accepts the deterministic Pure component and complete internal
+batch encoder only**. This status update records acceptance of the frozen reviewed
+source; it does not substitute a new source tuple or qualify live integration.
 The owner directed “go next” after the redesigned internal storage-attempt
 contract received Code/State GO. This is the next Pure component object, not a
 continuation that resets either historical contract object's review cap.
@@ -159,3 +169,30 @@ qualified local persistence/restart/exact retry, automatic duplex application
 exchange, affected clients and compatibility/fault/readiness evidence. This
 object authorizes local settled checkpoints only: no push, desk rebuild, seal,
 enrollment, migration or activation.
+
+## Acceptance record and next boundary
+
+Both originating reviewers verified the final counterexample and preserved all
+nine earlier closures on the identical tuple above. Ten finding IDs across six
+nonarchitectural roots are closed after two merged remediations. No architectural
+root or new P0–P3 finding was established; historical stopped objects and caps
+remain recorded. Reports are filed verbatim. Core105/API34, released text ten-row
+consumer and canonical corpus, adopted architecture/fmt/Clippy/process/source and
+whitespace gates pass. The unchanged-source witnesses and chronological RED/GREEN
+evidence remain linked from the review ledger.
+
+The reviewers explicitly accepted conservative incomplete status for unknown
+frontier digests and refused busy historical input at this Pure boundary. These
+markers have no clearing witness; acceptance MUST NOT be presented as eventual
+exact-cut reconstruction or production storage/authentication qualification.
+
+Next is an IC-3 production-adapter contract/design checkpoint: genuine scoped
+evidence and clock policy; a separate versioned Records-owned physical envelope
+with complete decoding/reconstruction, retained attempt history, process ownership
+and antirollback; and a bounded authenticated duplex protocol. It MUST retain
+truthful incomplete reads until a separately reviewed full-cut reconstruction
+witness and authoritative action exist. Start affected compiling consumer/fault
+tests before implementation and review changed boundaries under the recorded
+tiers. Actual restart/exact retry, partition/heal and real two-node application
+exchange are required before claiming the requested live capability. No desk
+rebuild, push, seal, enrollment, migration or activation occurred in IC-2.

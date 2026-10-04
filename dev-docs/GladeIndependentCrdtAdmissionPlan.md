@@ -3,7 +3,7 @@
 Date: 2026-10-04. Status: **owner authorized design, review and gated implementation;
 semantic design accepted; original contract stopped, owner authorized storage-attempt
 redesign, lifecycle design and redesigned typed/model/RED gate accepted;
-IC-2 implementation and IC-3/4 integration gates remain open**. The
+IC-2 deterministic component accepted; IC-3/4 integration gates remain open**. The
 [attempt-lifecycle redesign](GladeIndependentCrdtStorageAttemptDesign.md) follows
 GDL-058 without erasing the stopped object's review history. After the sequencing recommendation,
 the owner directed a dedicated design, review and implementation, then said go.
@@ -20,9 +20,25 @@ The internal [storage-attempt contract](GladeIndependentCrdtStorageAttemptContra
 was accepted at root `fac445d74025f00c3d59574b2bbea1ebe14c665a` after final
 peer-blind Code/State GO on the exact recorded member tuple. This accepts the
 typed boundary, allocation and bounded model only: 34 API and 12 fixture/source
-checks pass; 43 domain tests and ten released-text rows remain compiling RED.
-Next is the Pure transition and immutable batch encoder, then component/aggregate
-review. Physical storage/authentication and automatic duplex are still IC-3/4.
+checks passed at that boundary; 43 domain tests and ten released-text rows were
+compiling RED there. The subsequent
+[Pure kernel and internal batch encoder](GladeIndependentCrdtAdmissionKernelImplementation.md)
+are now accepted after Code-3/State-3 GO at root
+`104d91cab7fde2c036ff962d979b56aadca6534a`, Glade
+`37dff286ce1eb9690204d4a7d14c940333396a30`, with the unchanged member/external
+pins recorded in the implementation acceptance. Core105/API34 and the exact ten
+released-text rows/canonical corpus pass. This is deterministic component proof,
+not physical adapter or real-node qualification.
+
+Next is the IC-3 production-adapter contract/design checkpoint for genuine scoped
+authentication/clock policy, a separate versioned Records-owned physical envelope
+and restart/attempt reconstruction, then bounded authenticated duplex exchange.
+The current grammar conservatively keeps reads incomplete after unknown frontier
+digests or refused busy historical work. A future clearing action MUST have
+separately reviewed authoritative full-cut reconstruction and custody/outcome
+proof; retry alone cannot clear the marker. Real storage, automatic duplex and
+compatibility/aggregate readiness remain IC-3/4. Running clients still use the
+existing claim-holder path until those integrations are qualified and activated.
 
 ## Recommendation and timeline
 
