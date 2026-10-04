@@ -522,3 +522,31 @@ maps every finding to one disposition and closure test. All IDs remain open;
 architectural count remains zero. This is the first merged remediation of the new
 implementation object, not a reset of earlier failed objects. Source work resumes
 only under this scoped test-first correction, with no shared boundary changes.
+
+### IC-2 remediation 1 settled for originating verification
+
+Glade `03d0fcd7629fcdbd5e5d44b9f9dcd9e32aec3494`; other member/external pins
+remain unchanged. This root's exact SHA will appear in canonical generated
+re-verdict prompts after commitment. The
+[correction evidence](GladeIndependentCrdtAdmissionKernelImplementation-Remediation1-Evidence.md)
+records genuine assertion RED for each of the five roots before its correction,
+including the actual-port terminal scheduling matrix and duplicate request-slot
+edge. [Protected-source witnesses](GladeIndependentCrdtAdmissionKernelImplementation-Remediation1-ProtectedSources.json)
+pin all41 unchanged tracked controls; artifact SHA256
+`c6ca4f64a06722465efb91c68e7194c8f6311b675f7b53e61775946f1c7dc066`.
+
+Core102 and API34 pass; final adopted architecture/all-features/test/fmt/clippy,
+exact ten released-text and corpus checks, process/source guards and whitespace
+pass. Five existing private implementation files changed; sixteen new regressions
+were added. Shared types/API/provider, original43 assertions, corpus/JS, roles,
+dependencies, selection and allowlists remain fixed. Earlier isolated mutants
+protect unchanged encoder and qualification/fresh-origin logic; their rerun was
+not required, with the decision explicitly recorded. Their control suites still
+pass in the full affected check.
+
+All nine finding IDs remain open until their originating reviewers verify the
+original counterexamples on this same new tuple. This remains remediation round1,
+architectural count zero. Originating context is retained for guard/quota/failure
+corrections within the existing boundary; each reviewer must assess that premise
+and inspect the complete corrected range for new defects. Only prompts/reports
+may be added during review. No component acceptance, push or live change yet.
