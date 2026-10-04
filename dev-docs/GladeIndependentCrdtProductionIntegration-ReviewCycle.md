@@ -614,3 +614,29 @@ root still STOP; no historical cap reset.
 Status: **COMMITTED SECOND CORRECTED CANDIDATE; ACCEPTANCE VERDICTS PENDING**.
 Original A2 closures remain deferred to ABC. Strict pre-remote remains closed;
 C history execution, IC4 activation, live/default/desk changes and push unclaimed.
+
+## Combined B accepted — all independent verdicts GO
+
+Status: **accepted at root f0b1c325f9e0eff27b4eefadac8084bff3505e73 /
+Glade a47691598df648eb8c9554b27f3d06b0cffcf596 after fresh full Code/State,
+all four blocking-finding owners and cold Surface reported GO. This accepts
+genuine authentication and bounded Unix LocalProcessRestart persistence only.**
+
+The complete report/hash table and exact scope are filed in
+`history/GladeIndependentCrdtProductionIntegrationPhysicalHost-Acceptance.md`.
+All seven reports are verbatim. The full Code factual erratum corrects three
+Fence crash labels and preserves GO; its original report remains unchanged.
+Every START/END tuple matched; source did not move during inspection.
+All initial B closures remain preserved, both exact-cut paths and oversized
+loss are independently closed, and no new finding or cap reset was established.
+
+Accounting remains semantic2architectural/1nonarchitectural/1completedremediation,
+typed2architectural/5priornonarchitectural/2completedremediations,
+B0architectural/6nonarchitectural/2completedremediations. Generic orphan guards
+remain pending/incomplete; no reset/reconstructed drain authority is qualified.
+
+Next: commit this real accepted record, genuine B1 qualification metadata and
+its canonical source/evidence pins; require strict pre-remote GREEN before C.
+C actual-node assembly/automatic exchange and aggregate review remain authorized
+and unfinished. Original A2 closures remain deferred to that wider gate.
+No IC4/live/default/desk/Raft/push action follows from this acceptance.
