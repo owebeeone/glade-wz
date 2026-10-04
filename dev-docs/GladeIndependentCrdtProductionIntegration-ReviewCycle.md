@@ -578,3 +578,39 @@ focused re-verdicts unless actual boundary changes require fresh full axes.
 Status: **NO-GO; SECOND B IMPLEMENTATION CORRECTION NEXT**. Earlier originating
 closures are recorded, not erased. Original A2 closures remain deferred to ABC.
 No accepted crypto metadata, strict gate success, C exchange, activation or push.
+
+## Combined B second corrected checkpoint — independent review pending
+
+Glade `a47691598df648eb8c9554b27f3d06b0cffcf596` commits the exact11-file
+second B correction. Parent verified all65 combined committed source hashes,
+five active consumer-document hashes, original Rem1 documents at their committed
+root, compatibility45, canonical27,23 immutable artifacts and exact raw/gzip
+chronology. Remediation2 Evidence/SourcePins/RunLog are in history; earlier
+artifacts remain unchanged. Acceptance/crypto records remain null.
+
+Executed evidence records29 public disk controls,29 Records controls and151
+affected physical cuts (57 native,65 ingress,26 observation,3 new Fence),
+16 auth,6 boundary,30 assembly and affected contract/architecture/source/globals
+gates. The171 unchanged historical-kind fixed-cut witnesses were not rerun;
+their committed evidence stays pinned and all four-kind custody controls ran.
+Affected format passes; Clippy retains exactly9 old warnings. Earlier whole-node
+format251-hunk debt remains documented. No power-loss/quorum result is claimed.
+
+The final retained full cut now controls write start and receive permission.
+Original ObservePolicy Fence issuance/counters/floors are selected together,
+then exact native/core callbacks drain. This changes reviewed callback order,
+so fresh full Code/State supplements all four affected reviewers' own-finding
+closure and preservation of earlier closures. Surface rechecks its retirement
+recipe in the same gate. All reports MUST use the identical settled tuple,
+START/END checks, canonical prompts and peer blindness; no source movement
+until all ENDs. Fresh full GO alone cannot replace originator verification.
+
+Accounting now: semantic **2 architectural/1 nonarchitectural/1 completed
+remediation**, typed **2 architectural/5 prior nonarchitectural/2 completed
+remediations**, combined B **0 architectural/6 nonarchitectural/2 completed
+remediations**. Completed correction is not closure. Third typed architectural
+root still STOP; no historical cap reset.
+
+Status: **COMMITTED SECOND CORRECTED CANDIDATE; ACCEPTANCE VERDICTS PENDING**.
+Original A2 closures remain deferred to ABC. Strict pre-remote remains closed;
+C history execution, IC4 activation, live/default/desk changes and push unclaimed.

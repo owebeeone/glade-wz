@@ -64,6 +64,16 @@ and mutation boundaries. If the actual correction moves a reviewed boundary or
 invalidates earlier call-graph proofs, parent MUST instead obtain fresh full
 affected axes plus required originator closure; narrow labeling is no waiver.
 
+Implementation impact update: the private retained-cut helper now drains
+already-selected ObservePolicy Fence effects through the existing native resolver
+and core callback path. This changes the reviewed callback/publication order;
+an earlier fixture's original Fence becomes retired before its previous lookup.
+Accordingly parent MUST add fresh full Code/State acceptance at the corrected
+tuple, alongside the four finding originators' focused closure. This does not
+classify a new architectural root or reset a cap. The original fixture MUST
+retain all terminal, delayed and contrary assertions while locating its full
+original request in live or retired custody.
+
 Accepted B metadata and strict pre-remote success MUST remain closed until actual
 GO and required blocking closures. Original A2 originating closures remain
 owner-deferred to wider ABC. Automatic real-node exchange is C, still unbuilt.
