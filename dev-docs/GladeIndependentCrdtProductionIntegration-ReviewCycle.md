@@ -365,3 +365,41 @@ accounting remains unchanged. Successful IC-3B/C implementation is now released
 to the same sole drafter under the accepted contracts and test/evidence gates.
 Any standalone review scheduling overridden by this directive MUST remain distinct
 from genuine provider qualification and the wider aggregate review.
+
+## Owner scope correction during B1
+
+The owner directed “no - it does not warrant anything - ignore it” regarding
+the newly investigated leading UTF-8 BOM compatibility case. That BOM-specific
+work is excluded; existing Glial behavior remains unchanged. B1 MUST NOT claim
+complete payload-decoder equivalence covering that excluded case. This does not
+change signature-byte identity, canonical proof rules or the remaining IC-3 gates.
+
+## IC-3B1 genuine authentication source checkpoint
+
+Glade source `e8097861c9559ce9753b75231ee2aac8f9e28064` implements the genuine
+EvidencePort provider with full signed namespace, exact scoped proof verification,
+fresh local writer possession, conditional seals, provider-owned current observation
+and original historical-admission verification. Parent verified all 14 source
+hashes and unchanged external dependency pins. New evidence, compressed chronology
+and source pins are filed as `history/GladeIndependentCrdtProductionIntegrationB1*`;
+consumer lifecycle is in `GladeIndependentCrdtProductionIntegrationAuthentication.md`.
+
+Executed controls: 16 genuine provider groups and 32 retained released-consumer
+payload rows GREEN; actual assembly30, signer3 and default refusing boundaries
+GREEN. Contracts adopter, Node architecture, source/format and process-global
+ratchet pass with unchanged three permanent entries. Node strict Clippy retains
+exactly nine baseline diagnostics; no new warning or relaxed allowance is claimed.
+A zero-selected assembly attempt is preserved and corrected by an actual 30-test
+selection. B1 does not claim durable possession/floors, protected physical Started,
+restart, a writable replica, accepted component review or actual remote exchange.
+Strict pre-remote qualification still refuses absent accepted genuine B evidence.
+
+The same sole drafter proceeds to B2 real floor/slot/lock transactions, complete
+custody/coherence and actual core replay, owned ingress and OS-process kill/reopen
+witnesses. Fresh scratch-root provisioning may install the existing legacy
+compatibility-refusal marker so an old executable cannot treat that root as a new
+legacy store. This does not seal/migrate any existing store; actual old-executable
+refusal remains required in addition to the unchanged legacy-open unit control.
+Separate corrected typed closures remain owner-deferred to the wider review;
+the existing combined B physical/cryptographic component qualification remains
+pending. No review GO, source activation or push is claimed.

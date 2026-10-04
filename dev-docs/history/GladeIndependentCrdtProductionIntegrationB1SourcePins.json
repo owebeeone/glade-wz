@@ -1,0 +1,34 @@
+{
+  "phase": "IC3-B1",
+  "status": "committed-genuine-authentication-source; combined physical B qualification and component review pending",
+  "implementation_revision": "e8097861c9559ce9753b75231ee2aac8f9e28064",
+  "accepted_review_record": null,
+  "baseline_implementation_revision": "3bf66efecc59fd24261e13787e4c8fc3f822ca57",
+  "files": {
+    "node/Cargo.toml": "fdbe48d43ea20a9a7d5f24970a08fe5be52aad4ae6e7c85cfc1091891845170f",
+    "node/Cargo.lock": "ae90e86c28fcb8891326ca6a6fad0e54d265edea05d699bf232f5acd7da11db7",
+    "node/architecture-policy.json": "84f4c96dcb66ee3577e7a682c75161606190d42d2fc164fb1c1587bcfc706533",
+    "node/src/independent/mod.rs": "a31678c8683dd8c8da963daf5767fd0c9284bad92413b690bb5bfa156c55af27",
+    "node/src/independent/auth.rs": "29be9c60bcac15ad735975fa8b31108df68112a549ccffef9a9c4d74dc9908ae",
+    "node/src/independent/auth/provider.rs": "a04221a8335baacd441a7c8ff2a84ed581495a4cdc7cb04d51616a39a9e63e15",
+    "node/src/independent/auth/operations.rs": "3d5d7616695928de5a048f4f33f0c39073579afe00782cba1bda700998cd270f",
+    "node/src/independent/namespace.rs": "3264a17cea71d251f9fadf6d3af466fea4103b7403129c8f4923cc655b7e391e",
+    "node/src/independent/text_profile.rs": "65ab1c1b7125516a51f23226d870e1e22405edc9f04ab1b1621caba275847fb5",
+    "node/tests/ic3_auth.rs": "2ced06ec8ac72e1932d655805e82ebb7f0fea2a792d3688fca1b76f7cb8a40dd",
+    "node/tests/ic3_auth_fixture/mod.rs": "4bc515d842fa604eda35690c9368e26a4f263ff04c44823bdf02994ab035e46b",
+    "node/tests/ic3_auth_extra/mod.rs": "e4eec024ecf2165a30053a94e82ed03ded23d7e74e6e576a2edbdfab23788cc8",
+    "node/tests/fixtures/ic3_text_payload_rows.tsv": "a61ac66944de95d4ca891c9149c6044f16eb946b9d3a8120c29b4ed30f8f12a0",
+    "node/tests/ic3_text_consumer.mjs": "a2c2e720ce40a9dcdb8de4ee55895921c84b13224040763c779847d435f49d1e"
+  },
+  "witnesses": [
+    "genuine-provider-positive",
+    "bad-signature",
+    "wrong-domain",
+    "revoked",
+    "expired",
+    "time-uncertain",
+    "local-session-replay",
+    "historical-admission"
+  ],
+  "qualification": "Executed genuine in-process authentication only. Physical custody/restart and combined B review pending; this is not accepted pre-remote evidence."
+}
