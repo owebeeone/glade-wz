@@ -550,3 +550,28 @@ architectural count zero. Originating context is retained for guard/quota/failur
 corrections within the existing boundary; each reviewer must assess that premise
 and inspect the complete corrected range for new defects. Only prompts/reports
 may be added during review. No component acceptance, push or live change yet.
+
+### IC-2 remediation 1 re-verdict — nine closures; one new Code blocker
+
+Both originating axes inspected root `aa4f7e28334baa4ef515487792ca785061de597c`,
+Glade `03d0fcd7629fcdbd5e5d44b9f9dcd9e32aec3494`, and unchanged other pins.
+Code closed all four original findings; State closed all five and returned GO.
+Code returned NO-GO for new nonarchitectural P2-5: unresolved A can divert a
+distinct historical B and then falsely report complete history after A settles.
+Aggregate acceptance remains blocked. Both axes independently confirmed retained
+context remains valid; architectural count remains zero.
+
+| Artifact | SHA256 |
+| --- | --- |
+| [Code prompt2](GladeIndependentCrdtAdmissionKernelImplementation-PromptCode-2.md) | `915ea1526e795de46feaee7577451321774fc6eda2301b4e7fcf78f0fd3ce1aa` |
+| [State prompt2](GladeIndependentCrdtAdmissionKernelImplementation-PromptState-2.md) | `854c2a6f173c6d2f7dd05923ccc75de5df8680b1f5a2ffda22ea63a957fed73e` |
+| [Code report2](GladeIndependentCrdtAdmissionKernelImplementation-ReviewCode-2.md) | `0151cc10b21fd5f3f17c684c01d670804788cde69fb6fe529ec453b4d9bd7a30` |
+| [State report2](GladeIndependentCrdtAdmissionKernelImplementation-ReviewState-2.md) | `6309c2428bb00ff60cc349aa47a98baac0a39ee11ead9b83c26c4e32b8c479a9` |
+
+[RemPlan2](GladeIndependentCrdtAdmissionKernelImplementation-RemPlan-2.md)
+authorizes the second single merged test-first correction, confined to the new
+busy-history counterexample. Preserve all nine verified closures and existing
+boundaries. No new type, provider, interface, clearing witness, push or live
+activation is selected. Originating Code MUST verify its new counterexample and
+State MUST confirm the prior GO on the next identical settled tuple. No further
+round is silently authorized; the skill cap remains unchanged.
