@@ -497,3 +497,28 @@ behavior. Code/State must assess the full implementation against the accepted
 contract, including that question. This new object's remediation count remains
 zero. During review only generated prompts and verbatim reports may be added;
 the source tuple MUST remain fixed. No component acceptance or activation yet.
+
+### IC-2 initial review — NO-GO; one merged remediation
+
+Both axes independently reviewed root `332e7d95f5887300bf762ac76737e4cc38bcd151`
+and Glade `4124cbcb04f3a7eb2db6a9072ae92b2bbea1cf14`, unchanged other pins.
+Code found four P2s; State found five P2s. Four roots converged blindly:
+terminal-phase rewind by late Started; integrity-stop bypass by parked continuations;
+unbounded frontier names/bytes; candidate-derived pending-item overflow.
+State additionally found historical counter exhaustion forgetting sticky loss.
+Nine IDs represent five roots, all reviewer-classified nonarchitectural.
+The conservative frontier digest limitation was explicitly assessed as no additional
+blocker, without claiming eventual live cut reconstruction.
+
+| Artifact | SHA256 |
+| --- | --- |
+| [Code prompt](GladeIndependentCrdtAdmissionKernelImplementation-PromptCode.md) | `6b15adadf9394011975c9de622317a8d3a35b927ef93b0ba42a0fd1e08c3847d` |
+| [State prompt](GladeIndependentCrdtAdmissionKernelImplementation-PromptState.md) | `7e83038e6ce4c4471532594640f2ebca929ab647407a692898bc1900ec40b696` |
+| [Code report](GladeIndependentCrdtAdmissionKernelImplementation-ReviewCode.md) | `0fd9024353a9c792d3b0ae35dc892e88505dfd2c36d6e34082e2d4ecb5a3e308` |
+| [State report](GladeIndependentCrdtAdmissionKernelImplementation-ReviewState.md) | `e7a37852e444ea795ccb4a84aa5d3bdd25cdbb909b04508ec297b64856a7ea79` |
+
+[RemPlan1](GladeIndependentCrdtAdmissionKernelImplementation-RemPlan-1.md)
+maps every finding to one disposition and closure test. All IDs remain open;
+architectural count remains zero. This is the first merged remediation of the new
+implementation object, not a reset of earlier failed objects. Source work resumes
+only under this scoped test-first correction, with no shared boundary changes.
