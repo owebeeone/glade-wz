@@ -575,3 +575,34 @@ boundaries. No new type, provider, interface, clearing witness, push or live
 activation is selected. Originating Code MUST verify its new counterexample and
 State MUST confirm the prior GO on the next identical settled tuple. No further
 round is silently authorized; the skill cap remains unchanged.
+
+### IC-2 remediation 2 settled for originating closure and confirmation
+
+Glade `37dff286ce1eb9690204d4a7d14c940333396a30`; all other member/external
+pins remain fixed. Canonical prompts will record this root's SHA after commitment.
+[Remediation2 evidence](GladeIndependentCrdtAdmissionKernelImplementation-Remediation2-Evidence.md)
+SHA256 `9440223c34988b1bb15b00aed768db0888aa8640743e7b95b48af684297d1355`
+preserves the actual-port false-complete RED, preimplementation new-test sequencing
+refinement, local control and three final GREEN regressions. Only two existing
+busy branches changed (14 added lines), plus one 253-line test file.
+
+Core105/API34, adopted architecture/all-features/fmt/Clippy, exact ten released
+text rows/canonical corpus, process/source/whitespace gates pass. All47 protected
+files retain their exact bytes, including all41 previous witnesses and six
+remediation1 test files; [witnesses](GladeIndependentCrdtAdmissionKernelImplementation-Remediation2-ProtectedSources.json)
+SHA256 `db25882ed50b22a7f7638574f4474229709677109846efad83576e43b6c01c72`.
+The unchanged isolated-mutant rerun decision and honest cached/concurrent timings
+are recorded. No source consumer, selector, role, dependency or allowance changed.
+
+Distinct busy historical input now receives an explicit Capacity refusal plus
+sticky recovery incompleteness, preserving A's reservation, settlement, original
+receipt/charges and Y progress. Local-only refusal does not taint completeness.
+There is no deferred queue or clearing witness; retry cannot clear this marker.
+The controlling DRAFT explicitly records that conservative limitation.
+
+This is remediation2, architectural count zero. Code-2 P2-5 remains open until
+its originator verifies the original sequence; State MUST confirm its prior GO
+on the identical settled tuple. Nine prior closures remain preserved. Existing
+contexts continue only subject to each reviewer's independent boundary assessment.
+Source MUST remain frozen; only generated prompts and verbatim reports may be
+added. No component acceptance, push, physical qualification or live change yet.

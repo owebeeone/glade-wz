@@ -126,6 +126,25 @@ before acceptance. This DRAFT does not self-ratify a weaker completeness promise
 or select permanent live synchronization behavior. A later live producer cannot
 claim successful exact-cut reconstruction from this fixture behavior.
 
+## Busy historical input and completeness
+
+The second correction MUST classify distinct historical input arriving while
+the same instance has an unresolved storage plan. Merely resuming that plan
+MUST NOT silently discard the observed input and later report complete history.
+The confined existing-field implementation explicitly refuses that historical
+input with Capacity and records sticky recovery incompleteness, both before
+verification of a fresh offer and after matching an already-issued successful
+verification. It preserves the unresolved plan and its original custody,
+receipts and charges. Local-intent-only refusal does not imply lost history;
+independent instances may continue.
+
+There is no retained deferred historical queue or clearing witness in this
+correction. A later successful retry can retain the operation but cannot clear
+the sticky completeness marker. This is conservative Pure safety, not eventual
+exact-cut reconstruction or live synchronization qualification. The originating
+Code reviewer MUST verify its counterexample and State MUST confirm its GO on
+the same settled correction tuple before acceptance.
+
 ## Review and remaining gates
 
 The recorded Pure component tier is **two fresh, peer-blind Code/State reviewers**
