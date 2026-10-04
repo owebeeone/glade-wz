@@ -403,3 +403,65 @@ refusal remains required in addition to the unchanged legacy-open unit control.
 Separate corrected typed closures remain owner-deferred to the wider review;
 the existing combined B physical/cryptographic component qualification remains
 pending. No review GO, source activation or push is claimed.
+
+## B2 in-progress utility boundary correction
+
+Physical-host implementation exposed a narrow outward utility gap before B2
+settlement: `IngressAuthority` provides mutating `settle`/`abandon` but no
+nonmutating eligibility check. The accepted lifecycle requires checking issuer
+and drain eligibility before persistence and retiring the owned status only after
+confirmed durable selection. The candidate correction adds `can_settle` and
+`can_abandon` queries over the same issuer-owned state; it changes no session
+trait, caller authority flag or semantic lifecycle. On `Unknown`, the host MUST
+retain the exact by-value permit and observation rather than retire or detach it.
+
+The sole writer is authorized to implement this bounded candidate with compiling
+behavioral RED, nonmutation/foreign/closed/not-drained/started-abandon controls,
+durable-order controls, original-consumer checks and cold usage documentation.
+The already required fresh combined B Code/State checkpoint MUST inspect the
+complete utility change alongside genuine authentication and physical recovery.
+Because this is a public utility API extension, that same settled checkpoint
+also requires an independent cold docs-only Surface verdict. This adds a parallel
+axis to the combined gate; it does not create a standalone corrected-typed
+re-review or override the owner's deferred R1–R6 closures.
+
+No independent acceptance or reviewer root classification is claimed while source
+is in progress. The semantic and typed cumulative root/remediation accounting
+above remains unchanged; reviewers MUST classify any new contract counterexample
+against its controlling object. Component B is not frozen or qualified yet.
+
+## IC-3B combined source/evidence checkpoint — review pending
+
+Glade source `9dbc677a25d93af0c561817571ad7eb1990ddadc` settles the full B1/B2
+component: genuine evidence, physically owned floor/slot transactions, complete
+native custody and actual core callback recovery, owned ingress/loss, the utility
+eligibility addition and explicit configured NodeAssembly factory. Parent verified
+all 56 implementation hashes, the exact 47-file B2 change range, five consumer
+hashes and both raw/compressed chronology hashes. Three original typed reports
+remain byte-exact. Glial, discovery and external Gyld remain at their recorded
+unchanged heads. This root checkpoint freezes the controlling documentation and
+new `history/GladeIndependentCrdtProductionIntegrationB2*` artifacts for review.
+
+Executed bounded witnesses include 228 native process-kill cuts across all four
+kinds, 65 ingress cuts, floor/paired controls, the actual old-executable refusal,
+original receipt retry, selected-terminal callback replay, fence winners/current
+revocation, joined cancellation, independent X/Y progress, physically allocated
+slots and exact critical reserves. Relevant retained contracts and node consumers,
+architecture, disabled-scope/source and process-global gates pass. Exact affected
+formatting passes; whole-node formatting retains 251 historical hunks against the
+unchanged 252-hunk ratchet. Clippy retains exactly nine baseline warnings. Neither
+whole-node formatting nor blanket platform/system qualification is claimed.
+
+The candidate's process-restart domain is bounded: an orphan Active receive after
+unclean death remains pending/incomplete; no lease, drop or timeout synthesizes
+drain or absence. A live drained receive may durably retain loss. C must own
+cancellation/join and preserve that limit; no reset API is introduced.
+
+Decision: **COMMITTED CANDIDATE; COMBINED B REVIEW PENDING**. Fresh peer-blind Code,
+State and cold Surface MUST review this identical tuple. B starts with zero formal
+reviewer roots/remediation rounds; semantic and typed cumulative accounting and
+the owner-deferred original R1–R6 closures remain unchanged. This checkpoint does
+not claim GO, genuine accepted crypto qualification, remote history execution,
+C completion, IC4 activation, existing-store migration, desk rebuild or push.
+The strict pre-remote gate MUST continue refusing until an actual accepted B
+record and its committed qualification pins exist.
