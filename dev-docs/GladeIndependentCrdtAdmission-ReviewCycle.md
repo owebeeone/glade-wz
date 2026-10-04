@@ -456,3 +456,44 @@ the separately required component/aggregate reviews. Library roles/interfaces
 MUST NOT be weakened to pass. IC-3/4 still require real storage/authentication,
 automatic duplex, clients/compatibility and fault/readiness evidence. No push,
 desk rebuild, store seal, enrollment, migration or activation occurred.
+
+## IC-2 Pure kernel implementation in progress
+
+The owner's “go next” selects the production-bound Pure transition and complete
+immutable batch encoder under the accepted internal contract. The controlling
+[implementation DRAFT](GladeIndependentCrdtAdmissionKernelImplementation.md)
+records the baseline tuple, exact source scope, TDD obligations and separately
+remaining live gates. One source drafter is assigned; the lane owner retains
+documentation, git and review dispatch. Existing consumer assertions, shared API,
+bounded development producer, released text consumer and canonical corpus remain
+fixed. This checkpoint starts a new implementation object with zero remediation
+rounds; neither historical contract object's roots or stop are erased.
+
+The recorded Pure component tier requires fresh peer-blind Code/State review on
+one settled committed tuple after GREEN evidence. No implementation acceptance,
+push or live change follows from starting this object.
+
+### IC-2 implementation checkpoint settled for dual review
+
+Glade `4124cbcb04f3a7eb2db6a9072ae92b2bbea1cf14`; other member/external
+pins remain as in the accepted contract. This root's exact SHA will be included
+in generated prompts after commitment. The
+[implementation evidence](GladeIndependentCrdtAdmissionKernelImplementation-Evidence.md)
+records the 43 domain and ten released-text RED baseline, test-first corrections,
+the single explicit scaffold-test replacement and source preservation witnesses.
+
+Core86 and API34 pass; exact ten released-text rows and the unchanged corpus
+control pass. New encoder groups contain190 mutation calls and a direct storage
+promise pair. Two isolated compiled semantic mutants fail real assertions while
+their unmodified controls pass. The final adopted architecture/test/fmt/clippy
+gate, process-global/source checks and whitespace pass. Production modules and
+new test modules are each below500 lines after parser-verified cohesive moves;
+existing large fixtures/domain test files remain unchanged. No policy, role,
+dependency, selector or budget is relaxed. Gyld is unchanged and not rerun.
+
+The DRAFT explicitly exposes the unknown-frontier-digest completeness limitation
+for independent judgment. It is not self-closed or a selected permanent live
+behavior. Code/State must assess the full implementation against the accepted
+contract, including that question. This new object's remediation count remains
+zero. During review only generated prompts and verbatim reports may be added;
+the source tuple MUST remain fixed. No component acceptance or activation yet.
