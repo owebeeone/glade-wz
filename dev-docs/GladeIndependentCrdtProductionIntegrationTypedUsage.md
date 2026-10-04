@@ -1,6 +1,6 @@
 # IC-3A2 typed API consumer guide
 
-Status: candidate for independent Code, State and Surface review. These libraries define representations and replaceable provider contracts. The actual `glade-node` assembly currently supplies refusing providers: `open_replica` returns `Fault::Unavailable`; verification, sealing and observation cannot succeed. There is no new node flag, configuration file, browser activation or usable production store in this tranche.
+Status: corrected checkpoint proceeding as owner accepted; independent Code, State and Surface re-review and finding closures are deferred to the wider IC3ABC review. The initial reports remain unchanged. These libraries define representations and replaceable provider contracts. The actual `glade-node` assembly currently supplies refusing providers: `open_replica` returns `Fault::Unavailable`; verification, sealing and observation cannot succeed. There is no new node flag, configuration file, browser activation or usable production store in this tranche.
 
 ## Packages and construction
 
@@ -86,6 +86,21 @@ If you have obtained a permit but have not passed it to `receive_ingress`, you m
 
 Settlement and abandonment consume the permit. On an uncertain reply you do not own a replacement permit and cannot retry by fabricating one. Reopen/load/reconstruction must consult the host's retained exact intent and floor; the host resumes or exposes the retained transition. The consumer may retry an exact idempotent checkpoint only when the host's recovered binding permits it. A fresh guard or new checkpoint is not a substitute for resolving the old request.
 
+## Failure, shutdown and reopen handoff
+
+The generic API has no `dispose_pending`, guard reset or forced-close operation. Keep the session and every still-live continuation until a qualified host can retain their exact obligations. Dropping a Rust handle or ending a process is not a `Closed` result and cannot erase durable guard/intent/attempt custody. The current A2 assembly cannot open a session or perform qualified recovery; the explicit A2 stop below is the supported outcome, not a hidden runnable cleanup command.
+
+| Observed outcome | Permitted next action and ownership |
+| --- | --- |
+| `open_replica` returns `Unavailable` | Stop this resource workflow. No session/permit exists and no history may be consumed. This is the actual A2 assembled result. |
+| Receive returns `Err`, or classification fails after draining | Keep the exact guard/observation/operation and original request bindings in host custody. Do not call never-started abandon. The generic API has no caller-authorized loss/ownership reset. Hand the still-owned session and those bindings to the qualified host's recovery supervisor; at A2 that handoff is unavailable, so stop without asserting clean close or issuing a replacement. |
+| A started continuation is cancelled/dropped | Treat drain as unproved. If it is still owned, drive its cooperating cancellation/join work to Ready, then settle with an honest observation/checkpoint. If its capability was lost, retain the original guard and use the same qualified recovery handoff; at A2 stop. Timeout alone is not settlement. |
+| Persistence returns `Unknown` | The host retains the exact intent and consumed capability's obligations. Call `session.load()` to obtain the retained transition only on a qualified provider; `Unavailable` means stop and preserve custody. Retry an exact checkpoint only if the validated recovered binding authorizes it. Never issue a fresh guard/attempt to replace this uncertainty. |
+| `ReplicaRecoverySession::close` returns `Pending` | Retain the session. Resolve the original owned work or exact attempts with the existing settle/inspect/fence operations only where their retained bindings permit them. Retry qualified close after that progress. If a lost capability or unavailable host prevents progress, stop and hand ownership to the qualified supervisor; no generic forced disposal is supported at A2. |
+| Qualified close returns `Closed` | The session may be disposed. The supervisor may then call `ReplicaRecoveryHost::open_replica` with the trusted reopen owner and latest authoritative floor, preserving resource/store identity and namespaces. Call `load`; only `Validated` recovery supplies the retained original requests and outcomes. An unavailable load is a stop, not an empty new store. |
+
+A qualified host supervisor must first join live carrier work or retain its conservative loss marker, keep all original immutable request/terminal bindings, and establish a safe release/reclaim of exclusive root custody before reopening. That physical handoff is a B qualification duty; it is not implemented by `IngressAuthority`, by dropping a pending session, or by this guide's sample helper. If the process is terminated instead, restart remains an unclean recovery case and must retain the old guards/floors; it is not the clean close→reopen sequence. No A2 command can turn these cases into success.
+
 ## Storage attempts, reads and close
 
 A recovery session also implements `StorageAttemptSession`: `recover`, `prepare`, `recover_plan`, `begin`, `inspect` and `request_fence`. Preserve the complete owner, invocation, plan, batch, operation kind and attempt binding. `Pending` remains unknown; absence of a terminal is not noncommit. A fence requests durable exclusion of that exact attempt; it is not negative finality until the terminal outcome says so. A committed retry must retain the original receipt and storage promise. `BeginRequest.current` is a compatibility field and does not override the host's own injected policy/time observation.
@@ -96,7 +111,7 @@ Both `ReplicaRecoverySession` and its inherited `StorageAttemptSession` declare 
 
 ## Representation and evidence
 
-`encode`/`decode` use the physical recovery envelope. `encode_profile`/`decode_profile` use the separate remote canonical map grammar. `decode_signed_body` checks exact purpose, version, signature length and body shape; it does not verify the signature. Every decoded record remains untrusted until the injected evidence provider checks the entire descriptor/resource/origin/requester/session/policy binding.
+`encode`/`decode` use the physical recovery envelope. Named concrete roots retain their frozen names; container roots use a recursive identity tree that binds every element/key/value type, so a boxed/vector/optional plan identity cannot decode as a guard identity. Limits cover the outer syntax and the interpreted operation syntax together, including names, cumulative items and embedding depth; arbitrary payload/proof byte strings remain opaque until an authorized profile parses them. `encode_profile`/`decode_profile` use the separate remote canonical map grammar. `decode_signed_body` checks exact purpose, version, signature length and body shape; it does not verify the signature. Every decoded record remains untrusted until the injected evidence provider checks the entire descriptor/resource/origin/requester/session/policy binding.
 
 `EvidencePort` requires `verify`, `seal` and `observe`; none has a success default. `observe` obtains current policy and a conservative time interval from the provider's own inputs. A transport-authenticated peer still needs resource permission. Current local admission must reject revoked, expired or time-uncertain permission; retained historical evidence is checked against its original admission contract rather than silently treated as fresh authority.
 

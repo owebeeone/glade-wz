@@ -303,3 +303,65 @@ The same sole drafter is released to that patch only. New shared format boundary
 requires fresh full Code/State, originating blocking-finding closures and the
 updated docs-only Surface verdict at one new settled tuple. Successful real B/C
 implementation is still withheld pending typed acceptance.
+
+## Owner directive — defer corrected typed review to wider review
+
+On 2026-10-04 the owner explicitly directed: “defer the review as part of a wider
+review - proceed as accepted/”. This overrides the standalone typed re-review
+and originating-closure dispatch specified by RemPlan-1 and the review-loop skill.
+The current correction decision is owner-accepted. The sole drafter MUST finish
+the one mapped patch and its test-first/scoped verification; the lane owner MUST
+record the exact resulting committed tuple before releasing successful B/C work.
+There is no renewed approval request or separate typed re-review at that point.
+
+The record MUST distinguish **owner acceptance with independent closure deferred**
+from reviewer GO. Original NO-GO testimony and historical evidence remain intact.
+R1–R6 dispositions and regressions travel into the wider IC-3ABC aggregate review;
+original P2 findings are not described as independently closed until that review
+verifies their counterexamples. Typed accounting remains one architectural/five
+nonarchitectural roots and first merged correction in progress; semantic accounting
+is unchanged. The directive does not waive implementation tests, genuine crypto,
+mandatory independent canonical consumers, physical kill/restart evidence or
+actual two-node qualification, and does not authorize activation or push.
+
+Next after the completed corrected tuple and checks: proceed with IC-3B genuine
+authenticated persistence/recovery and IC-3C actual automatic exchange. The wider
+review MUST include the deferred corrected type boundary, cumulative embedded-Op
+budgets, actual assembly consumers, argument/help/usage surface and their original
+closure checks alongside the new production integration. No reviewer GO or
+cryptographic/durable qualification may be fabricated from this owner directive.
+
+## IC-3A2 corrected checkpoint — owner accepted; closure deferred
+
+The mapped first typed remediation is complete. Implementation Glade commit
+`3bf66efecc59fd24261e13787e4c8fc3f822ca57` is followed only by vector pin metadata
+at settled Glade HEAD `c69e6416f5f5155d4bb570bf272e796b2deae0a3`. All 59 source
+hashes match both commits and working bytes. The four active document hashes and
+four external Gyld file hashes match the new Remediation1SourcePins manifest.
+External Gyld HEAD is `400cedcf1fff74128f366af758a0c389a23435d7`, with its workspace
+lock captured at external root `9765f891f4b5b1ba9d1fc8752f6ab9e5ca64a6d1`.
+Glial remains `348eed97cd1ee4f677ea2866dfabe5a81cbebee1`; discovery remains
+`1054cfbb6871f4e51c6d9e80bfa0a1fe77956d69`. This ledger's root commit settles
+the corrected tuple; no push or production activation is included.
+
+Parent verification confirmed all seven initial typed evidence/review artifacts
+byte-exact against root `934bf93b45e97065ada9d971400e0a3b6ca3b586`. New source,
+compatibility, evidence and chronological raw output are filed separately as
+`history/GladeIndependentCrdtProductionIntegrationTypedRemediation1*`. The source
+patch binds recursively concrete physical type identities, enforces cumulative
+embedded-Op budgets before construction, exercises actual assembled refusers,
+closes qualification argument parsing and clarifies recovery/capture usage.
+Mapped regressions and affected checks pass. Gyld single-selection execution is
+2.896 seconds within the owner-approved five seconds; Mypy retains the identical
+six baseline errors and is not claimed green. Future successful-provider behavior
+remains explicit compiling RED. The strict remote gate still refuses absent
+genuine B1 evidence; symbolic corpus agreement is not cryptographic qualification.
+
+Decision: **OWNER ACCEPTED; INDEPENDENT CLOSURE DEFERRED** by the explicit directive
+above. No new reviewer GO is claimed. Typed accounting is one completed merged
+remediation, one architectural and five nonarchitectural roots; original NO-GO
+testimony and deferred R1–R6 closures remain in the wider review's scope. Semantic
+accounting remains unchanged. Successful IC-3B/C implementation is now released
+to the same sole drafter under the accepted contracts and test/evidence gates.
+Any standalone review scheduling overridden by this directive MUST remain distinct
+from genuine provider qualification and the wider aggregate review.
