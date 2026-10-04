@@ -275,3 +275,31 @@ helper command surface before freeze and does not introduce production activatio
 Generated canonical prompts will name the exact root checkpoint. No current peer
 testimony may be read or requested. Successful real B/C implementation remains
 blocked on this acceptance gate, not on renewed owner permission.
+
+## IC-3A2 initial typed verdict merge — NO-GO
+
+All three reviewers independently verified the settled tuple at start/end.
+Code reports two P2 and two P3; State reports three P2; Surface reports GO with
+two P3. Complete unchanged testimony is filed in history: TypedContract-ReviewCode
+SHA256 `5d54cc16e21dd347d5035a2312ec57a54e6830c9a48f46706c73a2b18d92594b`,
+TypedContract-ReviewState SHA256
+`dd4645bb0bb565c28bdfa68055e7cff2bdc6aecdf41aa2edff3d20dc3319cb8c`, and
+TypedUsage-ReviewSurface SHA256
+`761d5c6feaab380fa0f502f2b06b0ffba54629cbf02066d907d060cd4e269122`.
+
+Blind convergence establishes the generic physical type-erasure and embedded-Op
+budget roots. Both axes also identify standalone refuser assertions mislabeled
+as assembled consumers; State's P2 severity governs that shared root. The merge
+contains THREE unique blocking roots, ONE architectural typed root and FIVE
+nonarchitectural roots total, with zero completed typed remediation rounds.
+No new semantic root or third architectural root is established. Initial source
+GREEN and this ledger's prior assembly evidence attribution do not close the gap.
+
+[RemPlan-1](history/GladeIndependentCrdtProductionIntegrationTypedContract-RemPlan-1.md)
+disposes every finding into one authorized test-first correction patch, including
+bounded help/usage fixes without separate P3 packages. Existing reports/evidence
+remain intact; new evidence MUST explicitly correct the original assembly claim.
+The same sole drafter is released to that patch only. New shared format boundary
+requires fresh full Code/State, originating blocking-finding closures and the
+updated docs-only Surface verdict at one new settled tuple. Successful real B/C
+implementation is still withheld pending typed acceptance.
