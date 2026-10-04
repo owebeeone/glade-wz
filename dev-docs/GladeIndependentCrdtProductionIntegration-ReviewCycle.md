@@ -1,6 +1,6 @@
 # Independent CRDT production integration — IC-3 review and delivery ledger
 
-Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; initial semantic dual NO-GO; remediation 1 in progress, no integration accepted**.
+Date: 2026-10-04. Status: **owner authorized IC-3A, IC-3B and IC-3C; semantic remediation 1 settled for re-review; no integration accepted**.
 
 The owner directed “Proceed IC-3ABC” after the deterministic IC-2 kernel was
 accepted and its source/checkpoint history pushed. This authorizes design,
@@ -119,3 +119,27 @@ another patch. No source/interface implementation is accepted or begun.
 The aggregate IC-3C gate also requires fresh Consistency/Safety verification
 of the semantic contract in addition to the recorded Code/State review, as
 specified by the delivery plan; this adds evidence and does not replace an axis.
+
+## Semantic remediation 1 — settled, not self-accepted
+
+The sole drafter froze one two-document patch: design 659 lines, SHA256
+`c476dd10dab4618710ba02620ea71a75f20b11570c373bb685ea13320b3909f2`;
+plan 232 lines, SHA256
+`81566df8b4eec445fe3fd1fd163af4534f8240c0a823cc348ae577510ee62f62`.
+The patch adds IC3-GUARD-001–003 durable pre-consumption receive lifecycle and
+crash grammar, IC3-ID-001 complete authenticated namespace mapping with production
+IdentityBinding, and IC3-CANON-001 mandatory independently pinned Rust/TS/Python
+vectors before remote use. Operator-visible configuration/API shape expressly
+requires Surface even when called private. Existing source, old tests, canonical
+Op bytes, archived files/references and classifications remain unchanged.
+New links and whitespace pass; there is no physical execution evidence.
+
+Completed merged remediation count is now ONE. The same semantic object retains
+TWO unique architectural roots and ONE nonarchitectural root; no finding is
+self-closed. Fresh full Consistency/Safety reviewers and the originating reviewers
+independently checking their own counterexamples MUST use the identical newly
+committed five-repository tuple, compare the full change range from initial root
+`4d641dd179e5b0bd94e84df9cb334d7a21dae371`, remain peer blind for current testimony,
+and classify any new roots against the existing root set. Exact root appears in
+generated prompts. Third new architectural root requires STOP without another
+patch. No typed/API/provider implementation begins before semantic acceptance.

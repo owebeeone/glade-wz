@@ -58,7 +58,7 @@ Proposed package allocation MUST receive typed architecture review before creati
 | new `glade-crdt-admission-data` | Protocol/data: extract owned internal values/Operation so new contracts do not depend on concrete Pure algorithm | Wire + storage-attempt API; no marker trait |
 | existing core | Pure: unchanged deterministic step and private batch encoder | Data/API/wire only as actually needed; re-export old public paths |
 | new `glade-crdt-evidence-api` | Contract: replaceable proof and trusted observation provider | Data/API; required EvidencePort verify, seal, observe |
-| new `glade-crdt-recovery-api` | Contract: complete reconstruction and observation retention, distinct from opaque storage attempts | Data/API; required ReplicaRecoveryHost open_replica; ReplicaRecoverySession load, checkpoint, record_observation, reconstruct_cut, close |
+| new `glade-crdt-recovery-api` | Contract: complete reconstruction and observation retention, distinct from opaque storage attempts | Data/API; required ReplicaRecoveryHost open_replica; ReplicaRecoverySession load, checkpoint, begin_ingress, settle_ingress, abandon_ingress, record_observation, reconstruct_cut, close |
 | new `glade-crdt-recovery-codec` | Protocol/data: bounded canonical physical/exchange representation | Data/API/wire/sha2 only as needed; explicit encode/decode, no artificial service trait |
 | existing glade-node | Integration: concrete evidence/disk/duplex providers and owned runtime | Add preceding narrow contracts/data/codec/core; reuse pinned Ed25519/Iroh/Tokio/Shaku/sdax |
 
@@ -77,19 +77,21 @@ Typed shapes MUST cover: EvidenceObservation (exact instance/policy generation/
 digest, conservative interval, current status and admitting node); ReplicaOpen
 (provisioned identity/owner/limits/tuple/floor qualification); ReplicaImage (full
 State, complete Recovery, requests, continuations, origin/intent/floors, observation
-ledger and loss markers); Observation (exact scoped immutable inventory or bundle,
-authenticated source, digest and charges); Checkpoint (expected image generation,
+ledger, receive guards and loss markers); Observation (exact scoped immutable
+inventory or bundle, authenticated source, digest and charges); Checkpoint (expected image generation,
 new finite image and exact effects); ReconstructionRequest/Result (generation,
 observation watermark/manifest digest and missing/classified identities, never an
-unqualified complete switch); and ReplicaCut (kernel cut plus exact adapter
-obligations and combined completeness). Paths/key handles are injected concrete
+unqualified complete switch); ReceiveGuard/IngressPermit (scoped durable receive
+reservation and owned consumption capability); and ReplicaCut (kernel cut plus
+exact adapter obligations and combined completeness). Paths/key handles are injected concrete
 construction inputs, not peer data. Verification returns existing fully matched
 EvidenceReply; no network DTO carries trusted Facts or storage callbacks.
 
 The app-owned Gyld declaration MUST add a source-qualified IC-3 overlay retaining
 all frozen prior allocations/obligations: Admission owns evidence decisions with
 signer/policy cooperation; Records owns full recovery/obligations with StorageAdapter;
-existing sync/transport owns duplex; NodeAssembly owns scope/lifecycle. No Gyld
+existing sync/transport owns duplex and obeys the Records-issued pre-consumption
+gate; NodeAssembly owns scope/lifecycle. No Gyld
 engine extension or runtime-satisfaction claim is authorized.
 
 ## 3. Genuine signed evidence and scoped authorization
@@ -104,13 +106,88 @@ full `glade/ic3/v1/` prefix and a terminal zero byte. Domain/body version/bytes
 are signed. No domain is a prefix of another; legacy Purpose need not change.
 
 The creation intent is canonical unsigned data containing root key, unique nonce,
-incarnation, resource/private owner, share/glade ID/key, exact profiles, independent
-mode and every bound. Its computed digest is creation_root. The descriptor body
-binds those exact intent bytes and digest; the root signs that body. The complete
+incarnation, resource/private owner, canonical zone, share/glade ID/key,
+authoritative declaration hash/version, canonical parameter/key schema identity/hash/version, exact profiles,
+independent mode and every bound. Its computed digest is creation_root.
+The descriptor body binds those exact intent bytes and digest; the root signs that body. The complete
 signed descriptor envelope is Descriptor.canonical and its computed digest is
 Instance.descriptor. The intent cannot contain the descriptor envelope digest or
 its own digest. Trusted provisioner supplies expected root/intent; human names or
 discovery do not establish identity. Parsed fields MUST equal held descriptor fields.
+
+### 3.1 Complete authenticated namespace mapping
+
+IC3-ID-001: the genuine production envelope MUST bind every accepted identity-table
+component below. These are immutable values of this fresh incarnation, not names
+inferred from an operation. The provisioner supplies the exact authoritative
+canonical declaration bytes and version and exact schema bytes/identity/version,
+whose digests the verifier recomputes. They are authenticated root-authorized
+inputs, not a replacement declaration chosen by a peer. Declaration shape MUST be
+Crdt; unsupported declaration or key schema refuses before open or admission.
+Parameters MUST validate against the pinned schema and derive exactly the signed
+canonical key bytes under its versioned canonicalization rule. Equal key bytes do
+not prove equal schema. No schema migration or remapping is inferred.
+
+| Accepted semantic design section2 component | Exact IC-3 representation |
+| --- | --- |
+| Resource identity / creation-root ancestry / canonical resource ID / genesis intent | Signed intent root public key + unique nonce + resource/private-owner ID; retained root-authorized intent bytes/digest (`creation_root`). Direct-root/v1 fixes ancestry depth to this authenticated root; any delegated ancestry refuses |
+| Instance incarnation / canonical share / Glade ID / canonical zone/key | Explicit intent incarnation, zone, share, glade_id, key bytes; IdentityBinding carries canonical zone and schema-validated parameters/key derivation, never a browser origin |
+| Canonical parameter/key schema | Explicit `schema_identity`, `schema_version`, `schema_hash` from retained canonical schema bytes and explicit validated canonical parameters; exact canonical key derivation is profile-bound |
+| Authoritative declaration hash/version / Crdt shape | Explicit `declaration_hash`, `declaration_version` from retained authoritative declaration bytes; `shape=Crdt` is a signed fixed v1 value and checked against declaration |
+| Merge engine / payload / corpus versions | Explicit engine=`crdt.oracle/v1`, payload=`text_crdt.profile/v1`, `merge_corpus_identity`, `merge_corpus_version`, `merge_corpus_digest`; the selected corpus is the exact existing released-Taut concurrent_siblings corpus, whose source digest is independently pinned in the current Glial control |
+| Admission capability | Explicit mode=Independent and admission_profile=`glade.crdt.independent-admission/v1`; Legacy/Strong refuse on this route |
+| Authorization profile/version / trusted roots / authentication / permit / placement | Explicit authorization_profile=`bounded-offline-permit/v1` and proof_profile=`ic3-direct-root-ed25519/v1`; intent names expected root key; signed policy/permit enumerate original principal, actions, admitting nodes and replica holders; signed-session/v1 fixes possession strength; unsupported delegation refuses |
+| Receipt class / bounds / retention / rejoin / initial chain base / migration generation | Explicit storage_class=`LocalProcessRestart`, all descriptor/session/decode/observation/guard bounds; signed recovery_profile=`ic3-records-floor/v1`, retention_policy=`full-history-no-gc/v1`, rejoin_policy=`exact-evidence-full-cut/v1`, initial_chain_base=0, migration_generation=0 for fresh nonimported incarnation |
+
+The signed descriptor binds the complete intent and therefore the complete table.
+`IdentityBinding` is a new production boundary value containing these exact
+additional identities; trusted ReplicaOpen/provision inputs, EvidencePort queries
+and image validation MUST check it. Every certificate/permit/op proof/admission,
+receipt, cursor, cache, pending request and replication session binds the entire
+tuple directly or via exact Instance.descriptor. HELLO capability negotiation MUST
+compare descriptor digest AND the expected supported profile/declaration/schema
+metadata before any history receive. Unknown/different field/version refuses.
+
+Core's current internal Descriptor need not gain fields merely to simulate these
+checks: its immutable canonical bytes already bind the full new signed envelope.
+A typed production wrapper MUST carry IdentityBinding alongside it and authenticate
+both against trusted provision; the Pure provider never treats extra bytes as
+verified by their mere presence. This is an explicit production interface/data
+adaptation under fresh typed review, preserving existing inner Op, core public
+re-exports and every original behavioral assertion. Four isolated negative
+witnesses mutate declaration hash, declaration version, schema identity/hash and
+schema version while holding names/key bytes constant; each changes authenticated
+identity or refuses trusted open, verification/admission and exchange.
+
+### 3.2 Cross-language prerequisite for remote use
+
+IC3-CANON-001: before ANY IC3C remote use, pinned independent Rust, TypeScript and
+Python consumers MUST agree on exact canonical bytes and SHA256 digests for all new
+namespace/proof/transfer representations: creation intent, signed descriptor,
+certificate, inner permit and operation-proof wrapper, policy cut, local session,
+admission, HELLO/capability transcript, inventory header/pages/entries and transfer
+bundle. The vector artifact records version, inputs, exact expected bytes/digests,
+keys/signature bytes where applicable, producer/consumer source pins and assertion
+IDs. All three consumers derive bytes independently from the semantic input; no
+consumer may pass by copying stored expected encoded bytes or invoking another
+language's encoder. Shared explicit vectors, not the encoder being checked, supply
+the expected results. Preserve frozen canonical inner Op controls and unchanged
+released-text corpus. This gate does not require browser UI activation.
+
+Positive/edge vectors include empty/Unicode/binary values, finite integer boundaries,
+canonical field ordering, repeated blobs, same-slot rivals and exact profiles.
+Negative vectors include duplicate/unknown fields, reordered/nonshortest encodings,
+invalid UTF-8, overlimit/deep/truncated lengths, trailing bytes, mutated scope/domain
+or signature and altered declaration/schema identity. Each consumer MUST reject
+specified malformed/noncanonical input, never normalize it into valid proof.
+Checklist/source gate MUST fail if any required language implementation, vector
+category, pin or assertion is missing. Three Rust nodes cannot substitute for the
+three independent languages. A2 defines/fixes these vectors; B1 checks genuine
+signature controls; C cannot start remote qualification until the complete gate is
+GREEN. Physical Rust-only Records envelopes retain their bounded codec/field tests;
+any physical representation exposed remotely is also covered by this gate.
+
+### 3.3 Original writer and current/historical authorization
 
 The root signs certificates binding instance, fresh canonical origin/epoch, writer
 key, original requester, display name and resource. Issuance refuses canonical
@@ -175,7 +252,7 @@ not assumed from naming. No import/legacy seal/existing-resource activation is s
 
 Each instance owns its own State (one instance), independent StoreIncarnation,
 plan/invocation namespaces, next IDs, Recovery/session, worker, image slots and
-floor files. Root lock is acquisition/lifetime custody only, never a shared mutable
+floor files, including receive-guard counters/records. Root lock is acquisition/lifetime custody only, never a shared mutable
 CAS or root allocator held while X worker blocks. Instances have separate typed
 sessions with scoped namespaces; Y operations do not need X's lock/floor/worker.
 A common filesystem outage can affect both; independence is logical with Y's
@@ -185,7 +262,7 @@ Physical envelope v1 contains header/version tuple, root/instance/logical-owner,
 generation/predecessor digest, EVERY kernel State field, complete API Recovery,
 preparing/attempt/batch history, outstanding/retired full requests, terminal/conflict
 history, descriptor/evidence/origins/intent/policy/time floors, exact inventory/inbox
-ledger/permanent-loss markers, usage and critical reservations. Maps/sets canonical,
+ledger, active/settled receive-guard bindings and permanent-loss markers, usage and critical reservations. Maps/sets canonical,
 enums/options explicit; all Bytes digests recomputed. Unsupported versions, tears,
 trailing bytes, duplicate identities, overflow, invalid strings, malformed binding or
 noncanonical encoding refuse before usable restore. Allocation is capped BEFORE
@@ -200,8 +277,10 @@ preserving all custody/receipts/outcomes/reservations.
 IC3-DISK-002: independently configured trusted floor directory lies outside
 replaceable data root and is exclusively owned. It binds canonical root path,
 root registration, instance/store incarnation, issuance maxima, logical owner,
-private physical lease serial and per-instance selected image generation/digest or
-interrupted exact intent. Trusted scratch provisioner registers it before startup.
+private physical lease serial, monotonic floor sequence distinct from image
+generation, bounded active receive guards and per-instance selected image
+generation/digest or interrupted exact intent. Every floor update preserves those
+guards unless exact qualified settlement selects its coupled observation image. Trusted scratch provisioner registers it before startup.
 Copied data at another path cannot register itself or mint a floor. Wrong/missing/
 stale/foreign/untrusted floor or concurrent lock refuses writable recovery.
 
@@ -232,21 +311,27 @@ Serialized atomic transition schedule:
 1. Validate exact current generation/image/owner, complete next image/request/
    precondition, finite encoded size and critical reservations.
 2. Durably write floor intent naming exact old selected slot/generation/digest,
-   exact next slot/generation/digest, operation kind and next issuance floors.
+   exact next slot/generation/digest, operation kind, next issuance floors, all
+   active guards and any proposed exact guard settlement.
    A lost acknowledgment is unresolved; old selected slot remains untouched.
 3. Write inactive slot complete envelope then sync file. Torn/wrong-digest slot
    is not valid. Never overwrite selected slot while intent is unresolved.
 4. Atomically replace floor with selection of exact next image/floors; sync file
-   and directory. Only confirmed durable selection permits committed acknowledgment.
+   and directory. Floor selection retains each active guard or retires it ONLY with
+   the matching exact observation/loss image. Only confirmed durable selection
+   permits committed acknowledgment or guard discharge.
 5. Retain old slot until next validated transition; never decrease reserved IDs.
 
 Floor replacement before rename and after rename/directory-sync have distinct
 unavailable/unknown outcomes. Reopen exclusively validates floor and both images.
 Interrupted intent plus fully valid next image re-syncs that exact slot and then
 finalizes that exact next selection; unreadable or failed sync keeps recovery
-unavailable/unknown. A missing or invalid next image preserves exact old image and classify the interrupted metadata transition
-without reusing advanced IDs. This does NOT invent NonCommit for old Reserved/Started
-plans. A valid old image still carries those plans for original Inspect/Fence.
+unavailable/unknown. A missing or invalid next image preserves exact old image
+and classifies the interrupted metadata transition without reusing advanced IDs.
+It MUST also preserve every guard from the selected floor/intent: fallback never
+restores an earlier guard-free floor or applies a proposed settlement whose image
+is absent. Ordinary checkpoint/fence/lease updates cannot omit an active guard.
+This does NOT invent NonCommit for old Reserved/Started plans. A valid old image still carries those plans for original Inspect/Fence.
 Recovery tests every intent/slot/floor write/sync/rename/reply cut, including absent,
 old, new, torn and corrupt variants. Missing/unreadable floor/image proof fails closed.
 
@@ -280,6 +365,117 @@ and fresh process reopen, not Drop/new MemoryHost, proves restart. Qualified rec
 is LocalProcessRestart only after durable selection: same qualified local storage
 process reopen, no quorum/remote copy/machine loss/arbitrary rollback or hardware
 power-loss claim. Old VolatileTest receipt strength remains unchanged.
+
+### 4.1 Durable pre-consumption ingress grammar
+
+IC3-GUARD-001: Records MUST establish a finite durable ReceiveGuard BEFORE the
+application transport can consume any history-bearing inventory, page or bundle.
+This includes the first inventory header identifying a remote cut/digest, and
+local qualification/control ingress that introduces external historical input.
+The earlier post-failure loss-marker instruction is replaced by this precondition;
+after-only marker attempts cannot protect restart. Ordinary OS/Iroh opaque encrypted
+buffering before application reads is not an observed cut and MUST NOT be parsed,
+inspected or dispatched as history before the permit. Fixed authenticated channel
+negotiation containing ONLY the already-provisioned identity/version tuple can
+precede a guard; it MUST NOT carry remote operation heads, inventory digests or
+history. Raw frame/body receive, partial decode and dropped-overlimit bodies are
+inside the guarded consumption boundary, not just successful verifier dispatch.
+
+`begin_ingress` atomically persists a floor-only guard under that instance's own
+floor sequence, binds instance/store/logical owner/physical lease, fresh monotonic
+guard ID, authenticated peer+channel nonce/role, selected base image and finite
+round byte/item/deadline bounds, then returns an owned noncloneable IngressPermit.
+No initial body/manifest digest is needed; it is unknown before consumption.
+Durable establishment requires floor file+directory sync and acknowledgment.
+The floor guard ledger is authoritative Records metadata and may lead the last
+selected image: a guard-only floor update intentionally does not rewrite that
+image. Load/checkpoint/reconstruction MUST merge and validate every such guard
+against its selected-base image and monotonic floor sequence before exposing any
+cut. A cached image with no guard cannot overwrite or erase a newer floor guard.
+Images retain settled guard bindings/history; matching floor selection is the
+only authority to retire active entries, never image absence. Retained guard
+identity/history has finite declared capacity and no implicit GC; exhaustion
+prevents new receives without dropping old guard/obligation evidence. A
+failed/unknown establishment returns no usable permit: no application recv/parse
+may start until the exact guard is validated. Guard IDs/cardinality and worst-case
+unknown/loss/discharge records consume finite critical reservation before receive;
+capacity or inability to persist establishment prevents new consumption entirely.
+
+The production receive call graph is `scoped channel -> begin_ingress -> owned
+IngressPermit -> bounded recv/parse -> settle_ingress(image+exact observation)`.
+Only the node's owned gate can execute receive; peers cannot mint permits. A
+permit cannot be reused on another round/link/instance, and the coordinator owns
+all receive callbacks and bytes until settlement or qualified loss. Same-instance
+rounds are serialized with at most one active guard; Y has independent guard/floor/
+worker capacity. No shared floor CAS or global ingress allocator blocks Y.
+
+IC3-GUARD-002: a round is a finite single immutable message or an exact bounded
+snapshot transaction with header, declared pages/bundles and authenticated end
+binding the same cut/transcript digest. Receiver ends consumption after the exact
+message/end; future async input needs a new guard. A timer may cancel the transport
+waiter but cannot prove no observed history. Pause application receives between
+rounds; do not leave a long-lived idle guard merely because a link is connected.
+Normal authenticated exact empty snapshot is one retained observation of that
+specific round, not proof that earlier observed history never existed.
+
+`settle_ingress` selects one coupled image containing exact authenticated received
+observation bytes/manifest (or exact malformed bytes plus rejection result), inbox/
+obligations/classification, core checkpoint/attempt history, guard identity and
+settled watermark. The same successful floor selection retires ONLY that guard.
+Stored guard/evidence digest and floor retirement must agree. It can settle while
+work remains in a retained inbox; combined completeness remains false until those
+obligations classify. A rejected or oversize/partial message cannot be treated as a
+complete empty manifest: retain bounded rejection/loss status, and if full necessary
+bytes cannot be retained, atomically settle permanent observation loss instead.
+No app custody acknowledgment precedes required exact retained evidence.
+
+Uncertain/failed settlement leaves the guard active, even if a later attempt to
+persist a loss marker also fails. Every replacement floor and intent carries it.
+Reopen validates selected floor first, then image. An active guard suppresses
+complete reads before any reconstructed old image can be served. After drain/
+termination of the old physical receive owner, recovery can only retain it pending
+or convert it to a permanent untracked-loss marker in a new coupled image; it
+cannot infer a zero-byte receive from absent inbox, peer absence or a new empty
+inventory. Old-image fallback explicitly preserves guard uncertainty. Inability
+to persist classification leaves guard/unavailable status, never old completeness.
+Once lost, later successful full inventories do not clear that loss.
+
+IC3-GUARD-003: cancellation/shutdown first closes the permit's gate against future
+reads, cancels and JOINS/drains every owned read/parse/callback, then attempts exact
+settlement/loss persistence. A live never-started permit may use `abandon_ingress`
+with Records-owned gate evidence that NO receive/parse was ever invoked and no
+future callback can invoke one; this atomically retires only that guard. Caller
+booleans, timeout, channel EOF after a started read, Drop, sender retry or a missing
+body are not such evidence. If a read was invoked but full observation cannot be
+classified, retain unknown/permanent loss even if live code believes no bytes came.
+After restart the never-started proof is unavailable, so a residual guard remains
+conservative. Close can release physical resources only after receives are joined
+and guard retained/settled; Pending close retains ownership. SIGKILL leaves floor
+guard for qualified reopen. Guard uncertainty need not prohibit a separately valid
+local append after floor recovery, but MUST prohibit complete=true; integrity or
+unavailable floor still stops mutation. No kernel bool is cleared.
+
+| Receive/crash cut | Durable witness and required reopen result |
+| --- | --- |
+| Before begin_ingress; establishment fails before replacement | No permit and no application history consumption. Prior complete image may reopen complete if every other obligation is settled |
+| Guard replace/sync uncertain | No consumption until validated acknowledgment; if replacement installed, active guard remains on reopen even in paired no-input execution |
+| Durable guard, before any receive | Guard active. Kill cannot prove never-started; incomplete/pending/loss on reopen. Live qualified never-started abandon is the positive no-input control |
+| Receive invoked, partial header/body/decode, timeout or cancel | Active guard predates bytes; drain then retain exact observation or loss; restart cannot become complete from absence of bytes |
+| Full observation received; observation write and loss write both fail before floor intent | Pre-existing active floor guard survives. Recover storage with peer absent: remain incomplete/unavailable |
+| Durable observation floor intent; next slot missing/torn | Preserve old selected image PLUS guard from selected floor/intent; never apply intended settlement without its exact image |
+| Valid next observation slot synced; floor select unknown | Validate/re-sync next image; either select exact coupled observation+guard retirement, or retain old image+active guard; no disconnected retirement |
+| Complete observation image and floor retirement selected; reply lost | Reopen exact retained observation/inbox/obligations; exact duplicate dedup, reconstruction remains pending until closure; no fabricated admission |
+| Exact complete empty round selected | Retires only that round guard; older guard/loss/obligation still blocks complete |
+| Never-started live abandon intent/select fails or is interrupted | Guard remains or exact persisted qualified abandon is validated; no future recv permitted on the retired permit |
+| Guard classification fails while close/drain runs | Join read tasks; durable guard remains. No cleared lock/state can authorize falsecomplete on reopened old slot |
+| X guard/floor write or receiver held | X incomplete; functional independent Y remains able to receive/admit/reconstruct within its own bounds |
+
+The indistinguishable pair is deliberate: after successful guard establishment,
+no-input-kill and observed-input-with-all-writes-failed-kill both retain the same
+uncertainty and cannot return complete. Before a failed establishment, neither
+execution may consume history. Normal full retained round and qualified live
+never-started cancellation recover without permanent loss. Typed RED and real
+process tests MUST cover both pair members and every table boundary.
 
 ## 5. Production node path and automatic bounded duplex
 
@@ -320,8 +516,8 @@ alone is insufficient. Each entry binds kind/op/evidence bundle digest/coordinat
 Changed history yields a new immutable inventory, not replacement of old pages.
 
 Paged header binds exact finite count/bytes/page count/manifest digest; pages bind
-index and same cut/digest. Retain whole manifest within configured bounds before
-processing promise. Refuse oversized lengths before allocation/unbounded body read;
+index and same cut/digest. Establish the durable guard before even consuming this header. Retain whole
+manifest within configured bounds before processing promise. Refuse oversized lengths before allocation/unbounded body read;
 partial/unretained manifests are incomplete. Empty/newest inventory cannot erase
 older missing obligations. Full-history exhaustion stops sync honestly rather than
 truncating history. All limits injected finite development values, no production
@@ -337,15 +533,16 @@ history plus authorized peer config derives handoff; no best-effort-only outbox
 after AcceptedLocal. Peer acknowledgment is not local app admission/quorum; original
 admitting receipt is never replaced by remote custody strength.
 
-IC3-SYNC-004: retain bounded inbox/inventory obligations durably BEFORE dispatch.
+IC3-SYNC-004: require the durable pre-consumption guard, then retain bounded
+inbox/inventory obligations durably BEFORE dispatch.
 Serialize same-instance verification+storage: park B/its reply while A unresolved,
 then reschedule exact B; do not hit old busy branch and forget history. Fair bounded
 scheduler prioritizes owned recovery, then retained historical/local work; Y has
 separate session/inbox/worker. Backpressure refuses credit/ack until input retained;
 peer retries exact unacknowledged bundle. Disconnect/cancel does not erase obligations.
-Unexpected kernel historical Capacity stays sticky. Unretained observed input causes
-permanent loss before complete reads; if marker cannot persist, instance remains
-unavailable including reopen. Persist inbox/classification/attempt transitions in
+Unexpected kernel historical Capacity stays sticky. Unretained observed input
+leaves its pre-existing active floor guard; retain permanent loss when possible,
+but if all later writes fail that guard still prohibits complete reads on reopen. Persist inbox/classification/attempt transitions in
 coupled Records images, not a process-only flag or independent best-effort file.
 
 ## 6. Full-cut reconstruction with narrow eligibility
@@ -375,7 +572,7 @@ is rejected and all classifications checkpointed before response.
 
 IC3-CUT-003: combined complete_local requires actual kernel cut complete, all exact
 observed obligations classified with required closure accounted, no omitted pending
-inbox/query/attempt, no permanent loss/integrity and continuous validated provenance.
+inbox/query/attempt or active/uncertain receive guard, no permanent loss/integrity and continuous validated provenance.
 Adapter retained obligations can progress false to true after full reconstruction;
 NEVER change kernel bool. Kernel-alone complete while inbox/inventory pending must
 be exposed incomplete. New observations beyond cut remain outstanding. Complete is
@@ -393,10 +590,14 @@ continue with incomplete reads if integrity permits.
 | Storage section7 sticky incomplete/no clear Event | Retain EXACTLY; new combined cut accounts only continuously retained adapter obligations |
 | Historical IC-1 values superseded by storage contract; current Pure public types | Retain semantic assertions/old re-export paths; data extraction and new contracts require fresh typed gate, no success bypass |
 | IC-2 internal encoder v1 and Operation byte binding | Retain bytes; add full bounded decoder and separate physical/exchange version |
+| Semantic identity table/canonical pre-remote prerequisite | Restore exact declaration/schema/complete-table binding via production IdentityBinding; mandatory independent Rust/TS/Python vectors before remote use, preserving Op and Pure inputs |
+| Initial IC-3 post-failure marker instruction / observation retention API | Replace with IC3-GUARD-001–003 pre-consumption floor guard and owned permit, begin/settle/abandon operations and crash table; old-slot fallback retains guard; same object remediation1, material boundary amendment |
 | Semantic design offline historical validity/process custody/separate roots | Retain; explicit direct-root/trusted clock/external-floor development assumptions, no global revocation/arbitrary rollback promise |
 | Peer protocol4/client holder path/ReplicaSync no-mutation errors/whole legacy seal | Retain legacy; separately negotiated fresh independent route and explicit observation/custody outcomes, no migration/hidden partial mutation |
 
-Only new semantic output is internal combined ReplicaCut. Further clause replacement
+New semantic outputs are combined ReplicaCut and durable ingress guard/permit
+lifecycle. Additional authenticated IdentityBinding fields complete the existing
+namespace; no accepted tuple component is removed. Further clause replacement
 requires exact counterexample/replacement and fresh review. Do not weaken old tests or
 rewrite archived provenance to accommodate an adapter.
 
@@ -404,6 +605,8 @@ rewrite archived provenance to accommodate an adapter.
 
 | ID | Success | Failure / edge |
 | --- | --- | --- |
+| IC3-ID-001 | Full accepted namespace validated in provision/open/proof/HELLO | Separate declaration hash/version and schema identity/hash/version mutations with equal names/key bytes |
+| IC3-CANON-001 | Pinned Rust/TS/Python independently reproduce exact namespace/proof/transfer bytes/digests; frozen Op controls | Missing language/category/pin/assertion fails prerequisite; malformed/noncanonical negative corpus rejected before remote use |
 | IC3-AUTH-001 | Genuine descriptor/cert/permit/op/policy/admission round-trip | Wrong domain/key/body/scope/permit; weak key; duplicate/noncanonical/trailing bytes |
 | IC3-AUTH-002 | Signed challenge enters actual production independent ingress | Replay/foreign node/session/requester/self scope; missing possession; peer-as-writer |
 | IC3-AUTH-003 | Entire interval/seq range allows local edit | Unknown/regressed/straddled clock; expired/future permit; denied/revoked/unavailable policy |
@@ -414,6 +617,9 @@ rewrite archived provenance to accommodate an adapter.
 | IC3-DISK-003 | Every floor/slot cut settles exact prior/next | Actual process kill at intent/write/sync/rename/select/reply; corrupt/truncated/oversized/allocation failure |
 | IC3-DISK-004 | All four kinds recover coupled custody/outcome/receipts once | Lost replies; missing/mutated request/binding; revision gap; reminted receipt; terminal ahead of core |
 | IC3-DISK-005 | Fence/commit retain sole winner; Y progresses with X held | Both race orders; delayed/contrary terminals; unknown absence; counter/cardinality exhaustion |
+| IC3-GUARD-001 | Durable bounded guard before any history recv, independent Y | Guard establishment unavailable/unknown forbids consume; paired no-input vs observed-write-loss kill survives restart |
+| IC3-GUARD-002 | Atomic exact retained round plus guard retirement, normal empty and nonempty control | Observation/loss persist both fail; old-slot fallback/torn next slot retains guard; wrong round/empty latest cannot erase history |
+| IC3-GUARD-003 | Owned drain and qualified never-started live abandon | Timeout/Drop/partial receive/restart cannot prove no input; failed cancel/loss write leaves floor guard, close owns every callback |
 | IC3-DISK-006 | Close joins; actual SIGKILL reopen exact retry | Waiter cancel/Pending close/hung worker; false restart class before durable selection |
 | IC3-NODE-001 | Two actual binaries/same production runtime | Facts injection/alternative model/holder dispatch rejected by runtime/source guard |
 | IC3-NODE-002 | One scope and owned startup/release order | Partial startup/missing provider/storage worker not joined |
@@ -444,7 +650,10 @@ dual Code/State components. IC-3C integrates actual node scope/dispatch/Iroh dup
 and two-process partition/restart/heal; aggregate Consistency/Safety and Code/State
 review exact call graph/evidence. Material interface/architecture/wire/ownership
 changes require fresh axes. Architectural roots/remediation caps never reset by
-renaming. Public product/protocol freeze requires Surface; private qualification
-freezes no browser contract. IC-4 owns client/Glial intent, compatibility, enrollment,
+renaming. Surface review is required for any actual operator/user-facing CLI,
+settings/config file, API/protocol or product promise being introduced/frozen,
+even if called private qualification; naming it private is not an exemption.
+Browser-facing freeze remains IC-4 unless this tranche introduces one. IC-4 owns
+client/Glial intent, compatibility, enrollment,
 migration/activation/readiness. No push/desk restart/live keys/stores/launch defaults/
 seal/profile switch is authorized in this design lane.

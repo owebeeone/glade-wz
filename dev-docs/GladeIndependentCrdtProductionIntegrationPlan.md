@@ -36,7 +36,10 @@ Freeze one committed root/member/external-Gyld tuple. Run fresh independent,
 peer-blind Consistency/Safety through the review-loop canonical template, read-only,
 start/end pins. File full reports verbatim in history. Merge all findings once;
 originators verify closure. Historical caps remain unchanged; this new object's
-architectural count starts zero, tracked explicitly rather than implied by filenames.
+architectural count started zero. Initial review found four IDs across two unique
+architectural roots and one nonarchitectural root; this semantic revision is
+remediation1 of the SAME object. Material guard/identity boundary changes require
+fresh full Consistency/Safety plus originating closure verification. No cap reset.
 
 Done: both semantic axes GO, exact requirements/replacement table/allocation accepted,
 no unresolved approval assumption needed for disposable dev witness. Review may
@@ -51,14 +54,23 @@ refusing concrete provider seams, with tests first:
   protect original behavioral assertions/loops. Any source-check path update is an
   explicit affected gate change, not removal of checks.
 - Add meaningful evidence/recovery ports and complete bounded image/observation/
-  reconstruction values. Use actual required methods and negative compiler probes;
+  reconstruction values, complete IdentityBinding and ReceiveGuard/owned IngressPermit
+  begin/settle/abandon lifecycle. Use actual required methods and negative compiler probes;
   no dummy trait or implementation-type leakage.
 - Add bounded canonical outer encoder/decoder and complete v1 batch decoder.
   Every State/Recovery/request/terminal/floor/inbox field and identity must survive
   round-trip or reject mismatch. Structural decoder development begins RED;
   semantic restoration validation stays Pure. Codec GREEN does not prove disk.
+- Add mandatory IC3-CANON-001 pinned independent Rust/TS/Python canonical bytes/
+  SHA256 vectors and negatives for every new remotely used identity/proof/transfer
+  value plus frozen inner Op control. Missing language/category/pin/assertion MUST
+  fail the prerequisite checklist. Each language derives from inputs independently;
+  copying expected bytes or delegating another encoder is not a consumer witness.
 - Add actual typed producers/consumers exercising genuine-query binding, trusted
-  start observation, full owned recovery and exact recorded digest obligations.
+  start observation, full owned recovery, exact recorded digest obligations and
+  pre-consumption guard. Assert no recv after failed/unknown establishment and
+  paired no-input/observed-all-writes-failed cuts; separate declaration hash/version
+  and schema identity/hash/version mutations refuse with equal names/key bytes.
   Refusing adapters produce compiling behavioral RED for success/failure/edge
   guarantees before implementation. Compile failure is not behavior RED.
 - Add reviewed package/dependency classifications and targeted selectors in contracts
@@ -72,7 +84,9 @@ Run fresh peer-blind Code/State on one settled tuple, including affected consume
 and the exact normative data/ownership/wire allocation. Done: both GO; original
 Pure/API/text tests GREEN; new real-provider witnesses compiling RED; codec and
 contract conformance appropriate to the refusing stage pass. Evidence separates
-trusted fixture assumptions from actual crypto/disk/network execution.
+trusted fixture assumptions from actual crypto/disk/network execution. Remote C
+use remains BLOCKED until all pinned three-language vectors/negative consumers are
+GREEN; two Rust processes or browser deferral cannot waive the accepted prerequisite.
 
 ## IC-3B — genuine auth, Records host and restart
 
@@ -89,6 +103,7 @@ reuse or Facts synthesized by the process harness. Measure focused fast path.
 ### B2. Complete physical host
 
 RED real temporary roots, trusted floor, stable lifetime lock, finite slot images,
+bounded per-instance floor receive guards and owned consume/settle/abandon gate,
 all-four-kind prepare/start/commit/fence/inspect, coupled custody/original receipts,
 request issuance/cardinality/high-water, quotas and per-instance independence.
 Implement actual StorageAttemptHost/Session plus RecoveryHost/Session without
@@ -100,9 +115,17 @@ standing exception; no non-entry allowlist expansion. Parent controls scratch
 paths; never reuse live data/key/floor roots. Actual termination witnesses require
 OS process death (SIGKILL where qualified), not Drop or waiter cancellation.
 
+Enumerate every begin-ingress floor guard write/sync/rename/ack, no-input and first
+recv/partial-decode cut, joined cancellation, full observation/loss settlement and
+all-writes-failed recovery with peer absent. Guard failure prevents application
+consumption, not merely dispatch; post-guard failed observation AND failed marker
+write must retain guard across restart. Test normal nonempty/empty round and live
+never-started abandon; after restart never infer never-started from absent inbox.
+
 Enumerate every before/after floor-intent write/sync/rename, inactive-slot write/
 sync, floor-select replacement/directory sync, Started/publication/reply boundary.
-Reopen can select only exact validated old or next image, preserve reserved IDs,
+Reopen can select only exact validated old or next image, preserve reserved IDs
+AND active floor guards (old-slot fallback never restores guard-free earlier floor),
 resolve original lost PlanKey/reply and replay terminal ahead of cached core using
 genuinely retained request. Test both fence winners and late authentic/contrary
 callbacks. Read before recovery completion fails unavailable.
@@ -142,11 +165,21 @@ exact bundle requests, replay/dedup and finite backpressure. Use actual Iroh tra
 not simulated transport as final evidence. Both nodes independently advertise/request/
 serve; reconnect derives work from committed images/retained inventory obligations.
 
+Before any history-bearing receive, establish Records guard and acquire owned
+IngressPermit. Fixed capability negotiation may carry only already-provisioned
+identity/tuple, no histories. Bound exact round/end grammar, pause application
+receives between rounds and settle guard with coupled observation image. An idle
+connection need not leave a guard active; a started timed-out read cannot be
+silently discharged. Empty exact round settles only itself, never older uncertainty.
+Join/drain before abandon/loss; Y uses independent floor/guard/worker.
+
 Retain exact manifests and inbox entries before dispatch, park busy B/verification
 reply behind A, and checkpoint classifications coupled to State/attempt history.
 Combined cut exposes unresolved inventory even if core alone reports complete.
 Reconstruction checks exact generation/watermark/provenance/requests/receipts/digests;
-it can complete only retained adapter obligations, never clear kernel sticky state.
+it can complete only retained adapter obligations, never clear kernel sticky state
+or unresolved guard/loss. The first C remote run is gated on pinned Rust/TS/Python
+vector agreement and malformed negative controls from A2/B1, not on UI activation.
 Test stale cut, same-coordinate wrong hash, omitted rival/proof and old sticky image.
 
 ### C3. Actual two-process acceptance and aggregate review
@@ -175,9 +208,10 @@ context honestly; no arbitrary budget relaxation.
 
 Freeze aggregate production tuple. Fresh Consistency/Safety and Code/State inspect
 call graph, exact physical/network evidence and every ID in design matrix. Surface
-is required if a public user-facing protocol/product promise is frozen; private
-qualification does not freeze browser behavior. Done: all required axes GO, all
-findings independently closed, exact requirement coverage filed and local tree
+is required for any actual operator/user-facing CLI/settings/config-file/API/protocol
+or product promise introduced/frozen, even if named private qualification. Browser
+activation deferral is not a Surface or canonical-vector waiver. Done: all required
+axes GO, all findings independently closed, exact requirement coverage filed and local tree
 settled. Completion says bounded actual-node qualification, not IC-4 activation.
 
 ## Evidence and cap discipline
@@ -191,5 +225,8 @@ findings. Material interface/wire/ownership changes require fresh axes.
 Review-loop permits two remediation rounds per object, and only its explicitly
 confined third nonarchitectural correction; any architectural issue in that third
 round stops for owner decision. Cumulative roots and older stops remain recorded.
-A new filename is not a reset. Do not stop at A/B when remaining authorized C work
-is feasible; do not bypass a genuine reviewed stop to meet the requested schedule.
+Current semantic remediation1 retains two architectural roots plus one
+nonarchitectural root and all historical caps. A reviewer-classified third new
+architectural root on this object triggers STOP for owner decision; no further
+semantic patch may bypass it. A new filename is not a reset. Do not stop at A/B
+when remaining authorized C work is feasible; do not bypass a genuine reviewed stop to meet the requested schedule.
