@@ -56,8 +56,9 @@ additional architecture work. Historical caps and stopped objects remain intact.
 The same sole drafter MUST implement one scoped patch after compiling behavioral
 RED for each blocking root. Compile errors, zero-selected tests and writer claims
 do not close findings. Update actual API contracts and cold usage for changed
-capability/lifecycle shape. Preserve every original assertion, released operation
-and corpus byte, identity binding, receipt guarantee, dependency pin,
+capability/lifecycle shape. Preserve every original assertion except the two
+explicitly superseded B-R2 availability expectations below. Preserve released
+operation and corpus bytes, identity binding, receipt guarantees, dependency pins,
 classification, process-global allowance and owner-approved five-second budget.
 Do not relax checks, selectors or allocation bounds to make tests pass.
 
@@ -69,6 +70,19 @@ where the shared capability/publication change invalidates prior evidence.
 Record whole-node formatting/Clippy baseline debt honestly. Preserve all failures
 and chronological RED/GREEN commands in new remediation evidence and source
 pins; do not rewrite initial B evidence, source pins, run log or reports.
+
+The B-R2 pre-observation marker strengthens two original availability
+expectations: (1) missing-next Observation recovery previously permitted a usable
+reopen; (2) an oversized learned policy previously left the floor unchanged and
+cached authority usable. Once source consultation may have learned an
+unretained cut, both MUST instead retain the marker and refuse usable authority,
+including full/narrow reopen. The corrected tests MUST preserve their original
+selected-image, no-floor-reset, no-fabricated-receipt and critical-space proofs.
+New evidence MUST name each changed original assertion and the stronger
+replacement; blanket claims that all original assertions are unchanged are
+forbidden. Work refused by reserve preflight before consulting the source MUST
+retain the original unchanged-floor behavior. These are material lifecycle
+changes for the same fresh full gate, not independently closed findings.
 
 Parent owns GWZ settlement. The drafter MUST NOT stage, commit, push or mutate
 workspace metadata. Existing stores/keys/floors, defaults/launcher, desk rebuild,

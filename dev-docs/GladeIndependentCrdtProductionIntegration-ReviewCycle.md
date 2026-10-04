@@ -505,3 +505,40 @@ verification of their own blocking counterexamples. Original typed R1–R6
 standalone closure remains owner-deferred to wider ABC. B qualification,
 accepted-review metadata, strict pre-remote success, C exchange and IC4
 activation remain unclaimed; the strict prerequisite stays closed.
+
+## Combined B corrected checkpoint — independent verdict pending
+
+Glade source `d3fded040d6e3c459cd5f975d6c672873356cc23` commits the one merged B correction (24 files).
+Parent verified all 62 combined source hashes, five consumer-document hashes,
+45 retained compatibility files, 27 canonical source pins, nine initial B
+artifacts and exact raw/gzip chronology. Initial evidence and reviewer reports
+remain unchanged. New correction evidence/pins/log use the
+`history/GladeIndependentCrdtProductionIntegrationB-Remediation1*` stem.
+
+The patch includes issuer-owned exact receive-result matching, durable protected
+current-observation custody including refusal, receive-only advancement, complete
+live/retired Prepare recovery, public retained-continuation loss and cold marker
+documentation. The closed private disk v2 format refuses v1; no migration is
+claimed. RemPlan-1 explicitly identifies the only two superseded availability
+expectations and their stronger refusal replacements.
+
+Recorded executed checks include 228 native, 65 ingress and 26 observation
+process-death cuts; public disk22, genuine auth16, boundary6, assembly30 and
+retained contract checks. Affected formatting and source/architecture/globals
+pass. Whole-node formatting remains 251 historical hunks under the unchanged
+252 ratchet; Clippy retains nine old warnings. These are bounded Unix process
+restart results, not independent GO or power-loss/quorum qualification.
+
+Accounting now records semantic **2 architectural/1 nonarchitectural/1 completed
+remediation**, typed **2 architectural/5 prior nonarchitectural/2 completed
+remediations**, and combined B **0 architectural/4 nonarchitectural/1 completed
+remediation**. Completed correction is not finding closure. A reviewer-classified
+third typed architectural root still requires STOP.
+
+Status: **COMMITTED CORRECTED CANDIDATE; FRESH FULL AND ORIGINATING B
+VERDICTS PENDING**. Fresh independent Code/State and cold Surface inspect this
+identical settled tuple; originating B Code/State separately verify each own
+blocking counterexample. Original A2 R1–R6 closure remains owner-deferred to
+wider ABC. accepted_review_record remains null. The strict pre-remote gate
+continues refusing; C history execution, activation, live/default/desk changes
+and push remain unclaimed.
