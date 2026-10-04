@@ -465,3 +465,43 @@ not claim GO, genuine accepted crypto qualification, remote history execution,
 C completion, IC4 activation, existing-store migration, desk rebuild or push.
 The strict pre-remote gate MUST continue refusing until an actual accepted B
 record and its committed qualification pins exist.
+
+## Combined B initial verdict merge — NO-GO
+
+At root `db29535fe162356df93fbdc28c052185cfd9a0f7`, Glade
+`9dbc677a25d93af0c561817571ad7eb1990ddadc`, initial fresh Code and State both
+returned **NO-GO**, three P2 findings each. Cold Surface returned **GO**, one P3.
+All three reports are filed verbatim under `history/` as
+`GladeIndependentCrdtProductionIntegrationPhysicalHost-Review{Code,State,Surface}.md`.
+Their SHA256 values are respectively
+`2123c1d38cd32df159d1c999307840096aac4af7308df3d48a956d99ddde939d`,
+`0bd96986f64374c178b1ba3823334feeca3fb17ad9d43c5b3d93b9ff1f110d4c`,
+`e806acd514caf4bef9cb5da7bea4e19ffc8856c63bbee804d64d06bd6f1e091f`.
+All reviewers verified the identical five-repository tuple at START and END;
+the source checkpoint remained frozen throughout independent inspection.
+
+The merged disposition is
+`history/GladeIndependentCrdtProductionIntegrationPhysicalHost-RemPlan-1.md`.
+Blind convergence establishes missing receive-result provenance; Code/State's
+ingress floor findings share the omitted durable-observation step but retain
+distinct liveness and restart-safety closure tests. Other roots are retired
+original prepare lookup, public retained-continuation loss discharge, and fresh
+legacy-marker documentation. There are **four unique blocking roots, five total**;
+none is self-closed or disputed.
+
+Accounting: semantic **2 architectural/1 nonarchitectural/1 completed
+remediation**, unchanged. Typed **2 architectural/5 prior nonarchitectural/1
+completed remediation**, adding the reviewers' receive-provenance architectural
+root; this correction is its second remediation when completed. Combined B
+**0 architectural/4 nonarchitectural/0 completed remediation**, with first
+merged correction authorized. No third architectural root is classified; a
+reviewer-classified third typed architectural root MUST trigger STOP before
+another patch. Filename changes do not reset caps.
+
+Next action: same sole writer, one test-first patch covering every disposition,
+new chronology/pins, then parent-settled tuple. Material capability/lifecycle
+changes require fresh full Code/State/Surface plus originating B Code/State
+verification of their own blocking counterexamples. Original typed R1–R6
+standalone closure remains owner-deferred to wider ABC. B qualification,
+accepted-review metadata, strict pre-remote success, C exchange and IC4
+activation remain unclaimed; the strict prerequisite stays closed.
