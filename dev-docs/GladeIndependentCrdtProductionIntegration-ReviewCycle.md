@@ -175,3 +175,103 @@ counterexample. No successful physical/auth provider or duplex starts before its
 typed gate. IC-3ABC delivery remains open; no push/live/desk changes.
 
 Fresh full Safety testimony SHA256: `49dbc20b4f92c9bdf7b46a05d17256129f884560ea3bf9a0ca24897c149de325`.
+
+## IC-3A typed checkpoint — drafting released
+
+Semantic acceptance landing root is
+`3bff20351895b82e2f805e7f8939dab6b3296604`; four source pins remain the accepted
+IC-2 baseline. The same sole drafter is released to A2 only: exact data extraction,
+required evidence/recovery/guard interfaces, bounded structural codec and three
+independent canonical consumers, production-bound refusing provider consumers,
+source-qualified external Gyld overlay and focused gate adoption. The parent owns
+this ledger, checkpoint staging and review dispatch. Test-first source/evidence is
+required. Successful real auth/disk/duplex adapters remain behind typed acceptance.
+
+The compiler-facing object begins at zero remediation rounds and zero discovered
+roots. This records its separate initial gate, not a reset of the accepted
+semantic object's two architectural/one nonarchitectural roots or historical
+stops. A new semantic counterexample MUST retain the appropriate controlling
+object's cumulative accounting. Fresh dual Code/State is the recorded typed gate;
+Surface is additionally required for any actual operator-facing freeze. All
+original consumers/assertions, roles, dependency direction, budgets and process
+global restrictions remain protected. IC-3ABC completion remains open.
+
+The new compiler-facing contracts expose public consumer APIs for open, owned
+receive, settlement/abandonment and close. At A2 freeze an additional independent
+Surface review MUST inspect their cold consumer usage/lifecycle documentation,
+without implementation or design-plan context, alongside the dual Code/State gate.
+This resolves the already recorded conditional API-surface requirement before
+freeze; it adds an axis and does not replace either core reviewer. It establishes
+no browser/CLI activation surface. Actual B/C operator configuration will receive
+its own Surface assessment at the appropriate freeze.
+
+### Owner-approved Gyld fast-test budget adjustment
+
+On 2026-10-04, the owner explicitly directed “up it to 5 seconds” after the
+179-test architecture selection passed its assertions but exceeded Gyld's
+existing two-second execution budget (2.978 seconds). The A2 patch MUST change
+only the single-selection execution threshold from 2.0 to 5.0 seconds. The
+multi-selection 10.0-second threshold, separately measured startup, and separate
+I/O suite remain unchanged. This is an owner-authorized project-specific budget
+adjustment, not an agent relaxation to hide a failed gate. The prior failed run
+MUST remain recorded; an executable threshold regression MUST precede the edit,
+and the revised gate MUST pass before freeze. The change is included in the
+settled typed review object and does not change Glade's budgets or classifications.
+
+## IC-3A2 typed implementation — frozen source, acceptance open
+
+The sole drafter froze 58 Glade implementation files and four controlling/consumer
+documents. The lane owner independently checked every recorded SHA256 against
+the working bytes: zero mismatches. Glade's implementation checkpoint is
+`7d26ba6e6d133db650a37ff49eba71644ea370a6`, committed through GWZ. Excluded vector
+pin metadata and external Gyld sidecar qualification MUST now name that exact
+source commit; a later metadata-only commit MUST preserve all 58 source hashes.
+This is a review checkpoint, not acceptance or physical qualification.
+
+Recorded scoped evidence includes four new crate suites, protected original core
+and storage consumers, unchanged released text/corpus checks, contract adopter
+tests/format/Clippy, 16 architecture-refusal fixtures, node architecture and actual
+assembled refusing consumers, disabled-branch syntax checks, and unchanged
+process-global allowance checks. Three independent representation consumers cover
+21 semantic positive cases and 18 malformed/closed-profile negatives. Symbolic
+signature bytes qualify encoding only. The strict pre-remote prerequisite MUST
+remain refusing until committed IC3-B1 genuine-signature qualification exists.
+
+Gyld preserves its original 34 allocations/135 obligations and adds five
+allocations/25 requirements, giving 39/160. Its owner-approved threshold regression
+checks both sides of five seconds, preserves the ten-second multi-selection tier
+and separate startup/I/O behavior. The first revised 181-test run failed at 5.251
+seconds during concurrent Rust checks; a subsequent isolated final run passed at
+2.860 seconds. Diagnostic selections measured 176 existing tests at 2.081 seconds
+and five additions at 1.092 seconds. No cache or test-selection change was made.
+Both failed runs MUST remain in the chronological evidence. Pinned affected Ruff
+checks pass. Mypy still reports six errors; an exact unchanged HEAD baseline has
+the identical six errors, with no new errors attributed to this patch. This debt
+is recorded explicitly rather than calling the type gate green.
+
+Next: finalize provenance-only metadata, settle the full five-repository tuple,
+then fresh peer-blind Code/State and independent cold docs-only Surface reviews.
+The typed object has zero discovered roots and zero remediation rounds before
+those reviews. A2 acceptance requires every required verdict; the drafter's tests
+and these checks cannot substitute for reviewer testimony. IC3-B/C successful
+providers, real crash/restart and two-process exchange remain unimplemented.
+
+Provenance-only final Glade HEAD is
+`8b0595551dd90f32da4698fff9358aa30dbf2548`; the sole difference from implementation
+`7d26ba6e6d133db650a37ff49eba71644ea370a6` is the vector pin metadata. All 58
+implementation hashes match both commits and the working bytes. External Gyld's
+six-file checkpoint is `03428fb36649d71541fd76f2471533e384be8209`, settled through
+GWZ with its parent lock captured. Glial and discovery remain at the unchanged
+accepted pins. Final evidence is
+[TypedEvidence](history/GladeIndependentCrdtProductionIntegrationTypedEvidence.md),
+with 91 chronological attempts and the byte-exact compressed raw output; original
+45-file compatibility hashes and the frozen source manifest are filed alongside.
+
+Surface scope additionally includes the new source-qualified Gyld capture CLI's
+cold `examples/README.md` section and its `--help`, alongside the standalone
+TypedUsage document. The reviewer MUST NOT read implementation or design/plan;
+the full tuple is identical to Code/State. This additive scope records the actual
+helper command surface before freeze and does not introduce production activation.
+Generated canonical prompts will name the exact root checkpoint. No current peer
+testimony may be read or requested. Successful real B/C implementation remains
+blocked on this acceptance gate, not on renewed owner permission.
