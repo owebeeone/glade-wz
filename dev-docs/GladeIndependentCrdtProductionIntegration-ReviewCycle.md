@@ -542,3 +542,39 @@ blocking counterexample. Original A2 R1–R6 closure remains owner-deferred to
 wider ABC. accepted_review_record remains null. The strict pre-remote gate
 continues refusing; C history execution, activation, live/default/desk changes
 and push remain unclaimed.
+
+## Combined B correction 1 — independent review merge
+
+All five reviewers verified root `c8d778e7c24b68690e27bfac8ca4457f647e747f`,
+Glade `d3fded040d6e3c459cd5f975d6c672873356cc23` and the three protected
+repository pins at START and END. Both originating reviewers independently
+closed all six initial blocking findings. Their reports nevertheless return
+NO-GO because new current-observation counterexamples remain. Fresh Code and
+State each returned NO-GO with two P2; cold Surface returned GO with one P3.
+
+The completed verbatim reports and SHA256 values are:
+
+- `history/GladeIndependentCrdtProductionIntegrationPhysicalHost-ReviewCode-1.md`: `6741bac5969a5901d4177da344629d00e4d7d8f126aaa15b1d3c98f33c88f33e`.
+- `history/GladeIndependentCrdtProductionIntegrationPhysicalHost-ReviewState-1.md`: `5de8bd39c5f5afcd41f2d8f6830a7baeced818d6c7f35cd2757d777f3fb48587`.
+- `history/GladeIndependentCrdtProductionIntegrationPhysicalHost-ReviewSurface-1.md`: `9c9a73b30747b217a5d3c31986ea0a2fe840d5c5442d19f5e90748e36c91657e`.
+- `history/GladeIndependentCrdtProductionIntegrationPhysicalHostClosure-ReviewCode-1.md`: `5ec3565832015ee2749601e33fee4bbffcf73c0de5f9f3baa9fc1a80ae001ff2`.
+- `history/GladeIndependentCrdtProductionIntegrationPhysicalHostClosure-ReviewState-1.md`: `9dd6482704260b73badb00402982b1e3b2ac2ede445a4f4cf9b7055a0eb11eb5`.
+
+Merged disposition: `history/GladeIndependentCrdtProductionIntegrationPhysicalHost-RemPlan-2.md`.
+Blind convergence establishes a stale write-start decision after a second
+trusted consultation; originating Code establishes the same helper root through
+an inconsistent receive interval. Both paths remain required regressions.
+Oversized pending-loss discharge is a remaining B-R4 edge. Surface's retirement
+method recipe is nonblocking and included in the same correction.
+
+Accounting: semantic **2 architectural/1 nonarchitectural/1 completed remediation**,
+typed **2 architectural/5 prior nonarchitectural/2 completed remediations**,
+combined B **0 architectural/6 nonarchitectural/1 completed remediation**.
+New B-R6 and B-R7 are nonarchitectural; B-R4 is not counted again. No third
+typed architectural root is classified. B's second correction is authorized,
+not complete or accepted. Same sole writer; one TDD patch; retained-context
+focused re-verdicts unless actual boundary changes require fresh full axes.
+
+Status: **NO-GO; SECOND B IMPLEMENTATION CORRECTION NEXT**. Earlier originating
+closures are recorded, not erased. Original A2 closures remain deferred to ABC.
+No accepted crypto metadata, strict gate success, C exchange, activation or push.
