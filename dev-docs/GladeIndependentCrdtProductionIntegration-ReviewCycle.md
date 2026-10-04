@@ -640,3 +640,25 @@ its canonical source/evidence pins; require strict pre-remote GREEN before C.
 C actual-node assembly/automatic exchange and aggregate review remain authorized
 and unfinished. Original A2 closures remain deferred to that wider gate.
 No IC4/live/default/desk/Raft/push action follows from this acceptance.
+
+## Committed acceptance and strict pre-remote GREEN
+
+Combined B accepted record is root434df3f4aae0cfc116072db95a294283978d0c6e.
+Actual signed B1 qualification is committed, tied to that record and the unchanged
+accepted authentication source a47691598df648eb8c9554b27f3d06b0cffcf596.
+Representation checkpoint9cc4ac318b70b9e3a359c4142f0bbe3314c1dfed corrects only two
+negative-fixture assumptions; no production gate/schema/canonical-byte change.
+Qualification evidence commit a0e1cb7cdd26ea9cde9328889a0d15a44a77ef8d and final pins
+commit3bfdea5921d0e500476379557dc79813ca568c07 are real. Full strict script exits0,
+all6negative-gate tests/4Rust vector tests/21positive18negative independent-language
+controls GREEN. Initial/intermediate failures retained in chronological evidence:
+`history/GladeIndependentCrdtProductionIntegrationPreRemoteQualificationEvidence.md`.
+Fixture correction belongs to pending aggregate C review, not a new B auth acceptance.
+
+C actual-node construction/automatic exchange is now the next authorized implementation;
+no C completion is claimed. Do not reset orphan guards or kernel sticky incompleteness.
+Caps remain semantic2architectural/1nonarchitectural/1completedremediation,
+typed2architectural/5nonarchitectural/2completedremediations,
+B0architectural/6nonarchitectural/2completedremediations. No new reviewer root/cap reset.
+Original A2 closure verification stays deferred to ABC; fresh aggregate Code/State,
+Consistency/Safety and actual Surface remain required. No live/default/push authority.
